@@ -2,6 +2,9 @@
 
 Status: IMPLEMENTED
 
+Repository note: the canonical GitHub owner is now `scenariofour`. The original
+Day 0 commands, URLs, and results below are preserved as the execution record.
+
 ## Question
 
 Can Project2Job begin from a public, reproducible repository without overstating
