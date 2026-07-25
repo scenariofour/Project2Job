@@ -117,3 +117,20 @@ Reason:
 The package README identifies it as generated but does not provide a reproducible
 rebuild command. Source files remain authoritative until a release process is
 documented and verified.
+
+## D-012: Keep the bounded Agent loop provisional
+
+Decision:
+
+Implement one deterministic bounded Evidence Investigator behind the same
+comparison interface as the strong one-shot prompt and fixed
+extract-search-validate workflow. Do not select the Agent loop as the final
+architecture before comparative evidence exists.
+
+Reason:
+
+Adaptive control may help choose when to narrow, ask, continue, or stop as
+evidence changes. The current Day 1 branches are also expressible as a fixed
+workflow. Retain the loop only if labeled comparison shows better evidence
+boundaries or recovery at acceptable safety, cost, latency, and trace clarity;
+replace it with the fixed workflow if those benefits do not materialize.
