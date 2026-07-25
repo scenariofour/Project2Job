@@ -1,6 +1,6 @@
 # Day 0 — Safe Foundation
 
-Status: IN PROGRESS
+Status: IMPLEMENTED
 
 ## Question
 
@@ -46,10 +46,22 @@ Web UI, RAG, evaluation harness, framework, MCP, or multi-agent feature is built
 - `git fetch origin --prune`: PASS; `origin/main` at `60388e6`
 - `git status --porcelain` before import: PASS, no local changes
 - `sed -n '1,80p' LICENSE`: PASS, MIT License retained
-- Initial `make validate`, `make test`, and `make inventory`: PASS
-- Changed files: all paths in `FILE_LIST.txt` except the excluded
-  `dist/career-desk-project-to-application-skill_v1.zip`; added
-  `docs/build_journal/`; Day 0 reconciliation changes will be listed in Git
+- `git status --short --branch`: PASS, `## day0-foundation` before push
+- `git remote -v`: PASS, fetch and push use
+  `https://github.com/irisli0926/Project2Job.git`
+- `git diff --check`: PASS, no output
+- `make validate`: PASS; 14 active docs, 9 JSON files, 21 JSONL cases,
+  12 public fixture files, 8 journal days, MIT license
+- `make test`: PASS, 3 of 3 tests
+- `make inventory`: PASS, 3 synthetic sample-project files inventoried
+- `git ls-files | grep -E '(__pycache__|\.pyc$|\.env|\.DS_Store|\.log$)'`:
+  PASS, no output
+- Changed files: imported every path in `FILE_LIST.txt` except
+  `dist/career-desk-project-to-application-skill_v1.zip`; normalized existing
+  trailing whitespace in `lab/scoring_rubric.md`; added the 10 files in
+  `docs/build_journal/`; reconciled `.gitignore`, `README.md`, `START_HERE.md`,
+  `CODEX_FIRST_PROMPT.md`, `PROJECT_STATUS.md`, `docs/13_DECISION_LOG.md`, and
+  `scripts/validate_repo.py`
 
 ## Bad case or tradeoff
 
@@ -62,12 +74,13 @@ process exists.
 - Decision to make: whether this repository is safe to use as the build baseline
 - Considered alternatives: import v6; redesign first; retain only product docs
 - Expected evidence: clean audit, passing checks, bounded scope, reproducible setup
-- Final decision after evidence: pending final Day 0 validation
+- Final decision after evidence: accept the repository as the Day 0 build baseline
 
 ## What is not yet proven
 
 Skill or Agent behavior, user value, quality, latency, tokens, cost, comparative
-model performance, adoption, and hiring outcomes.
+model performance, adoption, and hiring outcomes. Days 1–7 and all Work Order
+implementation remain planned.
 
 ## Public content notes
 

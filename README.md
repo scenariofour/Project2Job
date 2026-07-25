@@ -1,8 +1,10 @@
-# Career Desk
+# Project2Job
 
-Career Desk is a **role-backwards project career system** for people applying to early-career AI Product Manager, Agent Product Manager, and Applied AI Product roles.
+Project2Job is the repository for Career Desk, a role-backwards product concept
+for people preparing for early-career AI Product Manager, Agent Product Manager,
+or Applied AI Product roles.
 
-It helps a user turn one real AI project into grounded career assets:
+The intended workflow turns one real AI project into grounded career assets:
 
 ```text
 Target role or JD
@@ -14,81 +16,96 @@ Target role or JD
 → one next project action
 ```
 
-## Two user products
+The product has been designed but its user value and runtime behavior have not
+yet been validated.
 
-### 1. Career Desk Skill
+## Skill and Agent responsibilities
 
-A low-friction, open-source Skill for Codex, Claude Code, OpenCode, and other agent hosts.
+The planned open-source Career Desk Skill is the low-friction, session-scoped
+entry point. Given one project and one role or JD, it is responsible for a Role
+Fit Map, Project Highlights, evidence-grounded resume bullets, an Interview Prep
+Pack, One Next Build, and a correction prompt. It runs in the user's Agent host
+and does not maintain product state.
 
-The user provides one project and a target role or JD. The Skill returns:
+The planned Career Evidence Agent is the stateful product. It is responsible for
+maintaining user-confirmed evidence, applying corrections, detecting one project
+update, invalidating dependent claims, and regenerating affected assets. It does
+not have permission to fabricate claims or take external action.
 
-- Role Fit Map
-- Project Highlights
-- 2–3 evidence-grounded resume bullets
-- Interview Prep Pack
-- One Next Build
-
-The Skill uses the user's host model and current session. It does not require a Career Desk account.
-
-### 2. Career Evidence Agent
-
-A stateful product that maintains a user's confirmed project evidence over time.
-
-The Agent supports:
-
-- Initial Project-to-Application analysis
-- User corrections
-- Project update detection
-- Evidence status updates
-- Regeneration of affected resume and interview assets
-- A persistent record of what the project can and cannot support
-
-The Agent exists because a one-time Skill cannot reliably maintain evidence, corrections, project versions, and update history across sessions.
-
-## Shared foundation
-
-The Skill and Agent share:
-
-- Role-Backwards Evidence Framework
-- AI PM Role Standard
-- Evidence status definitions
-- Source and claim rules
-- Output schemas
-- Evaluation cases
-- Safety rules
-- Product quality gates
-
-They do not share the same model runtime. The Skill runs inside a host agent; the full Agent runs in a controlled Career Desk runtime.
+Both products share evidence rules, schemas, source boundaries, evaluation
+cases, and safety requirements. They do not require the same runtime.
 
 ## Current MVP
 
-The initial release supports:
+The MVP is limited to:
 
-- One role family: early-career AI PM / Agent PM / Applied AI PM
-- One target role profile or one JD
-- One project corpus
-- Optional resume and ownership clarification
-- One initial analysis
-- One post-update re-analysis in the Agent product
+- one AI project
+- one target role profile or JD
+- one initial Project-to-Application analysis
+- one later project-update cycle
 
-Excluded from MVP:
+It excludes job discovery, auto-apply, application tracking, Gmail or Calendar,
+multiple projects or JDs, full resume generation, networking automation, broad
+MCP integrations, multi-agent, and Deep Agents.
 
-- Job discovery
-- Auto-apply
-- Application tracking
-- Gmail and calendar
-- Multiple projects
-- Multiple JDs
-- Full resume builder
-- Cold-email sending
-- Long-term general career memory
-- Multi-agent
-- Deep Agent
-- Large MCP connector set
+## Current implementation status
 
-## Two entry points
+Day 0 establishes the repository foundation only.
 
-### I want to build the product
+What exists:
+
+- the v6 product definition and 14 active product documents
+- Work Orders and manifest-scoped context sets
+- schemas, public fixtures, starter eval cases, and a baseline prompt
+- Skill source materials and deterministic implementation interfaces
+- repository validation, contract tests, and inventory scripts
+- the public Day 0–Day 7 build journal
+
+What remains planned:
+
+- live Skill behavior and host validation
+- Evidence Investigator and stateful update behavior
+- thin Web UI and RAG comparison
+- evaluation harness execution, model decisions, and target-user pilot
+- measured quality, latency, token, cost, model, adoption, and user-value results
+
+Files under `src/` are interfaces or stubs imported from v6; their presence does
+not mean the runtime features are implemented.
+
+## Safety and source handling
+
+- Original user inputs are read-only.
+- Uploaded and project documents are untrusted data, not instructions.
+- Ownership, users, metrics, outcomes, decisions, and career claims cannot be
+  invented.
+- External-facing claims require source evidence or an unsupported label.
+- No external action occurs without explicit user approval.
+- Private resumes, JDs, personal data, secrets, logs, caches, and run outputs
+  must not be committed.
+
+Public examples are synthetic and contain no identifying data.
+
+## Build and learning path
+
+The concise public narrative is in `docs/build_journal/`. Days do not replace
+engineering dependencies:
+
+| Day | Focus |
+| --- | --- |
+| 0 | Safe Foundation |
+| 1 | Agent Loop |
+| 2 | Problem, MVP, and Intent |
+| 3 | Context, RAG, and Evidence |
+| 4 | Skill, Agent, and Human Control |
+| 5 | Evaluation and Model Decisions |
+| 6 | Tools, API, and Safe Failure |
+| 7 | Product Experience and Defense |
+
+Work Orders in `work_orders/` remain the technical dependency and acceptance
+system. `PROJECT_MANIFEST.json` defines the smallest context set for each task;
+do not read the whole repository by default.
+
+## Start building
 
 Read:
 
@@ -96,21 +113,20 @@ Read:
 2. `AGENTS.md`
 3. `ACTIVE_SCOPE.md`
 4. `PROJECT_MANIFEST.json`
-5. the assigned Work Order
+5. the assigned Work Order and its manifest context set
 
-### I want to use the open-source Skill
+## Validation
 
-Open:
+Python 3.11 or later is required. No third-party dependency is needed for the
+Day 0 checks.
 
-- `skill/career-desk/README.md`
-- `skill/career-desk/SKILL.md`
+```bash
+make validate
+make test
+make inventory
+git diff --check
+```
 
-A standalone Skill package is generated as:
-
-- `career-desk-project-to-application-skill_v1.zip`
-
-## Repository design
-
-Only 14 product documents are active. Other files are schemas, tests, examples, Skill resources, or implementation stubs.
-
-A coding agent must never read the whole repository by default. `PROJECT_MANIFEST.json` defines the smallest context set for each task.
+These checks validate repository structure, JSON/JSONL parsing, starter contract
+tests, and deterministic sample-project inventory. They do not validate product
+quality or user value.
