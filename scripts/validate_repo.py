@@ -91,6 +91,18 @@ def load_jsonl(path: Path) -> list[dict]:
     ]
 
 
+def validate_journal_statuses() -> dict[int, str]:
+    expected = {
+        day: "IMPLEMENTED" if day <= 1 else "PLANNED"
+        for day in range(8)
+    }
+    for day, status in expected.items():
+        path = ROOT / f"docs/build_journal/DAY_{day}.md"
+        if f"Status: {status}" not in path.read_text(encoding="utf-8"):
+            raise SystemExit(f"Day {day} must be {status}")
+    return expected
+
+
 def validate_shared_foundation() -> dict[str, int]:
     contract = json.loads(
         (ROOT / "references/shared_contract.v1.json").read_text(encoding="utf-8")
@@ -278,13 +290,7 @@ def main() -> None:
     for path in ROOT.rglob("*.jsonl"):
         jsonl_cases += validate_jsonl(path)
 
-    day_0 = (ROOT / "docs/build_journal/DAY_0.md").read_text(encoding="utf-8")
-    if "Status: IMPLEMENTED" not in day_0:
-        raise SystemExit("Day 0 must be IMPLEMENTED before foundation validation passes")
-    for day in range(1, 8):
-        path = ROOT / f"docs/build_journal/DAY_{day}.md"
-        if "Status: PLANNED" not in path.read_text(encoding="utf-8"):
-            raise SystemExit(f"Day {day} must remain PLANNED on Day 0")
+    validate_journal_statuses()
 
     public_fixture_files = validate_public_fixtures()
     shared_foundation = validate_shared_foundation()
