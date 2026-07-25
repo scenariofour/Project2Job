@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProjectEvidenceProfile",
+  "type": "object",
+  "required": [
+    "project_id",
+    "version",
+    "sources",
+    "claims"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "source_hashes": {
+      "type": "object"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "path",
+          "read_status"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "read_status": {
+            "enum": [
+              "available",
+              "unreadable",
+              "blocked"
+            ]
+          }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim_id",
+          "text",
+          "status",
+          "evidence"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "primary_domain": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "supported",
+              "partially_supported",
+              "inferred",
+              "not_found",
+              "conflicting",
+              "needs_confirmation"
+            ]
+          },
+          "boundary": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "source_id",
+                "location",
+                "evidence_type"
+              ],
+              "properties": {
+                "source_id": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "evidence_type": {
+                  "enum": [
+                    "direct",
+                    "supporting",
+                    "self_reported",
+                    "contradictory"
+                  ]
+                },
+                "excerpt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "run_type": "skill_initial",
+  "intent": "application_pack",
+  "role_fit_map": [
+    {
+      "capability": "Agent and Workflow Design",
+      "status": "supported",
+      "source_refs": [
+        "sample_project.md#Agent design"
+      ],
+      "boundary": "Supports a designed Agent contract; does not yet prove runtime performance."
+    },
+    {
+      "capability": "Evaluation and Error Analysis",
+      "status": "partially_supported",
+      "source_refs": [
+        "sample_project.md#Evaluation plan"
+      ],
+      "boundary": "An evaluation plan exists, but no run results are present."
+    }
+  ],
+  "project_highlights": [
+    {
+      "text": "Designed an evidence-first Agent contract that limits autonomous investigation to claim verification.",
+      "source_refs": [
+        "sample_project.md#Agent design"
+      ]
+    }
+  ],
+  "resume_bullets": [
+    {
+      "text": "Defined an evidence-first AI career product that maps role requirements to project claims and source artifacts, with explicit uncertainty and user correction.",
+      "source_refs": [
+        "sample_project.md#Product decision",
+        "sample_project.md#Problem"
+      ],
+      "risk": "No user or quality result has been measured.",
+      "missing_to_strengthen": [
+        "Pilot result",
+        "live Agent trace"
+      ]
+    }
+  ],
+  "interview_pack": {
+    "intro_30_seconds": "I designed Career Desk to help early-career AI PM candidates turn real project artifacts into defensible application evidence. The core design separates deterministic intake from a single Evidence Investigator Agent, and the next milestone is to compare it with prompt and fixed-workflow baselines.",
+    "questions": [
+      {
+        "question": "Why did this need an Agent?",
+        "answer_ingredients": [
+          "Evidence location and search order vary across projects.",
+          "The Agent chooses which claim and source to inspect."
+        ],
+        "source_refs": [
+          "sample_project.md#Agent design"
+        ],
+        "unsupported": "No runtime comparison yet."
+      }
+    ]
+  },
+  "next_build": {
+    "gap": "No measured comparison exists.",
+    "why_now": "The comparison determines whether the Skill and Agent add value beyond a prompt.",
+    "steps": [
+      "Label 10 project/JD cases.",
+      "Run the strong prompt and Skill.",
+      "Score source precision and output usability."
+    ],
+    "acceptance_criteria": [
+      "Gold source locations exist.",
+      "Blind reviewer scoring is complete.",
+      "Failures are classified."
+    ],
+    "expected_evidence": "A versioned comparison report.",
+    "interview_question_unlocked": "How did you prove the Agent was necessary?"
+  },
+  "warnings": [
+    "No live quality or user result is claimed."
+  ]
+}
