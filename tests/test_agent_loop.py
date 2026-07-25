@@ -161,6 +161,12 @@ class BoundedAgentLoopTests(unittest.TestCase):
         )
         self.assertEqual(result.state.status, EvidenceStatus.NOT_FOUND)
 
+    def test_search_cannot_expand_the_permitted_source_set(self) -> None:
+        case, tools, result = run_case("D1-010")
+        self.assert_gold(case, result)
+        self.assertEqual([call["tool"] for call in tools.calls], ["search_sources"])
+        self.assertIn("outside the permitted set", result.trace[0].observation.error)
+
     def test_trace_is_deterministic_and_contains_visible_records(self) -> None:
         _, _, first = run_case("D1-001")
         _, _, second = run_case("D1-001")

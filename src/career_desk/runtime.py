@@ -161,6 +161,11 @@ class EvidenceInvestigator:
 
     def _apply_search(self, state: AgentState, data: dict) -> StateUpdateRecord:
         matches = data.get("matches", [])
+        if any(
+            match.get("source_id") not in state.allowed_source_ids
+            for match in matches
+        ):
+            raise RuntimeError("search returned a source outside the permitted set")
         state.sources_exhausted = bool(data.get("exhausted", False))
         if matches:
             state.pending_matches.extend(matches)
