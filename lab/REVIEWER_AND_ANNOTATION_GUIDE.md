@@ -83,6 +83,10 @@ Set `resume_export_allowed` to `true` only when the exact career claim is
 supported by direct evidence. A later user confirmation may permit a bounded
 ownership fact, but the unconfirmed gold case remains non-exportable.
 
+Supported status is necessary but not sufficient for export. A supported claim
+may remain non-exportable when it is not useful or safe as a candidate-owned
+resume claim.
+
 Partial, inferred, conflicting, not-found, and needs-confirmation claims may
 appear in the Role Fit Map or interview risks. They must not be converted into
 positive resume facts.

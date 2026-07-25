@@ -52,7 +52,7 @@
     },
     "project_highlights": {
       "type": "array",
-      "minItems": 3,
+      "minItems": 0,
       "maxItems": 5,
       "items": {
         "$ref": "#/$defs/groundedText"
@@ -60,7 +60,7 @@
     },
     "resume_bullets": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 0,
       "maxItems": 3,
       "items": {
         "$ref": "#/$defs/resumeBullet"

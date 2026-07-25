@@ -33,12 +33,15 @@ Use these rules:
 - A direct contradiction prevents a supported label.
 - Never invent users, metrics, outcomes, ownership, decisions, or experiments.
 - Resume bullets may use only directly supported facts and confirmed ownership.
+- Never fill an output quota with unsupported claims.
 
 Return valid JSON matching the supplied Application Pack schema with:
 
 1. a Role Fit Map for the 5–7 most relevant capabilities
-2. 3–5 supported Project Highlights
-3. 2–3 editable, evidence-grounded resume bullets
+2. up to 5 supported Project Highlights; target 3–5 when evidence permits,
+   otherwise return fewer or none
+3. up to 3 editable, evidence-grounded resume bullets; target 2–3 when evidence
+   permits, otherwise return fewer or none
 4. a 30-second project introduction with sources
 5. exactly three interview follow-up questions with grounded answer ingredients
 6. unsupported areas and warnings

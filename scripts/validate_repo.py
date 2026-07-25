@@ -190,8 +190,18 @@ def validate_shared_foundation() -> dict[str, int]:
             key = (evidence_ref["source_id"], evidence_ref["location"])
             if key not in source_locations:
                 raise SystemExit(f"Gold evidence location does not resolve: {case_id}")
-        if label["resume_export_allowed"] != (label["status"] == "supported"):
-            raise SystemExit(f"Gold export policy disagrees with status: {case_id}")
+        if label["resume_export_allowed"]:
+            if label["status"] != "supported":
+                raise SystemExit(
+                    f"Resume export requires supported status: {case_id}"
+                )
+            if not any(
+                evidence_ref["evidence_type"] == "direct"
+                for evidence_ref in label["evidence_refs"]
+            ):
+                raise SystemExit(
+                    f"Resume export requires direct evidence: {case_id}"
+                )
         covered_capabilities.add(case["capability_id"])
         covered_statuses.add(label["status"])
 
