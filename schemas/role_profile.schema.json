@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RoleProfile",
+  "type": "object",
+  "required": [
+    "role_id",
+    "role_name",
+    "version",
+    "capabilities"
+  ],
+  "properties": {
+    "role_id": {
+      "type": "string"
+    },
+    "role_name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "source_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "capability_id",
+          "name",
+          "description",
+          "evidence_tests"
+        ],
+        "properties": {
+          "capability_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "evidence_tests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "interview_questions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{"case_id": "A01", "initial": ["README.md"], "update": ["eval_results.csv"], "gold": {"changed_sources": ["eval_results.csv"], "recheck_domains": ["evaluation_and_error_analysis"], "do_not_reread_unrelated": true}, "tags": ["delta", "state"]}
+{"case_id": "A02", "initial": ["README.md", "ownership.json"], "update": ["ownership.json corrected"], "gold": {"invalidate": ["resume_bullets", "interview_intro"], "preserve_history": true}, "tags": ["correction", "dependency"]}
+{"case_id": "A03", "initial": ["README.md", "eval_plan.md"], "update": ["no file changes"], "gold": {"avoid_full_rerun": true, "stop_reason": "no_relevant_change"}, "tags": ["efficiency", "stop"]}
+{"case_id": "A04", "initial": ["README.md"], "update": ["corrupt.pdf"], "gold": {"report_tool_failure": true, "do_not_fabricate_evidence": true}, "tags": ["failure", "recovery"]}

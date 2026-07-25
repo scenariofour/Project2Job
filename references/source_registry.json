@@ -1,0 +1,125 @@
+{
+  "last_verified": "2026-07-25",
+  "method_note": "Sources inform the versioned role standard and product practices. They do not constitute a universal hiring rubric.",
+  "sources": [
+    {
+      "id": "SRC-OAI-PM-AGENTS",
+      "title": "OpenAI Product Manager, API Agents",
+      "url": "https://openai.com/careers/product-manager-api-agents-san-francisco/",
+      "use": "Agent product priorities, developer needs, safety, technical innovation"
+    },
+    {
+      "id": "SRC-OAI-PM-SITES",
+      "title": "OpenAI Product Manager, ChatGPT Sites",
+      "url": "https://openai.com/careers/product-manager-chatgpt-sites-san-francisco/",
+      "use": "Technical product ownership and software-powered user experiences"
+    },
+    {
+      "id": "SRC-OAI-INTERVIEW",
+      "title": "OpenAI Interview Guide",
+      "url": "https://openai.com/interview-guide/",
+      "use": "Interview focus on expertise, problem solving, and stretch"
+    },
+    {
+      "id": "SRC-OAI-AGENTS",
+      "title": "OpenAI Agents SDK Guide",
+      "url": "https://developers.openai.com/api/docs/guides/agents",
+      "use": "Agent tools, tracing, evaluation, and orchestration"
+    },
+    {
+      "id": "SRC-OAI-SKILLS",
+      "title": "OpenAI Build Skills",
+      "url": "https://developers.openai.com/codex/build-skills",
+      "use": "Skill packaging and progressive disclosure"
+    },
+    {
+      "id": "SRC-OAI-EVAL-SKILLS",
+      "title": "Testing Agent Skills Systematically with Evals",
+      "url": "https://developers.openai.com/blog/eval-skills",
+      "use": "Skill evaluation and regression practices"
+    },
+    {
+      "id": "SRC-OAI-AGENT-EVALS",
+      "title": "Evaluate Agent Workflows",
+      "url": "https://developers.openai.com/api/docs/guides/agent-evals",
+      "use": "Trace, dataset, grader, and eval-run practices"
+    },
+    {
+      "id": "SRC-OAI-GUARDRAILS",
+      "title": "Guardrails and Human Review",
+      "url": "https://developers.openai.com/api/docs/guides/agents/guardrails-approvals",
+      "use": "Automatic checks and human approval boundaries"
+    },
+    {
+      "id": "SRC-NACE-SKILLS",
+      "title": "What Students Need to Know About the Skills-Based Hiring Process",
+      "url": "https://www.naceweb.org/job-market/trends-and-predictions/what-students-need-to-know-about-the-skills-based-hiring-process",
+      "use": "Evidence of skills and role-linked examples"
+    },
+    {
+      "id": "SRC-MIT-RESUME",
+      "title": "MIT CAPD Resumes",
+      "url": "https://capd.mit.edu/resources/resumes/",
+      "use": "Targeting a resume to a position and using projects as evidence"
+    },
+    {
+      "id": "SRC-STANFORD-CAR",
+      "title": "Stanford Career Education CAR Method",
+      "url": "https://careered.stanford.edu/sites/g/files/sbiybj22801/files/media/file/car-method-for-developing-resume-content.docx-1.pdf",
+      "use": "Challenge, action, and result structure for career content"
+    },
+    {
+      "id": "SRC-MCP",
+      "title": "Model Context Protocol Architecture",
+      "url": "https://modelcontextprotocol.io/docs/learn/architecture",
+      "use": "MCP tools, resources, prompts, and client-server boundaries"
+    }
+  ],
+  "product_references": [
+    {
+      "name": "ApplyPilot",
+      "url": "https://github.com/yvonnehe772/applypilot",
+      "lesson": "low-friction trial and simple workflow states"
+    },
+    {
+      "name": "Jane's First Intern Copilot",
+      "url": "https://github.com/jo1-yo/janes-first-intern-copilot",
+      "lesson": "short Skill, progressive references, direct outputs"
+    },
+    {
+      "name": "Jobscan",
+      "url": "https://www.jobscan.co/",
+      "lesson": "clear role-specific decision and actionable output"
+    },
+    {
+      "name": "Resume Matcher",
+      "url": "https://github.com/srbhr/Resume-Matcher",
+      "lesson": "editable source-of-truth and open-source product"
+    },
+    {
+      "name": "Yoodli",
+      "url": "https://yoodli.ai/",
+      "lesson": "practice loop rather than question generation alone"
+    },
+    {
+      "name": "Simplify",
+      "url": "https://simplify.jobs/",
+      "lesson": "measurable friction reduction"
+    },
+    {
+      "name": "AIHawk",
+      "url": "https://github.com/feder-cr/jobs_applier_ai_agent_aihawk",
+      "lesson": "automation risk and scope boundary"
+    },
+    {
+      "name": "OpenCode",
+      "url": "https://github.com/sst/opencode",
+      "lesson": "mature coding-agent runtime patterns"
+    },
+    {
+      "name": "Hello-Agents",
+      "url": "https://github.com/datawhalechina/hello-agents",
+      "lesson": "learning Agent fundamentals through implementation"
+    }
+  ]
+}

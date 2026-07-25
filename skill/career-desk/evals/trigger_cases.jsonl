@@ -1,0 +1,8 @@
+{"id": "T01", "input": "Can this repo support an AI PM application?", "expected_trigger": true}
+{"id": "T02", "input": "Turn this project and JD into resume bullets and interview prep.", "expected_trigger": true}
+{"id": "T03", "input": "What should I add to this Agent project before applying?", "expected_trigger": true}
+{"id": "T04", "input": "Find open PM jobs today.", "expected_trigger": false}
+{"id": "T05", "input": "Auto-apply to every Workday role.", "expected_trigger": false}
+{"id": "T06", "input": "Review this Python function for bugs.", "expected_trigger": false}
+{"id": "T07", "input": "帮我看看这个vibe coding项目怎么包装成AI PM求职项目", "expected_trigger": true}
+{"id": "T08", "input": "Write a cold email to this founder.", "expected_trigger": false}

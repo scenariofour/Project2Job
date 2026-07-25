@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IntentRoute",
+  "type": "object",
+  "required": [
+    "primary_intent",
+    "modifiers",
+    "confidence_band",
+    "reason"
+  ],
+  "properties": {
+    "primary_intent": {
+      "enum": [
+        "application_pack",
+        "project_compass",
+        "update",
+        "out_of_scope_or_unclear"
+      ]
+    },
+    "modifiers": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "resume_focus",
+          "interview_focus",
+          "build_focus",
+          "ownership_unclear",
+          "urgent_application",
+          "incomplete_artifacts"
+        ]
+      }
+    },
+    "confidence_band": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "clarifying_question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

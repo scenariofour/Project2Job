@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CareerEvidenceAgentState",
+  "type": "object",
+  "required": [
+    "run_id",
+    "project_id",
+    "project_version",
+    "role_profile_id",
+    "claims",
+    "next_build",
+    "budgets",
+    "stop_reason"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "project_version": {
+      "type": "string"
+    },
+    "role_profile_id": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "array"
+    },
+    "user_confirmations": {
+      "type": "array"
+    },
+    "generated_assets": {
+      "type": "array"
+    },
+    "next_build": {
+      "type": "object"
+    },
+    "budgets": {
+      "type": "object"
+    },
+    "changed_sources": {
+      "type": "array"
+    },
+    "invalidated_outputs": {
+      "type": "array"
+    },
+    "stop_reason": {
+      "enum": [
+        "complete",
+        "needs_confirmation",
+        "budget_reached",
+        "no_evidence",
+        "tool_failure",
+        "policy_stop"
+      ]
+    }
+  }
+}
