@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/gold-case/1.0.0",
+  "title": "SharedFoundationGoldCase",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "dataset_version",
+    "role_profile_ref",
+    "capability_id",
+    "evidence_test_id",
+    "project_claim",
+    "sources",
+    "gold_label",
+    "review_notes"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "dataset_version": {
+      "const": "0.1.0"
+    },
+    "role_profile_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_id",
+        "version"
+      ],
+      "properties": {
+        "role_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "capability_id": {
+      "type": "string",
+      "pattern": "^D([1-9]|10)$"
+    },
+    "evidence_test_id": {
+      "type": "string"
+    },
+    "project_claim": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "location",
+          "content"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gold_label": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "evidence_refs",
+        "boundary",
+        "resume_export_allowed"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "inferred",
+            "not_found",
+            "conflicting",
+            "needs_confirmation"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "location",
+              "evidence_type"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "evidence_type": {
+                "enum": [
+                  "direct",
+                  "supporting",
+                  "self_reported",
+                  "contradictory",
+                  "searched_no_support"
+                ]
+              }
+            }
+          }
+        },
+        "boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resume_export_allowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "review_notes": {
+      "type": "string"
+    }
+  }
+}

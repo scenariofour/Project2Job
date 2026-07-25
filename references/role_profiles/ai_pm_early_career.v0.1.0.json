@@ -1,0 +1,242 @@
+{
+  "schema_version": "1.0.0",
+  "role_id": "ai_pm_early_career",
+  "role_name": "Early-Career AI Product Manager",
+  "role_family": [
+    "Junior AI Product Manager",
+    "Junior Agent Product Manager",
+    "Applied AI Product Manager"
+  ],
+  "version": "0.1.0",
+  "status": "reviewed",
+  "validated_on": "2026-07-25",
+  "validation_scope": "Structurally validated against the shared schema and gold cases; not validated as a universal hiring rubric or predictor of hiring outcomes.",
+  "source_registry_version": "0.1.0",
+  "source_ids": [
+    "SRC-OAI-PM-AGENTS",
+    "SRC-OAI-PM-SITES",
+    "SRC-OAI-INTERVIEW",
+    "SRC-OAI-AGENTS",
+    "SRC-OAI-EVAL-SKILLS",
+    "SRC-OAI-AGENT-EVALS",
+    "SRC-OAI-GUARDRAILS",
+    "SRC-NACE-SKILLS"
+  ],
+  "score_policy": {
+    "aggregate_candidate_score": false,
+    "fit_map_selection": "Select the 5-7 capabilities most relevant to the target JD and report evidence status per requirement.",
+    "jd_override": "A target JD may change relevance and selection, but it cannot change evidence labels or create an aggregate candidate score."
+  },
+  "capabilities": [
+    {
+      "capability_id": "D1",
+      "name": "User and Problem Definition",
+      "description": "Identify a real user, task, pain, alternative, and success condition.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D1-01",
+          "question": "Does a source connect observed user or task evidence to a bounded problem or product decision?",
+          "pass_condition": "A dated research or observation artifact identifies the user/task and links findings to a decision.",
+          "partial_condition": "A problem and user are defined, but observation or decision impact is missing.",
+          "non_evidence": "A generic persona, unsupported market claim, or planned research."
+        }
+      ],
+      "interview_questions": [
+        "What user evidence changed your initial problem definition?"
+      ],
+      "source_ids": [
+        "SRC-OAI-PM-AGENTS",
+        "SRC-OAI-PM-SITES"
+      ]
+    },
+    {
+      "capability_id": "D2",
+      "name": "Product Scope and Prioritization",
+      "description": "Choose an MVP, reject attractive features, and define release criteria.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D2-01",
+          "question": "Does a decision artifact show a prioritized scope choice, rejected alternative, reason, and acceptance boundary?",
+          "pass_condition": "A versioned PRD or decision log records the choice, alternative, rationale, and release criterion.",
+          "partial_condition": "Scope is listed, but the tradeoff, alternative, or acceptance criterion is absent.",
+          "non_evidence": "An undifferentiated feature list or roadmap without a decision."
+        }
+      ],
+      "interview_questions": [
+        "Which attractive feature did you reject, and what evidence drove that choice?"
+      ],
+      "source_ids": [
+        "SRC-OAI-PM-AGENTS",
+        "SRC-OAI-PM-SITES"
+      ]
+    },
+    {
+      "capability_id": "D3",
+      "name": "AI Fit and Model Boundaries",
+      "description": "Explain why AI is appropriate, define the model task, and bound where it should not decide.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D3-01",
+          "question": "Does evidence compare the AI task with a non-AI baseline and document boundaries or fallback?",
+          "pass_condition": "Executed comparison results and a boundary/fallback decision are present.",
+          "partial_condition": "The AI task, planned baseline, or boundary is documented without executed comparison evidence.",
+          "non_evidence": "Using a model or calling a feature AI-powered."
+        }
+      ],
+      "interview_questions": [
+        "Why did this task require a model, and what stayed deterministic?"
+      ],
+      "source_ids": [
+        "SRC-OAI-PM-AGENTS",
+        "SRC-OAI-PM-SITES"
+      ]
+    },
+    {
+      "capability_id": "D4",
+      "name": "Agent and Workflow Design",
+      "description": "Distinguish deterministic flow, constrained LLM workflow, and bounded Agent autonomy.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D4-01",
+          "question": "Does an implemented or tested contract define state, actions, observations, stop conditions, and approval points?",
+          "pass_condition": "The contract and traces or tests show state transitions, stop behavior, and human control.",
+          "partial_condition": "A contract exists, but traces or stop-condition tests do not.",
+          "non_evidence": "Describing a chatbot or tool call as an Agent without adaptive state."
+        }
+      ],
+      "interview_questions": [
+        "What decision required Agent autonomy, and how did the loop stop?"
+      ],
+      "source_ids": [
+        "SRC-OAI-PM-AGENTS",
+        "SRC-OAI-AGENTS"
+      ]
+    },
+    {
+      "capability_id": "D5",
+      "name": "Data, Tools, Retrieval, and Context",
+      "description": "Design reliable, permission-bounded access to information and actions.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D5-01",
+          "question": "Do schemas and tests establish source provenance, context selection, permissions, and failure behavior?",
+          "pass_condition": "Implemented contracts and tests agree on provenance, permissions, limits, and fallback.",
+          "partial_condition": "Schemas or design decisions exist without executed reliability tests.",
+          "non_evidence": "Listing tools, APIs, RAG, or MCP without a tested need or boundary."
+        }
+      ],
+      "interview_questions": [
+        "How did you decide what context and permissions each tool receives?"
+      ],
+      "source_ids": [
+        "SRC-OAI-AGENTS",
+        "SRC-OAI-GUARDRAILS"
+      ]
+    },
+    {
+      "capability_id": "D6",
+      "name": "Evaluation and Error Analysis",
+      "description": "Define quality, label cases, classify failures, and make decisions from results.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D6-01",
+          "question": "Do versioned cases, reviewer rules, results, and bad cases support a measured quality claim?",
+          "pass_condition": "Executed results link to versioned cases, labels, metrics, disagreements, and failure analysis.",
+          "partial_condition": "Cases, rubric, or evaluation plan exist without completed results.",
+          "non_evidence": "A target metric, unrun plan, or model self-assessment."
+        }
+      ],
+      "interview_questions": [
+        "Which failure changed your prompt, workflow, or product decision?"
+      ],
+      "source_ids": [
+        "SRC-OAI-EVAL-SKILLS",
+        "SRC-OAI-AGENT-EVALS"
+      ]
+    },
+    {
+      "capability_id": "D7",
+      "name": "Reliability, Safety, and Human Control",
+      "description": "Handle errors, uncertainty, untrusted content, sensitive actions, and recovery.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D7-01",
+          "question": "Do policies and failure tests demonstrate safe handling, approval, and recovery for a named risk?",
+          "pass_condition": "A named risk has an enforced control and a passing failure or adversarial test.",
+          "partial_condition": "A risk and policy are documented without an enforcement test.",
+          "non_evidence": "A generic claim that the system is safe or responsible."
+        }
+      ],
+      "interview_questions": [
+        "Which failure must stop or ask rather than retry automatically?"
+      ],
+      "source_ids": [
+        "SRC-OAI-GUARDRAILS",
+        "SRC-OAI-AGENT-EVALS"
+      ]
+    },
+    {
+      "capability_id": "D8",
+      "name": "Metrics, Cost, and Performance",
+      "description": "Measure user value and system efficiency, including quality-cost tradeoffs.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D8-01",
+          "question": "Do executed measurements connect product or system metrics to a decision?",
+          "pass_condition": "Versioned run data reports metric definitions, values, conditions, and a resulting decision.",
+          "partial_condition": "Instrumentation or metric definitions exist without populated measurements or a decision.",
+          "non_evidence": "Targets, estimates presented as actuals, or unversioned screenshots."
+        }
+      ],
+      "interview_questions": [
+        "What quality, latency, and cost tradeoff changed your release decision?"
+      ],
+      "source_ids": [
+        "SRC-OAI-PM-SITES",
+        "SRC-OAI-AGENT-EVALS"
+      ]
+    },
+    {
+      "capability_id": "D9",
+      "name": "Delivery and Cross-functional Execution",
+      "description": "Move from idea to a tested release and coordinate product, engineering, design, and safety tradeoffs.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D9-01",
+          "question": "Do release artifacts show a shipped increment, acceptance evidence, and cross-functional decisions?",
+          "pass_condition": "A release record links implemented scope, acceptance results, owners, and decision follow-through.",
+          "partial_condition": "An implementation plan or interface contract exists without release evidence.",
+          "non_evidence": "A roadmap, task list, or unverified claim that the product shipped."
+        }
+      ],
+      "interview_questions": [
+        "How did feedback from engineering, design, or safety change delivery?"
+      ],
+      "source_ids": [
+        "SRC-OAI-PM-AGENTS",
+        "SRC-OAI-PM-SITES"
+      ]
+    },
+    {
+      "capability_id": "D10",
+      "name": "Communication and Ownership",
+      "description": "Explain personal decisions, contributions, limitations, and impact without overstating team work.",
+      "evidence_tests": [
+        {
+          "evidence_test_id": "ET-D10-01",
+          "question": "Do project artifacts and user confirmation identify the candidate's specific contribution and defensible boundary?",
+          "pass_condition": "Artifacts identify the contribution and the user confirms ownership and limitations.",
+          "partial_condition": "The project decision is documented, but individual ownership or impact is incomplete.",
+          "non_evidence": "Team language converted to first-person ownership without confirmation."
+        }
+      ],
+      "interview_questions": [
+        "Which decisions were yours, which were shared, and what remains unproven?"
+      ],
+      "source_ids": [
+        "SRC-OAI-INTERVIEW",
+        "SRC-NACE-SKILLS"
+      ]
+    }
+  ]
+}

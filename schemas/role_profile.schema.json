@@ -1,27 +1,91 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/role-profile/1.0.0",
   "title": "RoleProfile",
   "type": "object",
+  "additionalProperties": false,
   "required": [
+    "schema_version",
     "role_id",
     "role_name",
+    "role_family",
     "version",
+    "status",
+    "validated_on",
+    "validation_scope",
+    "source_registry_version",
+    "source_ids",
+    "score_policy",
     "capabilities"
   ],
   "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
     "role_id": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "role_name": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
+    },
+    "role_family": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
     },
     "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "retired"
+      ]
+    },
+    "validated_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "validation_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_registry_version": {
       "type": "string"
     },
     "source_ids": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "score_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregate_candidate_score",
+        "fit_map_selection",
+        "jd_override"
+      ],
+      "properties": {
+        "aggregate_candidate_score": {
+          "const": false
+        },
+        "fit_map_selection": {
+          "type": "string"
+        },
+        "jd_override": {
+          "type": "string"
+        }
       }
     },
     "capabilities": {
@@ -30,44 +94,75 @@
       "maxItems": 10,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": [
           "capability_id",
           "name",
           "description",
-          "evidence_tests"
+          "evidence_tests",
+          "interview_questions",
+          "source_ids"
         ],
         "properties": {
           "capability_id": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^D([1-9]|10)$"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "description": {
-            "type": "string"
-          },
-          "weight": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 1
+            "type": "string",
+            "minLength": 1
           },
           "evidence_tests": {
             "type": "array",
+            "minItems": 1,
             "items": {
-              "type": "string"
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "evidence_test_id",
+                "question",
+                "pass_condition",
+                "partial_condition",
+                "non_evidence"
+              ],
+              "properties": {
+                "evidence_test_id": {
+                  "type": "string",
+                  "pattern": "^ET-D([1-9]|10)-\\d{2}$"
+                },
+                "question": {
+                  "type": "string"
+                },
+                "pass_condition": {
+                  "type": "string"
+                },
+                "partial_condition": {
+                  "type": "string"
+                },
+                "non_evidence": {
+                  "type": "string"
+                }
+              }
             }
           },
           "interview_questions": {
             "type": "array",
+            "minItems": 1,
             "items": {
               "type": "string"
             }
           },
           "source_ids": {
             "type": "array",
+            "minItems": 1,
             "items": {
               "type": "string"
-            }
+            },
+            "uniqueItems": true
           }
         }
       }

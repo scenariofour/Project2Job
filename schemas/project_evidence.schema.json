@@ -1,112 +1,189 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/project-evidence/1.0.0",
   "title": "ProjectEvidenceProfile",
   "type": "object",
+  "additionalProperties": false,
   "required": [
+    "schema_version",
     "project_id",
     "version",
+    "role_profile_ref",
     "sources",
     "claims"
   ],
   "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
     "project_id": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "version": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "role_profile_ref": {
+      "$ref": "#/$defs/roleProfileRef"
     },
     "source_hashes": {
-      "type": "object"
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
     },
     "sources": {
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "source_id",
-          "path",
-          "read_status"
-        ],
-        "properties": {
-          "source_id": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "read_status": {
-            "enum": [
-              "available",
-              "unreadable",
-              "blocked"
-            ]
-          }
-        }
+        "$ref": "#/$defs/source"
       }
     },
     "claims": {
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "claim_id",
-          "text",
-          "status",
-          "evidence"
-        ],
-        "properties": {
-          "claim_id": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          },
-          "primary_domain": {
-            "type": "string"
-          },
-          "status": {
-            "enum": [
-              "supported",
-              "partially_supported",
-              "inferred",
-              "not_found",
-              "conflicting",
-              "needs_confirmation"
-            ]
-          },
-          "boundary": {
-            "type": "string"
-          },
-          "evidence": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "source_id",
-                "location",
-                "evidence_type"
-              ],
-              "properties": {
-                "source_id": {
-                  "type": "string"
-                },
-                "location": {
-                  "type": "string"
-                },
-                "evidence_type": {
-                  "enum": [
-                    "direct",
-                    "supporting",
-                    "self_reported",
-                    "contradictory"
-                  ]
-                },
-                "excerpt": {
-                  "type": "string"
-                }
-              }
-            }
+        "$ref": "#/$defs/claim"
+      }
+    }
+  },
+  "$defs": {
+    "roleProfileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_id",
+        "version"
+      ],
+      "properties": {
+        "role_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "path",
+        "read_status",
+        "trust"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "read_status": {
+          "enum": [
+            "available",
+            "unreadable",
+            "blocked"
+          ]
+        },
+        "trust": {
+          "enum": [
+            "untrusted_document",
+            "user_confirmed",
+            "system_generated"
+          ]
+        }
+      }
+    },
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "location",
+        "evidence_type"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_type": {
+          "enum": [
+            "direct",
+            "supporting",
+            "self_reported",
+            "contradictory",
+            "searched_no_support"
+          ]
+        },
+        "excerpt": {
+          "type": "string"
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "role_requirement_id",
+        "evidence_test_id",
+        "text",
+        "primary_domain",
+        "status",
+        "boundary",
+        "evidence",
+        "user_confirmation"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string"
+        },
+        "role_requirement_id": {
+          "type": "string"
+        },
+        "evidence_test_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "primary_domain": {
+          "type": "string",
+          "pattern": "^D([1-9]|10)$"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "inferred",
+            "not_found",
+            "conflicting",
+            "needs_confirmation"
+          ]
+        },
+        "boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
           }
+        },
+        "user_confirmation": {
+          "enum": [
+            "not_required",
+            "unasked",
+            "confirmed",
+            "corrected",
+            "denied"
+          ]
         }
       }
     }

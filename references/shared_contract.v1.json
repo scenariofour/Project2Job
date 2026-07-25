@@ -1,0 +1,52 @@
+{
+  "contract_id": "project2job-shared-foundation",
+  "version": "1.0.0",
+  "role_profile": {
+    "path": "references/role_profiles/ai_pm_early_career.v0.1.0.json",
+    "role_id": "ai_pm_early_career",
+    "version": "0.1.0"
+  },
+  "schemas": {
+    "role_profile": {
+      "path": "schemas/role_profile.schema.json",
+      "schema_id": "https://project2job.dev/schemas/role-profile/1.0.0"
+    },
+    "project_evidence": {
+      "path": "schemas/project_evidence.schema.json",
+      "schema_id": "https://project2job.dev/schemas/project-evidence/1.0.0"
+    },
+    "application_pack": {
+      "path": "schemas/application_pack.schema.json",
+      "schema_id": "https://project2job.dev/schemas/application-pack/1.0.0"
+    },
+    "gold_case": {
+      "path": "schemas/gold_case.schema.json",
+      "schema_id": "https://project2job.dev/schemas/gold-case/1.0.0"
+    }
+  },
+  "gold_dataset": {
+    "path": "lab/evals/shared_foundation_cases.v0.1.0.jsonl",
+    "version": "0.1.0"
+  },
+  "consumers": [
+    {
+      "consumer": "skill",
+      "role_profile_version": "0.1.0",
+      "input_schema_ids": [
+        "https://project2job.dev/schemas/role-profile/1.0.0",
+        "https://project2job.dev/schemas/project-evidence/1.0.0"
+      ],
+      "output_schema_id": "https://project2job.dev/schemas/application-pack/1.0.0"
+    },
+    {
+      "consumer": "agent",
+      "role_profile_version": "0.1.0",
+      "input_schema_ids": [
+        "https://project2job.dev/schemas/role-profile/1.0.0",
+        "https://project2job.dev/schemas/project-evidence/1.0.0"
+      ],
+      "output_schema_id": "https://project2job.dev/schemas/application-pack/1.0.0"
+    }
+  ],
+  "compatibility_rule": "Skill and Agent must use the same role profile version, input schema IDs, and Application Pack output schema ID. A change to any referenced version requires regression review of the gold dataset."
+}

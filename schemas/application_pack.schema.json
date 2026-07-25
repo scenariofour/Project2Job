@@ -1,8 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/application-pack/1.0.0",
   "title": "ApplicationPack",
   "type": "object",
+  "additionalProperties": false,
   "required": [
+    "schema_version",
+    "role_profile_ref",
+    "project_version",
     "run_type",
     "intent",
     "role_fit_map",
@@ -10,9 +15,19 @@
     "resume_bullets",
     "interview_pack",
     "next_build",
+    "correction_prompt",
     "warnings"
   ],
   "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "role_profile_ref": {
+      "$ref": "#/$defs/roleProfileRef"
+    },
+    "project_version": {
+      "type": "string"
+    },
     "run_type": {
       "enum": [
         "skill_initial",
@@ -29,62 +44,37 @@
     },
     "role_fit_map": {
       "type": "array",
-      "minItems": 3
+      "minItems": 5,
+      "maxItems": 7,
+      "items": {
+        "$ref": "#/$defs/roleFitItem"
+      }
     },
     "project_highlights": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 5
+      "minItems": 0,
+      "maxItems": 5,
+      "items": {
+        "$ref": "#/$defs/groundedText"
+      }
     },
     "resume_bullets": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "maxItems": 3,
       "items": {
-        "type": "object",
-        "required": [
-          "text",
-          "source_refs",
-          "risk"
-        ],
-        "properties": {
-          "text": {
-            "type": "string"
-          },
-          "source_refs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "risk": {
-            "type": "string"
-          },
-          "missing_to_strengthen": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
+        "$ref": "#/$defs/resumeBullet"
       }
     },
     "interview_pack": {
-      "type": "object",
-      "required": [
-        "intro_30_seconds",
-        "questions"
-      ]
+      "$ref": "#/$defs/interviewPack"
     },
     "next_build": {
-      "type": "object",
-      "required": [
-        "gap",
-        "why_now",
-        "steps",
-        "acceptance_criteria",
-        "expected_evidence"
-      ]
+      "$ref": "#/$defs/nextBuild"
+    },
+    "correction_prompt": {
+      "type": "string",
+      "minLength": 1
     },
     "warnings": {
       "type": "array",
@@ -97,6 +87,260 @@
     },
     "telemetry": {
       "type": "object"
+    }
+  },
+  "$defs": {
+    "roleProfileRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_id",
+        "version"
+      ],
+      "properties": {
+        "role_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "location"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      }
+    },
+    "groundedText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "source_refs",
+        "boundary"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        },
+        "boundary": {
+          "type": "string"
+        }
+      }
+    },
+    "roleFitItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_requirement_id",
+        "capability_id",
+        "relevance",
+        "status",
+        "source_refs",
+        "boundary",
+        "interview_risk"
+      ],
+      "properties": {
+        "role_requirement_id": {
+          "type": "string"
+        },
+        "capability_id": {
+          "type": "string"
+        },
+        "relevance": {
+          "enum": [
+            "required",
+            "important",
+            "supporting"
+          ]
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "inferred",
+            "not_found",
+            "conflicting",
+            "needs_confirmation"
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        },
+        "boundary": {
+          "type": "string"
+        },
+        "interview_risk": {
+          "type": "string"
+        }
+      }
+    },
+    "resumeBullet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "source_refs",
+        "risk",
+        "missing_to_strengthen"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        },
+        "risk": {
+          "type": "string"
+        },
+        "missing_to_strengthen": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "interviewPack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intro_30_seconds",
+        "intro_source_refs",
+        "questions",
+        "unsupported_areas"
+      ],
+      "properties": {
+        "intro_30_seconds": {
+          "type": "string"
+        },
+        "intro_source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "question",
+              "answer_ingredients",
+              "source_refs",
+              "unsupported"
+            ],
+            "properties": {
+              "question": {
+                "type": "string"
+              },
+              "answer_ingredients": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "source_refs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/sourceRef"
+                }
+              },
+              "unsupported": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "unsupported_areas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "nextBuild": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap",
+        "why_now",
+        "steps",
+        "acceptance_criteria",
+        "expected_evidence",
+        "output_dependency",
+        "estimated_effort_band",
+        "interview_question_unlocked"
+      ],
+      "properties": {
+        "gap": {
+          "type": "string"
+        },
+        "why_now": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected_evidence": {
+          "type": "string"
+        },
+        "output_dependency": {
+          "type": "string"
+        },
+        "estimated_effort_band": {
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ]
+        },
+        "interview_question_unlocked": {
+          "type": "string"
+        }
+      }
     }
   }
 }

@@ -166,6 +166,30 @@ For each role requirement, it reports:
 - boundary
 - recommended use
 
+## Operational evidence tests
+
+The reviewed profile instance is
+`references/role_profiles/ai_pm_early_career.v0.1.0.json`. Each capability has
+one claim-level evidence test and one matching gold case.
+
+| Domain | Evidence test | Minimum direct evidence |
+| --- | --- | --- |
+| D1 | `ET-D1-01` | User/task observation connected to a bounded decision |
+| D2 | `ET-D2-01` | Scope choice, rejected alternative, reason, and release boundary |
+| D3 | `ET-D3-01` | Executed AI/non-AI comparison plus boundary or fallback |
+| D4 | `ET-D4-01` | State, action/observation, stop, and approval contract with test or trace |
+| D5 | `ET-D5-01` | Provenance, context, permission, and failure contracts with tests |
+| D6 | `ET-D6-01` | Versioned labels, executed results, disagreement, and failure analysis |
+| D7 | `ET-D7-01` | Named control with an enforced failure or adversarial test |
+| D8 | `ET-D8-01` | Versioned measurements connected to a decision |
+| D9 | `ET-D9-01` | Released scope, acceptance results, owners, and decision follow-through |
+| D10 | `ET-D10-01` | Contribution artifacts plus confirmed personal ownership and limits |
+
+Design or planning artifacts can support a narrower design/planning claim but
+cannot establish execution or results. JD overrides affect relevance and which
+5–7 domains appear in the Role Fit Map; they do not change evidence labels or
+create a total candidate score.
+
 ## Role profile lifecycle
 
 - version the source set
@@ -173,3 +197,5 @@ For each role requirement, it reports:
 - record changes
 - re-run gold labels when the profile changes
 - allow the target JD to override weights
+- retire rather than overwrite a released profile instance
+- distinguish structural/gold-case validation from hiring-outcome validation

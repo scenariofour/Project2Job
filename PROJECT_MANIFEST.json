@@ -35,7 +35,14 @@
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
       "schemas/role_profile.schema.json",
       "schemas/project_evidence.schema.json",
-      "schemas/application_pack.schema.json"
+      "schemas/application_pack.schema.json",
+      "schemas/gold_case.schema.json",
+      "references/source_registry.json",
+      "references/role_profiles/ai_pm_early_career.v0.1.0.json",
+      "references/shared_contract.v1.json",
+      "lab/evals/shared_foundation_cases.v0.1.0.jsonl",
+      "lab/REVIEWER_AND_ANNOTATION_GUIDE.md",
+      "lab/baseline_prompt.md"
     ],
     "skill_poc": [
       "ACTIVE_SCOPE.md",

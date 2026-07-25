@@ -1,78 +1,118 @@
 {
+  "registry_version": "0.1.0",
   "last_verified": "2026-07-25",
   "method_note": "Sources inform the versioned role standard and product practices. They do not constitute a universal hiring rubric.",
+  "review": {
+    "status": "reviewed",
+    "scope": "Primary role, hiring, Agent, Skill, evaluation, safety, career-translation, and MCP references were link-checked. Product references are discovery context only and are not evidence for the role profile.",
+    "limitations": "The two role postings describe experienced positions and are used for adjacent capability signals, not as entry-level requirements or hiring-outcome evidence."
+  },
+  "role_profile_source_ids": [
+    "SRC-OAI-PM-AGENTS",
+    "SRC-OAI-PM-SITES",
+    "SRC-OAI-INTERVIEW",
+    "SRC-OAI-AGENTS",
+    "SRC-OAI-EVAL-SKILLS",
+    "SRC-OAI-AGENT-EVALS",
+    "SRC-OAI-GUARDRAILS",
+    "SRC-NACE-SKILLS"
+  ],
   "sources": [
     {
       "id": "SRC-OAI-PM-AGENTS",
       "title": "OpenAI Product Manager, API Agents",
       "url": "https://openai.com/careers/product-manager-api-agents-san-francisco/",
-      "use": "Agent product priorities, developer needs, safety, technical innovation"
+      "use": "Agent product priorities, developer needs, safety, technical innovation",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-PM-SITES",
       "title": "OpenAI Product Manager, ChatGPT Sites",
       "url": "https://openai.com/careers/product-manager-chatgpt-sites-san-francisco/",
-      "use": "Technical product ownership and software-powered user experiences"
+      "use": "Technical product ownership and software-powered user experiences",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-INTERVIEW",
       "title": "OpenAI Interview Guide",
       "url": "https://openai.com/interview-guide/",
-      "use": "Interview focus on expertise, problem solving, and stretch"
+      "use": "Interview focus on expertise, problem solving, and stretch",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-AGENTS",
       "title": "OpenAI Agents SDK Guide",
       "url": "https://developers.openai.com/api/docs/guides/agents",
-      "use": "Agent tools, tracing, evaluation, and orchestration"
+      "use": "Agent tools, tracing, evaluation, and orchestration",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-SKILLS",
       "title": "OpenAI Build Skills",
-      "url": "https://developers.openai.com/codex/build-skills",
-      "use": "Skill packaging and progressive disclosure"
+      "url": "https://learn.chatgpt.com/docs/build-skills",
+      "use": "Skill packaging and progressive disclosure",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-EVAL-SKILLS",
       "title": "Testing Agent Skills Systematically with Evals",
       "url": "https://developers.openai.com/blog/eval-skills",
-      "use": "Skill evaluation and regression practices"
+      "use": "Skill evaluation and regression practices",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-AGENT-EVALS",
       "title": "Evaluate Agent Workflows",
       "url": "https://developers.openai.com/api/docs/guides/agent-evals",
-      "use": "Trace, dataset, grader, and eval-run practices"
+      "use": "Trace, dataset, grader, and eval-run practices",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-OAI-GUARDRAILS",
       "title": "Guardrails and Human Review",
       "url": "https://developers.openai.com/api/docs/guides/agents/guardrails-approvals",
-      "use": "Automatic checks and human approval boundaries"
+      "use": "Automatic checks and human approval boundaries",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-NACE-SKILLS",
       "title": "What Students Need to Know About the Skills-Based Hiring Process",
       "url": "https://www.naceweb.org/job-market/trends-and-predictions/what-students-need-to-know-about-the-skills-based-hiring-process",
-      "use": "Evidence of skills and role-linked examples"
+      "use": "Evidence of skills and role-linked examples",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-MIT-RESUME",
       "title": "MIT CAPD Resumes",
       "url": "https://capd.mit.edu/resources/resumes/",
-      "use": "Targeting a resume to a position and using projects as evidence"
+      "use": "Targeting a resume to a position and using projects as evidence",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-STANFORD-CAR",
       "title": "Stanford Career Education CAR Method",
       "url": "https://careered.stanford.edu/sites/g/files/sbiybj22801/files/media/file/car-method-for-developing-resume-content.docx-1.pdf",
-      "use": "Challenge, action, and result structure for career content"
+      "use": "Challenge, action, and result structure for career content",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     },
     {
       "id": "SRC-MCP",
       "title": "Model Context Protocol Architecture",
       "url": "https://modelcontextprotocol.io/docs/learn/architecture",
-      "use": "MCP tools, resources, prompts, and client-server boundaries"
+      "use": "MCP tools, resources, prompts, and client-server boundaries",
+      "status": "accessible",
+      "verified_on": "2026-07-25"
     }
   ],
   "product_references": [
