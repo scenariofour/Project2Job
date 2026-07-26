@@ -1,0 +1,297 @@
+{
+  "view": "evidence_inspection",
+  "project": {
+    "name": "Sample AI Reliability Lab",
+    "version": "1.1"
+  },
+  "jd": {
+    "label": "Applied AI Product Manager"
+  },
+  "state": {
+    "project_version": "project-v1",
+    "jd_version": "jd-v1",
+    "artifacts": {
+      "README.md": "a",
+      "decision_log.md": "b",
+      "src/workflow.py": "c",
+      "eval_plan.md": "d"
+    },
+    "evidence": {
+      "evidence_problem": {
+        "source": "README.md",
+        "location": "Problem statement",
+        "summary": "A concrete reliability problem and affected workflow are documented."
+      },
+      "evidence_product": {
+        "source": "decision_log.md",
+        "location": "Decision 2",
+        "summary": "The project records a bounded reliability-first product decision."
+      },
+      "evidence_technical": {
+        "source": "src/workflow.py",
+        "location": "workflow controls",
+        "summary": "The implementation contains the described workflow and fallback."
+      },
+      "evidence_evaluation": {
+        "source": "eval_plan.md",
+        "location": "Acceptance criteria",
+        "summary": "Evaluation is planned, but no executed result is present yet."
+      },
+      "evidence_delivery": {
+        "source": "decision_log.md",
+        "location": "Learning notes",
+        "summary": "Delivery decisions and one learning loop are recorded."
+      }
+    },
+    "claims": {
+      "claim_problem": {
+        "status": "supported",
+        "attribution_scope": "directly_owned"
+      },
+      "claim_product": {
+        "status": "supported",
+        "attribution_scope": "directly_owned"
+      },
+      "claim_technical": {
+        "status": "supported",
+        "attribution_scope": "ai_assisted"
+      },
+      "claim_evaluation": {
+        "status": "partially_supported",
+        "attribution_scope": "directly_owned"
+      },
+      "claim_delivery": {
+        "status": "supported",
+        "attribution_scope": "directly_owned"
+      }
+    },
+    "outputs": {
+      "score_problem": {
+        "kind": "score",
+        "label": "Problem & User Evidence",
+        "value": 3,
+        "explanation": "The problem and workflow are clear; direct user evidence is limited.",
+        "depends_on": [
+          "claim_problem"
+        ]
+      },
+      "score_product": {
+        "kind": "score",
+        "label": "Product Judgment",
+        "value": 4,
+        "explanation": "The project records a bounded reliability-first tradeoff.",
+        "depends_on": [
+          "claim_product"
+        ]
+      },
+      "score_technical": {
+        "kind": "score",
+        "label": "Technical System",
+        "value": 4,
+        "explanation": "The workflow, fallback, and control boundaries are inspectable.",
+        "depends_on": [
+          "claim_technical"
+        ]
+      },
+      "score_evaluation": {
+        "kind": "score",
+        "label": "Evaluation & Reliability",
+        "value": 3,
+        "explanation": "Evaluation criteria exist, but executed comparative evidence is thin.",
+        "depends_on": [
+          "claim_evaluation"
+        ]
+      },
+      "score_delivery": {
+        "kind": "score",
+        "label": "Delivery & Learning Loop",
+        "value": 3,
+        "explanation": "Delivery and learning are visible; measured adoption is not.",
+        "depends_on": [
+          "claim_delivery"
+        ]
+      },
+      "match_api": {
+        "kind": "jd_match",
+        "label": "AI workflow reliability",
+        "match": "EXACT MATCH",
+        "evidence": "Implemented workflow controls and fallback.",
+        "missing": "None for this competency.",
+        "depends_on": [
+          "claim_technical"
+        ]
+      },
+      "match_eval": {
+        "kind": "jd_match",
+        "label": "Evaluation design",
+        "match": "TRANSFERABLE",
+        "evidence": "Inspectible evaluation plan and criteria.",
+        "missing": "Executed comparative results.",
+        "depends_on": [
+          "claim_evaluation"
+        ]
+      },
+      "match_commercial": {
+        "kind": "jd_match",
+        "label": "Commercial marketplace impact",
+        "match": "GAP",
+        "evidence": "No direct commercial outcome evidence.",
+        "missing": "Seller workflow or revenue outcome.",
+        "depends_on": [
+          "claim_problem"
+        ]
+      },
+      "story_reliability": {
+        "kind": "story",
+        "label": "Designing a bounded AI workflow",
+        "content": "Shows technical product judgment and reliability tradeoffs.",
+        "depends_on": [
+          "claim_product",
+          "claim_technical"
+        ]
+      },
+      "story_failure": {
+        "kind": "story",
+        "label": "Turning a failure into a control",
+        "content": "Shows diagnosis, prioritization, and learning.",
+        "depends_on": [
+          "claim_delivery"
+        ]
+      },
+      "route": {
+        "kind": "route",
+        "label": "Recommended Route",
+        "route": "$p2j-upgrade",
+        "content": "Review one bounded evaluation build because executed evidence is the largest role-relevant gap.",
+        "depends_on": [
+          "claim_evaluation"
+        ]
+      }
+    },
+    "dependencies": {
+      "README.md": [
+        "evidence_problem"
+      ],
+      "decision_log.md": [
+        "evidence_product",
+        "evidence_delivery"
+      ],
+      "src/workflow.py": [
+        "evidence_technical"
+      ],
+      "eval_plan.md": [
+        "evidence_evaluation"
+      ],
+      "evidence_problem": [
+        "claim_problem"
+      ],
+      "evidence_product": [
+        "claim_product"
+      ],
+      "evidence_technical": [
+        "claim_technical"
+      ],
+      "evidence_evaluation": [
+        "claim_evaluation"
+      ],
+      "evidence_delivery": [
+        "claim_delivery"
+      ],
+      "claim_problem": [
+        "score_problem",
+        "match_commercial"
+      ],
+      "claim_product": [
+        "score_product",
+        "story_reliability"
+      ],
+      "claim_technical": [
+        "score_technical",
+        "match_api",
+        "story_reliability"
+      ],
+      "claim_evaluation": [
+        "score_evaluation",
+        "match_eval",
+        "route"
+      ],
+      "claim_delivery": [
+        "score_delivery",
+        "story_failure"
+      ],
+      "jd": [
+        "match_api",
+        "match_eval",
+        "match_commercial",
+        "route"
+      ]
+    },
+    "confirmed_facts": {},
+    "unresolved_questions": []
+  },
+  "trace": {
+    "state_summary": {
+      "project_version": "project-v1",
+      "jd_version": "jd-v1",
+      "evidence_count": 5,
+      "claim_count": 5,
+      "output_count": 11
+    },
+    "detected_change": "correction",
+    "steps": [],
+    "affected_outputs": [],
+    "preserved_outputs": [
+      "match_api",
+      "match_commercial",
+      "match_eval",
+      "route",
+      "score_delivery",
+      "score_evaluation",
+      "score_problem",
+      "score_product",
+      "score_technical",
+      "story_failure",
+      "story_reliability"
+    ],
+    "stop_reason": "correction_approval_required",
+    "budgets": {
+      "max_turns": 4,
+      "max_capability_calls": 3,
+      "max_repairs": 1
+    },
+    "usage": {
+      "turns": 0,
+      "capability_calls": 0,
+      "repairs": 0,
+      "latency_ms": 0.086
+    }
+  },
+  "inspection": {
+    "claim": "Designed and operated a reliable AI workflow.",
+    "sources": [
+      {
+        "label": "src/workflow.py \u2014 workflow controls",
+        "summary": "Shows the implemented workflow and fallback boundary."
+      },
+      {
+        "label": "decision_log.md \u2014 Decision 2",
+        "summary": "Explains why reliability was prioritized."
+      }
+    ],
+    "attribution_scope": "AI-assisted",
+    "affected_outputs": [
+      "Technical System",
+      "AI workflow reliability"
+    ],
+    "correction": {
+      "prompt": "Describe what you directly owned and what AI assisted with.",
+      "preview": [
+        {
+          "before": "Designed and operated a reliable AI workflow.",
+          "after": "Designed the workflow boundary and used AI assistance during implementation.",
+          "why": "The wording should preserve the confirmed attribution boundary."
+        }
+      ]
+    }
+  }
+}
