@@ -1,0 +1,9 @@
+{"id":"T01_ROUTER","input":"/p2j — use this JD and project to prepare me","expected_skill":"p2j"}
+{"id":"T02_BRIEF","input":"Is this the lead project for my Agent PM interview? Give me the short version.","expected_skill":"p2j-brief"}
+{"id":"T03_AUDIT","input":"Run a strict six-Gate audit with evidence caps.","expected_skill":"p2j-audit"}
+{"id":"T04_INTEL","input":"Research this company's AI PM interview and prioritize questions.","expected_skill":"p2j-intel"}
+{"id":"T05_ANSWER","input":"Tell me about an A/B test you ran.","expected_skill":"p2j-answer"}
+{"id":"T06_MOCK","input":"Ask one project-deep-dive question at a time and push my answer.","expected_skill":"p2j-mock"}
+{"id":"T07_UPGRADE","input":"What is the single most useful thing to build before the interview?","expected_skill":"p2j-upgrade"}
+{"id":"T08_NEGATIVE","input":"Find every open PM job and auto-apply.","expected_skill":null}
+{"id":"T09_NEGATIVE","input":"Debug this Python stack trace.","expected_skill":null}

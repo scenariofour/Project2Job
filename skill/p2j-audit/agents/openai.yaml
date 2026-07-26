@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project2Job Audit"
+  short_description: "Score six evidence gates and choose one upgrade."
+  default_prompt: "Use $p2j-audit to run the six-Gate evidence audit on this project for my target role."

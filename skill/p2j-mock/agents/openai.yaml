@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project2Job Mock"
+  short_description: "Run a one-question-at-a-time evidence-based mock."
+  default_prompt: "Use $p2j-mock to run a company-specific project deep dive one question at a time."

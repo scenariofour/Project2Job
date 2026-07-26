@@ -15,12 +15,16 @@ class ContractTests(unittest.TestCase):
         manifest = json.loads((ROOT / "PROJECT_MANIFEST.json").read_text())
         self.assertLessEqual(len(manifest["active_documents"]), 15)
 
-    def test_sample_output_has_sources(self) -> None:
-        output = json.loads(
-            (ROOT / "skill/career-desk/examples/sample_output.json").read_text()
+    def test_installed_pack_contract_requires_sources(self) -> None:
+        schema = json.loads(
+            (ROOT / "schemas/application_pack.schema.json").read_text()
         )
-        for bullet in output["resume_bullets"]:
-            self.assertTrue(bullet["source_refs"])
+        bullet = schema["$defs"]["resumeBullet"]
+        grounded_text = schema["$defs"]["groundedText"]
+        self.assertIn("source_refs", bullet["required"])
+        self.assertEqual(bullet["properties"]["source_refs"]["minItems"], 1)
+        self.assertIn("source_refs", grounded_text["required"])
+        self.assertEqual(grounded_text["properties"]["source_refs"]["minItems"], 1)
 
     def test_changed_paths(self) -> None:
         result = changed_paths(

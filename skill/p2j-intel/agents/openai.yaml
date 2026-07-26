@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project2Job Intel"
+  short_description: "Research one company and prioritize interview questions."
+  default_prompt: "Use $p2j-intel to research this target company and role with bounded public-web evidence."

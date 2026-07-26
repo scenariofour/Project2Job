@@ -36,7 +36,13 @@ REQUIRED = [
     "lab/evals/shared_foundation_cases.v0.1.0.jsonl",
     "lab/REVIEWER_AND_ANNOTATION_GUIDE.md",
     "lab/baseline_prompt.md",
-    "skill/career-desk/SKILL.md",
+    "skill/p2j/SKILL.md",
+    "skill/p2j-brief/SKILL.md",
+    "skill/p2j-audit/SKILL.md",
+    "skill/p2j-intel/SKILL.md",
+    "skill/p2j-answer/SKILL.md",
+    "skill/p2j-mock/SKILL.md",
+    "skill/p2j-upgrade/SKILL.md",
     "lab/evals/skill_cases.jsonl",
     "lab/evals/agent_cases.jsonl",
     "docs/build_journal/README.md",
@@ -49,7 +55,7 @@ REQUIRED = [
 PUBLIC_FIXTURE_ROOTS = [
     "examples",
     "lab/fixtures",
-    "skill/career-desk/examples",
+    "skill/p2j/examples",
 ]
 
 DAY_STATUSES = ("PLANNED", "IMPLEMENTED", "VALIDATED")

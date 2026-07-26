@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project2Job Next Build"
+  short_description: "Choose one project action with cross-asset leverage."
+  default_prompt: "Use $p2j-upgrade to choose the single highest-leverage build action for this project."
