@@ -1,0 +1,51 @@
+{
+  "final_state": {
+    "active_claim": "The PDF contains evaluation evidence.",
+    "claim_id": "claim-tool-failure",
+    "original_claim": "The PDF contains evaluation evidence.",
+    "status": "inferred",
+    "stop_reason": "tool_failure",
+    "tool_calls_used": 1,
+    "turns_used": 1
+  },
+  "steps": [
+    {
+      "action": {
+        "arguments": {
+          "limit": 1,
+          "query": "The PDF contains evaluation evidence.",
+          "source_ids": [
+            "SRC-PDF"
+          ]
+        },
+        "kind": "search",
+        "tool_name": "search_sources",
+        "turn": 1
+      },
+      "observation": {
+        "data": {},
+        "error": "corrupt PDF could not be read",
+        "ok": false,
+        "tool_name": "search_sources",
+        "turn": 1
+      },
+      "state": {
+        "active_claim": "The PDF contains evaluation evidence.",
+        "claim_id": "claim-tool-failure",
+        "remaining_candidates": 0,
+        "sources_exhausted": false,
+        "status": "inferred",
+        "tool_calls_used": 0,
+        "turns_used": 0
+      },
+      "state_update": {
+        "active_claim": "The PDF contains evaluation evidence.",
+        "decision": "stop",
+        "note": "Unrecoverable tool failure is visible; prior state is preserved.",
+        "status": "inferred",
+        "stop_reason": "tool_failure",
+        "turn": 1
+      }
+    }
+  ]
+}

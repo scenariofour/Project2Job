@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol
 
-from career_desk.contracts import EvidenceResult
+from .contracts import EvidenceResult
 
 
 @dataclass(frozen=True)

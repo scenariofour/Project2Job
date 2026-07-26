@@ -14,7 +14,9 @@ REQUIRED = [
     "ACTIVE_SCOPE.md",
     "PROJECT_MANIFEST.json",
     "PROJECT_STATUS.md",
+    "GLOSSARY.md",
     "AI_PM_PRODUCT_AND_INTERVIEW_GATE.md",
+    "docs/DOCUMENT_GOVERNANCE.md",
     "docs/00_PRODUCT_NORTH_STAR.md",
     "docs/01_MVP_PRD.md",
     "docs/02_ROLE_BACKWARDS_EVIDENCE_FRAMEWORK.md",
@@ -44,6 +46,10 @@ PUBLIC_FIXTURE_ROOTS = [
     "lab/fixtures",
     "skill/career-desk/examples",
 ]
+
+DAY_STATUSES = ("PLANNED", "IMPLEMENTED", "VALIDATED")
+COMPLETED_STATUSES = ("IMPLEMENTED", "VALIDATED")
+STATUS_LINE = re.compile(r"^Status: (\S+)$", re.MULTILINE)
 
 PRIVATE_PATTERNS = {
     "email address": re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"),
@@ -89,6 +95,45 @@ def load_jsonl(path: Path) -> list[dict]:
         for line in path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
+
+
+def validate_journal_statuses(root: Path = ROOT) -> int:
+    """Check Day statuses form a completed prefix and return the highest one.
+
+    Completed Days (IMPLEMENTED or VALIDATED) must come first and without gaps,
+    every PLANNED Day must follow them, and PROJECT_STATUS.md must name the same
+    highest completed Day. Returns -1 when no Day is complete. Adding a Day
+    therefore needs no change here.
+    """
+    day_paths = []
+    for path in (root / "docs/build_journal").glob("DAY_*.md"):
+        number = path.stem.removeprefix("DAY_")
+        if not number.isdigit():
+            raise SystemExit(f"Journal file is not DAY_<number>.md: {path.name}")
+        day_paths.append((int(number), path))
+
+    highest_completed = -1
+    for day, path in sorted(day_paths):
+        found = STATUS_LINE.findall(path.read_text(encoding="utf-8"))
+        if len(found) != 1 or found[0] not in DAY_STATUSES:
+            raise SystemExit(
+                f"Day {day} must have exactly one status line from {DAY_STATUSES}"
+            )
+        status = found[0]
+        if status not in COMPLETED_STATUSES:
+            continue
+        if day != highest_completed + 1:
+            raise SystemExit(
+                f"Day {day} is {status} while an earlier Day is missing or PLANNED"
+            )
+        highest_completed = day
+
+    reported = highest_completed if highest_completed >= 0 else "none"
+    expected = f"Highest completed Day: {reported}"
+    project_status = (root / "PROJECT_STATUS.md").read_text(encoding="utf-8")
+    if not re.search(rf"^{expected}$", project_status, re.MULTILINE):
+        raise SystemExit(f"PROJECT_STATUS.md must state '{expected}' on its own line")
+    return highest_completed
 
 
 def validate_shared_foundation() -> dict[str, int]:
@@ -278,13 +323,7 @@ def main() -> None:
     for path in ROOT.rglob("*.jsonl"):
         jsonl_cases += validate_jsonl(path)
 
-    day_0 = (ROOT / "docs/build_journal/DAY_0.md").read_text(encoding="utf-8")
-    if "Status: IMPLEMENTED" not in day_0:
-        raise SystemExit("Day 0 must be IMPLEMENTED before foundation validation passes")
-    for day in range(1, 8):
-        path = ROOT / f"docs/build_journal/DAY_{day}.md"
-        if "Status: PLANNED" not in path.read_text(encoding="utf-8"):
-            raise SystemExit(f"Day {day} must remain PLANNED on Day 0")
+    highest_completed_day = validate_journal_statuses()
 
     public_fixture_files = validate_public_fixtures()
     shared_foundation = validate_shared_foundation()
@@ -295,7 +334,8 @@ def main() -> None:
         "json_files": json_count,
         "jsonl_cases": jsonl_cases,
         "public_fixture_files": public_fixture_files,
-        "journal_days": 8,
+        "journal_days": len(list((ROOT / "docs/build_journal").glob("DAY_*.md"))),
+        "highest_completed_day": highest_completed_day,
         "license": "MIT",
         "shared_foundation": shared_foundation,
     }, indent=2))

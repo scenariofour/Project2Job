@@ -1,0 +1,100 @@
+{
+  "final_state": {
+    "active_claim": "The project evaluates retrieval quality.",
+    "claim_id": "claim-supported",
+    "original_claim": "The project evaluates retrieval quality.",
+    "status": "supported",
+    "stop_reason": "evidence_sufficient",
+    "tool_calls_used": 2,
+    "turns_used": 2
+  },
+  "steps": [
+    {
+      "action": {
+        "arguments": {
+          "limit": 1,
+          "query": "The project evaluates retrieval quality.",
+          "source_ids": [
+            "SRC-1"
+          ]
+        },
+        "kind": "search",
+        "tool_name": "search_sources",
+        "turn": 1
+      },
+      "observation": {
+        "data": {
+          "exhausted": true,
+          "matches": [
+            {
+              "location": "eval.md#results",
+              "source_id": "SRC-1"
+            }
+          ]
+        },
+        "error": null,
+        "ok": true,
+        "tool_name": "search_sources",
+        "turn": 1
+      },
+      "state": {
+        "active_claim": "The project evaluates retrieval quality.",
+        "claim_id": "claim-supported",
+        "remaining_candidates": 0,
+        "sources_exhausted": false,
+        "status": "inferred",
+        "tool_calls_used": 0,
+        "turns_used": 0
+      },
+      "state_update": {
+        "active_claim": "The project evaluates retrieval quality.",
+        "decision": "continue",
+        "note": "Candidate evidence found; read the permitted source.",
+        "status": "inferred",
+        "stop_reason": null,
+        "turn": 1
+      }
+    },
+    {
+      "action": {
+        "arguments": {
+          "location": "eval.md#results",
+          "max_chars": 1000,
+          "source_id": "SRC-1"
+        },
+        "kind": "read",
+        "tool_name": "read_source",
+        "turn": 2
+      },
+      "observation": {
+        "data": {
+          "assessment": "direct",
+          "content_chars": 54,
+          "location": "eval.md#results",
+          "source_id": "SRC-1"
+        },
+        "error": null,
+        "ok": true,
+        "tool_name": "read_source",
+        "turn": 2
+      },
+      "state": {
+        "active_claim": "The project evaluates retrieval quality.",
+        "claim_id": "claim-supported",
+        "remaining_candidates": 1,
+        "sources_exhausted": true,
+        "status": "inferred",
+        "tool_calls_used": 1,
+        "turns_used": 1
+      },
+      "state_update": {
+        "active_claim": "The project evaluates retrieval quality.",
+        "decision": "stop",
+        "note": "Direct evidence is sufficient for the bounded claim.",
+        "status": "supported",
+        "stop_reason": "evidence_sufficient",
+        "turn": 2
+      }
+    }
+  ]
+}

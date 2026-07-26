@@ -1,8 +1,10 @@
 # Project2Job
 
-Project2Job is the repository for Career Desk, a role-backwards product concept
-for people preparing for early-career AI Product Manager, Agent Product Manager,
-or Applied AI Product roles.
+Project2Job is a role-backwards product for people preparing for early-career AI
+Product Manager, Agent Product Manager, or Applied AI Product roles. Project2Job
+is the canonical product and repository name; `Career Desk` is a legacy internal
+codename that survives only in historical records and existing paths such as
+`skill/career-desk/`. Vocabulary is defined in `GLOSSARY.md`.
 
 The intended workflow turns one real AI project into grounded career assets:
 
@@ -16,18 +18,18 @@ Target role or JD
 → one next project action
 ```
 
-The product has been designed but its user value and runtime behavior have not
-yet been validated.
+The product has been designed and a bounded evidence loop is implemented. Its
+user value has not been validated.
 
 ## Skill and Agent responsibilities
 
-The planned open-source Career Desk Skill is the low-friction, session-scoped
+The planned open-source Project2Job Skill is the low-friction, session-scoped
 entry point. Given one project and one role or JD, it is responsible for a Role
 Fit Map, Project Highlights, evidence-grounded resume bullets, an Interview Prep
 Pack, One Next Build, and a correction prompt. It runs in the user's Agent host
 and does not maintain product state.
 
-The planned Career Evidence Agent is the stateful product. It is responsible for
+The planned Project2Job Evidence Agent is the stateful product. It is responsible for
 maintaining user-confirmed evidence, applying corrections, detecting one project
 update, invalidating dependent claims, and regenerating affected assets. It does
 not have permission to fabricate claims or take external action.
@@ -50,27 +52,24 @@ MCP integrations, multi-agent, and Deep Agents.
 
 ## Current implementation status
 
-Day 0 establishes the repository foundation only.
+`PROJECT_STATUS.md` is the canonical implementation truth. In summary:
 
-What exists:
+- WO-00 Shared Foundation is complete: role profile, source registry, shared
+  contract, schemas, and ten labeled gold cases.
+- The Day 1 bounded Agent Loop is implemented and tested: a deterministic
+  Evidence Investigator with explicit state, action, observation, and
+  state-update records, Continue / Adjust / Ask / Stop decisions, enforced
+  budgets, a permitted-source boundary, and committed deterministic traces.
+- Day 1 uses deterministic scripted read-only tools. It is not a production
+  model-powered Agent runtime.
+- The full WO-02 stateful project-update cycle is not complete.
 
-- the v6 product definition and 14 active product documents
-- Work Orders and manifest-scoped context sets
-- schemas, public fixtures, starter eval cases, and a baseline prompt
-- Skill source materials and deterministic implementation interfaces
-- repository validation, contract tests, and inventory scripts
-- the public Day 0–Day 7 build journal
+Unproven: the Skill runtime in a real Agent host, the Web UI, production RAG,
+production model behavior, user value, product quality, latency, cost, and any
+Agent advantage over a strong one-shot prompt or a fixed workflow.
 
-What remains planned:
-
-- live Skill behavior and host validation
-- Evidence Investigator and stateful update behavior
-- thin Web UI and RAG comparison
-- evaluation harness execution, model decisions, and target-user pilot
-- measured quality, latency, token, cost, model, adoption, and user-value results
-
-Files under `src/` are interfaces or stubs imported from v6; their presence does
-not mean the runtime features are implemented.
+Other files under `src/` are interfaces or stubs imported from v6; their
+presence does not mean those runtime features are implemented.
 
 ## Safety and source handling
 
@@ -117,8 +116,7 @@ Read:
 
 ## Validation
 
-Python 3.11 or later is required. No third-party dependency is needed for the
-Day 0 checks.
+Python 3.11 or later is required. No third-party dependency is needed.
 
 ```bash
 make validate
@@ -127,6 +125,10 @@ make inventory
 git diff --check
 ```
 
-These checks validate repository structure, JSON/JSONL parsing, starter contract
-tests, and deterministic sample-project inventory. They do not validate product
-quality or user value.
+These checks validate repository structure, JSON/JSONL parsing, Day journal
+status ordering, documentation consistency, the Day 1 Agent loop, and
+deterministic sample-project inventory. They do not validate product quality or
+user value.
+
+`docs/DOCUMENT_GOVERNANCE.md` records which file owns which question and what a
+contract change must update.

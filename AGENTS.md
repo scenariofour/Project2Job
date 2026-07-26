@@ -2,7 +2,7 @@
 
 ## Mission
 
-Build Career Desk as two coherent products:
+Build Project2Job as two coherent products:
 
 1. a low-friction Project-to-Application Skill
 2. a stateful Career Evidence Agent
@@ -24,7 +24,7 @@ Do not read every document by default.
 
 ## Current product promise
 
-Given one AI project and a target AI PM role or JD, Career Desk produces:
+Given one AI project and a target AI PM role or JD, Project2Job produces:
 
 - Role Fit Map
 - Project Highlights

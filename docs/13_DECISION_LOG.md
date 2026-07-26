@@ -117,3 +117,47 @@ Reason:
 The package README identifies it as generated but does not provide a reproducible
 rebuild command. Source files remain authoritative until a release process is
 documented and verified.
+
+## D-012: Keep the bounded Agent loop provisional
+
+Decision:
+
+Implement one deterministic bounded Evidence Investigator behind the same
+comparison interface as the strong one-shot prompt and fixed
+extract-search-validate workflow. Do not select the Agent loop as the final
+architecture before comparative evidence exists.
+
+Reason:
+
+Adaptive control may help choose when to narrow, ask, continue, or stop as
+evidence changes. The current Day 1 branches are also expressible as a fixed
+workflow. Retain the loop only if labeled comparison shows better evidence
+boundaries or recovery at acceptable safety, cost, latency, and trace clarity;
+replace it with the fixed workflow if those benefits do not materialize.
+
+## D-013: One vocabulary, one governance note, testable consistency
+
+Decision:
+
+- `Project2Job` is the canonical product and repository name. `Career Desk` is a
+  legacy internal codename kept only in clearly historical records and already
+  published paths such as `skill/career-desk/`.
+- Change history stays in Git, pull requests, Work Orders, and
+  `docs/13_DECISION_LOG.md`. Do not add `baseline/`, `increments/`, or `review/`
+  folders that duplicate them.
+- Add exactly two supporting files: `GLOSSARY.md` for vocabulary and
+  `docs/DOCUMENT_GOVERNANCE.md` for which document owns which question. Neither
+  becomes an active product document.
+- Documentation consistency is enforced by tests
+  (`tests/test_document_consistency.py`), not by review habit, and the Day
+  journal gate is a general prefix rule rather than a per-Day constant.
+- Diagrams are added only when a process, state machine, or sequence is
+  materially clearer than prose. Traces and tests remain the stronger evidence.
+
+Reason:
+
+The drift found before this change was two names for one product, a Day 0-only
+status after Day 1 shipped, output counts that contradicted the schema, and a
+validator that needed editing for every new Day. Naming and ownership rules
+prevent the first three; a general rule and a test suite prevent them from
+returning silently.
