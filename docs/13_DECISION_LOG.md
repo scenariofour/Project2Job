@@ -161,3 +161,58 @@ status after Day 1 shipped, output counts that contradicted the schema, and a
 validator that needed editing for every new Day. Naming and ownership rules
 prevent the first three; a general rule and a test suite prevent them from
 returning silently.
+
+## D-014: JD-first flow with one deeply analyzed project
+
+Decision:
+
+- The run starts from one target JD, not from a project. An `Intake Result` is
+  returned before any project evidence exists, so one pasted JD alone produces
+  value.
+- An optional resume is read to extract several project candidates **for routing
+  only**. Their summaries stay `self_reported` until that project's own sources
+  are read. Exactly one project may enter deep evidence analysis.
+- Routing uses five bands — role relevance, likely evidence availability,
+  ownership clarity, outcome strength, interview depth — so keyword overlap
+  cannot decide the recommendation on its own. When nothing clearly fits, the
+  product reports `no_clear_choice` and asks the user to choose.
+- Company and interview material is a second, separate evidence system with its
+  own source-status scale (`official`, `repeatedly_reported`, `single_report`,
+  `inferred_from_jd`, `unknown`) plus source date and freshness. It never becomes
+  project evidence and never reaches a resume bullet. There is no
+  personality-based culture fit layer.
+- The Application Pack becomes the Application and Interview Pack at schema
+  2.0.0, adding the company/track brief, loop hypothesis, 5–8 prioritized
+  questions, three grounded answer drafts, questions to ask the interviewer, and
+  one mock-interview round specification.
+- The MVP works from pasted text and uploaded files. No job discovery, no
+  platform login, no scraping, no auto-apply, no application tracking.
+
+Reason:
+
+The previous promise assumed the user had already chosen the right project. In
+the real workflow the JD arrives first and choosing the wrong project wastes the
+whole analysis. Keeping research and project evidence in separate systems is what
+stops company preparation from quietly becoming a fabricated resume claim.
+
+The 2.0.0 pack bump was reviewed against gold dataset 0.1.0. Its cases assert
+role-profile and evidence-status behavior and reference no pack schema ID, so no
+gold case changed.
+
+## D-015: Two schemas, not eight
+
+Decision:
+
+Express the eight requested contracts as three new schema files plus one revised
+one: `jd_intake`, `interview_context` (shared source-status, signal, and question
+definitions), `intake_result` (which embeds candidates, recommendation, and
+checklist as `$defs`), and `application_pack` 2.0.0 (which embeds answer draft,
+loop stage, and mock round as `$defs`).
+
+Reason:
+
+Resume candidate, project recommendation, and evidence checklist have exactly one
+container each; separate files would add indirection with no reuse. Interview
+signals and questions genuinely appear in two containers, so they get their own
+file and are referenced by URI. `make validate` now resolves every `$ref`, which
+makes cross-file references safe to rely on.

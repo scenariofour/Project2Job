@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/interview-context/1.0.0",
+  "title": "InterviewContext",
+  "description": "Company, track, and reported interview context for one target JD. Research about a company is never project evidence: every item carries a source status and is kept separate from verified project facts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "company",
+    "signals",
+    "questions",
+    "unknowns"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "company": {
+      "type": "string",
+      "minLength": 1
+    },
+    "track": {
+      "type": "string",
+      "description": "Team, product area, or track. Omit when unknown; do not guess."
+    },
+    "level": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "signals": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/interviewSignal"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/interviewQuestion"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "description": "Pairs of signal or question IDs that disagree, with the unresolved difference stated.",
+      "items": {
+        "$ref": "#/$defs/reportConflict"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "description": "What could not be established. An empty company track must appear here rather than be inferred.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "sourceStatus": {
+      "description": "How well established an interview claim is. There is no value meaning 'certain'.",
+      "enum": [
+        "official",
+        "repeatedly_reported",
+        "single_report",
+        "inferred_from_jd",
+        "unknown"
+      ]
+    },
+    "freshness": {
+      "enum": [
+        "fresh",
+        "aging",
+        "stale",
+        "unknown"
+      ]
+    },
+    "presentedAs": {
+      "description": "Strength of language the output may use. No value permits presenting a question as guaranteed.",
+      "enum": [
+        "likely",
+        "possible",
+        "reported_once",
+        "speculative"
+      ]
+    },
+    "interviewLayer": {
+      "description": "Which of the three explicit layers this item belongs to. Personality-based culture fit is not a layer.",
+      "enum": [
+        "company_interview_signal",
+        "track_team_level_requirement",
+        "reported_interview_evidence"
+      ]
+    },
+    "researchSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "reference"
+      ],
+      "properties": {
+        "origin": {
+          "description": "Where the material came from. The MVP accepts pasted text and uploaded files only; no automated retrieval.",
+          "enum": [
+            "official_company_material",
+            "job_description",
+            "user_pasted_report",
+            "user_uploaded_file",
+            "user_own_experience"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact locator inside the supplied material."
+        },
+        "source_date": {
+          "type": "string",
+          "description": "ISO-8601 date the material was published or the experience occurred. Absent means unknown, which forces freshness 'unknown'."
+        },
+        "interview_stage": {
+          "enum": [
+            "recruiter_screen",
+            "hiring_manager",
+            "technical_or_case",
+            "cross_functional",
+            "final_or_bar_raiser",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "interviewSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal_id",
+        "layer",
+        "statement",
+        "source_status",
+        "sources",
+        "freshness"
+      ],
+      "properties": {
+        "signal_id": {
+          "type": "string"
+        },
+        "layer": {
+          "$ref": "#/$defs/interviewLayer"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_status": {
+          "$ref": "#/$defs/sourceStatus"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/researchSource"
+          }
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "company": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "description": "Anything above inferred_from_jd must cite at least one supplied source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "enum": [
+                  "official",
+                  "repeatedly_reported",
+                  "single_report"
+                ]
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "repeatedly_reported requires more than one independent source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "repeatedly_reported"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "minItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "interviewQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question_id",
+        "text",
+        "layer",
+        "source_status",
+        "presented_as",
+        "priority",
+        "sources",
+        "freshness"
+      ],
+      "properties": {
+        "question_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layer": {
+          "$ref": "#/$defs/interviewLayer"
+        },
+        "source_status": {
+          "$ref": "#/$defs/sourceStatus"
+        },
+        "presented_as": {
+          "$ref": "#/$defs/presentedAs"
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/researchSource"
+          }
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "why_it_is_likely": {
+          "type": "string",
+          "description": "Which role requirement or signal makes this question plausible."
+        }
+      },
+      "allOf": [
+        {
+          "description": "One reported experience may never be presented more strongly than 'reported_once'.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "single_report"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "presented_as": {
+                "const": "reported_once"
+              }
+            }
+          }
+        },
+        {
+          "description": "A JD inference or an unknown may never be presented as likely.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "enum": [
+                  "inferred_from_jd",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "presented_as": {
+                "enum": [
+                  "possible",
+                  "speculative"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "description": "A stale report may not be presented as likely.",
+          "if": {
+            "properties": {
+              "freshness": {
+                "const": "stale"
+              }
+            },
+            "required": [
+              "freshness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "presented_as": {
+                "enum": [
+                  "possible",
+                  "reported_once",
+                  "speculative"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "reportConflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_ids",
+        "disagreement",
+        "resolution"
+      ],
+      "properties": {
+        "item_ids": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        },
+        "disagreement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolution": {
+          "description": "Conflicting reports are surfaced, not silently averaged or dropped.",
+          "enum": [
+            "unresolved_both_shown",
+            "newer_preferred_both_shown",
+            "official_preferred_both_shown"
+          ]
+        }
+      }
+    }
+  }
+}

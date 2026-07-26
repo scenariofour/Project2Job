@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://project2job.dev/schemas/application-pack/1.0.0",
-  "title": "ApplicationPack",
+  "$id": "https://project2job.dev/schemas/application-pack/2.0.0",
+  "title": "ApplicationAndInterviewPack",
+  "description": "The company-specific output produced after one selected project's evidence has been verified. Project facts here are verified evidence; company and interview material is research carried with its own source status and is never promoted to project evidence.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,6 +14,7 @@
     "role_fit_map",
     "project_highlights",
     "resume_bullets",
+    "interview_context",
     "interview_pack",
     "next_build",
     "correction_prompt",
@@ -20,7 +22,10 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0.0"
+      "const": "2.0.0"
+    },
+    "interview_context": {
+      "$ref": "https://project2job.dev/schemas/interview-context/1.0.0"
     },
     "role_profile_ref": {
       "$ref": "#/$defs/roleProfileRef"
@@ -233,7 +238,12 @@
       "required": [
         "intro_30_seconds",
         "intro_source_refs",
-        "questions",
+        "company_track_brief",
+        "interview_loop_hypothesis",
+        "priority_questions",
+        "answer_drafts",
+        "questions_to_ask_interviewer",
+        "mock_interview_round",
         "unsupported_areas"
       ],
       "properties": {
@@ -247,46 +257,273 @@
             "$ref": "#/$defs/sourceRef"
           }
         },
-        "questions": {
+        "company_track_brief": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short brief on the company and track drawn from interview_context. Must not assert project facts."
+        },
+        "interview_loop_hypothesis": {
+          "type": "array",
+          "minItems": 1,
+          "description": "A hypothesis, not a schedule. Every stage carries its own source status.",
+          "items": {
+            "$ref": "#/$defs/loopStage"
+          }
+        },
+        "priority_questions": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 8,
+          "items": {
+            "$ref": "https://project2job.dev/schemas/interview-context/1.0.0#/$defs/interviewQuestion"
+          }
+        },
+        "answer_drafts": {
           "type": "array",
           "minItems": 3,
           "maxItems": 3,
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "question",
-              "answer_ingredients",
-              "source_refs",
-              "unsupported"
-            ],
-            "properties": {
-              "question": {
-                "type": "string"
-              },
-              "answer_ingredients": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "source_refs": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/$defs/sourceRef"
-                }
-              },
-              "unsupported": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/$defs/answerDraft"
           }
         },
+        "questions_to_ask_interviewer": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "mock_interview_round": {
+          "$ref": "#/$defs/mockInterviewRound"
+        },
         "unsupported_areas": {
+          "type": "array",
+          "description": "Claims the project evidence does not support or the user has not confirmed.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "loopStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage",
+        "expected_focus",
+        "source_status"
+      ],
+      "properties": {
+        "stage": {
+          "enum": [
+            "recruiter_screen",
+            "hiring_manager",
+            "technical_or_case",
+            "cross_functional",
+            "final_or_bar_raiser",
+            "unknown"
+          ]
+        },
+        "expected_focus": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_status": {
+          "$ref": "https://project2job.dev/schemas/interview-context/1.0.0#/$defs/sourceStatus"
+        },
+        "basis": {
+          "type": "string",
+          "description": "Which signal or requirement supports this stage."
+        }
+      }
+    },
+    "answerDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "question -> verified evidence -> answer ingredients -> grounded draft -> claim-safety review -> likely follow-ups.",
+      "required": [
+        "question_id",
+        "question",
+        "verified_evidence",
+        "answer_ingredients",
+        "grounded_draft",
+        "claim_safety_review",
+        "likely_followups"
+      ],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "description": "Must match a question_id in priority_questions."
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verified_evidence": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Only verified project evidence. Company research may shape emphasis but may never appear here.",
+          "items": {
+            "$ref": "#/$defs/verifiedFact"
+          }
+        },
+        "answer_ingredients": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "grounded_draft": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_safety_review": {
+          "$ref": "#/$defs/claimSafetyReview"
+        },
+        "likely_followups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "emphasis": {
+          "$ref": "#/$defs/emphasisProfile"
+        }
+      }
+    },
+    "verifiedFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fact_id",
+        "text",
+        "status",
+        "source_refs"
+      ],
+      "properties": {
+        "fact_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "description": "Only established statuses may back an answer draft.",
+          "enum": [
+            "supported",
+            "partially_supported"
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "claimSafetyReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exceeds_evidence",
+        "checked_fact_ids"
+      ],
+      "properties": {
+        "exceeds_evidence": {
+          "const": false,
+          "description": "A draft that exceeds its evidence must be narrowed or dropped, never shipped inside a pack."
+        },
+        "checked_fact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "narrowed_from": {
+          "type": "string",
+          "description": "The stronger wording that was rejected, when a draft was narrowed."
+        }
+      }
+    },
+    "emphasisProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Company signals may reorder or reweight the same facts. fact_ids is the invariant: it must not change when emphasis changes.",
+      "required": [
+        "fact_ids",
+        "emphasis_signal_ids"
+      ],
+      "properties": {
+        "fact_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "emphasis_signal_ids": {
           "type": "array",
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "mockInterviewRound": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A specification for one round. Day 2 defines the contract only; no mock-interview runtime exists.",
+      "required": [
+        "round_format",
+        "question_ids",
+        "time_box_minutes",
+        "scoring_dimensions",
+        "stop_condition"
+      ],
+      "properties": {
+        "round_format": {
+          "enum": [
+            "hiring_manager_project_deep_dive",
+            "technical_or_case",
+            "cross_functional"
+          ]
+        },
+        "question_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": {
+            "type": "string"
+          }
+        },
+        "time_box_minutes": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 45
+        },
+        "scoring_dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Evidence-based dimensions only. Personality or culture-fit scoring is out of scope.",
+          "items": {
+            "enum": [
+              "evidence_grounding",
+              "claim_boundary_discipline",
+              "role_relevance",
+              "specificity",
+              "followup_recovery"
+            ]
+          }
+        },
+        "stop_condition": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },

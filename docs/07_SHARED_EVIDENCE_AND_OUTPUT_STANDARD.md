@@ -2,6 +2,22 @@
 
 The Skill and Agent must use the same definitions.
 
+## Two separate evidence systems
+
+The product carries two kinds of material and must never merge them.
+
+**Project evidence** is what the user's own project sources establish. It uses the
+claim types, evidence types, and statuses below, and it is the only material that
+may reach a resume bullet or an answer draft's verified evidence.
+
+**Interview research** is what is known about the company, track, and reported
+interview experience. It uses the separate source-status scale in
+`schemas/interview_context.schema.json` — `official`, `repeatedly_reported`,
+`single_report`, `inferred_from_jd`, `unknown` — plus source date and freshness.
+
+Research may decide which verified facts an answer leads with. It may never
+become a fact, and no research item is ever labeled Supported.
+
 ## Claim types
 
 - role requirement
@@ -10,6 +26,8 @@ The Skill and Agent must use the same definitions.
 - capability claim
 - outcome claim
 - career output claim
+- resume-reported project summary — self-reported until that project's sources are
+  read; usable for routing only
 
 ## Evidence types
 
@@ -111,6 +129,46 @@ May include:
 - explicit missing evidence
 
 Must not fabricate a polished answer that the project cannot support.
+
+Every answer draft preserves:
+
+```text
+question
+→ verified evidence
+→ answer ingredients
+→ grounded draft
+→ claim-safety review
+→ likely follow-ups
+```
+
+The claim-safety review is a gate, not a note. A draft that exceeds its evidence
+is narrowed or dropped before the pack is emitted.
+
+### Company emphasis
+
+Company and track signals may change:
+
+- which verified facts an answer leads with
+- the order and wording of those facts
+- which follow-ups are anticipated
+
+They may never change:
+
+- the fact set behind the answer
+- any metric, scope, date, or ownership statement
+- the evidence boundary
+
+Two runs of the same question against the same project must resolve to the same
+fact IDs regardless of company emphasis.
+
+### Interview questions
+
+An interview question inherits the strength of its source, never more:
+
+- one reported experience is presented as reported once, never as expected
+- a stale report is never presented as likely
+- conflicting reports are shown together with the disagreement stated
+- an unknown remains unknown; it is not inferred from the company name
 
 ### One Next Build
 

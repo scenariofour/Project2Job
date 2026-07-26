@@ -2,7 +2,7 @@
 
 ## Product role
 
-The Career Evidence Agent turns the one-time Skill analysis into a maintained project evidence system.
+The Project2Job Evidence Agent turns the one-time Skill analysis into a maintained project evidence system.
 
 ## Independent user value
 
@@ -21,12 +21,25 @@ Required Agent advantages:
 
 ## MVP runs
 
-### Run 1: Initial Application Pack
+### Run 0: JD Intake
 
 Input:
 
-- one project
-- one role profile or JD
+- one target JD
+- optional resume
+
+Output:
+
+- `Intake Result`
+- saved JD intake, role demand map, and interview context
+- saved project recommendation and its reasons and risks
+
+### Run 1: Initial Application and Interview Pack
+
+Input:
+
+- the one selected project's evidence
+- the saved JD intake from Run 0
 
 Output:
 
@@ -57,6 +70,9 @@ Output:
 
 - project ID and version
 - source file hashes
+- target JD intake, company, and track
+- interview context items with their source status and freshness
+- the project recommendation and which project the user chose
 - target role or JD version
 - user-confirmed ownership
 - claims and evidence links
@@ -69,6 +85,8 @@ Output:
 
 - all chat history
 - unrelated personal preferences
+- a reusable company interview question database
+- resume projects that were not selected, beyond their routing summary
 - multiple role tracks
 - general long-term career profile
 - unapproved inferred facts
@@ -76,12 +94,14 @@ Output:
 
 ## Thin UI
 
-The product UI needs four surfaces:
+The product UI needs five surfaces:
 
-1. Drop what you have
-2. Application Pack
-3. Evidence and correction drawer
-4. What changed after update
+1. Paste the JD
+2. Intake Result, including the project recommendation
+3. Application and Interview Pack
+4. Evidence and correction drawer, showing project evidence and interview
+   research in separate, differently labeled regions
+5. What changed after update
 
 ## Agent success condition
 

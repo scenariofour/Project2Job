@@ -4,6 +4,10 @@
 
 - role standard quality
 - intent routing
+- JD extraction correctness and unknown handling
+- project routing: does the recommended project match a reviewer's pick
+- interview source-status labeling, freshness, and conflict handling
+- answer-draft claim safety and emphasis invariance
 - source correctness
 - claim boundaries
 - resume grounding
@@ -67,6 +71,10 @@ Measure:
 
 - artifact inventory
 - intent routing
+- JD intake extraction
+- resume project candidate extraction
+- project recommendation
+- interview signal labeling
 - requirement extraction
 - claim extraction
 - retrieval
@@ -75,10 +83,13 @@ Measure:
 
 ### Outcome
 
+- Intake Result usefulness from a JD alone
+- project recommendation agreement with reviewers
 - Role Fit Map correctness
 - Project Highlight grounding
 - resume bullet grounding
-- interview question relevance
+- interview question relevance and correct source status
+- answer-draft grounding and boundary discipline
 - Next Build quality
 
 ### Process
@@ -102,12 +113,24 @@ Measure:
 - unreadable file
 - empty retrieval
 - schema error
-- prompt injection
+- prompt injection, including in a JD or a pasted interview report
 - source conflict
+- conflicting or stale interview reports
+- no resume supplied
+- no project clearly matching the role
 - user correction
 - interrupted update
 
 ## PoC gates
+
+### Intake PoC passes when
+
+- one pasted JD alone produces a usable Intake Result
+- extracted company, role family, level, and track match the JD, with everything
+  unstated recorded as unknown
+- the recommended project matches a reviewer's pick on labeled routing cases
+- no interview item is presented more strongly than its source status allows
+- `lab/evals/day2_jd_first_cases.jsonl` passes
 
 ### Skill PoC passes when
 
@@ -115,6 +138,8 @@ Measure:
 - trigger and non-trigger tests pass
 - output schema passes
 - no severe unsupported career claim in gold cases
+- no answer draft exceeds its verified evidence
+- company emphasis changes wording without changing fact sets
 - blind reviewer preference over generic prompt is positive
 - output is usable with minor editing
 
@@ -137,7 +162,9 @@ Measure:
 ## Kill or pivot criteria
 
 - Skill does not beat the strong prompt on meaningful quality or usability
+- the project recommendation is no better than the user's own first instinct
 - users mainly want generic resume rewriting
+- users will not paste interview material, leaving company context permanently thin
 - source error rate remains unsafe
 - project upload cost exceeds perceived value
 - Agent update provides no measurable advantage

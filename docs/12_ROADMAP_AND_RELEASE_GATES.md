@@ -17,6 +17,25 @@ Exit:
 - 10 representative gold cases labeled
 - reviewer agreement process defined
 
+## Phase 1: JD-First Intake
+
+Build:
+
+- JD intake extraction into `schemas/jd_intake.schema.json`
+- Role Demand Map
+- interview context capture from pasted and uploaded material only
+- resume project candidate extraction for routing
+- one-project recommendation across the five routing dimensions
+- `Intake Result` assembly
+
+Exit:
+
+- one pasted JD alone produces a valid Intake Result
+- `lab/evals/day2_jd_first_cases.jsonl` passes
+- unknown company, track, and level are recorded rather than inferred
+- exactly one project is routed into deep analysis
+- no interview item outruns its source status
+
 ## Track A: Skill PoC
 
 Build:
@@ -32,7 +51,8 @@ Exit:
 
 - installable zip
 - works in at least two Agent hosts
-- produces valid outputs
+- produces a valid Intake Result and a valid Application and Interview Pack
+- answer drafts pass claim-safety review
 - comparison with generic prompt completed
 
 ## Track B: Agent PoC

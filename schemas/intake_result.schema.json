@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/intake-result/1.0.0",
+  "title": "IntakeResult",
+  "description": "The first useful output, produced before any project evidence is supplied. Everything here is routing and research: nothing in this object is verified project evidence, and no claim in it may be exported to a resume.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "jd_intake",
+    "role_demand_map",
+    "interview_context",
+    "resume_project_candidates",
+    "recommended_project",
+    "claims_requiring_verification",
+    "required_evidence_checklist",
+    "one_next_input"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "jd_intake": {
+      "$ref": "https://project2job.dev/schemas/jd-intake/1.0.0"
+    },
+    "role_demand_map": {
+      "type": "array",
+      "minItems": 1,
+      "description": "What the role demands, derived from the JD and the versioned role profile. Independent of any project.",
+      "items": {
+        "$ref": "#/$defs/roleDemandItem"
+      }
+    },
+    "interview_context": {
+      "$ref": "https://project2job.dev/schemas/interview-context/1.0.0"
+    },
+    "resume_project_candidates": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Summaries extracted from an optional resume, for routing only. Empty when no resume is supplied.",
+      "items": {
+        "$ref": "#/$defs/resumeProjectCandidate"
+      }
+    },
+    "recommended_project": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/projectRecommendation"
+        },
+        {
+          "type": "null",
+          "description": "Null when no candidate is a defensible choice. The product must ask rather than recommend a weak project."
+        }
+      ]
+    },
+    "claims_requiring_verification": {
+      "type": "array",
+      "description": "Resume or JD-matching claims that look relevant but are unverified until project evidence arrives.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_evidence_checklist": {
+      "type": "array",
+      "minItems": 1,
+      "description": "What the user must supply for the recommended project before deep analysis can run.",
+      "items": {
+        "$ref": "#/$defs/evidenceRequest"
+      }
+    },
+    "one_next_input": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exactly one thing to supply next. Not a list."
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "roleDemandItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_requirement_id",
+        "demand",
+        "relevance",
+        "evidence_would_look_like"
+      ],
+      "properties": {
+        "role_requirement_id": {
+          "type": "string"
+        },
+        "demand": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relevance": {
+          "enum": [
+            "required",
+            "important",
+            "supporting"
+          ]
+        },
+        "evidence_would_look_like": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What a project would have to contain to satisfy this demand."
+        }
+      }
+    },
+    "resumeProjectCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "summary",
+        "resume_location",
+        "evidence_status"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "description": "One-line description taken from the resume. This is a self-reported claim, not a verified fact."
+        },
+        "resume_location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_status": {
+          "const": "self_reported",
+          "description": "Fixed. Nothing extracted from a resume is verified until the project's own sources are read."
+        },
+        "scores": {
+          "$ref": "#/$defs/routingScores"
+        }
+      }
+    },
+    "routingScores": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The five routing dimensions. Keyword overlap alone must not decide the recommendation.",
+      "required": [
+        "role_relevance",
+        "likely_evidence_availability",
+        "ownership_clarity",
+        "outcome_strength",
+        "interview_depth"
+      ],
+      "properties": {
+        "role_relevance": {
+          "$ref": "#/$defs/routingBand"
+        },
+        "likely_evidence_availability": {
+          "$ref": "#/$defs/routingBand"
+        },
+        "ownership_clarity": {
+          "$ref": "#/$defs/routingBand"
+        },
+        "outcome_strength": {
+          "$ref": "#/$defs/routingBand"
+        },
+        "interview_depth": {
+          "$ref": "#/$defs/routingBand"
+        }
+      }
+    },
+    "routingBand": {
+      "description": "A coarse band, not a computed score. Precision here would be false.",
+      "enum": [
+        "strong",
+        "adequate",
+        "weak",
+        "unknown"
+      ]
+    },
+    "projectRecommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "reasons",
+        "risks",
+        "confidence",
+        "alternatives_considered"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string"
+        },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Always non-empty. A recommendation made from self-reported summaries always carries risk.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "enum": [
+            "clear_choice",
+            "narrow_choice",
+            "no_clear_choice"
+          ]
+        },
+        "alternatives_considered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "description": "When no candidate clearly fits, the product must ask the user to choose rather than assert a winner.",
+          "if": {
+            "properties": {
+              "confidence": {
+                "const": "no_clear_choice"
+              }
+            },
+            "required": [
+              "confidence"
+            ]
+          },
+          "then": {
+            "properties": {
+              "alternatives_considered": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidenceRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "why_needed",
+        "required"
+      ],
+      "properties": {
+        "artifact": {
+          "enum": [
+            "repository_or_code",
+            "prd_or_spec",
+            "eval_or_test_results",
+            "user_or_stakeholder_feedback",
+            "design_or_demo",
+            "metrics_or_analytics",
+            "ownership_clarification"
+          ]
+        },
+        "why_needed": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Which role demand this artifact would let the product verify."
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

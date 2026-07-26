@@ -46,9 +46,27 @@
       "lab/REVIEWER_AND_ANNOTATION_GUIDE.md",
       "lab/baseline_prompt.md"
     ],
+    "jd_intake": [
+      "ACTIVE_SCOPE.md",
+      "GLOSSARY.md",
+      "docs/01_MVP_PRD.md",
+      "docs/04_INTENT_AND_ONBOARDING.md",
+      "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
+      "docs/11_SAFETY_PRIVACY_AND_HITL.md",
+      "schemas/jd_intake.schema.json",
+      "schemas/interview_context.schema.json",
+      "schemas/intake_result.schema.json",
+      "schemas/role_profile.schema.json",
+      "references/role_profiles/ai_pm_early_career.v0.1.0.json",
+      "references/shared_contract.v1.json",
+      "lab/evals/day2_jd_first_cases.jsonl",
+      "lab/REVIEWER_AND_ANNOTATION_GUIDE.md"
+    ],
     "skill_poc": [
       "ACTIVE_SCOPE.md",
       "GLOSSARY.md",
+      "schemas/jd_intake.schema.json",
+      "schemas/intake_result.schema.json",
       "docs/04_INTENT_AND_ONBOARDING.md",
       "docs/05_SKILL_PRODUCT_SPEC.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
@@ -60,6 +78,8 @@
     "agent_poc": [
       "ACTIVE_SCOPE.md",
       "GLOSSARY.md",
+      "schemas/intake_result.schema.json",
+      "schemas/interview_context.schema.json",
       "docs/06_AGENT_PRODUCT_SPEC.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
       "docs/08_AGENT_ARCHITECTURE.md",
@@ -72,6 +92,7 @@
     "web_poc": [
       "ACTIVE_SCOPE.md",
       "GLOSSARY.md",
+      "schemas/intake_result.schema.json",
       "docs/01_MVP_PRD.md",
       "docs/04_INTENT_AND_ONBOARDING.md",
       "docs/06_AGENT_PRODUCT_SPEC.md",
@@ -79,6 +100,7 @@
     ],
     "eval_and_pilot": [
       "GLOSSARY.md",
+      "lab/evals/day2_jd_first_cases.jsonl",
       "docs/03_AI_PM_ROLE_STANDARD.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
       "docs/09_TOKEN_CONTEXT_AND_COST.md",
@@ -91,6 +113,7 @@
   },
   "work_order_to_context": {
     "WO-00_SHARED_FOUNDATION": "shared_foundation",
+    "WO-05_JD_FIRST_INTAKE": "jd_intake",
     "WO-01_SKILL_POC": "skill_poc",
     "WO-02_AGENT_POC": "agent_poc",
     "WO-03_THIN_WEB": "web_poc",

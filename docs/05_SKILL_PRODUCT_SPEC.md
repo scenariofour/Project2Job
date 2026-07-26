@@ -2,25 +2,31 @@
 
 ## Product role
 
-The Career Desk Skill is the lowest-friction product entry and open-source distribution surface.
+The Project2Job Skill is the lowest-friction product entry and open-source distribution surface.
 
-It performs a one-session Project-to-Application transformation inside the user's existing Agent host.
+It performs a one-session JD-to-Application transformation inside the user's existing Agent host.
 
 ## User contract
 
-The user supplies:
+The user supplies one target JD, and optionally a resume. The Skill returns an
+`Intake Result`: Role Demand Map, company and track signals, resume project
+candidates, one recommended project with reasons and risks, claims requiring
+verification, a Required Evidence Checklist, and One Next Input.
 
-- one project
-- one role profile or JD
-
-The Skill returns:
+The user then supplies the selected project's evidence. The Skill returns an
+`Application and Interview Pack`:
 
 - Role Fit Map
 - Project Highlights
-- Resume Bullets
-- Interview Prep Pack
+- tailored Resume Bullets
+- Interview Pack, including the company and track brief, loop hypothesis,
+  5–8 prioritized questions, three grounded answer drafts, questions to ask the
+  interviewer, and one mock-interview round specification
 - One Next Build
 - source-backed uncertainty
+
+The Skill works from pasted text and uploaded files. It does not search for jobs
+and does not log into any job platform.
 
 ## Why the Skill exists
 
@@ -64,12 +70,19 @@ The Skill cannot guarantee:
 1. inspect artifacts with the inventory script
 2. route the request
 3. load only relevant references
-4. extract the top 5–7 role requirements
-5. extract project claims
-6. verify high-value claims against sources
-7. produce the Application Pack
-8. ask for correction
-9. stop
+4. extract the JD into a `JdIntake`: company, team, role family, track, level,
+   location, requirements, likely interview risks, unknowns
+5. extract the top 5–7 role requirements as the Role Demand Map
+6. read the optional resume and extract project candidates for routing only
+7. recommend one project, then return the `Intake Result` and stop for input
+8. extract project claims from the selected project
+9. verify high-value claims against sources
+10. produce the Application and Interview Pack
+11. ask for correction
+12. stop
+
+Step 7 is a real stopping point, not a pause. The Intake Result must stand on its
+own if the user never supplies a project.
 
 ## Progressive loading
 
@@ -79,6 +92,7 @@ Load:
 
 - role standard only when role analysis is needed
 - evidence rubric for claim verification
+- routing reference only when a resume with several projects is present
 - resume reference only for bullet generation
 - interview reference only for interview output
 - token policy only when project size exceeds the default threshold
@@ -86,7 +100,9 @@ Load:
 ## Host fallbacks
 
 - no file tools: accept pasted text
-- no web: use bundled role standard or pasted JD
+- no web: use the bundled role standard and the pasted JD; a user-supplied URL is
+  an optional convenience, never a requirement
+- no screenshot reading: ask for the JD as pasted text
 - no code execution: create a manual inventory
 - no persistent storage: state the session limitation
 - no reliable source location: mark provenance as coarse

@@ -24,6 +24,9 @@ REQUIRED = [
     "docs/05_SKILL_PRODUCT_SPEC.md",
     "docs/06_AGENT_PRODUCT_SPEC.md",
     "schemas/application_pack.schema.json",
+    "schemas/jd_intake.schema.json",
+    "schemas/interview_context.schema.json",
+    "schemas/intake_result.schema.json",
     "schemas/project_evidence.schema.json",
     "schemas/role_profile.schema.json",
     "schemas/gold_case.schema.json",
@@ -136,6 +139,50 @@ def validate_journal_statuses(root: Path = ROOT) -> int:
     return highest_completed
 
 
+def iter_refs(node) -> list[str]:
+    if isinstance(node, dict):
+        found = [node["$ref"]] if isinstance(node.get("$ref"), str) else []
+        for value in node.values():
+            found.extend(iter_refs(value))
+        return found
+    if isinstance(node, list):
+        return [ref for item in node for ref in iter_refs(item)]
+    return []
+
+
+def validate_schema_refs() -> int:
+    """Every $ref must resolve to a local $def or another schema in schemas/.
+
+    Nothing in this repository resolves $ref at runtime, so an unresolvable
+    reference would otherwise be an invisible break in a published contract.
+    """
+    loaded = [
+        (path, json.loads(path.read_text(encoding="utf-8")))
+        for path in sorted((ROOT / "schemas").glob("*.schema.json"))
+    ]
+    schemas = {
+        schema["$id"]: (path, schema) for path, schema in loaded if "$id" in schema
+    }
+
+    checked = 0
+    for path, schema in loaded:
+        for ref in iter_refs(schema):
+            target_id, _, fragment = ref.partition("#")
+            target = schema if not target_id else None
+            if target_id:
+                if target_id not in schemas:
+                    raise SystemExit(f"{path.name}: $ref to unknown schema {ref}")
+                target = schemas[target_id][1]
+            if fragment and fragment != "/":
+                node = target
+                for part in fragment.strip("/").split("/"):
+                    if not isinstance(node, dict) or part not in node:
+                        raise SystemExit(f"{path.name}: $ref does not resolve: {ref}")
+                    node = node[part]
+            checked += 1
+    return checked
+
+
 def validate_shared_foundation() -> dict[str, int]:
     contract = json.loads(
         (ROOT / "references/shared_contract.v1.json").read_text(encoding="utf-8")
@@ -147,8 +194,11 @@ def validate_shared_foundation() -> dict[str, int]:
     )
     cases = load_jsonl(ROOT / contract["gold_dataset"]["path"])
 
-    if contract["version"] != "1.0.0":
-        raise SystemExit("Shared contract version must be 1.0.0")
+    if not re.fullmatch(r"\d+\.\d+\.\d+", contract["version"]):
+        raise SystemExit("Shared contract version must be semver")
+    history = [entry["version"] for entry in contract["version_history"]]
+    if history[-1] != contract["version"]:
+        raise SystemExit("Shared contract version is not the latest version_history entry")
     if profile["role_id"] != contract["role_profile"]["role_id"]:
         raise SystemExit("Shared contract role_id does not match role profile")
     if profile["version"] != contract["role_profile"]["version"]:
@@ -271,11 +321,13 @@ def validate_shared_foundation() -> dict[str, int]:
     skill_contract = {
         "role_profile_version": consumers["skill"]["role_profile_version"],
         "input_schema_ids": consumers["skill"]["input_schema_ids"],
+        "intermediate_schema_id": consumers["skill"]["intermediate_schema_id"],
         "output_schema_id": consumers["skill"]["output_schema_id"],
     }
     agent_contract = {
         "role_profile_version": consumers["agent"]["role_profile_version"],
         "input_schema_ids": consumers["agent"]["input_schema_ids"],
+        "intermediate_schema_id": consumers["agent"]["intermediate_schema_id"],
         "output_schema_id": consumers["agent"]["output_schema_id"],
     }
     if skill_contract != agent_contract:
@@ -284,6 +336,8 @@ def validate_shared_foundation() -> dict[str, int]:
         raise SystemExit("Consumer role profile version does not resolve")
     if not set(skill_contract["input_schema_ids"]).issubset(schema_ids):
         raise SystemExit("Consumer input schema ID does not resolve")
+    if skill_contract["intermediate_schema_id"] not in schema_ids:
+        raise SystemExit("Consumer intermediate schema ID does not resolve")
     if skill_contract["output_schema_id"] not in schema_ids:
         raise SystemExit("Consumer output schema ID does not resolve")
 
@@ -326,6 +380,7 @@ def main() -> None:
     highest_completed_day = validate_journal_statuses()
 
     public_fixture_files = validate_public_fixtures()
+    schema_refs = validate_schema_refs()
     shared_foundation = validate_shared_foundation()
 
     print(json.dumps({
@@ -336,6 +391,7 @@ def main() -> None:
         "public_fixture_files": public_fixture_files,
         "journal_days": len(list((ROOT / "docs/build_journal").glob("DAY_*.md"))),
         "highest_completed_day": highest_completed_day,
+        "schema_refs": schema_refs,
         "license": "MIT",
         "shared_foundation": shared_foundation,
     }, indent=2))
