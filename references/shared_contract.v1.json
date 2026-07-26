@@ -1,6 +1,6 @@
 {
   "contract_id": "project2job-shared-foundation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "role_profile": {
     "path": "references/role_profiles/ai_pm_early_career.v0.1.0.json",
     "role_id": "ai_pm_early_career",
@@ -17,11 +17,23 @@
     },
     "application_pack": {
       "path": "schemas/application_pack.schema.json",
-      "schema_id": "https://project2job.dev/schemas/application-pack/1.0.0"
+      "schema_id": "https://project2job.dev/schemas/application-pack/2.0.0"
     },
     "gold_case": {
       "path": "schemas/gold_case.schema.json",
       "schema_id": "https://project2job.dev/schemas/gold-case/1.0.0"
+    },
+    "jd_intake": {
+      "path": "schemas/jd_intake.schema.json",
+      "schema_id": "https://project2job.dev/schemas/jd-intake/1.0.0"
+    },
+    "interview_context": {
+      "path": "schemas/interview_context.schema.json",
+      "schema_id": "https://project2job.dev/schemas/interview-context/1.0.0"
+    },
+    "intake_result": {
+      "path": "schemas/intake_result.schema.json",
+      "schema_id": "https://project2job.dev/schemas/intake-result/1.0.0"
     }
   },
   "gold_dataset": {
@@ -34,19 +46,33 @@
       "role_profile_version": "0.1.0",
       "input_schema_ids": [
         "https://project2job.dev/schemas/role-profile/1.0.0",
-        "https://project2job.dev/schemas/project-evidence/1.0.0"
+        "https://project2job.dev/schemas/project-evidence/1.0.0",
+        "https://project2job.dev/schemas/jd-intake/1.0.0"
       ],
-      "output_schema_id": "https://project2job.dev/schemas/application-pack/1.0.0"
+      "intermediate_schema_id": "https://project2job.dev/schemas/intake-result/1.0.0",
+      "output_schema_id": "https://project2job.dev/schemas/application-pack/2.0.0"
     },
     {
       "consumer": "agent",
       "role_profile_version": "0.1.0",
       "input_schema_ids": [
         "https://project2job.dev/schemas/role-profile/1.0.0",
-        "https://project2job.dev/schemas/project-evidence/1.0.0"
+        "https://project2job.dev/schemas/project-evidence/1.0.0",
+        "https://project2job.dev/schemas/jd-intake/1.0.0"
       ],
-      "output_schema_id": "https://project2job.dev/schemas/application-pack/1.0.0"
+      "intermediate_schema_id": "https://project2job.dev/schemas/intake-result/1.0.0",
+      "output_schema_id": "https://project2job.dev/schemas/application-pack/2.0.0"
     }
   ],
-  "compatibility_rule": "Skill and Agent must use the same role profile version, input schema IDs, and Application Pack output schema ID. A change to any referenced version requires regression review of the gold dataset."
+  "compatibility_rule": "Skill and Agent must use the same role profile version, input schema IDs, intermediate Intake Result schema ID, and Application and Interview Pack output schema ID. A change to any referenced version requires regression review of the gold dataset.",
+  "version_history": [
+    {
+      "version": "1.0.0",
+      "change": "WO-00 shared foundation: role profile, project evidence, Application Pack 1.0.0, gold cases."
+    },
+    {
+      "version": "2.0.0",
+      "change": "Day 2 JD-first revision: added jd_intake, interview_context, and intake_result; Application Pack moved to 2.0.0 as the Application and Interview Pack. Gold dataset 0.1.0 reviewed and unchanged because its cases assert role-profile and evidence-status behavior only and reference no pack schema ID. Major bump: the output schema ID changed, so any consumer pinned to the 1.x contract breaks."
+    }
+  ]
 }

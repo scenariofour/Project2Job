@@ -58,6 +58,9 @@ See `docs/build_journal/DAY_1.md` for the acceptance traceability table.
 
 ## Planned
 
+- WO-05 JD-first intake and project routing: contracts, eval cases, and
+  acceptance criteria are defined; no runtime exists. Day 2 revised the product
+  definition around the JD-first flow and implemented nothing.
 - live Skill behavior and two-host comparison
 - the full WO-02 stateful project-update cycle
 - thin Web UI, production retrieval comparison, and failure injection
@@ -75,6 +78,10 @@ See `docs/build_journal/DAY_1.md` for the acceptance traceability table.
   extract-search-validate workflow
 - latency, token, and cost targets
 - role-standard relationship to hiring outcomes
+- that the JD-first ordering matches how users actually work
+- that the project recommendation beats the user's own instinct
+- that public evidence plus optional user-supplied material will support a useful
+  company brief
 
 ## Next required action
 

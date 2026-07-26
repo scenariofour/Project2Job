@@ -35,7 +35,8 @@ Use these rules:
 - Resume bullets may use only directly supported facts and confirmed ownership.
 - Never fill an output quota with unsupported claims.
 
-Return valid JSON matching the supplied Application Pack schema with:
+Return valid JSON matching the supplied Application and Interview Pack schema
+(`schemas/application_pack.schema.json`, 2.0.0) with:
 
 1. a Role Fit Map for the 5–7 most relevant capabilities
 2. up to 5 supported Project Highlights; target 3–5 when evidence permits,
@@ -43,11 +44,18 @@ Return valid JSON matching the supplied Application Pack schema with:
 3. up to 3 editable, evidence-grounded resume bullets; target 2–3 when evidence
    permits, otherwise return fewer or none
 4. a 30-second project introduction with sources
-5. exactly three interview follow-up questions with grounded answer ingredients
-6. unsupported areas and warnings
-7. one highest-priority project action with steps, acceptance criteria, expected
-   evidence, affected output, effort band, and interview question unlocked
-8. a user correction prompt
+5. a company and track brief, and an interview-loop hypothesis in which every
+   stage carries its own source status
+6. 5–8 prioritized P0/P1 interview questions, each labeled `official`,
+   `repeatedly_reported`, `single_report`, `inferred_from_jd`, or `unknown`; a
+   single reported experience is never presented as expected
+7. exactly three grounded answer drafts, each with verified evidence, answer
+   ingredients, a claim-safety review, and likely follow-ups
+8. questions to ask the interviewer, and one mock-interview round specification
+9. unsupported areas and warnings
+10. one highest-priority project action with steps, acceptance criteria, expected
+    evidence, affected output, effort band, and interview question unlocked
+11. a user correction prompt
 
 Separate source fact, inference, and recommendation. If the sources cannot
 support a required output, return an explicit warning instead of filling the gap.

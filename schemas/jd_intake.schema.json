@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/jd-intake/1.0.0",
+  "title": "JdIntake",
+  "description": "What one target job description yields before any project is analyzed. The MVP accepts pasted text, a URL the user supplies, a screenshot, or an uploaded file; it does not search for or scrape jobs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_form",
+    "company",
+    "role_family",
+    "requirements",
+    "likely_interview_risks",
+    "unknowns"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "input_form": {
+      "enum": [
+        "pasted_text",
+        "user_supplied_url",
+        "screenshot",
+        "uploaded_file"
+      ]
+    },
+    "company": {
+      "type": "string",
+      "minLength": 1
+    },
+    "team_or_product_area": {
+      "type": "string",
+      "description": "Omit when the JD does not state it. Do not infer a team from the company name."
+    },
+    "role_family": {
+      "enum": [
+        "ai_product_manager",
+        "agent_product_manager",
+        "applied_ai_product_manager",
+        "other_or_unsupported"
+      ]
+    },
+    "track": {
+      "type": "string",
+      "description": "Track within the role family when the JD states one."
+    },
+    "level": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/roleRequirement"
+      }
+    },
+    "likely_interview_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "description": "Fields the JD did not establish. Anything not stated belongs here rather than being guessed.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "jd_reference": {
+      "type": "string",
+      "description": "Locator for the supplied JD material, for later citation."
+    }
+  },
+  "$defs": {
+    "roleRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_requirement_id",
+        "text",
+        "relevance",
+        "jd_location"
+      ],
+      "properties": {
+        "role_requirement_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relevance": {
+          "enum": [
+            "required",
+            "important",
+            "supporting"
+          ]
+        },
+        "capability_id": {
+          "type": "string",
+          "description": "Mapped capability from the versioned role profile, when one applies."
+        },
+        "jd_location": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Where in the supplied JD this requirement appears."
+        }
+      }
+    }
+  }
+}

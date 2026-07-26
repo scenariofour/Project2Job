@@ -59,12 +59,25 @@ For a high-value role requirement or project claim, find support, contradiction,
 
 ### Tools
 
+Project evidence loop:
+
 - inventory_sources
 - search_sources
 - read_source
 - compare_evidence
 - request_confirmation
 - submit_evidence_result
+
+Interview research pass (WO-05, not yet implemented):
+
+- web_search
+- fetch_page (read-only)
+- render_page (Playwright, escalation only)
+- extract_structured
+- research_cache
+
+No research tool may authenticate. The two tool sets are separate because their
+outputs are separate evidence systems.
 
 ### Decisions
 

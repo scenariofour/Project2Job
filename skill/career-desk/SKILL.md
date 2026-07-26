@@ -7,12 +7,18 @@ description: Turn one AI project and a target AI PM role or JD into evidence-gro
 
 ## Scope
 
-Analyze one project against one target role profile or JD.
+Start from one target JD. When a resume is supplied, route between its projects
+and recommend one. Analyze exactly one selected project in depth.
+
+`ACTIVE_SCOPE.md` owns the full flow; this package implements it under WO-01 and
+WO-05. The steps below still describe the pre-Day-2 one-project run and are
+revised when WO-05 is built.
 
 ## Process
 
 1. Run `scripts/inventory.py` when local files are available.
 2. Determine:
+   - `JD_INTAKE`
    - `APPLICATION_PACK`
    - `PROJECT_COMPASS`
    - `OUT_OF_SCOPE_OR_UNCLEAR`

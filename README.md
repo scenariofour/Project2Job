@@ -6,17 +6,23 @@ is the canonical product and repository name; `Career Desk` is a legacy internal
 codename that survives only in historical records and existing paths such as
 `skill/career-desk/`. Vocabulary is defined in `GLOSSARY.md`.
 
-The intended workflow turns one real AI project into grounded career assets:
+The intended workflow starts at the job description and ends at a pack for that
+specific company:
 
 ```text
-Target role or JD
-→ role requirements
-→ project evidence
+One target JD
+→ company, track, level, and role requirements
+→ optional resume, read to route between projects
+→ one recommended project to investigate
+→ that project's evidence, verified
 → defensible claims
-→ resume bullets
-→ interview preparation
+→ tailored resume bullets
+→ company-specific interview preparation
 → one next project action
 ```
+
+The first four steps run without a project and produce an `Intake Result`. The
+rest produce an `Application and Interview Pack`.
 
 The product has been designed and a bounded evidence loop is implemented. Its
 user value has not been validated.
@@ -41,14 +47,24 @@ cases, and safety requirements. They do not require the same runtime.
 
 The MVP is limited to:
 
-- one AI project
-- one target role profile or JD
-- one initial Project-to-Application analysis
+- one target JD, one company, one track or team context
+- one optional resume, read only to route between candidate projects
+- one selected AI project for deep evidence analysis
+- one Intake Result and one Application and Interview Pack
+- 5–8 priority questions, three answer drafts, one mock-interview round
 - one later project-update cycle
 
-It excludes job discovery, auto-apply, application tracking, Gmail or Calendar,
-multiple projects or JDs, full resume generation, networking automation, broad
-MCP integrations, multi-agent, and Deep Agents.
+It excludes job discovery and bulk scraping, automatic login to any job platform
+or professional network, auto-apply, application tracking, email monitoring,
+referral automation, Gmail or Calendar, multiple deep project analyses, any
+persisted company question database, full resume generation, networking
+automation, broad MCP integrations, multi-agent, and Deep Agents.
+
+After the JD arrives the MVP runs one bounded public-web research pass for
+company and interview context, inside explicit query, page, Playwright, token,
+and runtime ceilings. It never logs in, bypasses a restriction, crawls a domain,
+or names a specific job platform. Pasted and uploaded material is equally
+supported and merged with what research finds.
 
 ## Current implementation status
 
@@ -63,6 +79,8 @@ MCP integrations, multi-agent, and Deep Agents.
 - Day 1 uses deterministic scripted read-only tools. It is not a production
   model-powered Agent runtime.
 - The full WO-02 stateful project-update cycle is not complete.
+- Day 2 revised the product contracts around the JD-first flow. Those contracts
+  and their eval cases exist; no intake, routing, or pack runtime does.
 
 Unproven: the Skill runtime in a real Agent host, the Web UI, production RAG,
 production model behavior, user value, product quality, latency, cost, and any
@@ -93,7 +111,7 @@ engineering dependencies:
 | --- | --- |
 | 0 | Safe Foundation |
 | 1 | Agent Loop |
-| 2 | Problem, MVP, and Intent |
+| 2 | JD-First Product Flow |
 | 3 | Context, RAG, and Evidence |
 | 4 | Skill, Agent, and Human Control |
 | 5 | Evaluation and Model Decisions |

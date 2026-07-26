@@ -20,7 +20,12 @@ that owns the rule.
 
 | Term | Definition | Not to be confused with | Canonical source |
 | --- | --- | --- | --- |
-| **Application Pack** | The complete output object: Role Fit Map, Project Highlights, Resume Bullets, Interview Prep Pack, One Next Build, correction prompt, warnings. | A resume, or the Role Fit Map alone. | `schemas/application_pack.schema.json` |
+| **Intake Result** | The first output, produced from one JD before any project evidence exists: Role Demand Map, company and track signals, resume project candidates, one recommended project, claims to verify, evidence checklist, One Next Input. | The Application and Interview Pack. Nothing in an Intake Result is verified project evidence. | `schemas/intake_result.schema.json` |
+| **Application and Interview Pack** | The complete output produced after one selected project's evidence is verified. Formerly "Application Pack"; schema 2.0.0 adds the company/track brief, loop hypothesis, prioritized questions, answer drafts, interviewer questions, and mock round. | A resume, or the Role Fit Map alone. | `schemas/application_pack.schema.json` |
+| **Role Demand Map** | What the target role demands and what evidence would satisfy each demand, derived from the JD and the role profile. Project-independent. | The Role Fit Map, which is project-dependent and comes later. | `schemas/intake_result.schema.json` |
+| **Resume Project Candidate** | A project summary extracted from an optional resume, used only to route. Always `self_reported`. | Project evidence. A candidate is an unverified claim until that project's sources are read. | `schemas/intake_result.schema.json` |
+| **Interview Context** | Company signals, track/team/level requirements, and reported interview evidence, each with a source status and freshness. | Project evidence. Research never becomes a project fact and never reaches a resume bullet. | `schemas/interview_context.schema.json` |
+| **Source Status** | How well established an interview claim is: `official`, `repeatedly_reported`, `single_report`, `inferred_from_jd`, `unknown`. | Evidence Status, which applies to project claims. The two scales are separate and must not be mixed. | `schemas/interview_context.schema.json` |
 | **Role Fit Map** | Five to seven role capability areas, each with relevance, evidence status, source references, evidence boundary, and interview risk. | A score, a ranking, or a gap list. | `docs/01_MVP_PRD.md` |
 | **One Next Build** | Exactly one prioritized next project action derived from the largest evidence gap. | A roadmap or a backlog. | `ACTIVE_SCOPE.md` |
 

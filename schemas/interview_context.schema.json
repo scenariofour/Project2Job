@@ -1,0 +1,1121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/interview-context/1.0.0",
+  "title": "InterviewContext",
+  "description": "Company, track, and reported interview context for one target JD, gathered by bounded automatic public-web research and from any material the user supplies. Research about a company is never project evidence: every item carries a source status and is kept separate from verified project facts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "company",
+    "research",
+    "signals",
+    "questions",
+    "unknowns"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "company": {
+      "type": "string",
+      "minLength": 1
+    },
+    "track": {
+      "type": "string",
+      "description": "Team, product area, or track. Omit when unknown; do not guess."
+    },
+    "level": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "research": {
+      "$ref": "#/$defs/researchRun"
+    },
+    "signals": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/interviewSignal"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "#/$defs/interviewQuestion"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "description": "Pairs of signal or question IDs that disagree, with the unresolved difference stated.",
+      "items": {
+        "$ref": "#/$defs/reportConflict"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "description": "What could not be established. An empty company track must appear here rather than be inferred.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "sourceStatus": {
+      "description": "How well established an interview claim is. There is no value meaning 'certain'.",
+      "enum": [
+        "official",
+        "repeatedly_reported",
+        "single_report",
+        "inferred_from_jd",
+        "unknown"
+      ]
+    },
+    "freshness": {
+      "enum": [
+        "fresh",
+        "aging",
+        "stale",
+        "unknown"
+      ]
+    },
+    "presentedAs": {
+      "description": "Strength of language the output may use. No value permits presenting a question as guaranteed.",
+      "enum": [
+        "likely",
+        "possible",
+        "reported_once",
+        "speculative"
+      ]
+    },
+    "interviewLayer": {
+      "description": "Which of the three explicit layers this item belongs to. Personality-based culture fit is not a layer.",
+      "enum": [
+        "company_interview_signal",
+        "track_team_level_requirement",
+        "reported_interview_evidence"
+      ]
+    },
+    "researchSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "reference"
+      ],
+      "properties": {
+        "origin": {
+          "description": "Where the material came from. Public-web origins are retrieved by bounded automatic research; user origins are supplied directly. Both are supported.",
+          "enum": [
+            "official_company_page",
+            "official_company_material",
+            "public_report_page",
+            "job_description",
+            "user_pasted_report",
+            "user_uploaded_file",
+            "user_own_experience"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^https?://[^\\s]+/[^\\s]*$",
+          "description": "Required for public-web origins. The exact page the claim came from, not a bare domain or a search result list."
+        },
+        "fetch_method": {
+          "$ref": "#/$defs/fetchMethod"
+        },
+        "retrieved_on": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact locator inside the supplied material."
+        },
+        "source_date": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            }
+          ],
+          "description": "Date the material was published or the experience occurred. Absent means unknown, which forces freshness 'unknown'."
+        },
+        "interview_stage": {
+          "enum": [
+            "recruiter_screen",
+            "hiring_manager",
+            "technical_or_case",
+            "cross_functional",
+            "final_or_bar_raiser",
+            "unknown"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "description": "A web-retrieved claim must cite the exact page, how it was fetched, and when.",
+          "if": {
+            "properties": {
+              "origin": {
+                "enum": [
+                  "official_company_page",
+                  "public_report_page"
+                ]
+              }
+            },
+            "required": [
+              "origin"
+            ]
+          },
+          "then": {
+            "required": [
+              "url",
+              "fetch_method",
+              "retrieved_on"
+            ]
+          }
+        }
+      ]
+    },
+    "isoDate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO-8601 calendar date."
+    },
+    "fetchMethod": {
+      "description": "How a page was read. Playwright is a real MVP capability but is an escalation, not the default.",
+      "enum": [
+        "read_only_fetch",
+        "playwright",
+        "cache"
+      ]
+    },
+    "sourceTier": {
+      "description": "Drives official-first prioritization. Official pages are fetched and trusted before independent reports.",
+      "enum": [
+        "official",
+        "independent_report",
+        "aggregator_or_forum",
+        "unknown"
+      ]
+    },
+    "researchRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One bounded research pass. Present even when no research ran, so a thin company brief is explained rather than unexplained.",
+      "required": [
+        "mode",
+        "usage",
+        "queries",
+        "pages",
+        "stop_reason",
+        "gaps"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "automatic_bounded",
+            "user_supplied_only",
+            "unavailable"
+          ]
+        },
+        "budget": {
+          "$ref": "#/$defs/researchBudget"
+        },
+        "usage": {
+          "$ref": "#/$defs/researchUsage"
+        },
+        "queries": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/searchQuery"
+          }
+        },
+        "pages": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/researchPage"
+          }
+        },
+        "stop_reason": {
+          "$ref": "#/$defs/researchStopReason"
+        },
+        "gaps": {
+          "type": "array",
+          "description": "What the research could not establish. Drives the unknowns list rather than an inference.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "description": "Automatic research must show its work with at least one query. Pages may be empty when search returns no usable public result.",
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "automatic_bounded"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "budget"
+            ],
+            "properties": {
+              "queries": {
+                "minItems": 1
+              },
+              "stop_reason": {
+                "not": {
+                  "const": "research_not_run"
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "When no research ran there are no queries, no pages, and no claim of sufficiency.",
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "user_supplied_only",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "queries": {
+                "maxItems": 0
+              },
+              "pages": {
+                "maxItems": 0
+              },
+              "stop_reason": {
+                "enum": [
+                  "research_not_run",
+                  "tool_failure"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "description": "A research_not_run result records zero research usage.",
+          "if": {
+            "properties": {
+              "stop_reason": {
+                "const": "research_not_run"
+              }
+            },
+            "required": [
+              "stop_reason"
+            ]
+          },
+          "then": {
+            "properties": {
+              "usage": {
+                "const": {
+                  "search_queries": 0,
+                  "pages_fetched": 0,
+                  "playwright_pages": 0,
+                  "navigation_depth_used": 0,
+                  "total_tokens": 0,
+                  "max_retries_used_per_page": 0,
+                  "runtime_seconds": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "An automatic pass that found no page cannot claim sufficient public evidence.",
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "automatic_bounded"
+              },
+              "pages": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "mode",
+              "pages"
+            ]
+          },
+          "then": {
+            "properties": {
+              "stop_reason": {
+                "not": {
+                  "const": "evidence_sufficient"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "researchUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What the run actually spent. Every ceiling in researchBudget has a matching actual here, bounded by the same maximum, so an over-spend is invalid rather than merely undetectable. Comparing usage against a smaller declared budget needs two numbers and belongs to the WO-05 validator.",
+      "required": [
+        "search_queries",
+        "pages_fetched",
+        "playwright_pages",
+        "navigation_depth_used",
+        "total_tokens",
+        "max_retries_used_per_page",
+        "runtime_seconds"
+      ],
+      "properties": {
+        "search_queries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "pages_fetched": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "playwright_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "navigation_depth_used": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "total_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "max_retries_used_per_page": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "The greatest retry count used on any one page, comparable to max_retries_per_page. This is not the total retries across the run."
+        },
+        "runtime_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 120
+        }
+      }
+    },
+    "researchBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Hard ceilings. The maximums here are the contract; docs/09_TOKEN_CONTEXT_AND_COST.md explains them. A run may declare less, never more.",
+      "required": [
+        "max_search_queries",
+        "max_pages_fetched",
+        "max_playwright_pages",
+        "max_navigation_depth",
+        "max_chars_per_page",
+        "max_total_tokens",
+        "max_retries_per_page",
+        "max_runtime_seconds"
+      ],
+      "properties": {
+        "max_search_queries": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "max_pages_fetched": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "max_playwright_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "max_navigation_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0 means fetch only the search result URL. 1 permits one in-page link on the same host. Never crawl."
+        },
+        "max_chars_per_page": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20000
+        },
+        "max_total_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        },
+        "max_retries_per_page": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "max_runtime_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        }
+      }
+    },
+    "searchQuery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query",
+        "purpose",
+        "results_considered",
+        "results_kept"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "description": "Which gap this query was meant to close. A follow-up query is only justified by a named gap.",
+          "enum": [
+            "official_interview_signals",
+            "track_team_level_expectations",
+            "reported_interview_process",
+            "reported_interview_questions",
+            "conflict_or_recency_check"
+          ]
+        },
+        "results_considered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "results_kept": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "researchPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "tier",
+        "outcome",
+        "chars_retained"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Normalized URL used for deduplication. Two extracted pages must not share one; JSON Schema cannot check that, so the WO-05 validator does."
+        },
+        "tier": {
+          "$ref": "#/$defs/sourceTier"
+        },
+        "fetch_method": {
+          "$ref": "#/$defs/fetchMethod"
+        },
+        "escalation_reason": {
+          "description": "Why a plain read-only fetch was not enough. Required when fetch_method is playwright.",
+          "enum": [
+            "javascript_rendered",
+            "navigation_required",
+            "structure_required"
+          ]
+        },
+        "plain_fetch_outcome": {
+          "description": "What made the prior plain read-only fetch insufficient. Required before Playwright may be used.",
+          "enum": [
+            "render_required",
+            "navigation_required",
+            "parse_failed"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "extracted",
+            "duplicate_of_kept_page",
+            "inaccessible_login_required",
+            "inaccessible_blocked",
+            "render_required",
+            "fetch_failed",
+            "skipped_budget",
+            "skipped_irrelevant"
+          ]
+        },
+        "retrieved_on": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "chars_retained": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000
+        },
+        "duplicate_of": {
+          "type": "string",
+          "minLength": 1,
+          "description": "canonical_url of the page this duplicates."
+        }
+      },
+      "allOf": [
+        {
+          "description": "Playwright use must be justified per page.",
+          "if": {
+            "properties": {
+              "fetch_method": {
+                "const": "playwright"
+              }
+            },
+            "required": [
+              "fetch_method"
+            ]
+          },
+          "then": {
+            "required": [
+              "escalation_reason",
+              "plain_fetch_outcome"
+            ]
+          }
+        },
+        {
+          "description": "A duplicate must name what it duplicates, and retain nothing.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "duplicate_of_kept_page"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "duplicate_of"
+            ],
+            "properties": {
+              "chars_retained": {
+                "maximum": 0
+              }
+            }
+          }
+        },
+        {
+          "description": "Only an extracted page may retain content. A page that was blocked, walled, unrendered, failed, or skipped keeps nothing.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "not": {
+                  "const": "extracted"
+                }
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "chars_retained": {
+                "maximum": 0
+              }
+            }
+          }
+        },
+        {
+          "description": "An extracted page states how and when it was read.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "extracted"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "fetch_method",
+              "retrieved_on"
+            ]
+          }
+        },
+        {
+          "description": "A browser is never driven at a login wall or a blocked page.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "inaccessible_login_required",
+                  "inaccessible_blocked"
+                ]
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch_method": {
+                "not": {
+                  "const": "playwright"
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "A render-required outcome comes from a dated plain read-only fetch.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "render_required"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "fetch_method",
+              "retrieved_on"
+            ],
+            "properties": {
+              "fetch_method": {
+                "const": "read_only_fetch"
+              }
+            }
+          }
+        },
+        {
+          "description": "An escalation reason only makes sense for a Playwright fetch.",
+          "if": {
+            "required": [
+              "escalation_reason"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch_method": {
+                "const": "playwright"
+              }
+            },
+            "required": [
+              "fetch_method"
+            ]
+          }
+        },
+        {
+          "description": "A recorded plain-fetch outcome only makes sense for a Playwright escalation.",
+          "if": {
+            "required": [
+              "plain_fetch_outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch_method": {
+                "const": "playwright"
+              }
+            },
+            "required": [
+              "fetch_method"
+            ]
+          }
+        }
+      ]
+    },
+    "researchStopReason": {
+      "description": "Mirrors the Day 1 loop vocabulary where the meaning is the same.",
+      "enum": [
+        "evidence_sufficient",
+        "evidence_exhausted",
+        "budget_exhausted",
+        "sources_inaccessible",
+        "conflict_requires_disclosure",
+        "tool_failure",
+        "research_not_run"
+      ]
+    },
+    "sourceStrengthRules": {
+      "description": "Strength rules shared by every interview item: a claim may never be presented more strongly than its source status and freshness allow.",
+      "allOf": [
+        {
+          "description": "Anything above inferred_from_jd must cite at least one supplied source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "enum": [
+                  "official",
+                  "repeatedly_reported",
+                  "single_report"
+                ]
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "repeatedly_reported requires at least two distinct source records. Canonical-source independence is checked by the WO-05 output validator.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "repeatedly_reported"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "minItems": 2
+              }
+            }
+          }
+        },
+        {
+          "description": "An item may only have known freshness when at least one source carries a date.",
+          "if": {
+            "properties": {
+              "freshness": {
+                "enum": [
+                  "fresh",
+                  "aging",
+                  "stale"
+                ]
+              }
+            },
+            "required": [
+              "freshness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "contains": {
+                  "required": [
+                    "source_date"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Official status requires an official tier and at least one official company source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "official"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "required": [
+              "tier"
+            ],
+            "properties": {
+              "tier": {
+                "const": "official"
+              },
+              "sources": {
+                "contains": {
+                  "properties": {
+                    "origin": {
+                      "enum": [
+                        "official_company_page",
+                        "official_company_material"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "origin"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "One reported experience may never be presented more strongly than 'reported_once'.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "single_report"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "presented_as": {
+                "const": "reported_once"
+              }
+            }
+          }
+        },
+        {
+          "description": "A JD inference or an unknown may never be presented as likely.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "enum": [
+                  "inferred_from_jd",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "presented_as": {
+                "enum": [
+                  "possible",
+                  "speculative"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "description": "A stale report may not be presented as likely.",
+          "if": {
+            "properties": {
+              "freshness": {
+                "const": "stale"
+              }
+            },
+            "required": [
+              "freshness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "presented_as": {
+                "enum": [
+                  "possible",
+                  "reported_once",
+                  "speculative"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "interviewSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal_id",
+        "layer",
+        "statement",
+        "source_status",
+        "presented_as",
+        "tier",
+        "sources",
+        "freshness"
+      ],
+      "properties": {
+        "signal_id": {
+          "type": "string"
+        },
+        "layer": {
+          "$ref": "#/$defs/interviewLayer"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_status": {
+          "$ref": "#/$defs/sourceStatus"
+        },
+        "presented_as": {
+          "$ref": "#/$defs/presentedAs"
+        },
+        "tier": {
+          "$ref": "#/$defs/sourceTier"
+        },
+        "sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/researchSource"
+          }
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "company": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/sourceStrengthRules"
+        }
+      ]
+    },
+    "interviewQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question_id",
+        "text",
+        "layer",
+        "source_status",
+        "presented_as",
+        "priority",
+        "tier",
+        "sources",
+        "freshness"
+      ],
+      "properties": {
+        "question_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layer": {
+          "$ref": "#/$defs/interviewLayer"
+        },
+        "source_status": {
+          "$ref": "#/$defs/sourceStatus"
+        },
+        "presented_as": {
+          "$ref": "#/$defs/presentedAs"
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1"
+          ]
+        },
+        "tier": {
+          "$ref": "#/$defs/sourceTier"
+        },
+        "sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/researchSource"
+          }
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "why_it_is_likely": {
+          "type": "string",
+          "description": "Which role requirement or signal makes this question plausible."
+        },
+        "company": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/sourceStrengthRules"
+        }
+      ]
+    },
+    "reportConflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_ids",
+        "disagreement",
+        "resolution"
+      ],
+      "properties": {
+        "item_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "disagreement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolution": {
+          "description": "Conflicting reports are surfaced, not silently averaged or dropped.",
+          "enum": [
+            "unresolved_both_shown",
+            "newer_preferred_both_shown",
+            "official_preferred_both_shown"
+          ]
+        }
+      }
+    }
+  }
+}
