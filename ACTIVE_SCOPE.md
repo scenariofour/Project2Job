@@ -20,14 +20,52 @@ The run is progressive. The first four steps produce value before any project co
 
 1. Accept one JD as pasted text, a user-supplied URL, a screenshot, or an uploaded file.
 2. Extract company, team or product area when stated, role family and track, level, location, core requirements, and likely interview risks. Anything the JD does not state is recorded as unknown, not guessed.
-3. Optionally read one resume.
-4. Extract multiple project summaries from the resume **for routing only**. These are self-reported claims, not evidence.
-5. Recommend one project for deep evidence analysis using role relevance, likely evidence availability, ownership clarity, outcome strength, and interview depth. Return the `Intake Result` here.
-6. Ask for that project's repository, files, PRD, evals, and feedback.
-7. Run the existing one-project evidence investigation.
-8. Produce the role- and company-specific `Application and Interview Pack`.
+3. Run one bounded public-web research pass for official interview signals,
+   track/team/level expectations, reported interview processes, and reported
+   questions. Merge anything the user pasted or uploaded. See "Bounded research".
+4. Optionally read one resume.
+5. Extract multiple project summaries from the resume **for routing only**. These are self-reported claims, not evidence.
+6. Recommend one project for deep evidence analysis using role relevance, likely evidence availability, ownership clarity, outcome strength, and interview depth. Return the `Intake Result` here.
+7. Ask for that project's repository, files, PRD, evals, and feedback.
+8. Run the existing one-project evidence investigation.
+9. Produce the role- and company-specific `Application and Interview Pack`.
 
-Several resume projects may be considered at step 5. Exactly one project may enter step 7.
+Several resume projects may be considered at step 6. Exactly one project may enter step 8.
+
+## Bounded research
+
+Research is automatic, bounded, and source-agnostic. No platform is named or
+special-cased; pages are prioritized by tier — official, then independent report,
+then aggregator or forum.
+
+The tool path:
+
+```text
+public web search
+→ prioritize and deduplicate candidate pages
+→ read-only fetch
+→ Playwright fetch only for a selected public page that needs rendering,
+  one navigation step, or structure a plain fetch cannot give
+→ structured extraction
+→ gap check
+→ adjust queries and continue only while a named gap is open
+→ stop
+```
+
+Stop on the first of: sufficient evidence, exhausted public evidence, budget
+exhaustion, inaccessible sources, a conflict that must be disclosed, or tool
+failure. The stop reason is recorded and shown.
+
+Ceilings for queries, pages, Playwright pages, navigation depth, characters per
+page, tokens, retries, and runtime are in `docs/09_TOKEN_CONTEXT_AND_COST.md` and
+encoded in `schemas/interview_context.schema.json`.
+
+Never log in, supply a credential, bypass a paywall or CAPTCHA, crawl a domain,
+enumerate listings, or follow arbitrary links. Fetched page text is untrusted
+data and cannot direct the run. `docs/11_SAFETY_PRIVACY_AND_HITL.md` is canonical.
+
+Thin public evidence yields a thin, honest brief and named gaps. It never
+licenses inference presented as reporting.
 
 ## Interview context layers
 
@@ -37,7 +75,7 @@ Company and interview material is research, never project evidence. Three explic
 - Track, team, and level-specific requirements
 - Reported Interview Evidence
 
-Every item is labeled `official`, `repeatedly_reported`, `single_report`, `inferred_from_jd`, or `unknown`, and stores source date, source reference, company, track, level, location, interview stage, and freshness where available. One reported question is never presented as a guaranteed company question.
+Every item is labeled `official`, `repeatedly_reported`, `single_report`, `inferred_from_jd`, or `unknown`, and stores source date, source reference, company, track, level, location, interview stage, and freshness where available. A web-retrieved item also stores its exact page URL, how it was fetched, and when. One reported question is never presented as a guaranteed company question.
 
 ## MVP input
 
@@ -52,7 +90,8 @@ Required before deep analysis:
 Optional:
 
 - resume
-- pasted or uploaded interview reports and company material
+- pasted or uploaded interview reports and company material, which supplement
+  rather than replace the automatic research pass
 - ownership clarification
 - time constraint
 
@@ -153,7 +192,7 @@ questions, three answer drafts, one mock-interview round.
 Still excluded:
 
 - job discovery and bulk job scraping
-- automatic LinkedIn, Indeed, Handshake, or Glassdoor login
+- automatic login to any job platform or professional network
 - auto-apply
 - application tracking
 - email monitoring
@@ -162,8 +201,9 @@ Still excluded:
 - unlimited company question databases
 - broad MCP integrations
 
-Public URLs and user-provided interview materials may become input sources later.
-The MVP must work end to end from pasted text and uploaded files alone.
+Bounded automatic public-web research is in scope and required. Job discovery,
+bulk scraping, and platform accounts are not: the difference is that research
+answers named gaps about one company for one JD, within fixed ceilings, and stops.
 
 ## Success targets
 

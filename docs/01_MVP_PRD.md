@@ -137,12 +137,21 @@ When no candidate clearly fits, the recommendation confidence is `no_clear_choic
 
 Three labeled layers — Company Interview Signals, track/team/level requirements, and Reported Interview Evidence — with no personality-based culture fit. Every item carries one of `official`, `repeatedly_reported`, `single_report`, `inferred_from_jd`, `unknown`, plus source date, reference, stage, and freshness where available.
 
+Interview context is gathered by one bounded automatic public-web research pass
+plus anything the user supplies. `ACTIVE_SCOPE.md` owns the tool path and stop
+conditions, `docs/09_TOKEN_CONTEXT_AND_COST.md` the ceilings, and
+`docs/11_SAFETY_PRIVACY_AND_HITL.md` the permissions.
+
 Rules the schema enforces:
 
 - a single reported experience may never be presented more strongly than "reported once"
 - a stale report may never be presented as likely
 - conflicting reports are shown together, never merged or averaged
 - an unknown track is recorded as unknown, never inferred from the company
+- a web-retrieved claim cites its exact page, fetch method, and retrieval date
+- a Playwright fetch records why a plain fetch was not enough
+- a duplicate or login-walled page retains no content
+- an automatic pass records its queries, pages, and stop reason
 
 ## Skill scope
 
@@ -171,6 +180,8 @@ The Web surface supports:
 - Exactly one project enters deep evidence analysis.
 - Every external-facing claim has a source or unsupported status.
 - Interview research and verified project evidence are never merged.
+- The research pass stays inside its ceilings and always reports a stop reason.
+- No research step logs in, bypasses a restriction, or crawls a domain.
 - A resume bullet cannot contain an unsupported fact.
 - An answer draft cannot exceed the project evidence behind it.
 - One Next Build is returned.

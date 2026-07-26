@@ -22,8 +22,12 @@ SOURCE_STATUSES = [
 ]
 
 
+def read(relative: str) -> str:
+    return (ROOT / relative).read_text(encoding="utf-8")
+
+
 def load(relative: str) -> dict:
-    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+    return json.loads(read(relative))
 
 
 def load_cases() -> list[dict]:
@@ -175,18 +179,192 @@ class InterviewContextTests(unittest.TestCase):
         resolutions = self.defs["reportConflict"]["properties"]["resolution"]["enum"]
         self.assertTrue(all(value.endswith("both_shown") for value in resolutions))
 
-    def test_research_origins_require_user_supplied_material(self) -> None:
+    def test_research_origins_cover_web_and_user_supplied_material(self) -> None:
         origins = self.defs["researchSource"]["properties"]["origin"]["enum"]
         self.assertEqual(
             set(origins),
             {
+                "official_company_page",
                 "official_company_material",
+                "public_report_page",
                 "job_description",
                 "user_pasted_report",
                 "user_uploaded_file",
                 "user_own_experience",
             },
         )
+
+
+class ResearchContractTests(unittest.TestCase):
+    """Bounded automatic public-web research (D-016)."""
+
+    def setUp(self) -> None:
+        self.schema = load("schemas/interview_context.schema.json")
+        self.defs = self.schema["$defs"]
+
+    def test_every_context_records_how_it_was_researched(self) -> None:
+        self.assertIn("research", self.schema["required"])
+        self.assertEqual(
+            set(self.defs["researchRun"]["required"]),
+            {"mode", "budget", "queries", "pages", "stop_reason", "gaps"},
+        )
+
+    def test_budget_ceilings_match_the_token_policy_table(self) -> None:
+        """docs/09 explains the ceilings; the schema enforces them. Keep them equal."""
+        documented = dict(
+            re.findall(
+                r"^\| (max_\w+) \| (\d+) \|$",
+                read("docs/09_TOKEN_CONTEXT_AND_COST.md"),
+                re.MULTILINE,
+            )
+        )
+        encoded = {
+            name: str(rule["maximum"])
+            for name, rule in self.defs["researchBudget"]["properties"].items()
+        }
+        self.assertEqual(documented, encoded)
+        self.assertEqual(
+            set(encoded), set(self.defs["researchBudget"]["required"])
+        )
+
+    def test_playwright_is_an_escalation_not_a_default(self) -> None:
+        self.assertEqual(
+            self.defs["fetchMethod"]["enum"],
+            ["read_only_fetch", "playwright", "cache"],
+        )
+        rules = conditions(self.defs["researchPage"])
+        escalated = [
+            rule
+            for rule in rules
+            if rule["if"]["properties"].get("fetch_method", {}).get("const")
+            == "playwright"
+        ]
+        self.assertEqual(len(escalated), 1)
+        self.assertEqual(escalated[0]["then"]["required"], ["escalation_reason"])
+
+    def test_duplicate_and_login_walled_pages_retain_nothing(self) -> None:
+        rules = conditions(self.defs["researchPage"])
+        for outcome in ("duplicate_of_kept_page", "inaccessible_login_required"):
+            with self.subTest(outcome=outcome):
+                matched = [
+                    rule
+                    for rule in rules
+                    if rule["if"]["properties"].get("outcome", {}).get("const")
+                    == outcome
+                ]
+                self.assertEqual(len(matched), 1)
+                self.assertEqual(
+                    matched[0]["then"]["properties"]["chars_retained"]["maximum"], 0
+                )
+
+    def test_web_claims_cite_page_method_and_date(self) -> None:
+        rules = conditions(self.defs["researchSource"])
+        web = [
+            rule
+            for rule in rules
+            if "official_company_page"
+            in rule["if"]["properties"].get("origin", {}).get("enum", [])
+        ]
+        self.assertEqual(len(web), 1)
+        self.assertEqual(
+            set(web[0]["then"]["required"]), {"url", "fetch_method", "retrieved_on"}
+        )
+
+    def test_automatic_research_must_show_its_work(self) -> None:
+        rules = conditions(self.defs["researchRun"])
+        automatic = [
+            rule
+            for rule in rules
+            if rule["if"]["properties"].get("mode", {}).get("const")
+            == "automatic_bounded"
+        ]
+        self.assertEqual(len(automatic), 1)
+        for field in ("queries", "pages"):
+            self.assertEqual(automatic[0]["then"]["properties"][field]["minItems"], 1)
+
+    def test_a_run_without_research_cannot_claim_sufficiency(self) -> None:
+        rules = conditions(self.defs["researchRun"])
+        skipped = [
+            rule
+            for rule in rules
+            if set(rule["if"]["properties"].get("mode", {}).get("enum", []))
+            == {"user_supplied_only", "unavailable"}
+        ]
+        self.assertEqual(len(skipped), 1)
+        allowed = skipped[0]["then"]["properties"]["stop_reason"]["enum"]
+        self.assertNotIn("evidence_sufficient", allowed)
+
+    def test_stop_reasons_cover_every_required_exit(self) -> None:
+        self.assertEqual(
+            set(self.defs["researchStopReason"]["enum"]),
+            {
+                "evidence_sufficient",
+                "evidence_exhausted",
+                "budget_exhausted",
+                "sources_inaccessible",
+                "conflict_requires_disclosure",
+                "tool_failure",
+                "research_not_run",
+            },
+        )
+
+    def test_official_first_ordering_is_expressible(self) -> None:
+        self.assertEqual(
+            self.defs["sourceTier"]["enum"],
+            ["official", "independent_report", "aggregator_or_forum", "unknown"],
+        )
+        self.assertIn("tier", self.defs["researchPage"]["required"])
+
+    def test_follow_up_queries_must_name_the_gap_they_close(self) -> None:
+        purposes = self.defs["searchQuery"]["properties"]["purpose"]["enum"]
+        self.assertEqual(
+            set(purposes),
+            {
+                "official_interview_signals",
+                "track_team_level_expectations",
+                "reported_interview_process",
+                "reported_interview_questions",
+                "conflict_or_recency_check",
+            },
+        )
+
+    def test_no_platform_is_named_anywhere_in_the_contracts(self) -> None:
+        platforms = ("linkedin", "indeed", "glassdoor", "handshake", "levels.fyi")
+        for relative in (
+            "schemas/interview_context.schema.json",
+            "schemas/jd_intake.schema.json",
+            "schemas/intake_result.schema.json",
+            "ACTIVE_SCOPE.md",
+            "work_orders/WO-05_JD_FIRST_INTAKE.md",
+            "docs/09_TOKEN_CONTEXT_AND_COST.md",
+        ):
+            text = read(relative).lower()
+            for platform in platforms:
+                self.assertNotIn(platform, text, f"{relative} names {platform}")
+
+
+class ResearchPermissionTests(unittest.TestCase):
+    def test_safety_document_forbids_the_dangerous_paths(self) -> None:
+        safety = " ".join(read("docs/11_SAFETY_PRIVACY_AND_HITL.md").split()).lower()
+        for rule in (
+            "log in",
+            "credential",
+            "paywall",
+            "captcha",
+            "crawl a domain",
+            "enumerate job listings",
+            "follow arbitrary links",
+        ):
+            self.assertIn(rule, safety, f"Safety doc does not address: {rule}")
+
+    def test_fetched_page_text_is_declared_inert(self) -> None:
+        safety = " ".join(read("docs/11_SAFETY_PRIVACY_AND_HITL.md").split())
+        self.assertIn("fetched webpage text is inert data", safety.lower())
+
+    def test_research_is_required_not_optional(self) -> None:
+        scope = " ".join(read("ACTIVE_SCOPE.md").split()).lower()
+        self.assertIn("bounded automatic public-web research is in scope and required", scope)
+        self.assertNotIn("uploaded files alone", scope)
 
 
 class IntakeResultTests(unittest.TestCase):
@@ -350,9 +528,9 @@ class Day2EvalCaseTests(unittest.TestCase):
     def setUp(self) -> None:
         self.cases = load_cases()
 
-    def test_ten_cases_with_stable_unique_ids(self) -> None:
+    def test_cases_have_stable_unique_ids(self) -> None:
         ids = [case["case_id"] for case in self.cases]
-        self.assertEqual(ids, [f"D2-{index:03d}" for index in range(1, 11)])
+        self.assertEqual(ids, [f"D2-{index:03d}" for index in range(1, 21)])
 
     def test_every_case_states_what_must_not_happen(self) -> None:
         for case in self.cases:
@@ -373,6 +551,16 @@ class Day2EvalCaseTests(unittest.TestCase):
             "single reported question",
             "exceeds project evidence",
             "emphasis changes wording",
+            "official source plus independent reports",
+            "conflicting public reports",
+            "overstated as common",
+            "duplicate results",
+            "login-only or inaccessible page",
+            "requires Playwright",
+            "prompt injection inside a fetched page",
+            "budget exhaustion",
+            "no useful public evidence",
+            "early stopping",
         ):
             self.assertIn(scenario, names, f"No case covers: {scenario}")
 
@@ -386,7 +574,7 @@ class Day2EvalCaseTests(unittest.TestCase):
     def test_every_acceptance_criterion_has_at_least_one_case(self) -> None:
         journal = (ROOT / "docs/build_journal/DAY_2.md").read_text(encoding="utf-8")
         declared = set(re.findall(r"D2-AC-\d{2}", journal))
-        self.assertEqual(len(declared), 14)
+        self.assertEqual(len(declared), 24)
         covered = {
             criterion
             for case in self.cases

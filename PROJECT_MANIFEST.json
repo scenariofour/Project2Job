@@ -52,6 +52,7 @@
       "docs/01_MVP_PRD.md",
       "docs/04_INTENT_AND_ONBOARDING.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
+      "docs/09_TOKEN_CONTEXT_AND_COST.md",
       "docs/11_SAFETY_PRIVACY_AND_HITL.md",
       "schemas/jd_intake.schema.json",
       "schemas/interview_context.schema.json",

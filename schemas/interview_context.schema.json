@@ -2,12 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://project2job.dev/schemas/interview-context/1.0.0",
   "title": "InterviewContext",
-  "description": "Company, track, and reported interview context for one target JD. Research about a company is never project evidence: every item carries a source status and is kept separate from verified project facts.",
+  "description": "Company, track, and reported interview context for one target JD, gathered by bounded automatic public-web research and from any material the user supplies. Research about a company is never project evidence: every item carries a source status and is kept separate from verified project facts.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
     "company",
+    "research",
     "signals",
     "questions",
     "unknowns"
@@ -29,6 +30,9 @@
     },
     "location": {
       "type": "string"
+    },
+    "research": {
+      "$ref": "#/$defs/researchRun"
     },
     "signals": {
       "type": "array",
@@ -104,14 +108,27 @@
       ],
       "properties": {
         "origin": {
-          "description": "Where the material came from. The MVP accepts pasted text and uploaded files only; no automated retrieval.",
+          "description": "Where the material came from. Public-web origins are retrieved by bounded automatic research; user origins are supplied directly. Both are supported.",
           "enum": [
+            "official_company_page",
             "official_company_material",
+            "public_report_page",
             "job_description",
             "user_pasted_report",
             "user_uploaded_file",
             "user_own_experience"
           ]
+        },
+        "url": {
+          "type": "string",
+          "description": "Required for public-web origins. The exact page the claim came from, not a domain or a search result list."
+        },
+        "fetch_method": {
+          "$ref": "#/$defs/fetchMethod"
+        },
+        "retrieved_on": {
+          "type": "string",
+          "description": "ISO-8601 date the page was retrieved. Distinct from source_date, which is when the content was written."
         },
         "reference": {
           "type": "string",
@@ -132,7 +149,390 @@
             "unknown"
           ]
         }
+      },
+      "allOf": [
+        {
+          "description": "A web-retrieved claim must cite the exact page, how it was fetched, and when.",
+          "if": {
+            "properties": {
+              "origin": {
+                "enum": [
+                  "official_company_page",
+                  "public_report_page"
+                ]
+              }
+            },
+            "required": [
+              "origin"
+            ]
+          },
+          "then": {
+            "required": [
+              "url",
+              "fetch_method",
+              "retrieved_on"
+            ]
+          }
+        }
+      ]
+    },
+    "fetchMethod": {
+      "description": "How a page was read. Playwright is a real MVP capability but is an escalation, not the default.",
+      "enum": [
+        "read_only_fetch",
+        "playwright",
+        "cache"
+      ]
+    },
+    "sourceTier": {
+      "description": "Drives official-first prioritization. Official pages are fetched and trusted before independent reports.",
+      "enum": [
+        "official",
+        "independent_report",
+        "aggregator_or_forum",
+        "unknown"
+      ]
+    },
+    "researchRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One bounded research pass. Present even when no research ran, so a thin company brief is explained rather than unexplained.",
+      "required": [
+        "mode",
+        "budget",
+        "queries",
+        "pages",
+        "stop_reason",
+        "gaps"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "automatic_bounded",
+            "user_supplied_only",
+            "unavailable"
+          ]
+        },
+        "budget": {
+          "$ref": "#/$defs/researchBudget"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/searchQuery"
+          }
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/researchPage"
+          }
+        },
+        "stop_reason": {
+          "$ref": "#/$defs/researchStopReason"
+        },
+        "gaps": {
+          "type": "array",
+          "description": "What the research could not establish. Drives the unknowns list rather than an inference.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "description": "Automatic research must show its work: at least one query and one page record.",
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "automatic_bounded"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "queries": {
+                "minItems": 1
+              },
+              "pages": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "When no research ran, the run cannot claim it stopped because the evidence was sufficient.",
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "user_supplied_only",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "stop_reason": {
+                "enum": [
+                  "research_not_run",
+                  "tool_failure"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "researchBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Hard ceilings. The maximums here are the contract; docs/09_TOKEN_CONTEXT_AND_COST.md explains them. A run may declare less, never more.",
+      "required": [
+        "max_search_queries",
+        "max_pages_fetched",
+        "max_playwright_pages",
+        "max_navigation_depth",
+        "max_chars_per_page",
+        "max_total_tokens",
+        "max_retries_per_page",
+        "max_runtime_seconds"
+      ],
+      "properties": {
+        "max_search_queries": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "max_pages_fetched": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "max_playwright_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "max_navigation_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0 means fetch only the search result URL. 1 permits one in-page link on the same host. Never crawl."
+        },
+        "max_chars_per_page": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20000
+        },
+        "max_total_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        },
+        "max_retries_per_page": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "max_runtime_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        }
       }
+    },
+    "searchQuery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query",
+        "purpose",
+        "results_considered",
+        "results_kept"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "description": "Which gap this query was meant to close. A follow-up query is only justified by a named gap.",
+          "enum": [
+            "official_interview_signals",
+            "track_team_level_expectations",
+            "reported_interview_process",
+            "reported_interview_questions",
+            "conflict_or_recency_check"
+          ]
+        },
+        "results_considered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "results_kept": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "researchPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "tier",
+        "outcome"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_url": {
+          "type": "string",
+          "description": "Normalized URL used for deduplication."
+        },
+        "tier": {
+          "$ref": "#/$defs/sourceTier"
+        },
+        "fetch_method": {
+          "$ref": "#/$defs/fetchMethod"
+        },
+        "escalation_reason": {
+          "description": "Why a plain read-only fetch was not enough. Required when fetch_method is playwright.",
+          "enum": [
+            "javascript_rendered",
+            "navigation_required",
+            "structure_required"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "extracted",
+            "duplicate_of_kept_page",
+            "inaccessible_login_required",
+            "inaccessible_blocked",
+            "render_required",
+            "fetch_failed",
+            "skipped_budget",
+            "skipped_irrelevant"
+          ]
+        },
+        "retrieved_on": {
+          "type": "string"
+        },
+        "chars_retained": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicate_of": {
+          "type": "string",
+          "description": "canonical_url of the page this duplicates."
+        }
+      },
+      "allOf": [
+        {
+          "description": "Playwright use must be justified per page.",
+          "if": {
+            "properties": {
+              "fetch_method": {
+                "const": "playwright"
+              }
+            },
+            "required": [
+              "fetch_method"
+            ]
+          },
+          "then": {
+            "required": [
+              "escalation_reason"
+            ]
+          }
+        },
+        {
+          "description": "A duplicate must name what it duplicates, and retain nothing.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "duplicate_of_kept_page"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "duplicate_of"
+            ],
+            "properties": {
+              "chars_retained": {
+                "maximum": 0
+              }
+            }
+          }
+        },
+        {
+          "description": "A login wall is recorded and abandoned. It is never retried with credentials, and nothing is extracted from it.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "inaccessible_login_required"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "chars_retained": {
+                "maximum": 0
+              }
+            }
+          }
+        },
+        {
+          "description": "Only an extracted page may retain content.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "extracted"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "fetch_method",
+              "retrieved_on",
+              "chars_retained"
+            ]
+          }
+        }
+      ]
+    },
+    "researchStopReason": {
+      "description": "Mirrors the Day 1 loop vocabulary where the meaning is the same.",
+      "enum": [
+        "evidence_sufficient",
+        "evidence_exhausted",
+        "budget_exhausted",
+        "sources_inaccessible",
+        "conflict_requires_disclosure",
+        "tool_failure",
+        "research_not_run"
+      ]
     },
     "interviewSignal": {
       "type": "object",

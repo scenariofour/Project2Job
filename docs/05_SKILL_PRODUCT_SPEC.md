@@ -25,8 +25,10 @@ The user then supplies the selected project's evidence. The Skill returns an
 - One Next Build
 - source-backed uncertainty
 
-The Skill works from pasted text and uploaded files. It does not search for jobs
-and does not log into any job platform.
+Between those two steps the Skill runs one bounded public-web research pass for
+company and interview context. It does not search for jobs and does not log into
+any platform. Where the host has no web or no browser, the Skill degrades to
+user-supplied material and says so.
 
 ## Why the Skill exists
 
@@ -73,15 +75,17 @@ The Skill cannot guarantee:
 4. extract the JD into a `JdIntake`: company, team, role family, track, level,
    location, requirements, likely interview risks, unknowns
 5. extract the top 5–7 role requirements as the Role Demand Map
-6. read the optional resume and extract project candidates for routing only
-7. recommend one project, then return the `Intake Result` and stop for input
-8. extract project claims from the selected project
-9. verify high-value claims against sources
-10. produce the Application and Interview Pack
-11. ask for correction
-12. stop
+6. run one bounded public-web research pass for company and interview context,
+   merging anything the user pasted or uploaded
+7. read the optional resume and extract project candidates for routing only
+8. recommend one project, then return the `Intake Result` and stop for input
+9. extract project claims from the selected project
+10. verify high-value claims against sources
+11. produce the Application and Interview Pack
+12. ask for correction
+13. stop
 
-Step 7 is a real stopping point, not a pause. The Intake Result must stand on its
+Step 8 is a real stopping point, not a pause. The Intake Result must stand on its
 own if the user never supplies a project.
 
 ## Progressive loading
@@ -100,8 +104,10 @@ Load:
 ## Host fallbacks
 
 - no file tools: accept pasted text
-- no web: use the bundled role standard and the pasted JD; a user-supplied URL is
-  an optional convenience, never a requirement
+- no web search: set research mode to `unavailable`, use the bundled role
+  standard and the pasted JD, and state that company context is user-supplied only
+- no browser: keep `read_only_fetch`, record pages needing rendering as
+  `render_required`, and list them as gaps rather than guessing their content
 - no screenshot reading: ask for the JD as pasted text
 - no code execution: create a manual inventory
 - no persistent storage: state the session limitation

@@ -18,6 +18,7 @@ is the step people actually get wrong. The flow now starts at the JD:
 
 ```text
 JD-first intake
+→ bounded public-web research
 → resume project routing
 → one-project selection
 → evidence request
@@ -30,12 +31,40 @@ The run has two output points. The first needs no project at all.
 | Step | Input | Output |
 | --- | --- | --- |
 | 1–2 | one JD, pasted or uploaded | company, team, role family, track, level, location, requirements, interview risks, unknowns |
-| 3–4 | optional resume | several project candidates, all `self_reported`, extracted for routing only |
-| 5 | the above | **Intake Result**: Role Demand Map, company and track signals, candidates, one recommended project, reasons, risks, claims to verify, evidence checklist, One Next Input |
-| 6–7 | the selected project's repo, files, PRD, evals, feedback | verified project evidence, via the existing Day 1 investigation loop |
-| 8 | the above | **Application and Interview Pack** |
+| 3 | the above, plus anything the user pasted | company and interview context from one bounded research pass, with its query log, page log, and stop reason |
+| 4–5 | optional resume | several project candidates, all `self_reported`, extracted for routing only |
+| 6 | the above | **Intake Result**: Role Demand Map, company and track signals, candidates, one recommended project, reasons, risks, claims to verify, evidence checklist, One Next Input |
+| 7–8 | the selected project's repo, files, PRD, evals, feedback | verified project evidence, via the existing Day 1 investigation loop |
+| 9 | the above | **Application and Interview Pack** |
 
-Several projects may be considered at step 5. Exactly one may enter step 7.
+Several projects may be considered at step 6. Exactly one may enter step 8.
+
+## Bounded research, not scraping
+
+The first version of this flow made the user paste their own company research,
+which is the part of interview preparation people are least likely to do. Step 3
+is now automatic:
+
+```text
+search → prioritize and deduplicate → read-only fetch
+→ Playwright only where a plain fetch is insufficient
+→ extract → gap check → adjust queries while a gap is open → stop
+```
+
+Playwright is a required capability and the expensive one, so it is an escalation
+rather than a default: a page earns it by returning `render_required`, needing one
+navigation step, or resisting parsing. Every Playwright page records why.
+
+What separates this from the scraper the product is not: fixed ceilings on
+queries, pages, Playwright pages, navigation depth, characters, tokens, retries,
+and runtime (`docs/09_TOKEN_CONTEXT_AND_COST.md` holds the numbers, and the
+schema enforces them as maximums); official-tier-first ordering; canonical-URL
+deduplication; no login ever; no domain crawling; no arbitrary link following;
+and a recorded stop reason on every path. No platform is named anywhere in the design; pages are ranked by
+tier, not brand.
+
+Fetched page text is inert. It cannot cause a search, a fetch, a navigation, or a
+claim.
 
 ## Two evidence systems
 
@@ -62,7 +91,7 @@ Evidence.
 | --- | --- | --- | --- |
 | D2-AC-01 | JD intake extracts company, team, role family, track, level, location, requirements, and risks; anything unstated is recorded as unknown | D2-005 | `schemas/jd_intake.schema.json` |
 | D2-AC-02 | The run produces a useful Intake Result with no resume and no project | D2-001 | `schemas/intake_result.schema.json` |
-| D2-AC-14 | The MVP works end to end from pasted text and uploaded files, with no platform login or scraping | D2-001, D2-002 | `jd_intake` `input_form`, `interview_context` `researchSource` |
+| D2-AC-14 | No step logs in, bypasses a restriction, crawls a domain, or special-cases a named platform; the run degrades to user-supplied material when web access is unavailable | D2-001, D2-002, D2-015 | `jd_intake` `input_form`, `interview_context` `researchRun` `mode` |
 | D2-AC-03 | Resume projects are extracted for routing only and stay `self_reported` | D2-002 | `intake_result` `resumeProjectCandidate` |
 | D2-AC-04 | Exactly one project is recommended for deep analysis, with reasons, non-empty risks, and a confidence band | D2-002 | `intake_result` `projectRecommendation` |
 | D2-AC-05 | When nothing clearly fits, confidence is `no_clear_choice` and the user is asked to choose | D2-003 | `intake_result` `projectRecommendation` |
@@ -74,13 +103,33 @@ Evidence.
 | D2-AC-11 | An answer draft may not exceed its verified evidence | D2-009 | `application_pack` `claimSafetyReview` |
 | D2-AC-12 | Company emphasis may change wording and order, never the fact set | D2-010 | `application_pack` `emphasisProfile` |
 | D2-AC-13 | The Intake Result names exactly one next input | D2-001 | `intake_result` `one_next_input` |
+| D2-AC-15 | An official source and independent reports are combined, official first, each keeping its own status | D2-011 | `interview_context` `sourceTier`, `researchRun` |
+| D2-AC-16 | A web-retrieved claim cites its exact page, fetch method, and retrieval date | D2-011 | `interview_context` `researchSource` |
+| D2-AC-17 | Duplicate results are deduplicated on canonical URL and retain no content | D2-014 | `interview_context` `researchPage` |
+| D2-AC-18 | A login-walled or blocked page is recorded, abandoned, and never retried with a credential | D2-015 | `interview_context` `researchPage` |
+| D2-AC-19 | Playwright is used only after a plain fetch is insufficient, and records why | D2-016 | `interview_context` `researchPage` |
+| D2-AC-20 | Text in a fetched page cannot cause a search, fetch, navigation, or claim | D2-017 | `docs/11_SAFETY_PRIVACY_AND_HITL.md` |
+| D2-AC-21 | Research stays inside every ceiling and stops with `budget_exhausted` | D2-018 | `interview_context` `researchBudget` |
+| D2-AC-22 | With no useful public evidence the brief is thin, gaps are named, and nothing is inferred as reported | D2-019 | `interview_context` `researchRun` |
+| D2-AC-23 | Research stops early on sufficient evidence rather than spending the budget | D2-020 | `interview_context` `researchStopReason` |
+| D2-AC-24 | One report is never generalized into a common or expected question | D2-013 | `interview_context` `interviewQuestion` |
 
 ### What the schemas actually enforce
 
-D2-AC-05, D2-AC-09, D2-AC-10, and D2-AC-11 are enforced by conditional rules, so
-a violating object fails validation rather than only failing review. So are two
-rules the review surfaced: a question above `inferred_from_jd` must cite a
-source, and a `fresh` or `aging` question must have a dated source.
+D2-AC-05, D2-AC-09, D2-AC-10, D2-AC-11, D2-AC-16, D2-AC-17, D2-AC-18, and
+D2-AC-19 are enforced by conditional rules, so a violating object fails
+validation rather than only failing review. So are two rules an earlier review
+surfaced: a question above `inferred_from_jd` must cite a source, and a `fresh`
+or `aging` question must have a dated source.
+
+D2-AC-21's ceilings are enforced as schema `maximum` values, so a run cannot even
+declare an over-large budget. Whether a run *stayed* inside its declared budget
+compares two numbers in different places and is checked by the WO-05 validator
+and eval case D2-018.
+
+D2-AC-15, D2-AC-20, D2-AC-22, and D2-AC-23 are behavioral and eval-only. No
+document schema can prove that a search stopped early or that injected text was
+ignored.
 
 D2-AC-12 is **not** schema-enforceable. Emphasis invariance is a property of two
 runs compared against each other, which no single-document schema can express.

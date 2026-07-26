@@ -58,6 +58,36 @@ Targets to calibrate:
 - no more than 4 source rereads per high-value claim
 - stop once the output contract is supportable
 
+### Public-web interview research
+
+One bounded research pass per JD. These are hard ceilings, encoded as `maximum`
+values in `schemas/interview_context.schema.json` `researchBudget`; a run may
+declare less, never more.
+
+| Limit | Ceiling |
+| --- | --- |
+| max_search_queries | 8 |
+| max_pages_fetched | 12 |
+| max_playwright_pages | 3 |
+| max_navigation_depth | 1 |
+| max_chars_per_page | 20000 |
+| max_total_tokens | 60000 |
+| max_retries_per_page | 1 |
+| max_runtime_seconds | 120 |
+
+Cost discipline for the pass:
+
+- official sources first; independent reports only to confirm, conflict, or fill
+  a named gap
+- deduplicate on canonical URL before fetching, and on content after
+- cache page extractions for the run; never fetch the same canonical URL twice
+- plain read-only fetch is the default. Escalate to Playwright only for a page
+  that returned `render_required`, needs one navigation step, or cannot be parsed
+  otherwise. Playwright is a required capability and an expensive one
+- retain only the extracted spans that answer a named gap, never whole pages
+- issue a follow-up query only when a gap is still open after the current results
+- stop at the first sufficient answer rather than spending the remaining budget
+
 ### Agent update
 
 - compare hashes first
@@ -71,6 +101,10 @@ Record:
 
 - files discovered
 - files opened
+- search queries issued
+- pages fetched, deduplicated, and skipped
+- Playwright pages and why each was escalated
+- research stop reason
 - source sections read
 - repeated reads
 - retrieval chunks

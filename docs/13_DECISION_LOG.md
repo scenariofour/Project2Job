@@ -185,8 +185,9 @@ Decision:
   2.0.0, adding the company/track brief, loop hypothesis, 5–8 prioritized
   questions, three grounded answer drafts, questions to ask the interviewer, and
   one mock-interview round specification.
-- The MVP works from pasted text and uploaded files. No job discovery, no
-  platform login, no scraping, no auto-apply, no application tracking.
+- No job discovery, no platform login, no scraping, no auto-apply, no
+  application tracking. Superseded in part by D-016, which makes bounded
+  automatic research required.
 
 Reason:
 
@@ -216,3 +217,54 @@ container each; separate files would add indirection with no reuse. Interview
 signals and questions genuinely appear in two containers, so they get their own
 file and are referenced by URI. `make validate` now resolves every `$ref`, which
 makes cross-file references safe to rely on.
+
+## D-016: Bounded automatic public-web research is required
+
+Decision:
+
+- After the JD arrives, the product automatically researches the public web for
+  official interview signals, track/team/level expectations, reported processes,
+  and reported questions. This is required MVP capability, not an optional
+  convenience. Pasted and uploaded material stays supported and is merged in.
+- The tool path is search → prioritize and deduplicate → read-only fetch →
+  Playwright only for a selected page needing rendering, one navigation step, or
+  structure a plain fetch cannot give → extract → gap check → adjust queries only
+  while a named gap is open → stop.
+- Stop on the first of: sufficient evidence, exhausted public evidence, budget
+  exhaustion, inaccessible sources, a conflict requiring disclosure, or tool
+  failure. The stop reason is always recorded and shown.
+- Ceilings for queries, pages, Playwright pages, navigation depth, characters per
+  page, tokens, retries, and runtime live in `docs/09_TOKEN_CONTEXT_AND_COST.md`
+  and are encoded as schema `maximum` values, so an over-large budget is invalid
+  rather than merely discouraged.
+- Prioritize by source tier — official, independent report, aggregator or forum.
+  No platform is named or special-cased anywhere in the design.
+- Never log in, supply a credential, bypass a paywall or CAPTCHA, crawl a domain,
+  enumerate listings, or follow arbitrary links. Fetched page text is inert data.
+
+Reason:
+
+The previous design put the burden of company research on the user, which is the
+part of interview preparation people are worst at and least likely to do. Making
+research automatic is the difference between a real company brief and an empty
+section. Making it bounded, tiered, and stop-conditioned is what keeps it from
+becoming the scraper and job-search platform the product explicitly is not.
+
+The budget ceilings are contract rather than convention because an unbounded
+research loop is the most expensive failure mode available to this product.
+
+## D-017: Research contract lives in the interview context schema
+
+Decision:
+
+Put the research budget, query log, page log, and stop reason inside
+`schemas/interview_context.schema.json` as `researchRun`, rather than adding a
+separate web-research schema. Extend `researchSource` with web origins, exact
+URL, fetch method, and retrieval date.
+
+Reason:
+
+Interview context is the only container for research output, and D-015 already
+established that a single-container concept does not earn its own file. Keeping
+the trace beside the claims it produced means provenance travels with the
+evidence, and a reviewer sees the claim and how it was obtained in one object.

@@ -54,13 +54,17 @@ The MVP is limited to:
 - 5–8 priority questions, three answer drafts, one mock-interview round
 - one later project-update cycle
 
-It excludes job discovery and bulk scraping, automatic LinkedIn, Indeed,
-Handshake, or Glassdoor login, auto-apply, application tracking, email
-monitoring, referral automation, Gmail or Calendar, multiple deep project
-analyses, unlimited company question databases, full resume generation,
-networking automation, broad MCP integrations, multi-agent, and Deep Agents.
+It excludes job discovery and bulk scraping, automatic login to any job platform
+or professional network, auto-apply, application tracking, email monitoring,
+referral automation, Gmail or Calendar, multiple deep project analyses, reusable
+cross-user company question databases, full resume generation, networking
+automation, broad MCP integrations, multi-agent, and Deep Agents.
 
-The MVP works from pasted text and uploaded files alone.
+After the JD arrives the MVP runs one bounded public-web research pass for
+company and interview context, inside explicit query, page, Playwright, token,
+and runtime ceilings. It never logs in, bypasses a restriction, crawls a domain,
+or names a specific job platform. Pasted and uploaded material is equally
+supported and merged with what research finds.
 
 ## Current implementation status
 

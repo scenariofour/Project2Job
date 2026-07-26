@@ -6,6 +6,9 @@
 - intent routing
 - JD extraction correctness and unknown handling
 - project routing: does the recommended project match a reviewer's pick
+- research: official-first ordering, deduplication, Playwright escalation
+  discipline, budget adherence, and stop-reason correctness
+- resilience to inaccessible pages and to injection in fetched pages
 - interview source-status labeling, freshness, and conflict handling
 - answer-draft claim safety and emphasis invariance
 - source correctness
@@ -128,6 +131,9 @@ Measure:
 - one pasted JD alone produces a usable Intake Result
 - extracted company, role family, level, and track match the JD, with everything
   unstated recorded as unknown
+- the research pass finds official signals when they exist publicly, stays inside
+  its ceilings, and reports the right stop reason on each failure path
+- Playwright is used only where a plain fetch was insufficient
 - the recommended project matches a reviewer's pick on labeled routing cases
 - no interview item is presented more strongly than its source status allows
 - `lab/evals/day2_jd_first_cases.jsonl` passes
@@ -164,7 +170,8 @@ Measure:
 - Skill does not beat the strong prompt on meaningful quality or usability
 - the project recommendation is no better than the user's own first instinct
 - users mainly want generic resume rewriting
-- users will not paste interview material, leaving company context permanently thin
+- public interview evidence is too thin or too stale to beat the user's own search
+- research cost or latency exceeds the value of the company brief
 - source error rate remains unsafe
 - project upload cost exceeds perceived value
 - Agent update provides no measurable advantage
