@@ -80,7 +80,8 @@ See `docs/build_journal/DAY_1.md` for the acceptance traceability table.
 - role-standard relationship to hiring outcomes
 - that the JD-first ordering matches how users actually work
 - that the project recommendation beats the user's own instinct
-- that users will supply enough interview material for a useful company brief
+- that public evidence plus optional user-supplied material will support a useful
+  company brief
 
 ## Next required action
 

@@ -358,7 +358,8 @@
       "required": [
         "stage",
         "expected_focus",
-        "source_status"
+        "source_status",
+        "basis"
       ],
       "properties": {
         "stage": {
@@ -380,7 +381,8 @@
         },
         "basis": {
           "type": "string",
-          "description": "Which signal or requirement supports this stage."
+          "minLength": 1,
+          "description": "The signal or requirement ID that supports this stage. Cross-object resolution belongs to the WO-05 output validator."
         }
       }
     },

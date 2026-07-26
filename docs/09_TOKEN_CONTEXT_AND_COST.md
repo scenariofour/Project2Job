@@ -104,6 +104,7 @@ Record:
 - search queries issued
 - pages fetched, deduplicated, and skipped
 - Playwright pages and why each was escalated
+- maximum retries used on any one page
 - research stop reason
 - source sections read
 - repeated reads

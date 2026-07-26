@@ -131,13 +131,13 @@ class InterviewContextTests(unittest.TestCase):
                 self.assertEqual(len(cited), 1)
                 self.assertEqual(cited[0]["then"]["properties"]["sources"]["minItems"], 1)
 
-    def test_fresh_questions_need_a_dated_source(self) -> None:
+    def test_known_freshness_needs_a_dated_source(self) -> None:
         rules = conditions(self.defs["interviewQuestion"], self.schema)
         dated = [
             rule
             for rule in rules
             if set(rule["if"].get("properties", {}).get("freshness", {}).get("enum", []))
-            == {"fresh", "aging"}
+            == {"fresh", "aging", "stale"}
         ]
         self.assertEqual(len(dated), 1)
         self.assertEqual(
@@ -185,10 +185,18 @@ class InterviewContextTests(unittest.TestCase):
         ]
         self.assertEqual(len(repeated), 1)
         self.assertEqual(repeated[0]["then"]["properties"]["sources"]["minItems"], 2)
+        for definition in ("interviewSignal", "interviewQuestion"):
+            with self.subTest(definition=definition):
+                self.assertTrue(
+                    self.defs[definition]["properties"]["sources"]["uniqueItems"]
+                )
 
     def test_conflicts_keep_both_reports_visible(self) -> None:
         resolutions = self.defs["reportConflict"]["properties"]["resolution"]["enum"]
         self.assertTrue(all(value.endswith("both_shown") for value in resolutions))
+        self.assertTrue(
+            self.defs["reportConflict"]["properties"]["item_ids"]["uniqueItems"]
+        )
 
     def test_research_origins_cover_web_and_user_supplied_material(self) -> None:
         origins = self.defs["researchSource"]["properties"]["origin"]["enum"]
@@ -231,7 +239,7 @@ class ResearchContractTests(unittest.TestCase):
             "max_navigation_depth": "navigation_depth_used",
             "max_chars_per_page": None,
             "max_total_tokens": "total_tokens",
-            "max_retries_per_page": "retries",
+            "max_retries_per_page": "max_retries_used_per_page",
             "max_runtime_seconds": "runtime_seconds",
         }
         self.assertEqual(set(pairs), set(ceilings))
@@ -289,7 +297,10 @@ class ResearchContractTests(unittest.TestCase):
             == "playwright"
         ]
         self.assertEqual(len(escalated), 1)
-        self.assertEqual(escalated[0]["then"]["required"], ["escalation_reason"])
+        self.assertEqual(
+            set(escalated[0]["then"]["required"]),
+            {"escalation_reason", "plain_fetch_outcome"},
+        )
 
     def test_only_an_extracted_page_may_retain_content(self) -> None:
         page = self.defs["researchPage"]
@@ -331,17 +342,20 @@ class ResearchContractTests(unittest.TestCase):
             set(web[0]["then"]["required"]), {"url", "fetch_method", "retrieved_on"}
         )
 
-    def test_automatic_research_must_show_its_work(self) -> None:
+    def test_automatic_research_must_record_a_query(self) -> None:
         rules = conditions(self.defs["researchRun"], self.schema)
         automatic = [
             rule
             for rule in rules
             if rule["if"].get("properties", {}).get("mode", {}).get("const")
             == "automatic_bounded"
+            and "queries" in rule["then"].get("properties", {})
         ]
         self.assertEqual(len(automatic), 1)
-        for field in ("queries", "pages"):
-            self.assertEqual(automatic[0]["then"]["properties"][field]["minItems"], 1)
+        self.assertEqual(
+            automatic[0]["then"]["properties"]["queries"]["minItems"], 1
+        )
+        self.assertNotIn("pages", automatic[0]["then"]["properties"])
 
     def test_a_run_without_research_cannot_claim_sufficiency(self) -> None:
         rules = conditions(self.defs["researchRun"], self.schema)
@@ -474,12 +488,19 @@ class IntakeResultTests(unittest.TestCase):
 
     def test_no_clear_choice_must_offer_alternatives(self) -> None:
         rules = conditions(self.defs["projectRecommendation"], self.schema)
-        self.assertEqual(len(rules), 1)
+        no_choice = [
+            rule
+            for rule in rules
+            if rule["if"].get("properties", {}).get("confidence", {}).get("const")
+            == "no_clear_choice"
+        ]
+        self.assertEqual(len(no_choice), 1)
         self.assertEqual(
-            rules[0]["if"]["properties"]["confidence"]["const"], "no_clear_choice"
+            no_choice[0]["then"]["properties"]["alternatives_considered"]["minItems"],
+            1,
         )
-        self.assertEqual(
-            rules[0]["then"]["properties"]["alternatives_considered"]["minItems"], 1
+        self.assertIsNone(
+            no_choice[0]["then"]["properties"]["candidate_id"]["const"]
         )
 
     def test_cannot_recommend_a_project_with_no_candidates(self) -> None:
@@ -502,6 +523,22 @@ class IntakeResultTests(unittest.TestCase):
         self.assertEqual(field["type"], "string")
         self.assertEqual(field["minLength"], 1)
         self.assertIn("one_next_input", self.schema["required"])
+
+    def test_candidates_require_a_recommendation_result(self) -> None:
+        rules = conditions(self.schema, self.schema)
+        non_empty = [
+            rule
+            for rule in rules
+            if rule["if"].get("properties", {})
+            .get("resume_project_candidates", {})
+            .get("minItems")
+            == 1
+        ]
+        self.assertEqual(len(non_empty), 1)
+        self.assertEqual(
+            non_empty[0]["then"]["properties"]["recommended_project"]["not"],
+            {"type": "null"},
+        )
 
 
 class ApplicationPackTests(unittest.TestCase):
@@ -592,6 +629,11 @@ class ApplicationPackTests(unittest.TestCase):
                 "followup_recovery",
             },
         )
+
+    def test_loop_stages_name_their_basis(self) -> None:
+        stage = self.defs["loopStage"]
+        self.assertIn("basis", stage["required"])
+        self.assertEqual(stage["properties"]["basis"]["minLength"], 1)
 
 
 class Day2EvalCaseTests(unittest.TestCase):
@@ -719,7 +761,7 @@ USAGE = {
     "playwright_pages": 0,
     "navigation_depth_used": 0,
     "total_tokens": 900,
-    "retries": 0,
+    "max_retries_used_per_page": 0,
     "runtime_seconds": 12,
 }
 
@@ -762,6 +804,48 @@ def a_context(**research_overrides) -> dict:
         "signals": [],
         "questions": [],
         "unknowns": [],
+    }
+
+
+def an_intake() -> dict:
+    return {
+        "schema_version": "1.0.0",
+        "jd_intake": {
+            "schema_version": "1.0.0",
+            "input_form": "pasted_text",
+            "company": "Example",
+            "role_family": "ai_product_manager",
+            "requirements": [
+                {
+                    "role_requirement_id": "r1",
+                    "text": "Evaluate retrieval quality",
+                    "relevance": "required",
+                    "jd_location": "responsibilities",
+                }
+            ],
+            "likely_interview_risks": [],
+            "unknowns": ["track"],
+        },
+        "role_demand_map": [
+            {
+                "role_requirement_id": "r1",
+                "demand": "Can evaluate retrieval",
+                "relevance": "required",
+                "evidence_would_look_like": "a labeled eval set",
+            }
+        ],
+        "interview_context": a_context(),
+        "resume_project_candidates": [],
+        "recommended_project": None,
+        "claims_requiring_verification": [],
+        "required_evidence_checklist": [
+            {
+                "artifact": "eval_or_test_results",
+                "why_needed": "to verify retrieval evaluation",
+                "required": True,
+            }
+        ],
+        "one_next_input": "the project to analyze",
     }
 
 
@@ -828,7 +912,7 @@ class InstanceValidationTests(unittest.TestCase):
     def test_playwright_is_justified_and_never_used_at_a_wall(self) -> None:
         self.assertRejects(
             a_context(pages=[a_page(fetch_method="playwright")]),
-            "Playwright fetch with no escalation reason",
+            "Playwright fetch with no escalation evidence",
         )
         self.assertRejects(
             a_context(
@@ -838,6 +922,7 @@ class InstanceValidationTests(unittest.TestCase):
                         chars_retained=0,
                         fetch_method="playwright",
                         escalation_reason="javascript_rendered",
+                        plain_fetch_outcome="render_required",
                     )
                 ],
                 stop_reason="sources_inaccessible",
@@ -851,6 +936,7 @@ class InstanceValidationTests(unittest.TestCase):
                         a_page(
                             fetch_method="playwright",
                             escalation_reason="javascript_rendered",
+                            plain_fetch_outcome="render_required",
                         )
                     ],
                     usage={**USAGE, "playwright_pages": 1},
@@ -864,6 +950,18 @@ class InstanceValidationTests(unittest.TestCase):
                 pages=[a_page(outcome="duplicate_of_kept_page", chars_retained=0)]
             ),
             "duplicate did not name the page it duplicates",
+        )
+        self.assertRejects(
+            a_context(
+                pages=[
+                    a_page(
+                        outcome="duplicate_of_kept_page",
+                        chars_retained=0,
+                        duplicate_of="",
+                    )
+                ]
+            ),
+            "duplicate used an empty canonical reference",
         )
 
     def test_research_mode_and_stop_reason_must_agree(self) -> None:
@@ -879,13 +977,49 @@ class InstanceValidationTests(unittest.TestCase):
             a_context(mode="user_supplied_only", stop_reason="research_not_run"),
             "no-research mode still recorded queries and pages",
         )
-
-    def test_automatic_research_must_show_queries_and_pages(self) -> None:
         self.assertRejects(
-            a_context(pages=[]), "automatic research recorded no pages"
+            a_context(
+                mode="unavailable",
+                queries=[],
+                pages=[],
+                stop_reason="research_not_run",
+            ),
+            "research_not_run still recorded non-zero usage",
+        )
+        self.assertTrue(
+            self.validator.is_valid(
+                a_context(
+                    mode="unavailable",
+                    queries=[],
+                    pages=[],
+                    stop_reason="research_not_run",
+                    usage=dict.fromkeys(USAGE, 0),
+                    gaps=["Public-web research was unavailable."],
+                )
+            )
+        )
+
+    def test_automatic_research_can_find_no_pages(self) -> None:
+        self.assertTrue(
+            self.validator.is_valid(
+                a_context(
+                    pages=[],
+                    stop_reason="evidence_exhausted",
+                    gaps=["No public interview pages found."],
+                    usage={**USAGE, "pages_fetched": 0},
+                )
+            )
         )
         self.assertRejects(
             a_context(queries=[]), "automatic research recorded no queries"
+        )
+        self.assertRejects(
+            a_context(
+                pages=[],
+                stop_reason="evidence_sufficient",
+                usage={**USAGE, "pages_fetched": 0},
+            ),
+            "zero-page research claimed sufficient public evidence",
         )
 
     def test_a_web_claim_must_cite_an_exact_dated_page(self) -> None:
@@ -963,9 +1097,22 @@ class InstanceValidationTests(unittest.TestCase):
             signal(source_status="repeatedly_reported", presented_as="likely"),
             "repeatedly_reported backed by a single source",
         )
+        repeated = signal(
+            source_status="repeatedly_reported",
+            presented_as="likely",
+        )
+        repeated["signals"][0]["sources"] *= 2
+        self.assertRejects(
+            repeated,
+            "repeatedly_reported counted the same source twice",
+        )
         self.assertRejects(
             signal(freshness="stale", presented_as="likely"),
             "stale report presented as likely",
+        )
+        self.assertRejects(
+            signal(freshness="stale", presented_as="reported_once"),
+            "stale report with no dated source",
         )
         self.assertRejects(
             signal(freshness="fresh", presented_as="reported_once"),
@@ -975,6 +1122,14 @@ class InstanceValidationTests(unittest.TestCase):
             signal(source_status="inferred_from_jd", presented_as="likely"),
             "JD inference presented as likely",
         )
+        self.assertRejects(
+            signal(
+                source_status="official",
+                presented_as="likely",
+                tier="aggregator_or_forum",
+            ),
+            "official status backed by a non-official tier and source",
+        )
 
 
 @unittest.skipUnless(HAVE_VALIDATOR, "jsonschema is not installed")
@@ -983,45 +1138,7 @@ class PackInstanceValidationTests(unittest.TestCase):
         self.validator = registry_and("schemas/intake_result.schema.json")
 
     def test_a_candidate_must_carry_routing_scores(self) -> None:
-        intake = {
-            "schema_version": "1.0.0",
-            "jd_intake": {
-                "schema_version": "1.0.0",
-                "input_form": "pasted_text",
-                "company": "Example",
-                "role_family": "ai_product_manager",
-                "requirements": [
-                    {
-                        "role_requirement_id": "r1",
-                        "text": "Evaluate retrieval quality",
-                        "relevance": "required",
-                        "jd_location": "responsibilities",
-                    }
-                ],
-                "likely_interview_risks": [],
-                "unknowns": ["track"],
-            },
-            "role_demand_map": [
-                {
-                    "role_requirement_id": "r1",
-                    "demand": "Can evaluate retrieval",
-                    "relevance": "required",
-                    "evidence_would_look_like": "a labeled eval set",
-                }
-            ],
-            "interview_context": a_context(),
-            "resume_project_candidates": [],
-            "recommended_project": None,
-            "claims_requiring_verification": [],
-            "required_evidence_checklist": [
-                {
-                    "artifact": "eval_or_test_results",
-                    "why_needed": "to verify retrieval evaluation",
-                    "required": True,
-                }
-            ],
-            "one_next_input": "the project to analyze",
-        }
+        intake = an_intake()
         self.assertEqual(
             [error.message for error in self.validator.iter_errors(intake)], []
         )
@@ -1036,6 +1153,38 @@ class PackInstanceValidationTests(unittest.TestCase):
         self.assertFalse(
             self.validator.is_valid(intake),
             "recommended a project when no candidate exists",
+        )
+
+    def test_no_clear_choice_does_not_assert_a_candidate(self) -> None:
+        intake = an_intake()
+        intake["resume_project_candidates"] = [
+            {
+                "candidate_id": "c1",
+                "summary": "A project with unclear fit",
+                "resume_location": "projects",
+                "evidence_status": "self_reported",
+                "scores": {
+                    "role_relevance": "weak",
+                    "likely_evidence_availability": "unknown",
+                    "ownership_clarity": "unknown",
+                    "outcome_strength": "unknown",
+                    "interview_depth": "weak",
+                },
+            }
+        ]
+        intake["recommended_project"] = {
+            "candidate_id": None,
+            "reasons": ["No candidate clearly fits."],
+            "risks": ["Only self-reported summaries were available."],
+            "confidence": "no_clear_choice",
+            "alternatives_considered": ["c1"],
+        }
+        intake["one_next_input"] = "choose one project to analyze"
+        self.assertTrue(self.validator.is_valid(intake))
+        intake["recommended_project"]["candidate_id"] = "c1"
+        self.assertFalse(
+            self.validator.is_valid(intake),
+            "no_clear_choice still asserted a candidate",
         )
 
 

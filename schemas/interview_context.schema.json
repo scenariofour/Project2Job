@@ -256,7 +256,7 @@
       },
       "allOf": [
         {
-          "description": "Automatic research must show its work: at least one query and one page record.",
+          "description": "Automatic research must show its work with at least one query. Pages may be empty when search returns no usable public result.",
           "if": {
             "properties": {
               "mode": {
@@ -273,9 +273,6 @@
             ],
             "properties": {
               "queries": {
-                "minItems": 1
-              },
-              "pages": {
                 "minItems": 1
               },
               "stop_reason": {
@@ -317,6 +314,60 @@
               }
             }
           }
+        },
+        {
+          "description": "A research_not_run result records zero research usage.",
+          "if": {
+            "properties": {
+              "stop_reason": {
+                "const": "research_not_run"
+              }
+            },
+            "required": [
+              "stop_reason"
+            ]
+          },
+          "then": {
+            "properties": {
+              "usage": {
+                "const": {
+                  "search_queries": 0,
+                  "pages_fetched": 0,
+                  "playwright_pages": 0,
+                  "navigation_depth_used": 0,
+                  "total_tokens": 0,
+                  "max_retries_used_per_page": 0,
+                  "runtime_seconds": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "An automatic pass that found no page cannot claim sufficient public evidence.",
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "automatic_bounded"
+              },
+              "pages": {
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "mode",
+              "pages"
+            ]
+          },
+          "then": {
+            "properties": {
+              "stop_reason": {
+                "not": {
+                  "const": "evidence_sufficient"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -330,7 +381,7 @@
         "playwright_pages",
         "navigation_depth_used",
         "total_tokens",
-        "retries",
+        "max_retries_used_per_page",
         "runtime_seconds"
       ],
       "properties": {
@@ -359,10 +410,11 @@
           "minimum": 0,
           "maximum": 60000
         },
-        "retries": {
+        "max_retries_used_per_page": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 1
+          "maximum": 1,
+          "description": "The greatest retry count used on any one page, comparable to max_retries_per_page. This is not the total retries across the run."
         },
         "runtime_seconds": {
           "type": "integer",
@@ -496,6 +548,14 @@
             "structure_required"
           ]
         },
+        "plain_fetch_outcome": {
+          "description": "What made the prior plain read-only fetch insufficient. Required before Playwright may be used.",
+          "enum": [
+            "render_required",
+            "navigation_required",
+            "parse_failed"
+          ]
+        },
         "outcome": {
           "enum": [
             "extracted",
@@ -509,7 +569,7 @@
           ]
         },
         "retrieved_on": {
-          "type": "string"
+          "$ref": "#/$defs/isoDate"
         },
         "chars_retained": {
           "type": "integer",
@@ -518,6 +578,7 @@
         },
         "duplicate_of": {
           "type": "string",
+          "minLength": 1,
           "description": "canonical_url of the page this duplicates."
         }
       },
@@ -536,7 +597,8 @@
           },
           "then": {
             "required": [
-              "escalation_reason"
+              "escalation_reason",
+              "plain_fetch_outcome"
             ]
           }
         },
@@ -630,10 +692,52 @@
           }
         },
         {
+          "description": "A render-required outcome comes from a dated plain read-only fetch.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "render_required"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "fetch_method",
+              "retrieved_on"
+            ],
+            "properties": {
+              "fetch_method": {
+                "const": "read_only_fetch"
+              }
+            }
+          }
+        },
+        {
           "description": "An escalation reason only makes sense for a Playwright fetch.",
           "if": {
             "required": [
               "escalation_reason"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch_method": {
+                "const": "playwright"
+              }
+            },
+            "required": [
+              "fetch_method"
+            ]
+          }
+        },
+        {
+          "description": "A recorded plain-fetch outcome only makes sense for a Playwright escalation.",
+          "if": {
+            "required": [
+              "plain_fetch_outcome"
             ]
           },
           "then": {
@@ -689,7 +793,7 @@
           }
         },
         {
-          "description": "repeatedly_reported requires more than one independent source.",
+          "description": "repeatedly_reported requires at least two distinct source records. Canonical-source independence is checked by the WO-05 output validator.",
           "if": {
             "properties": {
               "source_status": {
@@ -709,13 +813,14 @@
           }
         },
         {
-          "description": "An item may only be called fresh or aging when at least one source carries a date.",
+          "description": "An item may only have known freshness when at least one source carries a date.",
           "if": {
             "properties": {
               "freshness": {
                 "enum": [
                   "fresh",
-                  "aging"
+                  "aging",
+                  "stale"
                 ]
               }
             },
@@ -729,6 +834,44 @@
                 "contains": {
                   "required": [
                     "source_date"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Official status requires an official tier and at least one official company source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "official"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "required": [
+              "tier"
+            ],
+            "properties": {
+              "tier": {
+                "const": "official"
+              },
+              "sources": {
+                "contains": {
+                  "properties": {
+                    "origin": {
+                      "enum": [
+                        "official_company_page",
+                        "official_company_material"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "origin"
                   ]
                 }
               }
@@ -842,6 +985,7 @@
         },
         "sources": {
           "type": "array",
+          "uniqueItems": true,
           "items": {
             "$ref": "#/$defs/researchSource"
           }
@@ -878,6 +1022,7 @@
         "source_status",
         "presented_as",
         "priority",
+        "tier",
         "sources",
         "freshness"
       ],
@@ -909,6 +1054,7 @@
         },
         "sources": {
           "type": "array",
+          "uniqueItems": true,
           "items": {
             "$ref": "#/$defs/researchSource"
           }
@@ -951,8 +1097,10 @@
         "item_ids": {
           "type": "array",
           "minItems": 2,
+          "uniqueItems": true,
           "items": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           }
         },
         "disagreement": {

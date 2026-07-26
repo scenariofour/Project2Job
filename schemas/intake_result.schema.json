@@ -100,6 +100,28 @@
           }
         }
       }
+    },
+    {
+      "description": "With one or more candidates, return a recommendation result. Use no_clear_choice instead of null when no candidate clearly wins.",
+      "if": {
+        "properties": {
+          "resume_project_candidates": {
+            "minItems": 1
+          }
+        },
+        "required": [
+          "resume_project_candidates"
+        ]
+      },
+      "then": {
+        "properties": {
+          "recommended_project": {
+            "not": {
+              "type": "null"
+            }
+          }
+        }
+      }
     }
   ],
   "$defs": {
@@ -216,8 +238,11 @@
       ],
       "properties": {
         "candidate_id": {
-          "type": "string",
-          "description": "Must match a candidate_id in resume_project_candidates. JSON Schema cannot check this cross-reference; the WO-05 output validator does."
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Must be null for no_clear_choice. Otherwise it must match a candidate_id in resume_project_candidates; the WO-05 output validator checks that cross-reference."
         },
         "reasons": {
           "type": "array",
@@ -263,8 +288,35 @@
           },
           "then": {
             "properties": {
+              "candidate_id": {
+                "const": null
+              },
               "alternatives_considered": {
                 "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "A clear or narrow choice identifies the selected candidate.",
+          "if": {
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "clear_choice",
+                  "narrow_choice"
+                ]
+              }
+            },
+            "required": [
+              "confidence"
+            ]
+          },
+          "then": {
+            "properties": {
+              "candidate_id": {
+                "type": "string",
+                "minLength": 1
               }
             }
           }

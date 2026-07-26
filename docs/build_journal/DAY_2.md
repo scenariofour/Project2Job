@@ -31,7 +31,7 @@ The run has two output points. The first needs no project at all.
 | Step | Input | Output |
 | --- | --- | --- |
 | 1–2 | one JD, pasted or uploaded | company, team, role family, track, level, location, requirements, interview risks, unknowns |
-| 3 | the above, plus anything the user pasted | company and interview context from one bounded research pass, with its query log, page log, and stop reason |
+| 3 | the above, plus anything the user pasted or uploaded | company and interview context from one bounded research pass, with its query log, page log, and stop reason |
 | 4–5 | optional resume | several project candidates, all `self_reported`, extracted for routing only |
 | 6 | the above | **Intake Result**: Role Demand Map, company and track signals, candidates, one recommended project, reasons, risks, claims to verify, evidence checklist, One Next Input |
 | 7–8 | the selected project's repo, files, PRD, evals, feedback | verified project evidence, via the existing Day 1 investigation loop |
@@ -119,8 +119,9 @@ Evidence.
 D2-AC-05, D2-AC-09, D2-AC-10, D2-AC-11, D2-AC-16, D2-AC-17, D2-AC-18, and
 D2-AC-19 are enforced by conditional rules, so a violating object fails
 validation rather than only failing review. So are two rules an earlier review
-surfaced: a question above `inferred_from_jd` must cite a source, and a `fresh`
-or `aging` question must have a dated source.
+surfaced: an item above `inferred_from_jd` must cite a source, and any item with
+known freshness must have a dated source. Official status must also carry an
+official tier and official company source.
 
 D2-AC-21's ceilings are enforced as schema `maximum` values, so a run cannot even
 declare an over-large budget. Whether a run *stayed* inside its declared budget
@@ -139,7 +140,7 @@ D2-010 is what checks it.
 Cross-object ID references are likewise beyond JSON Schema and belong to the
 WO-05 output validator: `answer_draft.question_id`, `mock_round.question_ids`,
 `claim_safety_review.checked_fact_ids`, `emphasis.fact_ids`,
-`recommendation.candidate_id`, `page.duplicate_of`, canonical-URL uniqueness
+non-null `recommendation.candidate_id`, `page.duplicate_of`, canonical-URL uniqueness
 across extracted pages, a claim's `url` resolving to a page the run actually
 extracted, and `usage` staying within a smaller declared `budget`. The one case
 the schema can catch, recommending a project when no candidate exists, is
@@ -199,7 +200,8 @@ conflict disclosure are the guard, and neither is proven.
 
 - that JD-first ordering matches how users actually work
 - that the recommendation beats the user's own instinct
-- that users will paste enough interview material for the company brief to be useful
+- that public evidence plus optional user-supplied material will support a useful
+  company brief
 - any runtime behavior for intake, routing, or pack generation
 
 ## Public content notes
