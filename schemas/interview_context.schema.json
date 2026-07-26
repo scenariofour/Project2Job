@@ -276,9 +276,92 @@
         "why_it_is_likely": {
           "type": "string",
           "description": "Which role requirement or signal makes this question plausible."
+        },
+        "company": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
         }
       },
       "allOf": [
+        {
+          "description": "Anything above inferred_from_jd must cite at least one supplied source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "enum": [
+                  "official",
+                  "repeatedly_reported",
+                  "single_report"
+                ]
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "repeatedly_reported requires more than one independent source.",
+          "if": {
+            "properties": {
+              "source_status": {
+                "const": "repeatedly_reported"
+              }
+            },
+            "required": [
+              "source_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "minItems": 2
+              }
+            }
+          }
+        },
+        {
+          "description": "A question may only be called fresh or aging when at least one source carries a date.",
+          "if": {
+            "properties": {
+              "freshness": {
+                "enum": [
+                  "fresh",
+                  "aging"
+                ]
+              }
+            },
+            "required": [
+              "freshness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sources": {
+                "contains": {
+                  "required": [
+                    "source_date"
+                  ]
+                }
+              }
+            }
+          }
+        },
         {
           "description": "One reported experience may never be presented more strongly than 'reported_once'.",
           "if": {

@@ -62,6 +62,7 @@ Evidence.
 | --- | --- | --- | --- |
 | D2-AC-01 | JD intake extracts company, team, role family, track, level, location, requirements, and risks; anything unstated is recorded as unknown | D2-005 | `schemas/jd_intake.schema.json` |
 | D2-AC-02 | The run produces a useful Intake Result with no resume and no project | D2-001 | `schemas/intake_result.schema.json` |
+| D2-AC-14 | The MVP works end to end from pasted text and uploaded files, with no platform login or scraping | D2-001, D2-002 | `jd_intake` `input_form`, `interview_context` `researchSource` |
 | D2-AC-03 | Resume projects are extracted for routing only and stay `self_reported` | D2-002 | `intake_result` `resumeProjectCandidate` |
 | D2-AC-04 | Exactly one project is recommended for deep analysis, with reasons, non-empty risks, and a confidence band | D2-002 | `intake_result` `projectRecommendation` |
 | D2-AC-05 | When nothing clearly fits, confidence is `no_clear_choice` and the user is asked to choose | D2-003 | `intake_result` `projectRecommendation` |
@@ -73,11 +74,24 @@ Evidence.
 | D2-AC-11 | An answer draft may not exceed its verified evidence | D2-009 | `application_pack` `claimSafetyReview` |
 | D2-AC-12 | Company emphasis may change wording and order, never the fact set | D2-010 | `application_pack` `emphasisProfile` |
 | D2-AC-13 | The Intake Result names exactly one next input | D2-001 | `intake_result` `one_next_input` |
-| D2-AC-14 | The MVP works end to end from pasted text and uploaded files, with no platform login or scraping | D2-001 … D2-010 | `jd_intake` `input_form`, `interview_context` `researchSource` |
 
-D2-AC-09, D2-AC-10, D2-AC-11, and D2-AC-12 are partly enforceable by the schemas
-themselves through conditional rules, so a violating object fails validation
-rather than only failing review.
+### What the schemas actually enforce
+
+D2-AC-05, D2-AC-09, D2-AC-10, and D2-AC-11 are enforced by conditional rules, so
+a violating object fails validation rather than only failing review. So are two
+rules the review surfaced: a question above `inferred_from_jd` must cite a
+source, and a `fresh` or `aging` question must have a dated source.
+
+D2-AC-12 is **not** schema-enforceable. Emphasis invariance is a property of two
+runs compared against each other, which no single-document schema can express.
+`emphasisProfile.fact_ids` is required so the invariant is recorded; eval case
+D2-010 is what checks it.
+
+Cross-object ID references — `answer_draft.question_id`, `mock_round.question_ids`,
+`claim_safety_review.checked_fact_ids`, `emphasis.fact_ids`, and
+`recommendation.candidate_id` — are likewise beyond JSON Schema. The WO-05 output
+validator resolves them. The one case the schema can catch, recommending a
+project when no candidate exists, is enforced.
 
 ## Evidence
 

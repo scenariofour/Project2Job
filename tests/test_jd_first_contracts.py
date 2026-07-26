@@ -7,6 +7,7 @@ or pack runtime exists yet, so nothing here tests product behavior.
 from __future__ import annotations
 
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -100,6 +101,40 @@ class InterviewContextTests(unittest.TestCase):
         self.assertNotIn("guaranteed", presented)
         self.assertNotIn("expected", presented)
 
+    def test_questions_above_jd_inference_must_cite_a_source(self) -> None:
+        for definition in ("interviewSignal", "interviewQuestion"):
+            with self.subTest(definition=definition):
+                rules = conditions(self.defs[definition])
+                cited = [
+                    rule
+                    for rule in rules
+                    if set(
+                        rule["if"]["properties"].get("source_status", {}).get("enum", [])
+                    )
+                    == {"official", "repeatedly_reported", "single_report"}
+                ]
+                self.assertEqual(len(cited), 1)
+                self.assertEqual(cited[0]["then"]["properties"]["sources"]["minItems"], 1)
+
+    def test_fresh_questions_need_a_dated_source(self) -> None:
+        rules = conditions(self.defs["interviewQuestion"])
+        dated = [
+            rule
+            for rule in rules
+            if set(rule["if"]["properties"].get("freshness", {}).get("enum", []))
+            == {"fresh", "aging"}
+        ]
+        self.assertEqual(len(dated), 1)
+        self.assertEqual(
+            dated[0]["then"]["properties"]["sources"]["contains"]["required"],
+            ["source_date"],
+        )
+
+    def test_questions_keep_their_own_provenance_fields(self) -> None:
+        properties = self.defs["interviewQuestion"]["properties"]
+        for field in ("company", "track", "level", "location"):
+            self.assertIn(field, properties)
+
     def test_single_report_is_capped_at_reported_once(self) -> None:
         rules = conditions(self.defs["interviewQuestion"])
         capped = [
@@ -171,7 +206,8 @@ class IntakeResultTests(unittest.TestCase):
         candidate = self.defs["resumeProjectCandidate"]
         self.assertEqual(candidate["properties"]["evidence_status"]["const"], "self_reported")
 
-    def test_all_five_routing_dimensions_are_required(self) -> None:
+    def test_every_candidate_must_carry_all_five_routing_dimensions(self) -> None:
+        self.assertIn("scores", self.defs["resumeProjectCandidate"]["required"])
         self.assertEqual(
             set(self.defs["routingScores"]["required"]),
             {
@@ -198,8 +234,26 @@ class IntakeResultTests(unittest.TestCase):
             rules[0]["then"]["properties"]["alternatives_considered"]["minItems"], 1
         )
 
-    def test_exactly_one_next_input(self) -> None:
-        self.assertEqual(self.schema["properties"]["one_next_input"]["type"], "string")
+    def test_cannot_recommend_a_project_with_no_candidates(self) -> None:
+        rules = conditions(self.schema)
+        empty = [
+            rule
+            for rule in rules
+            if rule["if"]["properties"]
+            .get("resume_project_candidates", {})
+            .get("maxItems")
+            == 0
+        ]
+        self.assertEqual(len(empty), 1)
+        self.assertEqual(
+            empty[0]["then"]["properties"]["recommended_project"]["type"], "null"
+        )
+
+    def test_one_next_input_is_a_single_non_empty_string(self) -> None:
+        field = self.schema["properties"]["one_next_input"]
+        self.assertEqual(field["type"], "string")
+        self.assertEqual(field["minLength"], 1)
+        self.assertIn("one_next_input", self.schema["required"])
 
 
 class ApplicationPackTests(unittest.TestCase):
@@ -217,7 +271,26 @@ class ApplicationPackTests(unittest.TestCase):
         self.assertEqual(self.pack["priority_questions"]["maxItems"], 8)
         self.assertEqual(self.pack["answer_drafts"]["minItems"], 3)
         self.assertEqual(self.pack["answer_drafts"]["maxItems"], 3)
-        self.assertEqual(self.defs["mockInterviewRound"]["type"], "object")
+        self.assertEqual(self.defs["mockInterviewRound"]["properties"]["question_ids"]["maxItems"], 5)
+
+    def test_project_compass_is_not_forced_to_invent_a_company(self) -> None:
+        self.assertNotIn("interview_context", self.schema["required"])
+        rules = conditions(self.schema)
+        gated = [
+            rule
+            for rule in rules
+            if "interview_context" in rule["then"].get("required", [])
+        ]
+        self.assertEqual(len(gated), 1)
+        self.assertEqual(
+            set(gated[0]["if"]["properties"]["intent"]["enum"]),
+            {"application_pack", "update"},
+        )
+
+    def test_supported_role_fit_items_must_cite_a_source(self) -> None:
+        rules = conditions(self.defs["roleFitItem"])
+        self.assertEqual(len(rules), 1)
+        self.assertEqual(rules[0]["then"]["properties"]["source_refs"]["minItems"], 1)
 
     def test_every_required_pack_section_is_present(self) -> None:
         for section in (
@@ -233,8 +306,8 @@ class ApplicationPackTests(unittest.TestCase):
 
     def test_answer_draft_preserves_the_full_chain(self) -> None:
         self.assertEqual(
-            self.defs["answerDraft"]["required"],
-            [
+            set(self.defs["answerDraft"]["required"]),
+            {
                 "question_id",
                 "question",
                 "verified_evidence",
@@ -242,7 +315,8 @@ class ApplicationPackTests(unittest.TestCase):
                 "grounded_draft",
                 "claim_safety_review",
                 "likely_followups",
-            ],
+                "emphasis",
+            },
         )
 
     def test_a_draft_exceeding_its_evidence_cannot_validate(self) -> None:
@@ -256,6 +330,7 @@ class ApplicationPackTests(unittest.TestCase):
     def test_emphasis_carries_the_invariant_fact_set(self) -> None:
         emphasis = self.defs["emphasisProfile"]
         self.assertEqual(set(emphasis["required"]), {"fact_ids", "emphasis_signal_ids"})
+        self.assertIn("emphasis", self.defs["answerDraft"]["required"])
 
     def test_mock_round_scores_evidence_not_personality(self) -> None:
         dimensions = self.defs["mockInterviewRound"]["properties"]["scoring_dimensions"]
@@ -308,14 +383,20 @@ class Day2EvalCaseTests(unittest.TestCase):
             with self.subTest(case=case["case_id"]):
                 self.assertIn(case["schema_ref"], known)
 
-    def test_every_case_maps_to_a_day_2_acceptance_criterion(self) -> None:
+    def test_every_acceptance_criterion_has_at_least_one_case(self) -> None:
         journal = (ROOT / "docs/build_journal/DAY_2.md").read_text(encoding="utf-8")
-        covered = set()
-        for case in self.cases:
-            for criterion in case["acceptance_criteria"]:
-                self.assertIn(criterion, journal, f"{criterion} is not in DAY_2.md")
-                covered.add(criterion)
-        self.assertGreaterEqual(len(covered), 10)
+        declared = set(re.findall(r"D2-AC-\d{2}", journal))
+        self.assertEqual(len(declared), 14)
+        covered = {
+            criterion
+            for case in self.cases
+            for criterion in case["acceptance_criteria"]
+        }
+        self.assertEqual(
+            covered,
+            declared,
+            f"Criteria with no eval case: {sorted(declared - covered)}",
+        )
 
 
 class Day2ScopeTests(unittest.TestCase):

@@ -41,6 +41,8 @@ REQUIRED = [
     "lab/evals/agent_cases.jsonl",
     "docs/build_journal/README.md",
     "docs/build_journal/IMPLEMENTATION_MAP.md",
+    "work_orders/WO-05_JD_FIRST_INTAKE.md",
+    "lab/evals/day2_jd_first_cases.jsonl",
     *[f"docs/build_journal/DAY_{day}.md" for day in range(8)],
 ]
 

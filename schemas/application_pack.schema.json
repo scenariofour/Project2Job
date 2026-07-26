@@ -14,11 +14,33 @@
     "role_fit_map",
     "project_highlights",
     "resume_bullets",
-    "interview_context",
     "interview_pack",
     "next_build",
     "correction_prompt",
     "warnings"
+  ],
+  "allOf": [
+    {
+      "description": "A JD-backed run must carry interview context. PROJECT_COMPASS has no JD and therefore no company, and must not invent one to satisfy this schema.",
+      "if": {
+        "properties": {
+          "intent": {
+            "enum": [
+              "application_pack",
+              "update"
+            ]
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "required": [
+          "interview_context"
+        ]
+      }
+    }
   ],
   "properties": {
     "schema_version": {
@@ -199,7 +221,32 @@
         "interview_risk": {
           "type": "string"
         }
-      }
+      },
+      "allOf": [
+        {
+          "description": "An established status must cite at least one source.",
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "supported",
+                  "partially_supported"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
     },
     "resumeBullet": {
       "type": "object",
@@ -260,7 +307,7 @@
         "company_track_brief": {
           "type": "string",
           "minLength": 1,
-          "description": "Short brief on the company and track drawn from interview_context. Must not assert project facts."
+          "description": "Short brief on the company and track drawn from interview_context. Must not assert project facts. In a PROJECT_COMPASS run with no JD, state that no company context exists rather than inventing one."
         },
         "interview_loop_hypothesis": {
           "type": "array",
@@ -348,12 +395,13 @@
         "answer_ingredients",
         "grounded_draft",
         "claim_safety_review",
-        "likely_followups"
+        "likely_followups",
+        "emphasis"
       ],
       "properties": {
         "question_id": {
           "type": "string",
-          "description": "Must match a question_id in priority_questions."
+          "description": "Must match a question_id in priority_questions. JSON Schema cannot check this cross-reference; the WO-05 output validator does."
         },
         "question": {
           "type": "string",
@@ -454,7 +502,7 @@
     "emphasisProfile": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Company signals may reorder or reweight the same facts. fact_ids is the invariant: it must not change when emphasis changes.",
+      "description": "Company signals may reorder or reweight the same facts. fact_ids is the invariant: it must not change when emphasis changes. Invariance is across runs, so no schema can check it; eval case D2-010 does.",
       "required": [
         "fact_ids",
         "emphasis_signal_ids"

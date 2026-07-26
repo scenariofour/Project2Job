@@ -80,6 +80,28 @@
       }
     }
   },
+  "allOf": [
+    {
+      "description": "With no resume candidates there is nothing to recommend. The product asks for a project instead of inventing one.",
+      "if": {
+        "properties": {
+          "resume_project_candidates": {
+            "maxItems": 0
+          }
+        },
+        "required": [
+          "resume_project_candidates"
+        ]
+      },
+      "then": {
+        "properties": {
+          "recommended_project": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "roleDemandItem": {
       "type": "object",
@@ -119,7 +141,8 @@
         "candidate_id",
         "summary",
         "resume_location",
-        "evidence_status"
+        "evidence_status",
+        "scores"
       ],
       "properties": {
         "candidate_id": {
@@ -193,7 +216,8 @@
       ],
       "properties": {
         "candidate_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Must match a candidate_id in resume_project_candidates. JSON Schema cannot check this cross-reference; the WO-05 output validator does."
         },
         "reasons": {
           "type": "array",
