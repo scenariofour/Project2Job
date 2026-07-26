@@ -53,8 +53,8 @@ for deep evidence analysis, before any project corpus is supplied.
 ## Out of scope
 
 Job discovery, bulk scraping, platform login, auto-apply, application tracking,
-email monitoring, referral automation, multiple deep project analyses, a reusable
-cross-user company question database, and broad MCP integrations. Pack generation
+email monitoring, referral automation, multiple deep project analyses, any
+persisted company question database, and broad MCP integrations. Pack generation
 itself belongs to WO-01 and WO-02.
 
 Bounded research is in scope; unbounded retrieval is not. The line is that

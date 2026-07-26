@@ -136,15 +136,23 @@ runs compared against each other, which no single-document schema can express.
 `emphasisProfile.fact_ids` is required so the invariant is recorded; eval case
 D2-010 is what checks it.
 
-Cross-object ID references — `answer_draft.question_id`, `mock_round.question_ids`,
-`claim_safety_review.checked_fact_ids`, `emphasis.fact_ids`, and
-`recommendation.candidate_id` — are likewise beyond JSON Schema. The WO-05 output
-validator resolves them. The one case the schema can catch, recommending a
-project when no candidate exists, is enforced.
+Cross-object ID references are likewise beyond JSON Schema and belong to the
+WO-05 output validator: `answer_draft.question_id`, `mock_round.question_ids`,
+`claim_safety_review.checked_fact_ids`, `emphasis.fact_ids`,
+`recommendation.candidate_id`, `page.duplicate_of`, canonical-URL uniqueness
+across extracted pages, a claim's `url` resolving to a page the run actually
+extracted, and `usage` staying within a smaller declared `budget`. The one case
+the schema can catch, recommending a project when no candidate exists, is
+enforced.
+
+`tests/test_jd_first_contracts.py` runs real instances through a draft-2020-12
+validator when `jsonschema` is installed, so these rules are executed rather than
+only read. The repository itself still has no third-party dependency; the suite
+skips those tests when the library is absent.
 
 ## Evidence
 
-Planned. Ten synthetic cases exist in `lab/evals/day2_jd_first_cases.jsonl`;
+Planned. Twenty synthetic cases exist in `lab/evals/day2_jd_first_cases.jsonl`;
 nothing executes them yet. `tests/test_jd_first_contracts.py` checks the
 contracts and the case file, not product behavior.
 
@@ -165,10 +173,17 @@ Coarse bands rather than numeric scores make that honest, but the recommendation
 can still be wrong in a way the user only discovers after uploading a project.
 `no_clear_choice` exists so the product can decline rather than guess.
 
-The second tradeoff is that interview context depends entirely on what the user
-pastes. Without scraping, most runs will have thin company signals, and a thin
-brief may be less useful than users expect. That is a deliberate cost of not
-building a scraper.
+The second tradeoff is the research budget. Twelve pages and three rendered pages
+is enough for a well-documented company and probably not enough for a small
+private one, so some runs will stop at `evidence_exhausted` with a thin brief.
+Raising the ceilings would help those runs and would also be the first step
+toward the scraper this product is not. Holding the line means accepting that a
+thin, honest brief is the correct output for a company the public web barely
+covers.
+
+The third is that a bounded pass can be confidently wrong: two independent
+write-ups of the same stale process look like corroboration. Freshness and
+conflict disclosure are the guard, and neither is proven.
 
 ## Candidate decision checkpoint
 

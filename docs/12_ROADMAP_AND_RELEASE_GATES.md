@@ -23,7 +23,8 @@ Build:
 
 - JD intake extraction into `schemas/jd_intake.schema.json`
 - Role Demand Map
-- interview context capture from pasted and uploaded material only
+- one bounded public-web research pass for interview context, merging any
+  material the user supplies
 - resume project candidate extraction for routing
 - one-project recommendation across the five routing dimensions
 - `Intake Result` assembly

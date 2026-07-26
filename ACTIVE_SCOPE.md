@@ -198,7 +198,7 @@ Still excluded:
 - email monitoring
 - referral automation
 - multiple deep project analyses
-- unlimited company question databases
+- any persisted company question database; research caching is per run only
 - broad MCP integrations
 
 Bounded automatic public-web research is in scope and required. Job discovery,

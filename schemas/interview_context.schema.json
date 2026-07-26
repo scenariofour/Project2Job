@@ -121,14 +121,15 @@
         },
         "url": {
           "type": "string",
-          "description": "Required for public-web origins. The exact page the claim came from, not a domain or a search result list."
+          "minLength": 1,
+          "pattern": "^https?://[^\\s]+/[^\\s]*$",
+          "description": "Required for public-web origins. The exact page the claim came from, not a bare domain or a search result list."
         },
         "fetch_method": {
           "$ref": "#/$defs/fetchMethod"
         },
         "retrieved_on": {
-          "type": "string",
-          "description": "ISO-8601 date the page was retrieved. Distinct from source_date, which is when the content was written."
+          "$ref": "#/$defs/isoDate"
         },
         "reference": {
           "type": "string",
@@ -136,8 +137,12 @@
           "description": "Exact locator inside the supplied material."
         },
         "source_date": {
-          "type": "string",
-          "description": "ISO-8601 date the material was published or the experience occurred. Absent means unknown, which forces freshness 'unknown'."
+          "allOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            }
+          ],
+          "description": "Date the material was published or the experience occurred. Absent means unknown, which forces freshness 'unknown'."
         },
         "interview_stage": {
           "enum": [
@@ -176,6 +181,11 @@
         }
       ]
     },
+    "isoDate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO-8601 calendar date."
+    },
     "fetchMethod": {
       "description": "How a page was read. Playwright is a real MVP capability but is an escalation, not the default.",
       "enum": [
@@ -199,7 +209,7 @@
       "description": "One bounded research pass. Present even when no research ran, so a thin company brief is explained rather than unexplained.",
       "required": [
         "mode",
-        "budget",
+        "usage",
         "queries",
         "pages",
         "stop_reason",
@@ -216,14 +226,19 @@
         "budget": {
           "$ref": "#/$defs/researchBudget"
         },
+        "usage": {
+          "$ref": "#/$defs/researchUsage"
+        },
         "queries": {
           "type": "array",
+          "maxItems": 8,
           "items": {
             "$ref": "#/$defs/searchQuery"
           }
         },
         "pages": {
           "type": "array",
+          "maxItems": 12,
           "items": {
             "$ref": "#/$defs/researchPage"
           }
@@ -253,18 +268,26 @@
             ]
           },
           "then": {
+            "required": [
+              "budget"
+            ],
             "properties": {
               "queries": {
                 "minItems": 1
               },
               "pages": {
                 "minItems": 1
+              },
+              "stop_reason": {
+                "not": {
+                  "const": "research_not_run"
+                }
               }
             }
           }
         },
         {
-          "description": "When no research ran, the run cannot claim it stopped because the evidence was sufficient.",
+          "description": "When no research ran there are no queries, no pages, and no claim of sufficiency.",
           "if": {
             "properties": {
               "mode": {
@@ -280,6 +303,12 @@
           },
           "then": {
             "properties": {
+              "queries": {
+                "maxItems": 0
+              },
+              "pages": {
+                "maxItems": 0
+              },
               "stop_reason": {
                 "enum": [
                   "research_not_run",
@@ -290,6 +319,57 @@
           }
         }
       ]
+    },
+    "researchUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What the run actually spent. Every ceiling in researchBudget has a matching actual here, bounded by the same maximum, so an over-spend is invalid rather than merely undetectable. Comparing usage against a smaller declared budget needs two numbers and belongs to the WO-05 validator.",
+      "required": [
+        "search_queries",
+        "pages_fetched",
+        "playwright_pages",
+        "navigation_depth_used",
+        "total_tokens",
+        "retries",
+        "runtime_seconds"
+      ],
+      "properties": {
+        "search_queries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "pages_fetched": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "playwright_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "navigation_depth_used": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "total_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "retries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "runtime_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 120
+        }
+      }
     },
     "researchBudget": {
       "type": "object",
@@ -389,7 +469,8 @@
       "required": [
         "url",
         "tier",
-        "outcome"
+        "outcome",
+        "chars_retained"
       ],
       "properties": {
         "url": {
@@ -398,7 +479,8 @@
         },
         "canonical_url": {
           "type": "string",
-          "description": "Normalized URL used for deduplication."
+          "minLength": 1,
+          "description": "Normalized URL used for deduplication. Two extracted pages must not share one; JSON Schema cannot check that, so the WO-05 validator does."
         },
         "tier": {
           "$ref": "#/$defs/sourceTier"
@@ -431,7 +513,8 @@
         },
         "chars_retained": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "maximum": 20000
         },
         "duplicate_of": {
           "type": "string",
@@ -481,11 +564,13 @@
           }
         },
         {
-          "description": "A login wall is recorded and abandoned. It is never retried with credentials, and nothing is extracted from it.",
+          "description": "Only an extracted page may retain content. A page that was blocked, walled, unrendered, failed, or skipped keeps nothing.",
           "if": {
             "properties": {
               "outcome": {
-                "const": "inaccessible_login_required"
+                "not": {
+                  "const": "extracted"
+                }
               }
             },
             "required": [
@@ -501,7 +586,7 @@
           }
         },
         {
-          "description": "Only an extracted page may retain content.",
+          "description": "An extracted page states how and when it was read.",
           "if": {
             "properties": {
               "outcome": {
@@ -515,8 +600,50 @@
           "then": {
             "required": [
               "fetch_method",
-              "retrieved_on",
-              "chars_retained"
+              "retrieved_on"
+            ]
+          }
+        },
+        {
+          "description": "A browser is never driven at a login wall or a blocked page.",
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "inaccessible_login_required",
+                  "inaccessible_blocked"
+                ]
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch_method": {
+                "not": {
+                  "const": "playwright"
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "An escalation reason only makes sense for a Playwright fetch.",
+          "if": {
+            "required": [
+              "escalation_reason"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch_method": {
+                "const": "playwright"
+              }
+            },
+            "required": [
+              "fetch_method"
             ]
           }
         }
@@ -534,162 +661,8 @@
         "research_not_run"
       ]
     },
-    "interviewSignal": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "signal_id",
-        "layer",
-        "statement",
-        "source_status",
-        "sources",
-        "freshness"
-      ],
-      "properties": {
-        "signal_id": {
-          "type": "string"
-        },
-        "layer": {
-          "$ref": "#/$defs/interviewLayer"
-        },
-        "statement": {
-          "type": "string",
-          "minLength": 1
-        },
-        "source_status": {
-          "$ref": "#/$defs/sourceStatus"
-        },
-        "sources": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/researchSource"
-          }
-        },
-        "freshness": {
-          "$ref": "#/$defs/freshness"
-        },
-        "company": {
-          "type": "string"
-        },
-        "track": {
-          "type": "string"
-        },
-        "level": {
-          "type": "string"
-        },
-        "location": {
-          "type": "string"
-        }
-      },
-      "allOf": [
-        {
-          "description": "Anything above inferred_from_jd must cite at least one supplied source.",
-          "if": {
-            "properties": {
-              "source_status": {
-                "enum": [
-                  "official",
-                  "repeatedly_reported",
-                  "single_report"
-                ]
-              }
-            },
-            "required": [
-              "source_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "sources": {
-                "minItems": 1
-              }
-            }
-          }
-        },
-        {
-          "description": "repeatedly_reported requires more than one independent source.",
-          "if": {
-            "properties": {
-              "source_status": {
-                "const": "repeatedly_reported"
-              }
-            },
-            "required": [
-              "source_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "sources": {
-                "minItems": 2
-              }
-            }
-          }
-        }
-      ]
-    },
-    "interviewQuestion": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "question_id",
-        "text",
-        "layer",
-        "source_status",
-        "presented_as",
-        "priority",
-        "sources",
-        "freshness"
-      ],
-      "properties": {
-        "question_id": {
-          "type": "string"
-        },
-        "text": {
-          "type": "string",
-          "minLength": 1
-        },
-        "layer": {
-          "$ref": "#/$defs/interviewLayer"
-        },
-        "source_status": {
-          "$ref": "#/$defs/sourceStatus"
-        },
-        "presented_as": {
-          "$ref": "#/$defs/presentedAs"
-        },
-        "priority": {
-          "enum": [
-            "P0",
-            "P1"
-          ]
-        },
-        "sources": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/researchSource"
-          }
-        },
-        "freshness": {
-          "$ref": "#/$defs/freshness"
-        },
-        "why_it_is_likely": {
-          "type": "string",
-          "description": "Which role requirement or signal makes this question plausible."
-        },
-        "company": {
-          "type": "string"
-        },
-        "track": {
-          "type": "string"
-        },
-        "level": {
-          "type": "string"
-        },
-        "location": {
-          "type": "string"
-        }
-      },
+    "sourceStrengthRules": {
+      "description": "Strength rules shared by every interview item: a claim may never be presented more strongly than its source status and freshness allow.",
       "allOf": [
         {
           "description": "Anything above inferred_from_jd must cite at least one supplied source.",
@@ -736,7 +709,7 @@
           }
         },
         {
-          "description": "A question may only be called fresh or aging when at least one source carries a date.",
+          "description": "An item may only be called fresh or aging when at least one source carries a date.",
           "if": {
             "properties": {
               "freshness": {
@@ -831,6 +804,138 @@
               }
             }
           }
+        }
+      ]
+    },
+    "interviewSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal_id",
+        "layer",
+        "statement",
+        "source_status",
+        "presented_as",
+        "tier",
+        "sources",
+        "freshness"
+      ],
+      "properties": {
+        "signal_id": {
+          "type": "string"
+        },
+        "layer": {
+          "$ref": "#/$defs/interviewLayer"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_status": {
+          "$ref": "#/$defs/sourceStatus"
+        },
+        "presented_as": {
+          "$ref": "#/$defs/presentedAs"
+        },
+        "tier": {
+          "$ref": "#/$defs/sourceTier"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/researchSource"
+          }
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "company": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/sourceStrengthRules"
+        }
+      ]
+    },
+    "interviewQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question_id",
+        "text",
+        "layer",
+        "source_status",
+        "presented_as",
+        "priority",
+        "sources",
+        "freshness"
+      ],
+      "properties": {
+        "question_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layer": {
+          "$ref": "#/$defs/interviewLayer"
+        },
+        "source_status": {
+          "$ref": "#/$defs/sourceStatus"
+        },
+        "presented_as": {
+          "$ref": "#/$defs/presentedAs"
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1"
+          ]
+        },
+        "tier": {
+          "$ref": "#/$defs/sourceTier"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/researchSource"
+          }
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "why_it_is_likely": {
+          "type": "string",
+          "description": "Which role requirement or signal makes this question plausible."
+        },
+        "company": {
+          "type": "string"
+        },
+        "track": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/sourceStrengthRules"
         }
       ]
     },

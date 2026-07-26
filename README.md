@@ -56,8 +56,8 @@ The MVP is limited to:
 
 It excludes job discovery and bulk scraping, automatic login to any job platform
 or professional network, auto-apply, application tracking, email monitoring,
-referral automation, Gmail or Calendar, multiple deep project analyses, reusable
-cross-user company question databases, full resume generation, networking
+referral automation, Gmail or Calendar, multiple deep project analyses, any
+persisted company question database, full resume generation, networking
 automation, broad MCP integrations, multi-agent, and Deep Agents.
 
 After the JD arrives the MVP runs one bounded public-web research pass for

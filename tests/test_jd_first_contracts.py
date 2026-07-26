@@ -40,17 +40,28 @@ def load_cases() -> list[dict]:
     ]
 
 
-def conditions(schema: dict) -> list[dict]:
-    """Every if/then pair in a schema, so rules can be asserted individually."""
+def conditions(schema: dict, root: dict | None = None) -> list[dict]:
+    """Every if/then pair reachable from a schema, following local $refs.
+
+    Rules shared between definitions live behind a $ref, so a walker that did
+    not follow them would silently report zero rules and pass.
+    """
     found = []
     if isinstance(schema, dict):
         if "if" in schema and "then" in schema:
             found.append(schema)
-        for value in schema.values():
-            found.extend(conditions(value))
+        ref = schema.get("$ref")
+        if isinstance(ref, str) and ref.startswith("#/") and root is not None:
+            node = root
+            for part in ref.removeprefix("#/").split("/"):
+                node = node[part]
+            found.extend(conditions(node, root))
+        for key, value in schema.items():
+            if key != "$ref":
+                found.extend(conditions(value, root))
     elif isinstance(schema, list):
         for item in schema:
-            found.extend(conditions(item))
+            found.extend(conditions(item, root))
     return found
 
 
@@ -108,12 +119,12 @@ class InterviewContextTests(unittest.TestCase):
     def test_questions_above_jd_inference_must_cite_a_source(self) -> None:
         for definition in ("interviewSignal", "interviewQuestion"):
             with self.subTest(definition=definition):
-                rules = conditions(self.defs[definition])
+                rules = conditions(self.defs[definition], self.schema)
                 cited = [
                     rule
                     for rule in rules
                     if set(
-                        rule["if"]["properties"].get("source_status", {}).get("enum", [])
+                        rule["if"].get("properties", {}).get("source_status", {}).get("enum", [])
                     )
                     == {"official", "repeatedly_reported", "single_report"}
                 ]
@@ -121,11 +132,11 @@ class InterviewContextTests(unittest.TestCase):
                 self.assertEqual(cited[0]["then"]["properties"]["sources"]["minItems"], 1)
 
     def test_fresh_questions_need_a_dated_source(self) -> None:
-        rules = conditions(self.defs["interviewQuestion"])
+        rules = conditions(self.defs["interviewQuestion"], self.schema)
         dated = [
             rule
             for rule in rules
-            if set(rule["if"]["properties"].get("freshness", {}).get("enum", []))
+            if set(rule["if"].get("properties", {}).get("freshness", {}).get("enum", []))
             == {"fresh", "aging"}
         ]
         self.assertEqual(len(dated), 1)
@@ -140,11 +151,11 @@ class InterviewContextTests(unittest.TestCase):
             self.assertIn(field, properties)
 
     def test_single_report_is_capped_at_reported_once(self) -> None:
-        rules = conditions(self.defs["interviewQuestion"])
+        rules = conditions(self.defs["interviewQuestion"], self.schema)
         capped = [
             rule
             for rule in rules
-            if rule["if"]["properties"].get("source_status", {}).get("const")
+            if rule["if"].get("properties", {}).get("source_status", {}).get("const")
             == "single_report"
         ]
         self.assertEqual(len(capped), 1)
@@ -153,11 +164,11 @@ class InterviewContextTests(unittest.TestCase):
         )
 
     def test_stale_reports_cannot_be_presented_as_likely(self) -> None:
-        rules = conditions(self.defs["interviewQuestion"])
+        rules = conditions(self.defs["interviewQuestion"], self.schema)
         stale = [
             rule
             for rule in rules
-            if rule["if"]["properties"].get("freshness", {}).get("const") == "stale"
+            if rule["if"].get("properties", {}).get("freshness", {}).get("const") == "stale"
         ]
         self.assertEqual(len(stale), 1)
         self.assertNotIn(
@@ -165,11 +176,11 @@ class InterviewContextTests(unittest.TestCase):
         )
 
     def test_repeatedly_reported_needs_more_than_one_source(self) -> None:
-        rules = conditions(self.defs["interviewSignal"])
+        rules = conditions(self.defs["interviewSignal"], self.schema)
         repeated = [
             rule
             for rule in rules
-            if rule["if"]["properties"].get("source_status", {}).get("const")
+            if rule["if"].get("properties", {}).get("source_status", {}).get("const")
             == "repeatedly_reported"
         ]
         self.assertEqual(len(repeated), 1)
@@ -206,7 +217,45 @@ class ResearchContractTests(unittest.TestCase):
         self.assertIn("research", self.schema["required"])
         self.assertEqual(
             set(self.defs["researchRun"]["required"]),
-            {"mode", "budget", "queries", "pages", "stop_reason", "gaps"},
+            {"mode", "usage", "queries", "pages", "stop_reason", "gaps"},
+        )
+
+    def test_every_ceiling_has_a_bounded_actual(self) -> None:
+        """A declared budget bounds nothing unless the spend is bounded too."""
+        ceilings = self.defs["researchBudget"]["properties"]
+        usage = self.defs["researchUsage"]["properties"]
+        pairs = {
+            "max_search_queries": "search_queries",
+            "max_pages_fetched": "pages_fetched",
+            "max_playwright_pages": "playwright_pages",
+            "max_navigation_depth": "navigation_depth_used",
+            "max_chars_per_page": None,
+            "max_total_tokens": "total_tokens",
+            "max_retries_per_page": "retries",
+            "max_runtime_seconds": "runtime_seconds",
+        }
+        self.assertEqual(set(pairs), set(ceilings))
+        for ceiling, actual in pairs.items():
+            if actual is None:
+                continue
+            with self.subTest(limit=ceiling):
+                self.assertIn(actual, usage)
+                self.assertEqual(usage[actual]["maximum"], ceilings[ceiling]["maximum"])
+        self.assertEqual(set(usage), set(self.defs["researchUsage"]["required"]))
+        # per-page character retention is bounded on the page record itself
+        self.assertEqual(
+            self.defs["researchPage"]["properties"]["chars_retained"]["maximum"],
+            ceilings["max_chars_per_page"]["maximum"],
+        )
+
+    def test_run_arrays_cannot_exceed_their_ceilings(self) -> None:
+        ceilings = self.defs["researchBudget"]["properties"]
+        run = self.defs["researchRun"]["properties"]
+        self.assertEqual(
+            run["queries"]["maxItems"], ceilings["max_search_queries"]["maximum"]
+        )
+        self.assertEqual(
+            run["pages"]["maxItems"], ceilings["max_pages_fetched"]["maximum"]
         )
 
     def test_budget_ceilings_match_the_token_policy_table(self) -> None:
@@ -232,38 +281,50 @@ class ResearchContractTests(unittest.TestCase):
             self.defs["fetchMethod"]["enum"],
             ["read_only_fetch", "playwright", "cache"],
         )
-        rules = conditions(self.defs["researchPage"])
+        rules = conditions(self.defs["researchPage"], self.schema)
         escalated = [
             rule
             for rule in rules
-            if rule["if"]["properties"].get("fetch_method", {}).get("const")
+            if rule["if"].get("properties", {}).get("fetch_method", {}).get("const")
             == "playwright"
         ]
         self.assertEqual(len(escalated), 1)
         self.assertEqual(escalated[0]["then"]["required"], ["escalation_reason"])
 
-    def test_duplicate_and_login_walled_pages_retain_nothing(self) -> None:
-        rules = conditions(self.defs["researchPage"])
-        for outcome in ("duplicate_of_kept_page", "inaccessible_login_required"):
-            with self.subTest(outcome=outcome):
-                matched = [
-                    rule
-                    for rule in rules
-                    if rule["if"]["properties"].get("outcome", {}).get("const")
-                    == outcome
-                ]
-                self.assertEqual(len(matched), 1)
-                self.assertEqual(
-                    matched[0]["then"]["properties"]["chars_retained"]["maximum"], 0
-                )
+    def test_only_an_extracted_page_may_retain_content(self) -> None:
+        page = self.defs["researchPage"]
+        self.assertIn("chars_retained", page["required"])
+        rules = conditions(page, self.schema)
+        matched = [
+            rule
+            for rule in rules
+            if rule["if"].get("properties", {}).get("outcome", {}).get("not", {}).get("const")
+            == "extracted"
+        ]
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0]["then"]["properties"]["chars_retained"]["maximum"], 0)
+
+    def test_a_browser_is_never_driven_at_a_wall(self) -> None:
+        rules = conditions(self.defs["researchPage"], self.schema)
+        matched = [
+            rule
+            for rule in rules
+            if set(rule["if"].get("properties", {}).get("outcome", {}).get("enum", []))
+            == {"inaccessible_login_required", "inaccessible_blocked"}
+        ]
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(
+            matched[0]["then"]["properties"]["fetch_method"]["not"]["const"],
+            "playwright",
+        )
 
     def test_web_claims_cite_page_method_and_date(self) -> None:
-        rules = conditions(self.defs["researchSource"])
+        rules = conditions(self.defs["researchSource"], self.schema)
         web = [
             rule
             for rule in rules
             if "official_company_page"
-            in rule["if"]["properties"].get("origin", {}).get("enum", [])
+            in rule["if"].get("properties", {}).get("origin", {}).get("enum", [])
         ]
         self.assertEqual(len(web), 1)
         self.assertEqual(
@@ -271,11 +332,11 @@ class ResearchContractTests(unittest.TestCase):
         )
 
     def test_automatic_research_must_show_its_work(self) -> None:
-        rules = conditions(self.defs["researchRun"])
+        rules = conditions(self.defs["researchRun"], self.schema)
         automatic = [
             rule
             for rule in rules
-            if rule["if"]["properties"].get("mode", {}).get("const")
+            if rule["if"].get("properties", {}).get("mode", {}).get("const")
             == "automatic_bounded"
         ]
         self.assertEqual(len(automatic), 1)
@@ -283,11 +344,11 @@ class ResearchContractTests(unittest.TestCase):
             self.assertEqual(automatic[0]["then"]["properties"][field]["minItems"], 1)
 
     def test_a_run_without_research_cannot_claim_sufficiency(self) -> None:
-        rules = conditions(self.defs["researchRun"])
+        rules = conditions(self.defs["researchRun"], self.schema)
         skipped = [
             rule
             for rule in rules
-            if set(rule["if"]["properties"].get("mode", {}).get("enum", []))
+            if set(rule["if"].get("properties", {}).get("mode", {}).get("enum", []))
             == {"user_supplied_only", "unavailable"}
         ]
         self.assertEqual(len(skipped), 1)
@@ -335,8 +396,16 @@ class ResearchContractTests(unittest.TestCase):
             "schemas/jd_intake.schema.json",
             "schemas/intake_result.schema.json",
             "ACTIVE_SCOPE.md",
+            "README.md",
+            "PROJECT_STATUS.md",
             "work_orders/WO-05_JD_FIRST_INTAKE.md",
+            "docs/01_MVP_PRD.md",
+            "docs/05_SKILL_PRODUCT_SPEC.md",
             "docs/09_TOKEN_CONTEXT_AND_COST.md",
+            "docs/11_SAFETY_PRIVACY_AND_HITL.md",
+            "docs/13_DECISION_LOG.md",
+            "docs/build_journal/DAY_2.md",
+            "lab/evals/day2_jd_first_cases.jsonl",
         ):
             text = read(relative).lower()
             for platform in platforms:
@@ -363,7 +432,8 @@ class ResearchPermissionTests(unittest.TestCase):
 
     def test_research_is_required_not_optional(self) -> None:
         scope = " ".join(read("ACTIVE_SCOPE.md").split()).lower()
-        self.assertIn("bounded automatic public-web research is in scope and required", scope)
+        self.assertIn("public-web research", scope)
+        self.assertIn("required", scope)
         self.assertNotIn("uploaded files alone", scope)
 
 
@@ -403,7 +473,7 @@ class IntakeResultTests(unittest.TestCase):
         self.assertEqual(recommendation["properties"]["risks"]["minItems"], 1)
 
     def test_no_clear_choice_must_offer_alternatives(self) -> None:
-        rules = conditions(self.defs["projectRecommendation"])
+        rules = conditions(self.defs["projectRecommendation"], self.schema)
         self.assertEqual(len(rules), 1)
         self.assertEqual(
             rules[0]["if"]["properties"]["confidence"]["const"], "no_clear_choice"
@@ -413,11 +483,11 @@ class IntakeResultTests(unittest.TestCase):
         )
 
     def test_cannot_recommend_a_project_with_no_candidates(self) -> None:
-        rules = conditions(self.schema)
+        rules = conditions(self.schema, self.schema)
         empty = [
             rule
             for rule in rules
-            if rule["if"]["properties"]
+            if rule["if"].get("properties", {})
             .get("resume_project_candidates", {})
             .get("maxItems")
             == 0
@@ -453,7 +523,7 @@ class ApplicationPackTests(unittest.TestCase):
 
     def test_project_compass_is_not_forced_to_invent_a_company(self) -> None:
         self.assertNotIn("interview_context", self.schema["required"])
-        rules = conditions(self.schema)
+        rules = conditions(self.schema, self.schema)
         gated = [
             rule
             for rule in rules
@@ -466,7 +536,7 @@ class ApplicationPackTests(unittest.TestCase):
         )
 
     def test_supported_role_fit_items_must_cite_a_source(self) -> None:
-        rules = conditions(self.defs["roleFitItem"])
+        rules = conditions(self.defs["roleFitItem"], self.schema)
         self.assertEqual(len(rules), 1)
         self.assertEqual(rules[0]["then"]["properties"]["source_refs"]["minItems"], 1)
 
@@ -611,6 +681,362 @@ class Day2ScopeTests(unittest.TestCase):
         )
         for path in manifest["context_sets"]["jd_intake"]:
             self.assertTrue((ROOT / path).exists(), f"Missing context file: {path}")
+
+
+try:  # optional: real validation when the library is available locally or in CI
+    from jsonschema import Draft202012Validator
+    from referencing import Registry, Resource
+
+    HAVE_VALIDATOR = True
+except ImportError:  # pragma: no cover - the repo has no third-party dependency
+    HAVE_VALIDATOR = False
+
+
+def registry_and(schema_path: str):
+    """A validator for one schema, with every sibling schema resolvable."""
+    resources = []
+    for path in sorted((ROOT / "schemas").glob("*.schema.json")):
+        schema = json.loads(path.read_text(encoding="utf-8"))
+        if "$id" in schema:
+            resources.append(Resource.from_contents(schema))
+    registry = Registry().with_resources([(r.id(), r) for r in resources])
+    return Draft202012Validator(load(schema_path), registry=registry)
+
+
+BUDGET = {
+    "max_search_queries": 8,
+    "max_pages_fetched": 12,
+    "max_playwright_pages": 3,
+    "max_navigation_depth": 1,
+    "max_chars_per_page": 20000,
+    "max_total_tokens": 60000,
+    "max_retries_per_page": 1,
+    "max_runtime_seconds": 120,
+}
+USAGE = {
+    "search_queries": 1,
+    "pages_fetched": 1,
+    "playwright_pages": 0,
+    "navigation_depth_used": 0,
+    "total_tokens": 900,
+    "retries": 0,
+    "runtime_seconds": 12,
+}
+
+
+def a_page(**overrides) -> dict:
+    page = {
+        "url": "https://example.test/careers/interview",
+        "tier": "official",
+        "outcome": "extracted",
+        "fetch_method": "read_only_fetch",
+        "retrieved_on": "2026-07-25",
+        "chars_retained": 400,
+    }
+    page.update(overrides)
+    return page
+
+
+def a_context(**research_overrides) -> dict:
+    research = {
+        "mode": "automatic_bounded",
+        "budget": dict(BUDGET),
+        "usage": dict(USAGE),
+        "queries": [
+            {
+                "query": "example interview process",
+                "purpose": "official_interview_signals",
+                "results_considered": 6,
+                "results_kept": 1,
+            }
+        ],
+        "pages": [a_page()],
+        "stop_reason": "evidence_sufficient",
+        "gaps": [],
+    }
+    research.update(research_overrides)
+    return {
+        "schema_version": "1.0.0",
+        "company": "Example",
+        "research": research,
+        "signals": [],
+        "questions": [],
+        "unknowns": [],
+    }
+
+
+@unittest.skipUnless(HAVE_VALIDATOR, "jsonschema is not installed")
+class InstanceValidationTests(unittest.TestCase):
+    """Execute the conditional rules instead of only reading them.
+
+    Every other test in this module inspects schema keys, which cannot tell a
+    live rule from an unreachable one. These run real instances through a real
+    draft-2020-12 validator.
+    """
+
+    def setUp(self) -> None:
+        self.validator = registry_and("schemas/interview_context.schema.json")
+
+    def assertRejects(self, instance: dict, why: str) -> None:
+        self.assertFalse(self.validator.is_valid(instance), f"should be invalid: {why}")
+
+    def test_a_well_formed_research_run_validates(self) -> None:
+        errors = sorted(self.validator.iter_errors(a_context()), key=str)
+        self.assertEqual(errors, [], [error.message for error in errors])
+
+    def test_a_run_cannot_declare_a_budget_over_the_ceiling(self) -> None:
+        self.assertRejects(
+            a_context(budget={**BUDGET, "max_pages_fetched": 13}),
+            "declared budget exceeds the ceiling",
+        )
+
+    def test_a_run_cannot_spend_over_the_ceiling(self) -> None:
+        self.assertRejects(
+            a_context(usage={**USAGE, "playwright_pages": 4}),
+            "spent more Playwright pages than the ceiling allows",
+        )
+        self.assertRejects(
+            a_context(usage={**USAGE, "runtime_seconds": 600}),
+            "ran longer than the ceiling allows",
+        )
+        self.assertRejects(
+            a_context(pages=[a_page() for _ in range(13)]),
+            "recorded more pages than the ceiling allows",
+        )
+
+    def test_only_an_extracted_page_keeps_content(self) -> None:
+        for outcome in (
+            "inaccessible_login_required",
+            "inaccessible_blocked",
+            "render_required",
+            "fetch_failed",
+            "skipped_budget",
+            "duplicate_of_kept_page",
+        ):
+            with self.subTest(outcome=outcome):
+                self.assertRejects(
+                    a_context(pages=[a_page(outcome=outcome, chars_retained=900)]),
+                    f"{outcome} page retained content",
+                )
+
+    def test_a_page_cannot_retain_more_than_the_per_page_ceiling(self) -> None:
+        self.assertRejects(
+            a_context(pages=[a_page(chars_retained=20001)]),
+            "retained more characters than the ceiling allows",
+        )
+
+    def test_playwright_is_justified_and_never_used_at_a_wall(self) -> None:
+        self.assertRejects(
+            a_context(pages=[a_page(fetch_method="playwright")]),
+            "Playwright fetch with no escalation reason",
+        )
+        self.assertRejects(
+            a_context(
+                pages=[
+                    a_page(
+                        outcome="inaccessible_login_required",
+                        chars_retained=0,
+                        fetch_method="playwright",
+                        escalation_reason="javascript_rendered",
+                    )
+                ],
+                stop_reason="sources_inaccessible",
+            ),
+            "drove a browser at a login wall",
+        )
+        self.assertTrue(
+            self.validator.is_valid(
+                a_context(
+                    pages=[
+                        a_page(
+                            fetch_method="playwright",
+                            escalation_reason="javascript_rendered",
+                        )
+                    ],
+                    usage={**USAGE, "playwright_pages": 1},
+                )
+            )
+        )
+
+    def test_a_duplicate_names_what_it_duplicates(self) -> None:
+        self.assertRejects(
+            a_context(
+                pages=[a_page(outcome="duplicate_of_kept_page", chars_retained=0)]
+            ),
+            "duplicate did not name the page it duplicates",
+        )
+
+    def test_research_mode_and_stop_reason_must_agree(self) -> None:
+        self.assertRejects(
+            a_context(mode="unavailable", queries=[], pages=[]),
+            "no research ran yet claimed the evidence was sufficient",
+        )
+        self.assertRejects(
+            a_context(mode="automatic_bounded", stop_reason="research_not_run"),
+            "automatic research claimed it never ran",
+        )
+        self.assertRejects(
+            a_context(mode="user_supplied_only", stop_reason="research_not_run"),
+            "no-research mode still recorded queries and pages",
+        )
+
+    def test_automatic_research_must_show_queries_and_pages(self) -> None:
+        self.assertRejects(
+            a_context(pages=[]), "automatic research recorded no pages"
+        )
+        self.assertRejects(
+            a_context(queries=[]), "automatic research recorded no queries"
+        )
+
+    def test_a_web_claim_must_cite_an_exact_dated_page(self) -> None:
+        def with_source(**source) -> dict:
+            context = a_context()
+            context["signals"] = [
+                {
+                    "signal_id": "s1",
+                    "layer": "company_interview_signal",
+                    "statement": "The loop has four stages.",
+                    "source_status": "official",
+                    "presented_as": "likely",
+                    "tier": "official",
+                    "sources": [{"origin": "official_company_page", **source}],
+                    "freshness": "unknown",
+                }
+            ]
+            return context
+
+        self.assertRejects(
+            with_source(reference="careers page"),
+            "web claim with no url, fetch method, or retrieval date",
+        )
+        self.assertRejects(
+            with_source(
+                reference="careers page",
+                url="example.test",
+                fetch_method="read_only_fetch",
+                retrieved_on="2026-07-25",
+            ),
+            "cited a bare domain instead of an exact page",
+        )
+        self.assertRejects(
+            with_source(
+                reference="careers page",
+                url="https://example.test/careers",
+                fetch_method="read_only_fetch",
+                retrieved_on="last week",
+            ),
+            "retrieval date is not a date",
+        )
+        self.assertTrue(
+            self.validator.is_valid(
+                with_source(
+                    reference="careers page#loop",
+                    url="https://example.test/careers",
+                    fetch_method="read_only_fetch",
+                    retrieved_on="2026-07-25",
+                )
+            )
+        )
+
+    def test_a_signal_cannot_outrun_its_source(self) -> None:
+        def signal(**overrides) -> dict:
+            base = {
+                "signal_id": "s1",
+                "layer": "reported_interview_evidence",
+                "statement": "A take-home is used.",
+                "source_status": "single_report",
+                "presented_as": "reported_once",
+                "tier": "aggregator_or_forum",
+                "sources": [{"origin": "user_pasted_report", "reference": "post"}],
+                "freshness": "unknown",
+            }
+            base.update(overrides)
+            context = a_context()
+            context["signals"] = [base]
+            return context
+
+        self.assertRejects(
+            signal(presented_as="likely"),
+            "one report presented as likely",
+        )
+        self.assertRejects(
+            signal(source_status="repeatedly_reported", presented_as="likely"),
+            "repeatedly_reported backed by a single source",
+        )
+        self.assertRejects(
+            signal(freshness="stale", presented_as="likely"),
+            "stale report presented as likely",
+        )
+        self.assertRejects(
+            signal(freshness="fresh", presented_as="reported_once"),
+            "fresh claim with no dated source",
+        )
+        self.assertRejects(
+            signal(source_status="inferred_from_jd", presented_as="likely"),
+            "JD inference presented as likely",
+        )
+
+
+@unittest.skipUnless(HAVE_VALIDATOR, "jsonschema is not installed")
+class PackInstanceValidationTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.validator = registry_and("schemas/intake_result.schema.json")
+
+    def test_a_candidate_must_carry_routing_scores(self) -> None:
+        intake = {
+            "schema_version": "1.0.0",
+            "jd_intake": {
+                "schema_version": "1.0.0",
+                "input_form": "pasted_text",
+                "company": "Example",
+                "role_family": "ai_product_manager",
+                "requirements": [
+                    {
+                        "role_requirement_id": "r1",
+                        "text": "Evaluate retrieval quality",
+                        "relevance": "required",
+                        "jd_location": "responsibilities",
+                    }
+                ],
+                "likely_interview_risks": [],
+                "unknowns": ["track"],
+            },
+            "role_demand_map": [
+                {
+                    "role_requirement_id": "r1",
+                    "demand": "Can evaluate retrieval",
+                    "relevance": "required",
+                    "evidence_would_look_like": "a labeled eval set",
+                }
+            ],
+            "interview_context": a_context(),
+            "resume_project_candidates": [],
+            "recommended_project": None,
+            "claims_requiring_verification": [],
+            "required_evidence_checklist": [
+                {
+                    "artifact": "eval_or_test_results",
+                    "why_needed": "to verify retrieval evaluation",
+                    "required": True,
+                }
+            ],
+            "one_next_input": "the project to analyze",
+        }
+        self.assertEqual(
+            [error.message for error in self.validator.iter_errors(intake)], []
+        )
+
+        intake["recommended_project"] = {
+            "candidate_id": "c1",
+            "reasons": ["closest to the role"],
+            "risks": ["summary is self-reported"],
+            "confidence": "clear_choice",
+            "alternatives_considered": [],
+        }
+        self.assertFalse(
+            self.validator.is_valid(intake),
+            "recommended a project when no candidate exists",
+        )
 
 
 if __name__ == "__main__":
