@@ -28,6 +28,8 @@
   "context_sets": {
     "shared_foundation": [
       "ACTIVE_SCOPE.md",
+      "GLOSSARY.md",
+      "docs/DOCUMENT_GOVERNANCE.md",
       "docs/00_PRODUCT_NORTH_STAR.md",
       "docs/01_MVP_PRD.md",
       "docs/02_ROLE_BACKWARDS_EVIDENCE_FRAMEWORK.md",
@@ -46,6 +48,7 @@
     ],
     "skill_poc": [
       "ACTIVE_SCOPE.md",
+      "GLOSSARY.md",
       "docs/04_INTENT_AND_ONBOARDING.md",
       "docs/05_SKILL_PRODUCT_SPEC.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
@@ -56,6 +59,7 @@
     ],
     "agent_poc": [
       "ACTIVE_SCOPE.md",
+      "GLOSSARY.md",
       "docs/06_AGENT_PRODUCT_SPEC.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
       "docs/08_AGENT_ARCHITECTURE.md",
@@ -67,12 +71,14 @@
     ],
     "web_poc": [
       "ACTIVE_SCOPE.md",
+      "GLOSSARY.md",
       "docs/01_MVP_PRD.md",
       "docs/04_INTENT_AND_ONBOARDING.md",
       "docs/06_AGENT_PRODUCT_SPEC.md",
       "apps/web/README.md"
     ],
     "eval_and_pilot": [
+      "GLOSSARY.md",
       "docs/03_AI_PM_ROLE_STANDARD.md",
       "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
       "docs/09_TOKEN_CONTEXT_AND_COST.md",

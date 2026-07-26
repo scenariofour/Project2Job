@@ -32,12 +32,7 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(result["unchanged"], ["a.md"])
 
     def test_journal_statuses_allow_completed_day1(self) -> None:
-        statuses = validate_repo.validate_journal_statuses()
-        self.assertEqual(statuses[0], "IMPLEMENTED")
-        self.assertEqual(statuses[1], "IMPLEMENTED")
-        self.assertTrue(
-            all(statuses[day] == "PLANNED" for day in range(2, 8))
-        )
+        self.assertEqual(validate_repo.validate_journal_statuses(), 1)
 
 
 if __name__ == "__main__":

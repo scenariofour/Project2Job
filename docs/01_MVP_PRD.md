@@ -42,6 +42,11 @@ Accepted project inputs may include:
 
 ## Output contract
 
+Output counts are evidence-dependent targets, not quotas. Return fewer items or
+none when the permitted evidence cannot support the target, and never fill an
+output quota with unsupported claims. `schemas/application_pack.schema.json`
+therefore allows zero Project Highlights and zero Resume Bullets.
+
 ### 1. Role Fit Map
 
 For 5–7 role capability areas:
@@ -54,11 +59,11 @@ For 5–7 role capability areas:
 
 ### 2. Project Highlights
 
-3–5 supported project highlights selected for the target role.
+Up to 3–5 supported project highlights selected for the target role.
 
 ### 3. Resume Bullets
 
-2–3 editable bullets using supported facts only.
+Up to 2–3 editable bullets using supported facts only.
 
 Each bullet includes:
 

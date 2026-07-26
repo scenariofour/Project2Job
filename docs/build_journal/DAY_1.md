@@ -32,6 +32,33 @@ content remains inert observation data, and persisted traces omit source content
 The one-shot prompt, fixed extract-search-validate workflow, and bounded adaptive
 loop retain one comparison interface. No comparative advantage is claimed.
 
+## Acceptance traceability
+
+Every Day 1 acceptance criterion, its labeled eval cases, the unit test that
+executes it, and the committed evidence. Eval case IDs `D1-001`–`D1-010` are
+stable and unchanged.
+
+These criteria cover loop mechanics only. Passing them does not validate output
+quality, user value, or any Agent advantage.
+
+| AC | Criterion | Eval cases | Unit test (`tests/test_agent_loop.py`) | Evidence | Result |
+| --- | --- | --- | --- | --- | --- |
+| D1-AC-01 | Explicit state, action, observation, and state-update records | D1-001, D1-002 | `test_trace_is_deterministic_and_contains_visible_records` | `traces/day1_success.json` | Pass |
+| D1-AC-02 | Continue path | D1-001, D1-008 | `test_continue_path_is_explicit` | `traces/day1_success.json` | Pass |
+| D1-AC-03 | Adjust path narrows the claim | D1-002 | `test_adjust_path_narrows_the_claim` | eval case gold `active_claim` | Pass |
+| D1-AC-04 | Ask path requests human confirmation | D1-003 | `test_ask_path_requests_confirmation` | eval case gold `needs_confirmation` | Pass |
+| D1-AC-05 | Stop on sufficient evidence | D1-001, D1-002 | `test_stops_when_evidence_is_sufficient` | `traces/day1_success.json` | Pass |
+| D1-AC-06 | Stop when permitted evidence is exhausted | D1-004, D1-009 | `test_stops_when_permitted_evidence_is_exhausted` | eval case gold `evidence_exhausted` | Pass |
+| D1-AC-07 | Stop on unresolved contradiction | D1-005 | `test_stops_on_unresolved_contradiction` | eval case gold `conflicting` | Pass |
+| D1-AC-08 | Budget stop and guaranteed termination | D1-006, D1-008 | `test_stops_on_budget_exhaustion`, `test_loop_always_terminates_within_budgets` | eval case gold `budget_exhausted` | Pass |
+| D1-AC-09 | Tool failure is visible and terminal | D1-007, D1-010 | `test_stops_on_unrecoverable_tool_failure` | `traces/day1_tool_failure.json` | Pass |
+| D1-AC-10 | Prompt injection text remains inert observation data | D1-009 | `test_prompt_injection_text_remains_inert_observation_data` | eval case gold `content_remains_data` | Pass |
+| D1-AC-11 | Tool results cannot expand the permitted source set | D1-010 | `test_search_cannot_expand_the_permitted_source_set` | eval case gold `must_not_read_unpermitted_source` | Pass |
+| D1-AC-12 | Traces are deterministic across runs | D1-001, D1-007 | `test_trace_is_deterministic_and_contains_visible_records` | `traces/day1_success.json`, `traces/day1_tool_failure.json` | Pass |
+
+`test_comparison_approaches_remain_named_but_unclaimed` is not an acceptance
+criterion. It asserts that no comparative advantage is claimed yet.
+
 ## Files changed
 
 - `src/career_desk/contracts.py`
@@ -45,6 +72,10 @@ loop retain one comparison interface. No comparative advantage is claimed.
 - `docs/build_journal/traces/day1_tool_failure.json`
 - `docs/build_journal/DAY_1.md`
 - `docs/13_DECISION_LOG.md`
+- `GLOSSARY.md`
+- `docs/DOCUMENT_GOVERNANCE.md`
+- `tests/test_document_consistency.py`
+- `README.md`, `PROJECT_STATUS.md`, `ACTIVE_SCOPE.md`, `docs/01_MVP_PRD.md`
 
 ## Commands and results
 
@@ -68,8 +99,32 @@ The initial focused test run failed at import because the loop contract did not
 yet exist. The tests passed after the bounded implementation was added.
 
 The first final validation exposed a stale Day 0-only journal gate. A regression
-test was added, and the validator now requires Days 0–1 `IMPLEMENTED` while
-keeping Days 2–7 `PLANNED`. No verification failures remain.
+test was added and the gate was advanced to Day 1.
+
+## Governance follow-up
+
+A later pass on this same pull request removed the documentation drift Day 1
+created. `README.md` and `PROJECT_STATUS.md` had kept a Day 0-only status,
+`ACTIVE_SCOPE.md` and the MVP PRD had stated output counts as quotas while the
+schema allowed zero, and the product carried two names.
+
+- `GLOSSARY.md` and `docs/DOCUMENT_GOVERNANCE.md` were added. Neither is an
+  active product document; `active_document_count` remains 14.
+- The Day journal gate was replaced with a general rule: statuses must be
+  recognized, completed Days must form a contiguous prefix, and
+  `PROJECT_STATUS.md` must state the same highest completed Day. Adding Day 2
+  will not require editing `scripts/validate_repo.py`.
+- `tests/test_document_consistency.py` now enforces these document facts.
+
+Results after the follow-up:
+
+- `python3 -m unittest discover -s tests -p test_agent_loop.py -v` — 13 tests passed.
+- `python3 -m unittest discover -s tests -p test_document_consistency.py -v` — 17 tests passed.
+- `make validate` — status `ok`, 14 active documents, `highest_completed_day: 1`.
+- `make test` — 41 tests passed.
+- `make inventory` and `git diff --check` — passed.
+
+No verification failures remain.
 
 ## Trace evidence
 

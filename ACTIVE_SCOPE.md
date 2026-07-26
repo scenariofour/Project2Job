@@ -29,9 +29,13 @@ Optional:
 
 ## Skill MVP output
 
+Output counts below are evidence-dependent targets, not quotas. Return fewer or
+none when the permitted evidence cannot support the target. Never fill an output
+quota with unsupported claims.
+
 1. Role Fit Map covering 5–7 relevant capability areas
-2. 3–5 Project Highlights
-3. 2–3 grounded resume bullets
+2. up to 3–5 supported Project Highlights
+3. up to 2–3 grounded resume bullets
 4. Interview Prep Pack:
    - 30-second project introduction
    - three role-relevant follow-up questions
