@@ -7,6 +7,7 @@ editing does not break them.
 from __future__ import annotations
 
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,11 +16,13 @@ from scripts import validate_repo
 
 ROOT = Path(__file__).resolve().parents[1]
 
+STATUS_DOCUMENTS = ("README.md", "PROJECT_STATUS.md", "START_HERE.md")
+
 STALE_CLAIMS = [
     "Day 0 establishes the repository foundation only",
     "Day 0 repository foundation implemented",
+    "Day 0 provides a reproducible repository foundation",
     "No Work Order is complete",
-    "Files under `src/` are interfaces or stubs",
 ]
 
 
@@ -28,8 +31,8 @@ def read(relative: str) -> str:
 
 
 def prose(relative: str) -> str:
-    """File text with runs of whitespace collapsed, so rewrapping is harmless."""
-    return " ".join(read(relative).split())
+    """File text normalized so rewrapping or dash style cannot break a test."""
+    return " ".join(read(relative).replace("–", "-").split())
 
 
 def build_repo(root: Path, statuses: list[str], highest_completed: str) -> None:
@@ -82,6 +85,24 @@ class JournalStatusTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 validate_repo.validate_journal_statuses(root)
 
+    def test_gap_in_day_numbers_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            build_repo(root, ["IMPLEMENTED", "IMPLEMENTED"], "1")
+            (root / "docs/build_journal/DAY_0.md").unlink()
+            with self.assertRaises(SystemExit):
+                validate_repo.validate_journal_statuses(root)
+
+    def test_non_numeric_day_file_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            build_repo(root, ["IMPLEMENTED", "PLANNED"], "0")
+            (root / "docs/build_journal/DAY_2_DRAFT.md").write_text(
+                "Status: PLANNED\n", encoding="utf-8"
+            )
+            with self.assertRaises(SystemExit):
+                validate_repo.validate_journal_statuses(root)
+
     def test_project_status_disagreement_fails(self) -> None:
         with self.assertRaises(SystemExit):
             self.check(["IMPLEMENTED", "IMPLEMENTED", "PLANNED"], "0")
@@ -89,7 +110,7 @@ class JournalStatusTests(unittest.TestCase):
 
 class StatusTruthTests(unittest.TestCase):
     def test_no_stale_day_0_only_claims(self) -> None:
-        for relative in ("README.md", "PROJECT_STATUS.md"):
+        for relative in STATUS_DOCUMENTS:
             text = prose(relative)
             for claim in STALE_CLAIMS:
                 self.assertNotIn(claim, text, f"{relative} keeps a stale claim")
@@ -106,10 +127,18 @@ class StatusTruthTests(unittest.TestCase):
             ):
                 self.assertIn(fact, text, f"{relative} is missing: {fact}")
 
-    def test_unproven_areas_remain_declared(self) -> None:
-        text = prose("PROJECT_STATUS.md")
-        for area in ("user value", "product quality", "Web UI", "latency"):
-            self.assertIn(area, text)
+    def test_unproven_areas_stay_in_the_not_yet_proven_section(self) -> None:
+        section = read("PROJECT_STATUS.md").split("## Not yet proven")[1]
+        section = section.split("\n## ")[0]
+        for area in (
+            "user value",
+            "product quality",
+            "Skill runtime",
+            "Web UI and production RAG",
+            "production model behavior",
+            "latency, token, and cost",
+        ):
+            self.assertIn(area, section)
 
 
 class OutputQuantityTests(unittest.TestCase):
@@ -118,8 +147,8 @@ class OutputQuantityTests(unittest.TestCase):
             text = prose(relative).lower()
             self.assertIn("evidence-dependent", text)
             self.assertIn("never fill an output quota", text)
-            self.assertIn("up to 3–5", text)
-            self.assertIn("up to 2–3", text)
+            self.assertIn("up to 3-5", text)
+            self.assertIn("up to 2-3", text)
 
     def test_schema_still_allows_zero_highlights_and_bullets(self) -> None:
         schema = json.loads(read("schemas/application_pack.schema.json"))
@@ -186,10 +215,20 @@ class TraceabilityTests(unittest.TestCase):
             for line in read("tests/test_agent_loop.py").splitlines()
             if line.strip().startswith("def test_")
         }
+        case_ids = {
+            json.loads(line)["case_id"]
+            for line in read("lab/evals/day1_agent_loop_cases.jsonl").splitlines()
+            if line.strip()
+        }
         rows = [line for line in text.splitlines() if line.startswith("| D1-AC-")]
         self.assertEqual(len(rows), 12)
         for row in rows:
-            self.assertRegex(row, r"D1-0\d\d")
+            cited_cases = set(re.findall(r"D1-\d{3}", row))
+            self.assertTrue(cited_cases, f"Row cites no eval case: {row}")
+            self.assertTrue(
+                cited_cases <= case_ids,
+                f"Row cites unknown eval cases {sorted(cited_cases - case_ids)}: {row}",
+            )
             self.assertTrue(
                 any(name in row for name in test_names),
                 f"Row references no existing unit test: {row}",

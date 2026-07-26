@@ -105,31 +105,34 @@ def validate_journal_statuses(root: Path = ROOT) -> int:
     highest completed Day. Returns -1 when no Day is complete. Adding a Day
     therefore needs no change here.
     """
-    day_paths = sorted(
-        (int(path.stem.removeprefix("DAY_")), path)
-        for path in (root / "docs/build_journal").glob("DAY_*.md")
-    )
-    statuses = []
-    for day, path in day_paths:
+    day_paths = []
+    for path in (root / "docs/build_journal").glob("DAY_*.md"):
+        number = path.stem.removeprefix("DAY_")
+        if not number.isdigit():
+            raise SystemExit(f"Journal file is not DAY_<number>.md: {path.name}")
+        day_paths.append((int(number), path))
+
+    highest_completed = -1
+    for day, path in sorted(day_paths):
         found = STATUS_LINE.findall(path.read_text(encoding="utf-8"))
         if len(found) != 1 or found[0] not in DAY_STATUSES:
             raise SystemExit(
                 f"Day {day} must have exactly one status line from {DAY_STATUSES}"
             )
-        statuses.append(found[0])
-
-    highest_completed = -1
-    for day, status in enumerate(statuses):
+        status = found[0]
         if status not in COMPLETED_STATUSES:
             continue
         if day != highest_completed + 1:
-            raise SystemExit(f"Day {day} is {status} while an earlier Day is PLANNED")
+            raise SystemExit(
+                f"Day {day} is {status} while an earlier Day is missing or PLANNED"
+            )
         highest_completed = day
 
     reported = highest_completed if highest_completed >= 0 else "none"
     expected = f"Highest completed Day: {reported}"
-    if expected not in (root / "PROJECT_STATUS.md").read_text(encoding="utf-8"):
-        raise SystemExit(f"PROJECT_STATUS.md must state '{expected}'")
+    project_status = (root / "PROJECT_STATUS.md").read_text(encoding="utf-8")
+    if not re.search(rf"^{expected}$", project_status, re.MULTILINE):
+        raise SystemExit(f"PROJECT_STATUS.md must state '{expected}' on its own line")
     return highest_completed
 
 

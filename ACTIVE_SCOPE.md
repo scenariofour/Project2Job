@@ -29,9 +29,11 @@ Optional:
 
 ## Skill MVP output
 
-Output counts below are evidence-dependent targets, not quotas. Return fewer or
-none when the permitted evidence cannot support the target. Never fill an output
-quota with unsupported claims.
+Project Highlight and resume bullet counts are evidence-dependent targets, not
+quotas. Return fewer or none when the permitted evidence cannot support the
+target. Never fill an output quota with unsupported claims. The Role Fit Map is
+the exception: it always covers 5–7 capability areas, and an area with no
+evidence is reported with its evidence status rather than omitted.
 
 1. Role Fit Map covering 5–7 relevant capability areas
 2. up to 3–5 supported Project Highlights

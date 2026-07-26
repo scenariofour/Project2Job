@@ -50,6 +50,8 @@ git diff --check
 
 ## Current truth
 
-Day 0 provides a reproducible repository foundation, contracts, public fixtures,
-tests, and planned work. It does not prove Skill behavior, Agent value, user
-adoption, model quality, latency, tokens, cost, or hiring outcomes.
+`PROJECT_STATUS.md` is the canonical implementation truth. Read it rather than
+relying on this file.
+
+Nothing built so far proves Skill behavior, Agent value, user adoption, model
+quality, latency, tokens, cost, or hiring outcomes.

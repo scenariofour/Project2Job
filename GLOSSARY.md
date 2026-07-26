@@ -8,12 +8,12 @@ that owns the rule.
 
 | Term | Definition | Not to be confused with | Canonical source |
 | --- | --- | --- | --- |
-| **Project2Job** | The canonical product and repository name. Use it in all current documents, code comments, and user-facing text. | `Career Desk`. Existing historical records and existing code paths such as `skill/career-desk/` keep the old name. | `README.md` |
-| **Career Desk** | A legacy internal codename for the same product. Retained only where a record is clearly historical or a path is already published. | The current product name. Do not introduce it in new user-facing text. | `docs/13_DECISION_LOG.md` (D-013) |
+| **Project2Job** | The canonical product and repository name. Use it in all new and revised text. | `Career Desk`. | `README.md` |
+| **Career Desk** | A legacy internal codename for the same product. Do not introduce it in new text. Several v6-era product documents and the published path `skill/career-desk/` still carry it; those are renamed as each file is next revised, not in one sweep. | The current product name. | `docs/13_DECISION_LOG.md` (D-013) |
 | **Skill** | The session-scoped, open-source entry point that runs inside the user's Agent host and holds no product state. | The Agent. A Skill does not persist evidence or run update cycles. | `docs/05_SKILL_PRODUCT_SPEC.md` |
 | **Agent** | The stateful product that maintains user-confirmed evidence, applies corrections, and regenerates affected outputs after a project changes. | The Skill, and the Day 1 loop slice. | `docs/06_AGENT_PRODUCT_SPEC.md` |
 | **Evidence Investigator** | The bounded loop that turns one claim into an evidence status through Action → Observation → State Update → Continue / Adjust / Ask / Stop. Currently implemented with deterministic scripted read-only tools. | A production model-powered Agent runtime. | `src/career_desk/runtime.py`, `docs/build_journal/DAY_1.md` |
-| **Work Order** | The engineering dependency and acceptance unit (`work_orders/`). Defines the context set, deliverables, and acceptance criteria for a slice of implementation. | A Public Day. Work Orders order engineering; Days order the public narrative. | `PROJECT_MANIFEST.json` |
+| **Work Order** | The engineering dependency and acceptance unit (`work_orders/`). Defines the context set, deliverables, and acceptance criteria for a slice of implementation. A Work Order is **complete** when every one of its acceptance criteria is implemented and tested; complete does not mean Validated. | A Public Day. Work Orders order engineering; Days order the public narrative. | `PROJECT_MANIFEST.json` |
 | **Public Day** | One entry in `docs/build_journal/` describing the public build narrative and its measured evidence. | A Work Order or a release milestone. | `docs/build_journal/README.md` |
 
 ## Output vocabulary
@@ -32,9 +32,9 @@ resume-export policy. The definitions below are naming only.
 | Term | Definition | Not to be confused with | Canonical source |
 | --- | --- | --- | --- |
 | **Evidence Status** | The label attached to a claim after investigation. Exactly six values: Supported, Partially Supported, Inferred, Not Found, Conflicting, Needs Confirmation. | A confidence score or a quality rating. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
-| **Supported** | Direct source evidence establishes the claim as written. | Partially Supported. Only Supported claims may be exported to a resume. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
+| **Supported** | Direct source evidence establishes the claim as written. | Partially Supported. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
 | **Partially Supported** | Source evidence establishes a narrower claim than the one asserted. | Supported, or Inferred. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
-| **Inferred** | A reasonable reading of the sources, without a direct statement. | Source fact. Inferred content is never resume-exportable. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
+| **Inferred** | A reasonable reading of the sources, without a direct statement. | Source fact. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
 | **Not Found** | The permitted sources were searched and contain no evidence for the claim. | Disproven. Missing material does not prove missing capability. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
 | **Conflicting** | Permitted sources disagree and the conflict was not resolved. | Not Found. | `lab/REVIEWER_AND_ANNOTATION_GUIDE.md` |
 | **Needs Confirmation** | Only the user can settle the claim, typically ownership or role. | Inferred. The system must ask rather than guess. | `docs/11_SAFETY_PRIVACY_AND_HITL.md` |
@@ -51,4 +51,4 @@ resume-export policy. The definitions below are naming only.
 | **Planned** | Specified but not implemented. No runtime behavior exists. | Implemented. | `PROJECT_STATUS.md` |
 | **Implemented** | Runtime behavior exists in `src/` and runs. | Tested or Validated. | `PROJECT_STATUS.md` |
 | **Tested** | Implemented behavior is covered by passing unit tests and eval cases. | Validated. Passing tests say the mechanics hold, not that the output is useful. | `tests/`, `lab/evals/` |
-| **Validated** | Measured evidence from labeled data or real users supports a product claim. Nothing in this repository is Validated yet. | Tested. | `docs/10_EVALUATION_AND_POC.md` |
+| **Validated** | Measured evidence from labeled data or real users supports a product claim. Which items are Validated is stated in `PROJECT_STATUS.md`, not here. | Tested. | `docs/10_EVALUATION_AND_POC.md` |

@@ -177,6 +177,20 @@ class BoundedAgentLoopTests(unittest.TestCase):
             self.assertIsNotNone(step.observation)
             self.assertIsNotNone(step.state_update)
 
+    def test_committed_traces_still_match_the_implementation(self) -> None:
+        for case_id, trace_name in (
+            ("D1-001", "day1_success.json"),
+            ("D1-007", "day1_tool_failure.json"),
+        ):
+            with self.subTest(trace=trace_name):
+                _, _, result = run_case(case_id)
+                committed = json.loads(
+                    (ROOT / "docs/build_journal/traces" / trace_name).read_text(
+                        encoding="utf-8"
+                    )
+                )
+                self.assertEqual(result.to_trace_dict(), committed)
+
     def test_comparison_approaches_remain_named_but_unclaimed(self) -> None:
         self.assertEqual(
             EvidenceInvestigator.comparison_approaches,

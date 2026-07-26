@@ -51,10 +51,10 @@ quality, user value, or any Agent advantage.
 | D1-AC-06 | Stop when permitted evidence is exhausted | D1-004, D1-009 | `test_stops_when_permitted_evidence_is_exhausted` | eval case gold `evidence_exhausted` | Pass |
 | D1-AC-07 | Stop on unresolved contradiction | D1-005 | `test_stops_on_unresolved_contradiction` | eval case gold `conflicting` | Pass |
 | D1-AC-08 | Budget stop and guaranteed termination | D1-006, D1-008 | `test_stops_on_budget_exhaustion`, `test_loop_always_terminates_within_budgets` | eval case gold `budget_exhausted` | Pass |
-| D1-AC-09 | Tool failure is visible and terminal | D1-007, D1-010 | `test_stops_on_unrecoverable_tool_failure` | `traces/day1_tool_failure.json` | Pass |
+| D1-AC-09 | Tool failure is visible and terminal | D1-007, D1-010 | `test_stops_on_unrecoverable_tool_failure`, `test_committed_traces_still_match_the_implementation` | `traces/day1_tool_failure.json` | Pass |
 | D1-AC-10 | Prompt injection text remains inert observation data | D1-009 | `test_prompt_injection_text_remains_inert_observation_data` | eval case gold `content_remains_data` | Pass |
 | D1-AC-11 | Tool results cannot expand the permitted source set | D1-010 | `test_search_cannot_expand_the_permitted_source_set` | eval case gold `must_not_read_unpermitted_source` | Pass |
-| D1-AC-12 | Traces are deterministic across runs | D1-001, D1-007 | `test_trace_is_deterministic_and_contains_visible_records` | `traces/day1_success.json`, `traces/day1_tool_failure.json` | Pass |
+| D1-AC-12 | Traces are deterministic across runs and match the committed evidence | D1-001, D1-007 | `test_trace_is_deterministic_and_contains_visible_records`, `test_committed_traces_still_match_the_implementation` | `traces/day1_success.json`, `traces/day1_tool_failure.json` | Pass |
 
 `test_comparison_approaches_remain_named_but_unclaimed` is not an acceptance
 criterion. It asserts that no comparative advantage is claimed yet.
@@ -115,13 +115,21 @@ schema allowed zero, and the product carried two names.
   `PROJECT_STATUS.md` must state the same highest completed Day. Adding Day 2
   will not require editing `scripts/validate_repo.py`.
 - `tests/test_document_consistency.py` now enforces these document facts.
+- The two committed traces are now pinned by
+  `test_committed_traces_still_match_the_implementation`, so the Evidence column
+  above fails if the runtime and the traces diverge.
+
+Code review of the follow-up also caught a stale Day 0-only "Current truth" in
+`START_HERE.md`, an unqualified output-count rule that contradicted the Role Fit
+Map's fixed 5–7 schema range, and a validator that compared list position rather
+than the parsed Day number. All three are fixed.
 
 Results after the follow-up:
 
-- `python3 -m unittest discover -s tests -p test_agent_loop.py -v` — 13 tests passed.
-- `python3 -m unittest discover -s tests -p test_document_consistency.py -v` — 17 tests passed.
+- `python3 -m unittest discover -s tests -p test_agent_loop.py -v` — 14 tests passed.
+- `python3 -m unittest discover -s tests -p test_document_consistency.py -v` — 19 tests passed.
 - `make validate` — status `ok`, 14 active documents, `highest_completed_day: 1`.
-- `make test` — 41 tests passed.
+- `make test` — 44 tests passed.
 - `make inventory` and `git diff --check` — passed.
 
 No verification failures remain.
