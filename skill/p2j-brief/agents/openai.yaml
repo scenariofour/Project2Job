@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project2Job Brief"
+  short_description: "Get a concise project verdict and interview priorities."
+  default_prompt: "Use $p2j-brief to assess this project against my target JD and show the first useful brief."

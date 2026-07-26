@@ -7,10 +7,12 @@ Highest completed Day: 1
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
-implemented and tested.**
+implemented and tested. A seven-Skill host-native Alpha is implemented and
+installable.**
 
-Loop mechanics are covered by unit tests and eval cases. Product quality and
-user value are neither measured nor validated.
+Loop mechanics and Skill contracts are covered by unit tests and eval cases.
+The Alpha has been dogfooded in Codex, but product quality and user value are
+not yet validated with target users.
 
 ## Implemented
 
@@ -45,6 +47,21 @@ Day 1 uses **deterministic scripted read-only tools**. It is not a production
 model-powered Agent runtime, and it does not implement the full WO-02
 project-update cycle.
 
+Host-native Skill Alpha:
+
+- `$p2j` low-friction router
+- `$p2j-brief`, `$p2j-audit`, `$p2j-intel`, `$p2j-answer`, `$p2j-mock`, and
+  `$p2j-upgrade` specialists
+- six strict 0–5 Gates projected from the canonical 10 domains, with hard caps
+  and N/A handling
+- bounded project forensics and public company research contracts
+- ranked interview-answer reconstruction with explicit factual framing
+- installer, portable archive builder, suite validator, and behavior evals
+
+The Alpha runs inside a compatible Agent host. It depends on that host for file,
+Git, search, fetch, browser, and session-context capabilities; it is not a
+standalone runtime and does not persist product state.
+
 ## Tested
 
 - 13 Day 1 Agent-loop unit tests and 10 `D1-001`–`D1-010` eval cases
@@ -53,15 +70,22 @@ project-update cycle.
 - Day journal statuses form a valid completed prefix that agrees with this file
 - documentation consistency checks in `tests/test_document_consistency.py`
 - sample project inventory is deterministic
+- seven Skill packages pass structural validation and install validation
+- fourteen Skill behavior cases cover routing, Gates, Answer Lab, research,
+  N/A, source caps, ownership, conflict, injection, no-event recovery, and One
+  Next Build, plus visibly labeled mock practice
+- fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
+  without executing the inspected project
 
-See `docs/build_journal/DAY_1.md` for the acceptance traceability table.
+See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
+`docs/dogfood/SKILL_ALPHA_DOGFOOD.md` for the Alpha inspection report.
 
 ## Planned
 
 - WO-05 JD-first intake and project routing: contracts, eval cases, and
-  acceptance criteria are defined; no runtime exists. Day 2 revised the product
-  definition around the JD-first flow and implemented nothing.
-- live Skill behavior and two-host comparison
+  acceptance criteria are defined; the host-native Skill now exercises them,
+  but no standalone runtime exists
+- target-user testing and cross-host behavior comparison
 - the full WO-02 stateful project-update cycle
 - thin Web UI, production retrieval comparison, and failure injection
 - evaluation runs, model decision, target-user pilot, and measured results
@@ -70,7 +94,9 @@ See `docs/build_journal/DAY_1.md` for the acceptance traceability table.
 
 - user value or adoption
 - product quality
-- Skill runtime behavior in a real Agent host
+- Skill runtime outside fresh Codex dogfood, including cross-host behavior;
+  install validation succeeded in Codex and Claude Code locations, but the
+  Claude invocation was blocked by an expired host OAuth token
 - Web UI and production RAG behavior
 - production model behavior
 - Skill advantage over a strong generic prompt
@@ -85,4 +111,5 @@ See `docs/build_journal/DAY_1.md` for the acceptance traceability table.
 
 ## Next required action
 
-Begin the next assigned Day or Work Order as a separate task.
+Run the first target-user Alpha test; do not begin WO-05 standalone runtime or
+the Web UI.

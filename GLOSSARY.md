@@ -9,7 +9,7 @@ that owns the rule.
 | Term | Definition | Not to be confused with | Canonical source |
 | --- | --- | --- | --- |
 | **Project2Job** | The canonical product and repository name. Use it in all new and revised text. | `Career Desk`. | `README.md` |
-| **Career Desk** | A legacy internal codename for the same product. Do not introduce it in new text. Several v6-era product documents and the published path `skill/career-desk/` still carry it; those are renamed as each file is next revised, not in one sweep. | The current product name. | `docs/13_DECISION_LOG.md` (D-013) |
+| **Career Desk** | A legacy internal codename for the same product. Do not introduce it in new text. Some v6-era code modules and historical records still carry it; the former Skill path moved to the Project2Job suite under D-018. | The current product name. | `docs/13_DECISION_LOG.md` (D-013, D-018) |
 | **Skill** | The session-scoped, open-source entry point that runs inside the user's Agent host and holds no product state. | The Agent. A Skill does not persist evidence or run update cycles. | `docs/05_SKILL_PRODUCT_SPEC.md` |
 | **Agent** | The stateful product that maintains user-confirmed evidence, applies corrections, and regenerates affected outputs after a project changes. | The Skill, and the Day 1 loop slice. | `docs/06_AGENT_PRODUCT_SPEC.md` |
 | **Evidence Investigator** | The bounded loop that turns one claim into an evidence status through Action → Observation → State Update → Continue / Adjust / Ask / Stop. Currently implemented with deterministic scripted read-only tools. | A production model-powered Agent runtime. | `src/career_desk/runtime.py`, `docs/build_journal/DAY_1.md` |

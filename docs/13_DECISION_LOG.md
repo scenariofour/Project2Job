@@ -140,8 +140,8 @@ replace it with the fixed workflow if those benefits do not materialize.
 Decision:
 
 - `Project2Job` is the canonical product and repository name. `Career Desk` is a
-  legacy internal codename kept only in clearly historical records and already
-  published paths such as `skill/career-desk/`.
+  legacy internal codename kept only in clearly historical records and v6-era
+  code modules. The former `skill/career-desk/` path was migrated by D-018.
 - Change history stays in Git, pull requests, Work Orders, and
   `docs/13_DECISION_LOG.md`. Do not add `baseline/`, `increments/`, or `review/`
   folders that duplicate them.
@@ -268,3 +268,29 @@ Interview context is the only container for research output, and D-015 already
 established that a single-container concept does not earn its own file. Keeping
 the trace beside the claims it produced means provenance travels with the
 evidence, and a reviewer sees the claim and how it was obtained in one object.
+
+## D-018: Ship the first Skill as a seven-part host-native suite
+
+Decision:
+
+- Replace the legacy monolithic Skill entry with one low-friction `$p2j` router
+  and six specialist Skills: `$p2j-brief`, `$p2j-audit`, `$p2j-intel`,
+  `$p2j-answer`, `$p2j-mock`, and `$p2j-upgrade`.
+- Keep shared evidence, Gate, research, and answer behavior in one reference
+  owner under `skill/p2j/references/`; specialists load only what they need.
+- Project the canonical 10 domains into six user-facing Gates without creating
+  a total candidate score. Apply strict 0–5 evidence levels and hard caps.
+- Assemble canonical schemas, role profile, and safety/budget documents into the
+  installed package at install time rather than committing divergent copies.
+- Treat `/p2j*` as conversational aliases. `$p2j*` is the explicit native
+  invocation supported by Codex and compatible Skill hosts.
+- Depend on host file, Git, public search/fetch, browser, and current-session
+  context capabilities. Do not claim a standalone runtime or persistent state.
+
+Reason:
+
+The first user-testable Alpha needs fast activation and specialist depth without
+a giant `SKILL.md` or duplicated ontology. A suite lets the host progressively
+load only the audit, research, answer, mock, or build guidance needed for the
+current task. Installing canonical source snapshots from one repository source
+keeps the package self-contained without creating a second editable contract.

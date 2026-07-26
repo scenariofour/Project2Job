@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project2Job Answer Lab"
+  short_description: "Build grounded answers that survive follow-up."
+  default_prompt: "Use $p2j-answer to create and defend the strongest answer to this interview question."

@@ -3,8 +3,8 @@
 Project2Job is a role-backwards product for people preparing for early-career AI
 Product Manager, Agent Product Manager, or Applied AI Product roles. Project2Job
 is the canonical product and repository name; `Career Desk` is a legacy internal
-codename that survives only in historical records and existing paths such as
-`skill/career-desk/`. Vocabulary is defined in `GLOSSARY.md`.
+codename that survives only in historical records and some v6-era code modules.
+Vocabulary is defined in `GLOSSARY.md`.
 
 The intended workflow starts at the job description and ends at a pack for that
 specific company:
@@ -29,11 +29,11 @@ user value has not been validated.
 
 ## Skill and Agent responsibilities
 
-The planned open-source Project2Job Skill is the low-friction, session-scoped
-entry point. Given one project and one role or JD, it is responsible for a Role
-Fit Map, Project Highlights, evidence-grounded resume bullets, an Interview Prep
-Pack, One Next Build, and a correction prompt. It runs in the user's Agent host
-and does not maintain product state.
+The host-native Project2Job Skill Alpha is the low-friction, session-scoped
+entry point. Its `$p2j` router and six specialists produce a concise Brief,
+six-Gate evidence audit, company intelligence, grounded answer lab, interactive
+mock, and One Next Build. It runs in the user's Agent host and does not maintain
+product state.
 
 The planned Project2Job Evidence Agent is the stateful product. It is responsible for
 maintaining user-confirmed evidence, applying corrections, detecting one project
@@ -42,6 +42,32 @@ not have permission to fabricate claims or take external action.
 
 Both products share evidence rules, schemas, source boundaries, evaluation
 cases, and safety requirements. They do not require the same runtime.
+
+## Install and invoke the Skill Alpha
+
+Python 3.11 or later is required. Install the seven Skills from a source
+checkout:
+
+```bash
+python3 skill/p2j/scripts/install_suite.py --dest ~/.codex/skills
+python3 skill/p2j/scripts/install_suite.py --dest ~/.claude/skills
+```
+
+Add `--replace` only when intentionally updating an existing Project2Job
+installation. Build the portable archive with `make skill-package`.
+Canonical JSON outputs can be checked with
+`python3 ~/.codex/skills/p2j/scripts/validate_output.py --schema
+application_pack <output.json>`; full instance validation uses the repository's
+optional `jsonschema>=4` dev dependency.
+
+In Codex, invoke `$p2j` or a specialist such as `$p2j-brief`; `/p2j` is a
+conversational alias, not a custom Codex slash-command runtime. In Claude Code,
+invoke `/p2j` or `/p2j-brief` after the host has reloaded its Skills. Start with
+one JD and, for project analysis, one local project folder.
+
+The suite depends on the host for local file reads, Git history, public search
+and fetch, optional browser rendering, and current-session context. It has no
+standalone service, persistent memory, background refresh, or Web UI.
 
 ## Current MVP
 
@@ -80,11 +106,13 @@ supported and merged with what research finds.
   model-powered Agent runtime.
 - The full WO-02 stateful project-update cycle is not complete.
 - Day 2 revised the product contracts around the JD-first flow. Those contracts
-  and their eval cases exist; no intake, routing, or pack runtime does.
+  and their eval cases exist. The host-native Skill Alpha implements the
+  JD/project routing and interview-prep workflows through host tools; no
+  standalone intake or pack runtime exists.
 
-Unproven: the Skill runtime in a real Agent host, the Web UI, production RAG,
-production model behavior, user value, product quality, latency, cost, and any
-Agent advantage over a strong one-shot prompt or a fixed workflow.
+Unproven: user value beyond dogfood, cross-host consistency, the Web UI,
+production RAG, production model behavior, latency, cost, and any Agent
+advantage over a strong one-shot prompt or a fixed workflow.
 
 Other files under `src/` are interfaces or stubs imported from v6; their
 presence does not mean those runtime features are implemented.
