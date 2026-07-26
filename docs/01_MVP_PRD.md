@@ -155,7 +155,10 @@ Rules the schema enforces:
 
 ## Skill scope
 
-One session, one JD, one company, one track, one optional resume, one selected project, one Application and Interview Pack.
+One active analysis at a time: one JD, one company, one track, one optional
+resume, one selected project, and one Application and Interview Pack. After
+consent, the local Context Registry may retain that Project/JD/run history
+across sessions; it does not expand the analysis scope.
 
 ## Agent scope
 

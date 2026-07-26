@@ -9,15 +9,18 @@ Treat `/p2j-upgrade` as an alias for `$p2j-upgrade`.
 
 1. Read `../p2j/references/core-contract.md` and
    `../p2j/references/gates.md`.
-2. Compare only material evidence gaps. Rank candidate actions by:
+2. Resolve shared context. Reuse current gaps and acceptance evidence; remove a
+   completed build from consideration and recompute only gaps affected by
+   changed evidence.
+3. Compare only material evidence gaps. Rank candidate actions by:
    - number and importance of Gates improved
    - target-JD relevance
    - new direct evidence produced
    - interview questions and story branches unlocked
    - risk reduced
    - effort and dependency cost
-3. Choose exactly one action. Reject the runner-up explicitly.
-4. Return: gap, why now, bounded steps, acceptance criteria, expected new
+4. Choose exactly one action. Reject the runner-up explicitly.
+5. Return: gap, why now, bounded steps, acceptance criteria, expected new
    evidence and exact artifact, affected outputs/questions/Gates, effort band,
    and the interview question unlocked.
 
