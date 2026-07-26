@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -190,12 +191,14 @@ def initial_payload() -> dict:
 
 
 def serialize(result: dict, view: str, extra: dict | None = None) -> dict:
+    trace = deepcopy(result["trace"])
+    trace["usage"]["latency_ms"] = 0
     payload = {
         "view": view,
         "project": {"name": "Sample AI Reliability Lab", "version": "1.1"},
         "jd": {"label": "Applied AI Product Manager"},
         "state": result["state"].to_dict(),
-        "trace": result["trace"],
+        "trace": trace,
     }
     if extra:
         payload.update(extra)

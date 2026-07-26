@@ -1,6 +1,13 @@
 from __future__ import annotations
 
 import unittest
+import json
+from pathlib import Path
+
+try:
+    import jsonschema
+except ImportError:  # pragma: no cover - exercised in the base dependency set
+    jsonschema = None
 
 from src.career_desk.orchestrator import (
     AgentBudget,
@@ -81,6 +88,8 @@ def existing_state() -> EvidenceAgentState:
 
 
 class StatefulAgentTests(unittest.TestCase):
+    ROOT = Path(__file__).resolve().parents[1]
+
     def test_initial_run_saves_dependency_backed_outputs_and_trace(self) -> None:
         capabilities = ScriptedCapabilities(
             [
@@ -359,9 +368,20 @@ class StatefulAgentTests(unittest.TestCase):
         capabilities = ScriptedCapabilities(
             [
                 {
-                    "outputs": {
-                        "score_bad": {"kind": "score", "value": 5}
+                    "claims": {
+                        "c1": {
+                            "status": "supported",
+                            "attribution_scope": "directly_owned",
+                        }
                     },
+                    "outputs": {
+                        "score_bad": {
+                            "kind": "score",
+                            "value": 5,
+                            "depends_on": ["c1"],
+                        }
+                    },
+                    "dependencies": {"c1": ["score_bad"]},
                     "affected_outputs": ["score_bad"],
                     "observation_summary": "An invalid score was proposed.",
                 }
@@ -436,6 +456,67 @@ class StatefulAgentTests(unittest.TestCase):
             result["trace"]["steps"][0]["selected_action"],
             "investigate_evidence",
         )
+
+    def test_structured_fixtures_have_schema_required_state_and_trace_fields(self) -> None:
+        state_schema = json.loads(
+            (self.ROOT / "schemas/agent_state.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        trace_schema = json.loads(
+            (self.ROOT / "schemas/agent_trace.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        fixtures = self.ROOT / "apps/web/fixtures"
+        for path in fixtures.glob("*.json"):
+            with self.subTest(fixture=path.name):
+                data = json.loads(path.read_text(encoding="utf-8"))
+                self.assertTrue(
+                    set(state_schema["required"]) <= set(data["state"])
+                )
+                self.assertTrue(
+                    set(trace_schema["required"]) <= set(data["trace"])
+                )
+
+    @unittest.skipIf(jsonschema is None, "jsonschema is not installed")
+    def test_structured_fixtures_validate_against_agent_schemas(self) -> None:
+        state_schema = json.loads(
+            (self.ROOT / "schemas/agent_state.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        trace_schema = json.loads(
+            (self.ROOT / "schemas/agent_trace.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        for path in (self.ROOT / "apps/web/fixtures").glob("*.json"):
+            with self.subTest(fixture=path.name):
+                data = json.loads(path.read_text(encoding="utf-8"))
+                jsonschema.validate(data["state"], state_schema)
+                jsonschema.validate(data["trace"], trace_schema)
+
+    def test_agent_eval_cases_include_reviewable_gold_boundaries(self) -> None:
+        cases = [
+            json.loads(line)
+            for line in (
+                self.ROOT / "lab/evals/agent_cases.jsonl"
+            ).read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        self.assertEqual(len(cases), 17)
+        for case in cases:
+            self.assertTrue(
+                {
+                    "expected_status",
+                    "source_location",
+                    "evidence_boundary",
+                    "acceptable_alternative",
+                    "reviewer_notes",
+                }
+                <= set(case["gold"])
+            )
 
 
 if __name__ == "__main__":

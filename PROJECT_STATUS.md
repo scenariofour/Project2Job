@@ -7,7 +7,8 @@ Highest completed Day: 1
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
-implemented and tested. A seven-Skill host-native Alpha is implemented and
+implemented and tested. Stateful Agent V0 mechanics are implemented and
+deterministically tested. A seven-Skill host-native Alpha is implemented and
 installable.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
@@ -43,9 +44,21 @@ Day 1 bounded Agent Loop:
 - a permitted-source boundary that tool results cannot expand
 - deterministic visible traces committed under `docs/build_journal/traces/`
 
-Day 1 uses **deterministic scripted read-only tools**. It is not a production
-model-powered Agent runtime, and it does not implement the full WO-02
-project-update cycle.
+Day 1 still uses **deterministic scripted read-only tools**. The new V0 layer
+adds the WO-02 Project/JD update mechanics, but it is not a production
+model-powered Agent runtime.
+
+Stateful Agent V0:
+
+- consent-gated local Project/JD context with cross-process reuse
+- Project and JD version/change detection
+- explicit allowed-action orchestrator with scripted and host-mediated planners
+- dependency-aware correction, removal, Project-update, and JD-update paths
+- selective output preservation, one bounded repair, visible stop conditions,
+  and privacy-safe structured traces
+- one shared local renderer for Initial Analysis, Evidence Inspection, Project
+  Updated, and No Relevant Changes
+- scripted stateful-update versus fresh-Skill comparison
 
 Host-native Skill Alpha:
 
@@ -80,8 +93,8 @@ standalone runtime and does not monitor or regenerate in the background.
 - twenty Context Registry unit tests cover consent, cross-process and
   cross-Skill reuse, versioning, incremental invalidation, controls, identity,
   privacy, and corrupt-state failure
-- `make test` passes 148 tests; 13 optional `jsonschema` instance tests are
-  skipped because that dependency is not installed
+- the temporary dependency-complete run passes 166 tests with all 14 optional
+  `jsonschema` instance tests enabled; the base environment skips those 14
 - fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
   without executing the inspected project
 
@@ -94,8 +107,8 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
   acceptance criteria are defined; the host-native Skill now exercises them,
   but no standalone runtime exists
 - target-user testing and cross-host behavior comparison
-- the full WO-02 stateful project-update cycle
-- thin Web UI, production retrieval comparison, and failure injection
+- production retrieval comparison and failure injection beyond deterministic
+  fixtures
 - evaluation runs, model decision, target-user pilot, and measured results
 
 ## Not yet proven
@@ -105,11 +118,11 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
 - Skill runtime outside fresh Codex dogfood, including cross-host behavior;
   install validation succeeded in Codex and Claude Code locations, but the
   Claude invocation was blocked by an expired host OAuth token
-- Web UI and production RAG behavior
+- production Web UI and production RAG behavior; the local report is a
+  demonstration surface only
 - production model behavior
 - Skill advantage over a strong generic prompt
-- Agent advantage over a strong one-shot prompt or a fixed
-  extract-search-validate workflow
+- Agent advantage beyond the single scripted fresh-Skill update comparison
 - latency, token, and cost targets
 - role-standard relationship to hiring outcomes
 - that the JD-first ordering matches how users actually work
@@ -119,5 +132,5 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
 
 ## Next required action
 
-Run the first target-user Alpha test; do not begin WO-05 standalone runtime or
-the Web UI.
+Run the first target-user Alpha test and a live-model stateful update; do not
+expand the local report into a production Web application.

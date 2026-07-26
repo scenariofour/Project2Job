@@ -263,7 +263,7 @@
       "turns": 0,
       "capability_calls": 0,
       "repairs": 0,
-      "latency_ms": 0.086
+      "latency_ms": 0
     }
   },
   "inspection": {

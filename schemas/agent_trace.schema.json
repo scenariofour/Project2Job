@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/agent-trace/1.0.0",
+  "title": "Project2Job Agent Trace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "state_summary",
+    "detected_change",
+    "steps",
+    "affected_outputs",
+    "preserved_outputs",
+    "stop_reason",
+    "budgets",
+    "usage"
+  ],
+  "properties": {
+    "state_summary": {"type": "object"},
+    "detected_change": {
+      "enum": ["new", "unchanged", "project", "jd", "both", "correction"]
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "turn",
+          "state_summary",
+          "selected_action",
+          "capability_used",
+          "observation_summary",
+          "validation_result",
+          "affected_outputs",
+          "preserved_outputs",
+          "usage"
+        ],
+        "properties": {
+          "turn": {"type": "integer", "minimum": 1},
+          "state_summary": {"type": "object"},
+          "selected_action": {
+            "enum": [
+              "investigate_evidence",
+              "refresh_jd_context",
+              "produce_brief",
+              "produce_interview_answer",
+              "pressure_test_answer",
+              "recommend_next_build",
+              "request_confirmation",
+              "stop"
+            ]
+          },
+          "capability_used": {"type": "string"},
+          "observation_summary": {"type": "string"},
+          "validation_result": {"enum": ["passed", "repaired", "failed"]},
+          "affected_outputs": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "preserved_outputs": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "usage": {"type": "object"}
+        }
+      }
+    },
+    "affected_outputs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "preserved_outputs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string"}
+    },
+    "stop_reason": {
+      "enum": [
+        "complete",
+        "no_relevant_changes",
+        "correction_approval_required",
+        "permission_required",
+        "budget_exhausted",
+        "validation_failed",
+        "policy_stop"
+      ]
+    },
+    "budgets": {"type": "object"},
+    "usage": {"type": "object"}
+  }
+}

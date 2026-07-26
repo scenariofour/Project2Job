@@ -158,6 +158,13 @@ Measure:
 - update run reduces repeated work
 - traces and budgets are visible
 
+The scripted V0 case in
+`docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json` passes these mechanical
+conditions for one added evaluation artifact: 2/2 expected outputs changed,
+0 unrelated outputs changed, one file was read instead of five, and no
+confirmed question was repeated. This is repository dogfood, not target-user or
+live-model validation.
+
 ### User-value PoC passes when
 
 - target users receive a useful asset

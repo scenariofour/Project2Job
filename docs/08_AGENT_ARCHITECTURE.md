@@ -108,6 +108,23 @@ observe current claim and state
 → continue, ask, or stop
 ```
 
+The V0 orchestration loop above the claim investigator is:
+
+```text
+resolve context
+→ observe Project, JD, and correction changes
+→ select one allowed action
+→ execute one capability
+→ validate affected outputs
+→ repair once, ask, or stop
+→ update dependencies and preserve unrelated outputs
+```
+
+`src/career_desk/orchestrator.py` implements this policy without a graph
+framework. Capabilities receive bounded context and return state patches,
+dependency edges, affected output IDs, an observation summary, and usage.
+Capability implementations do not decide permissions, budgets, or stop rules.
+
 ## Baselines
 
 Every Agent experiment compares with:

@@ -1,0 +1,70 @@
+{
+  "comparison_type": "deterministic_scripted_dogfood",
+  "expected_changed_outputs": [
+    "match_eval",
+    "score_evaluation"
+  ],
+  "expected_preserved_outputs": [
+    "match_api",
+    "match_commercial",
+    "route",
+    "score_delivery",
+    "score_problem",
+    "score_product",
+    "score_technical",
+    "story_failure",
+    "story_reliability"
+  ],
+  "stateful_agent_update": {
+    "files_read": 1,
+    "repeated_questions": 0,
+    "capability_calls": 1,
+    "affected_outputs_correctly_updated": 2,
+    "unaffected_outputs_incorrectly_changed": 0,
+    "outputs_regenerated": 2,
+    "latency_ms": 0.167,
+    "token_usage": 0,
+    "trace_clarity": {
+      "has_detected_change": true,
+      "has_stop_reason": true,
+      "steps_with_validation": 1
+    }
+  },
+  "fresh_skill_rerun": {
+    "files_read": 5,
+    "repeated_questions": 1,
+    "capability_calls": 2,
+    "affected_outputs_correctly_updated": 2,
+    "unaffected_outputs_incorrectly_changed": 0,
+    "outputs_regenerated": 11,
+    "latency_ms": 0.09,
+    "token_usage": 0,
+    "trace_clarity": {
+      "has_detected_change": true,
+      "has_stop_reason": true,
+      "steps_with_validation": 2
+    }
+  },
+  "host_mediated_decision": {
+    "observation": {
+      "detected_change": "project",
+      "changed_artifacts": {
+        "added": [
+          "eval_results.csv"
+        ],
+        "removed": [],
+        "changed": []
+      },
+      "invalidated_outputs": [],
+      "correction_approved": false
+    },
+    "selected_action": "investigate_evidence",
+    "decision_source": "host_supplied_after_observation"
+  },
+  "conclusion": "The scripted stateful update read fewer files, repeated no confirmed question, and regenerated only expected outputs while preserving the same deterministic output correctness.",
+  "limitations": [
+    "This is scripted repository dogfood, not target-user validation.",
+    "Token usage is unavailable because no model call was made.",
+    "Sub-millisecond local latency is not representative of a live model path."
+  ]
+}

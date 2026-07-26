@@ -1,60 +1,115 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "CareerEvidenceAgentState",
+  "$id": "https://project2job.dev/schemas/agent-state/1.0.0",
+  "title": "Project2Job Agent State",
   "type": "object",
+  "additionalProperties": false,
   "required": [
-    "run_id",
-    "project_id",
     "project_version",
-    "role_profile_id",
+    "jd_version",
+    "artifacts",
+    "evidence",
     "claims",
-    "next_build",
-    "budgets",
-    "stop_reason"
+    "outputs",
+    "dependencies",
+    "confirmed_facts",
+    "unresolved_questions"
   ],
   "properties": {
-    "run_id": {
-      "type": "string"
+    "project_version": {"type": "string"},
+    "jd_version": {"type": "string"},
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
     },
-    "project_id": {
-      "type": "string"
-    },
-    "project_version": {
-      "type": "string"
-    },
-    "role_profile_id": {
-      "type": "string"
+    "evidence": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/evidenceItem"}
     },
     "claims": {
-      "type": "array"
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/claim"}
     },
-    "user_confirmations": {
-      "type": "array"
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/output"}
     },
-    "generated_assets": {
-      "type": "array"
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {"type": "string"}
+      }
     },
-    "next_build": {
-      "type": "object"
+    "confirmed_facts": {"type": "object"},
+    "unresolved_questions": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "evidenceItem": {
+      "type": "object",
+      "required": ["source", "summary"],
+      "properties": {
+        "source": {"type": "string"},
+        "location": {"type": "string"},
+        "summary": {"type": "string"}
+      }
     },
-    "budgets": {
-      "type": "object"
+    "claim": {
+      "type": "object",
+      "required": ["status", "attribution_scope"],
+      "properties": {
+        "status": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "inferred",
+            "not_found",
+            "conflicting",
+            "needs_confirmation"
+          ]
+        },
+        "attribution_scope": {
+          "enum": [
+            "directly_owned",
+            "ai_assisted",
+            "collaborator_owned",
+            "unresolved"
+          ]
+        }
+      }
     },
-    "changed_sources": {
-      "type": "array"
-    },
-    "invalidated_outputs": {
-      "type": "array"
-    },
-    "stop_reason": {
-      "enum": [
-        "complete",
-        "needs_confirmation",
-        "budget_reached",
-        "no_evidence",
-        "tool_failure",
-        "policy_stop"
-      ]
+    "output": {
+      "type": "object",
+      "required": ["kind", "depends_on"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "score",
+            "jd_match",
+            "story",
+            "route",
+            "resume_bullet",
+            "answer"
+          ]
+        },
+        "depends_on": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "label": {"type": "string"},
+        "value": {"type": "integer", "minimum": 1, "maximum": 5},
+        "match": {"enum": ["EXACT MATCH", "TRANSFERABLE", "GAP"]},
+        "content": {"type": "string"},
+        "before": {},
+        "why": {"type": "string"},
+        "exported": {"type": "boolean"}
+      }
     }
   }
 }

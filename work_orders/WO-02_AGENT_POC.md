@@ -2,6 +2,9 @@
 
 Context set: `agent_poc`
 
+Implementation status: implemented and deterministically tested on
+2026-07-26; target-user value remains unvalidated.
+
 ## Goal
 
 Implement one stateful Evidence Investigator and one project-update cycle.
@@ -26,3 +29,17 @@ Implement one stateful Evidence Investigator and one project-update cycle.
 - changed files are prioritized
 - fresh Skill rerun comparison completed
 - no multi-agent or Deep Agent
+
+## Evidence
+
+- `src/career_desk/runtime.py` retains the bounded per-claim Evidence
+  Investigator and six read-only tool interfaces.
+- `skill/p2j/scripts/context_registry.py` provides consent-gated identity,
+  version, fingerprint, correction-context, and cross-process reuse.
+- `src/career_desk/orchestrator.py` provides the allowed-action policy,
+  scripted and host-mediated planners, dependency traversal, one repair, and
+  privacy-safe run trace.
+- `tests/test_context_registry.py`, `tests/test_stateful_agent.py`, and
+  `lab/evals/agent_cases.jsonl` cover the accepted stateful paths.
+- `docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json` records the fresh-rerun
+  comparison. It supports a bounded scripted-mechanics conclusion only.

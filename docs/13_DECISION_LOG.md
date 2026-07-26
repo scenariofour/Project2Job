@@ -321,3 +321,26 @@ Repeated Brief, Audit, Answer, Mock, Intel, and Upgrade runs should not discard
 confirmed work or repeat ownership questions. One shared local envelope avoids
 duplicating state across seven Skills while preserving the product boundary:
 one Project, one JD, no background process, and no general candidate database.
+
+## D-020: Add one bounded orchestration layer and one data-driven report
+
+Decision:
+
+- Keep the existing Evidence Investigator and seven user-facing Skills.
+- Add one explicit runtime that accepts scripted or host-mediated action
+  selection while deterministic policy enforces the allowed actions,
+  permissions, budgets, validation, one repair, and stop.
+- Store dependency edges from artifacts through evidence and claims to outputs,
+  then regenerate only dependency descendants.
+- Render Initial Analysis, Evidence Inspection, Project Updated, and No Relevant
+  Changes from structured state and traces through one local HTML shell.
+- Do not add an Agent SDK, LangGraph, frontend framework, background monitor, or
+  another Skill.
+
+Reason:
+
+The requested initial, correction, Project-update, JD-update, and unchanged
+paths require durable state and selective dependency work, but not durable graph
+checkpointing or a production Web service. One small policy loop and one
+renderer make the Agent behavior inspectable without creating framework-shaped
+architecture.

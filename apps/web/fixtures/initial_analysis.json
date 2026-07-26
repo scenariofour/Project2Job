@@ -294,7 +294,7 @@
       "turns": 1,
       "capability_calls": 1,
       "repairs": 0,
-      "latency_ms": 0.089
+      "latency_ms": 0
     }
   }
 }

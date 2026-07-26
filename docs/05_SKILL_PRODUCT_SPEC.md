@@ -101,7 +101,8 @@ Load:
 
 - role standard only when role analysis is needed
 - evidence rubric for claim verification
-- Context Registry instructions only when local reuse is available or requested
+- Context Registry resolver before every run; continue without saving when local
+  reuse is unavailable or declined
 - routing reference only when a resume with several projects is present
 - resume reference only for bullet generation
 - interview reference only for interview output

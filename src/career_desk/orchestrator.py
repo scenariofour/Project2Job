@@ -162,12 +162,32 @@ def affected_output_ids(state: EvidenceAgentState, roots: set[str]) -> set[str]:
     return {item for item in descendants if item in state.outputs}
 
 
+def has_evidence_ancestor(state: EvidenceAgentState, output_id: str) -> bool:
+    parents: dict[str, set[str]] = {}
+    for parent, children in state.dependencies.items():
+        for child in children:
+            parents.setdefault(child, set()).add(parent)
+    frontier = [output_id]
+    seen: set[str] = set()
+    while frontier:
+        node = frontier.pop()
+        if node in state.evidence:
+            return True
+        if node in seen:
+            continue
+        seen.add(node)
+        frontier.extend(parents.get(node, set()))
+    return False
+
+
 def validate_state(state: EvidenceAgentState, output_ids: set[str]) -> list[dict]:
     failures: list[dict] = []
     for output_id in sorted(output_ids):
         output = state.outputs[output_id]
         dependencies = set(output.get("depends_on", []))
-        if output.get("kind") == "score" and not dependencies:
+        if output.get("kind") == "score" and not has_evidence_ancestor(
+            state, output_id
+        ):
             failures.append(
                 {"output_id": output_id, "code": "score_without_evidence"}
             )

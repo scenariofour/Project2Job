@@ -144,7 +144,9 @@ class StatusTruthTests(unittest.TestCase):
         glossary = prose("GLOSSARY.md")
         self.assertIn("Skill instructions do not themselves monitor change", glossary)
         self.assertIn("Consent-gated local infrastructure", glossary)
-        self.assertIn("future stateful product that actively detects", glossary)
+        self.assertIn(
+            "stateful product runtime that resolves saved context", glossary
+        )
 
 
 class OutputQuantityTests(unittest.TestCase):
