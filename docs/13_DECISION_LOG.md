@@ -344,3 +344,34 @@ paths require durable state and selective dependency work, but not durable graph
 checkpointing or a production Web service. One small policy loop and one
 renderer make the Agent behavior inspectable without creating framework-shaped
 architecture.
+
+## D-021: Persist one canonical Agent state and integrate one real update path
+
+Decision:
+
+- Persist the orchestrator's evidence, claims, outputs, dependencies, trace, and
+  observed metrics inside the existing Context Registry Analysis Run rather
+  than introducing a second state store.
+- Restore that state in a separate process and save the next valid state with
+  the registry's existing atomic write.
+- Limit the first real capability adapter to explicitly named changed evidence
+  artifacts. Run the existing bounded Evidence Investigator on that surface,
+  then recompute only dependency descendants.
+- Keep initial Brief, company research, Answer, and Mock generation
+  host-provided and label them as such.
+- Keep one-time Skill use independent: without save consent, a host-native Skill
+  may return its normal result without loading the update runtime or creating
+  registry/consent files.
+- Classify controlled dogfood additions as an existing-fact summary, a
+  simulated proposal, or an actually executed result. Only the last may add
+  executed capability evidence.
+- Generate a Codex/Claude Code execution handoff from `$p2j-upgrade`; never
+  execute the inspected Project modification from Project2Job.
+
+Reason:
+
+Cross-process restoration and a real selective update require one source of
+state truth, but they do not require a service, provider API, graph framework,
+or another user-facing Skill. Restricting the real adapter to a labeled changed
+surface makes the evidence boundary inspectable and deterministically testable
+while host-native generation remains available in Codex or Claude Code.

@@ -29,6 +29,13 @@ SECRET_KEYS = {
     "session",
     "token",
 }
+SAFE_TELEMETRY_KEYS = {
+    "cached_input_tokens",
+    "input_tokens",
+    "output_tokens",
+    "token_usage",
+    "tokens",
+}
 RAW_CONTENT_KEYS = {
     "body",
     "content",
@@ -48,6 +55,8 @@ SECRET_PATTERNS = (
     re.compile(r"\bBearer\s+[A-Za-z0-9._~+/-]{16,}", re.IGNORECASE),
 )
 RUN_FIELDS = {
+    "agent_state",
+    "agent_trace",
     "evidence",
     "scores",
     "matches",
@@ -55,6 +64,7 @@ RUN_FIELDS = {
     "unresolved_questions",
     "recommended_route",
     "output_references",
+    "observed_metrics",
 }
 PROJECT_FIELDS = {
     "confirmed_facts",
@@ -212,6 +222,9 @@ def project_snapshot(identity: dict, prior_record: dict | None = None) -> dict:
             "evidence_surfaces": item["evidence_surfaces"],
         }
         for item in full_inventory["files"]
+        if item["is_text_candidate"]
+        or item["evidence_surfaces"]
+        or item["path"] in cached_files
     ]
     return {
         "project_id": identity["project_id"],
@@ -268,7 +281,10 @@ def validate_safe_value(value: object, path: str = "value", depth: int = 0) -> N
     if isinstance(value, dict):
         for key, item in value.items():
             lowered = str(key).lower()
-            if lowered in SECRET_KEYS or any(part in lowered for part in SECRET_KEYS):
+            if lowered not in SAFE_TELEMETRY_KEYS and (
+                lowered in SECRET_KEYS
+                or any(part in lowered for part in SECRET_KEYS)
+            ):
                 raise RegistryError(f"{path}.{key} may contain a secret and was not saved.")
             if lowered in RAW_CONTENT_KEYS:
                 raise RegistryError(f"{path}.{key} contains source body content and was not saved.")
@@ -473,6 +489,8 @@ def run_dependency_paths(run: dict) -> set[str]:
             paths.add(item)
         elif isinstance(item, dict) and item.get("path"):
             paths.add(str(item["path"]))
+    state = run.get("agent_state", {})
+    paths.update(str(path) for path in state.get("artifacts", {}))
     return paths
 
 
@@ -523,7 +541,14 @@ def resolve_context(
     reusable = reusable_project_items(project_record, affected)
     compatible_runs = []
     invalidated_outputs = []
+    previous_agent_state = None
     for run in registry["analysis_runs"]:
+        same_identity = (
+            (project is None or run.get("project_id") == project["project_id"])
+            and (jd is None or run.get("jd_id") == jd["jd_id"])
+        )
+        if same_identity and run.get("agent_state"):
+            previous_agent_state = run["agent_state"]
         same_project = run.get("project_id") is None or (
             project is not None
             and run.get("project_id") == project["project_id"]
@@ -545,6 +570,9 @@ def resolve_context(
                     "unresolved_questions": run.get("unresolved_questions", []),
                     "recommended_route": run.get("recommended_route"),
                     "output_references": run.get("output_references", []),
+                    "agent_state": run.get("agent_state"),
+                    "agent_trace": run.get("agent_trace"),
+                    "observed_metrics": run.get("observed_metrics"),
                 }
             )
         elif project and run.get("project_id") == project["project_id"]:
@@ -575,6 +603,10 @@ def resolve_context(
         "changes": changes,
         "reusable": reusable,
         "compatible_runs": compatible_runs,
+        "previous_agent_state": (
+            None if mode == "fresh" or state == "identity_ambiguous"
+            else previous_agent_state
+        ),
         "invalidated_output_references": sorted(set(invalidated_outputs)),
         "recompute": list(dict.fromkeys(recompute)),
         "reuse_notice": bool(
@@ -655,6 +687,9 @@ def safe_analysis(analysis: dict) -> dict:
     for field in ("evidence", "reused_fact_ids", "output_references"):
         if field in selected and not isinstance(selected[field], list):
             raise RegistryError(f"Analysis field '{field}' must be a list.")
+    for field in ("agent_state", "agent_trace", "observed_metrics"):
+        if field in selected and not isinstance(selected[field], dict):
+            raise RegistryError(f"Analysis field '{field}' must be an object.")
     for field in ("reused_fact_ids", "output_references"):
         if not all(isinstance(value, str) for value in selected.get(field, [])):
             raise RegistryError(f"Analysis field '{field}' must contain strings.")

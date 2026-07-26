@@ -32,7 +32,7 @@ def output_cards(outputs: dict, kind: str) -> str:
         elif kind == "story":
             cards.append(
                 f"""<article class="story"><strong>{esc(output['label'])}</strong>
-                <p>{esc(output.get('content', ''))}</p></article>"""
+                <p>{esc(output.get('summary', output.get('content', '')))}</p></article>"""
             )
     return "".join(cards)
 
@@ -58,19 +58,34 @@ def activity(trace: dict) -> str:
 
 def initial_view(data: dict) -> str:
     outputs = data["state"]["outputs"]
+    verdict = next(
+        (item for item in outputs.values() if item.get("kind") == "verdict"), {}
+    )
     route = next(
         (item for item in outputs.values() if item.get("kind") == "route"), {}
     )
+    intelligence = "".join(
+        f"<article class='source'><strong>{esc(item.get('label', 'Company signal'))}</strong><p>{esc(item.get('summary', ''))}</p></article>"
+        for item in outputs.values()
+        if item.get("kind") == "company_intelligence"
+    )
+    questions = "".join(
+        f"<li><strong>{esc(item.get('label', 'Question'))}</strong>: {esc(item.get('summary', ''))}<br><small>Basis: {esc(item.get('basis', 'Not established'))}</small></li>"
+        for item in outputs.values()
+        if item.get("kind") == "question"
+    )
     return f"""
     <p class="eyebrow">Preliminary Project2Job Brief</p>
-    <h1>Strong supporting project with a clear reliability story</h1>
-    <p class="lede">The project directly demonstrates bounded AI workflow judgment. Its largest limitation is the lack of a measured commercial outcome.</p>
+    <h1>{esc(verdict.get('label', 'Preliminary Project Verdict'))}</h1>
+    <p class="lede">{esc(verdict.get('summary', 'The source-linked Project result is ready for review.'))}</p>
+    {f'<section><h2>Company &amp; Interview Intelligence</h2>{intelligence}</section>' if intelligence else ''}
     <section><h2>Preliminary Project Scores</h2>{output_cards(outputs, "score")}</section>
     <section><h2>JD Match</h2><div class="grid">{output_cards(outputs, "jd_match")}</div></section>
     <section><h2>Interview Value</h2>{output_cards(outputs, "story")}</section>
+    {f'<section><h2>Prioritized likely questions</h2><ol>{questions}</ol></section>' if questions else ''}
     <section class="agent-panel"><p class="eyebrow">Recommended Route</p>
       <h2>{esc(route.get('route', 'Review Next Build'))}</h2>
-      <p>{esc(route.get('content', ''))}</p><button>Review Next Build</button></section>
+      <p>{esc(route.get('summary', route.get('content', '')))}</p><button>Review Next Build</button></section>
     """
 
 
@@ -102,10 +117,36 @@ def inspection_view(data: dict) -> str:
 def updated_view(data: dict) -> str:
     trace = data["trace"]
     outputs = data["state"]["outputs"]
+    artifact_boundaries = {
+        item.get("artifact_type")
+        for item in data["state"].get("evidence", {}).values()
+        if item.get("artifact_type")
+    }
+    boundary_labels = {
+        "controlled_summary_existing_fact": (
+            "Controlled summary of existing Project evidence — no new "
+            "capability or executed result."
+        ),
+        "simulated_proposed_artifact": (
+            "Simulated proposed artifact — planning evidence only, not executed "
+            "target-platform experience."
+        ),
+        "executed_new_result": "Actually executed new result.",
+    }
+    boundaries = "".join(
+        f"<li>{esc(boundary_labels.get(item, item.replace('_', ' ').title()))}</li>"
+        for item in sorted(artifact_boundaries)
+    )
     changes = []
     for output_id in trace["affected_outputs"]:
         output = outputs[output_id]
-        after = output.get("value", output.get("match", output.get("content", "")))
+        after = output.get("value", output.get("match"))
+        if after is None:
+            after = (
+                output.get("route")
+                if output.get("kind") == "route"
+                else output.get("summary", output.get("content", ""))
+            )
         changes.append(
             f"""<article class="change"><div><small>Before</small><p>{esc(output.get('before', 'Not available'))}</p></div>
             <div><small>After</small><p>{esc(after)}</p></div>
@@ -119,7 +160,8 @@ def updated_view(data: dict) -> str:
     return f"""
     <p class="eyebrow agent-color">Project Updated</p>
     <h1>Selective Update Summary</h1>
-    <p class="lede">Only outputs supported by the new evaluation evidence were updated.</p>
+    <p class="lede">Only outputs affected by the reviewed evidence record were updated.</p>
+    {f'<section><h2>Evidence boundary</h2><ul>{boundaries}</ul></section>' if boundaries else ''}
     <section><div class="section-title"><h2>Changed outputs</h2><b>{len(trace['affected_outputs'])} updated</b></div>
     {''.join(changes)}</section>
     <section class="preserved"><h2>Preserved without regeneration</h2><ul>{preserved}</ul></section>
@@ -132,7 +174,7 @@ def unchanged_view(data: dict) -> str:
     <div class="empty"><span class="pip"></span><h1>No relevant changes found</h1>
     <p class="lede">Project evidence, target JD, and confirmed facts match the previous analysis. The existing result remains current.</p>
     <div class="metrics"><div><b>0</b><span>Repeated questions</span></div>
-    <div><b>{usage.get('capability_calls', 0)}</b><span>Capability calls</span></div>
+    <div><b>{usage.get('capability_calls', 0)}</b><span>Actions run</span></div>
     <div><b>0</b><span>Files reopened</span></div><div><b>0</b><span>Outputs regenerated</span></div></div>
     <button>Open Current Result</button><button class="secondary">Analyze From Scratch</button></div>
     """
@@ -145,6 +187,17 @@ def render(data: dict) -> str:
         "project_updated": updated_view,
         "no_relevant_changes": unchanged_view,
     }
+    if "view" not in data:
+        detected = data["trace"]["detected_change"]
+        data["view"] = (
+            "no_relevant_changes"
+            if data["trace"]["stop_reason"] == "no_relevant_changes"
+            else "project_updated"
+            if detected in {"project", "both", "correction"}
+            else "initial_analysis"
+        )
+        data.setdefault("project", {"name": "Selected Project"})
+        data.setdefault("jd", {"label": "Target role"})
     body = views[data["view"]](data)
     project = data["project"]
     jd = data["jd"]
@@ -176,7 +229,7 @@ def render(data: dict) -> str:
     blockquote{{font-family:Georgia,serif;font-size:20px;margin:0}}@media(max-width:1050px){{.desk{{grid-template-columns:180px 1fr}}aside{{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}}.grid{{grid-template-columns:1fr}}}}
     </style></head><body>
     <header><span class="brand">Project2Job</span><strong>{esc(project['name'])}</strong><strong>{esc(jd['label'])}</strong><span>Local evidence report</span></header>
-    <div class="desk"><nav><p class="eyebrow">Project</p><h2>{esc(project['name'])}</h2><p>Version {esc(project['version'])}</p><p class="eyebrow">Target role</p><strong>{esc(jd['label'])}</strong>
+    <div class="desk"><nav><p class="eyebrow">Project</p><h2>{esc(project['name'])}</h2><p class="eyebrow">Target role</p><strong>{esc(jd['label'])}</strong>
     <a class="active">Overview</a><a>JD Match</a><a>Evidence</a><a>Interview Value</a><a>What Changed</a></nav>
     <main>{body}</main><aside><h2>Agent Activity</h2><ol>{activity(data['trace'])}</ol></aside></div></body></html>"""
 

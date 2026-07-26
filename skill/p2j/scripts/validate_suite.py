@@ -91,10 +91,16 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
         "context_registry.py",
         "inventory.py",
         "install_suite.py",
+        "stateful_agent.py",
         "validate_output.py",
     ):
         if not (root / "p2j" / "scripts" / name).is_file():
             errors.append(f"p2j: missing script {name}")
+    runtime = root / "p2j" / "scripts" / "career_desk"
+    if runtime.exists():
+        for name in ("capabilities.py", "orchestrator.py", "runtime.py"):
+            if not (runtime / name).is_file():
+                errors.append(f"p2j: missing bundled runtime {name}")
     for name in ("sample_jd.md", "sample_project.md", "sample_brief.md"):
         if not (root / "p2j" / "examples" / name).is_file():
             errors.append(f"p2j: missing example {name}")
@@ -151,6 +157,8 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
             "ACTIVE_SCOPE.md",
             "references/role_profiles/ai_pm_early_career.v0.1.0.json",
             "schemas/application_pack.schema.json",
+            "schemas/agent_state.schema.json",
+            "schemas/agent_trace.schema.json",
             "schemas/context_registry.schema.json",
             "schemas/interview_context.schema.json",
         ):

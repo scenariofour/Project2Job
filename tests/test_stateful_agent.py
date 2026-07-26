@@ -491,7 +491,13 @@ class StatefulAgentTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        for path in (self.ROOT / "apps/web/fixtures").glob("*.json"):
+        paths = [
+            *(self.ROOT / "apps/web/fixtures").glob("*.json"),
+            *(
+                self.ROOT / "docs" / "dogfood" / "etsy-agent-v0"
+            ).glob("0[1-5]-*.json"),
+        ]
+        for path in paths:
             with self.subTest(fixture=path.name):
                 data = json.loads(path.read_text(encoding="utf-8"))
                 jsonschema.validate(data["state"], state_schema)

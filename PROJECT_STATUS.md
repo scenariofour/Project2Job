@@ -56,9 +56,12 @@ Stateful Agent V0:
 - dependency-aware correction, removal, Project-update, and JD-update paths
 - selective output preservation, one bounded repair, visible stop conditions,
   and privacy-safe structured traces
+- one real changed-artifact path through the existing Evidence Investigator;
+  scores and JD Matches are recomputed but change only when evidence adds the
+  corresponding capability
 - one shared local renderer for Initial Analysis, Evidence Inspection, Project
   Updated, and No Relevant Changes
-- scripted stateful-update versus fresh-Skill comparison
+- observed integrated stateful-update versus fresh-run comparison
 
 Host-native Skill Alpha:
 
@@ -93,8 +96,9 @@ standalone runtime and does not monitor or regenerate in the background.
 - twenty Context Registry unit tests cover consent, cross-process and
   cross-Skill reuse, versioning, incremental invalidation, controls, identity,
   privacy, and corrupt-state failure
-- the temporary dependency-complete run passes 166 tests with all 14 optional
-  `jsonschema` instance tests enabled; the base environment skips those 14
+- integrated tests cover separate-process restore, the real changed-artifact
+  path, all Project/JD/correction flag combinations, invalid action rejection,
+  and the Upgrade handoff boundary
 - fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
   without executing the inspected project
 
@@ -122,7 +126,7 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
   demonstration surface only
 - production model behavior
 - Skill advantage over a strong generic prompt
-- Agent advantage beyond the single scripted fresh-Skill update comparison
+- Agent advantage beyond the single observed repository update comparison
 - latency, token, and cost targets
 - role-standard relationship to hiring outcomes
 - that the JD-first ordering matches how users actually work
@@ -132,5 +136,5 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
 
 ## Next required action
 
-Run the first target-user Alpha test and a live-model stateful update; do not
+Run the first target-user Alpha test and a live-model planner comparison; do not
 expand the local report into a production Web application.

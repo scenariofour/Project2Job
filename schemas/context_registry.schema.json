@@ -344,6 +344,15 @@
             "p2j-upgrade"
           ]
         },
+        "agent_state": {
+          "$ref": "https://project2job.dev/schemas/agent-state/1.0.0"
+        },
+        "agent_trace": {
+          "$ref": "https://project2job.dev/schemas/agent-trace/1.0.0"
+        },
+        "observed_metrics": {
+          "type": "object"
+        },
         "evidence": {
           "type": "array"
         },

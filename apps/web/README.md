@@ -22,3 +22,12 @@ through one shared three-column shell. Generated HTML stays under ignored
 The report intentionally shows plain-language activity rather than raw internal
 state. Corrections remain previews until approval, changed outputs use
 Before / After / Why, and preserved output names come from the actual trace.
+
+The real Etsy dogfood outputs also render through this same shell. Open the
+self-contained files under `docs/dogfood/etsy-agent-v0/`, or regenerate one:
+
+```bash
+python3 apps/web/render_report.py \
+  docs/dogfood/etsy-agent-v0/03-project-updated.json \
+  --output /tmp/project2job-update.html
+```

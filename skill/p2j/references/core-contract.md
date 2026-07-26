@@ -21,8 +21,8 @@ rules in specialist references.
 ## Shared local context
 
 - The Context Registry is consent-gated local Project/JD/run state shared by
-  all seven Skills. It is not another Skill and does not perform Agent
-  orchestration.
+  all seven Skills. It is not another Skill. The invoked stateful runtime uses
+  it to restore one canonical evidence/output/dependency state.
 - Reuse confirmed facts and claim-level ownership boundaries. Do not repeat a
   resolved question or reopen unchanged sources without a named evidence need.
 - On a Project change, preserve unaffected facts and recompute only outputs
@@ -150,8 +150,8 @@ The Alpha relies on host capabilities:
 | Git | decisions, chronology, authorship leads | mark history/ownership gaps |
 | public search/fetch | bounded company research | user-supplied-only mode |
 | browser rendering | selected public page after plain fetch fails | record `render_required` |
-| local context | consented Project/JD/run reuse | continue session-only without saving |
+| local context | consented Project/JD/Agent-state reuse | continue session-only without saving |
 
 Never log in, use credentials, bypass a block, crawl, send messages, apply to a
-job, or claim background refresh, change-driven regeneration, or a standalone
-Agent runtime.
+job, modify the inspected Project, or claim background refresh or a standalone
+service.

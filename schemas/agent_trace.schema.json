@@ -61,7 +61,11 @@
             "type": "array",
             "items": {"type": "string"}
           },
-          "usage": {"type": "object"}
+          "usage": {"type": "object"},
+          "events": {
+            "type": "array",
+            "items": {"type": "object"}
+          }
         }
       }
     },

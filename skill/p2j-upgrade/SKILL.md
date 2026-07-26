@@ -20,9 +20,25 @@ Treat `/p2j-upgrade` as an alias for `$p2j-upgrade`.
    - risk reduced
    - effort and dependency cost
 4. Choose exactly one action. Reject the runner-up explicitly.
-5. Return: gap, why now, bounded steps, acceptance criteria, expected new
-   evidence and exact artifact, affected outputs/questions/Gates, effort band,
-   and the interview question unlocked.
+5. Show material gaps in priority order, then select exactly one highest
+   leverage build.
+6. Return:
+   - Gap
+   - Why it matters for this JD
+   - Bounded implementation steps
+   - Acceptance criteria
+   - Required evidence artifact
+   - Outputs expected to change
+   - Interview questions unlocked
+   - Execution Handoff Prompt
+7. Make the handoff prompt directly copyable into Codex or Claude Code. Name
+   the existing Project and bounded task; require repository inspection before
+   editing; preserve the existing architecture unless evidence requires a
+   change; specify the artifact and acceptance checks; prohibit invented
+   metrics, users, outcomes, ownership, and test results; require real
+   verification; and require changed files, commands, results, remaining
+   limitations, and the produced artifact in the report.
 
-Do not return a roadmap or a bundle of loosely related actions. A proposed build
-earns no executed-evidence score until its acceptance evidence exists.
+Do not execute the Project modification. Do not return a roadmap or a bundle of
+loosely related actions. A proposed build earns no executed-evidence score until
+its acceptance evidence exists.

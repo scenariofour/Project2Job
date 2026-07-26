@@ -36,15 +36,20 @@ class RunRequest:
     project_version: str
     jd_version: str
     artifacts: dict[str, str]
+    project_label: str = ""
+    jd_label: str = ""
     correction: dict | None = None
     analyze_from_scratch: bool = False
     permission_to_read: bool = True
+    factual_confirmation_required: bool = False
 
 
 @dataclass
 class EvidenceAgentState:
     project_version: str = ""
     jd_version: str = ""
+    project_label: str = ""
+    jd_label: str = ""
     artifacts: dict[str, str] = field(default_factory=dict)
     evidence: dict[str, dict] = field(default_factory=dict)
     claims: dict[str, dict] = field(default_factory=dict)
@@ -60,6 +65,8 @@ class EvidenceAgentState:
         return {
             "project_version": self.project_version,
             "jd_version": self.jd_version,
+            "project_label": self.project_label,
+            "jd_label": self.jd_label,
             "artifacts": deepcopy(self.artifacts),
             "evidence": deepcopy(self.evidence),
             "claims": deepcopy(self.claims),
@@ -68,6 +75,23 @@ class EvidenceAgentState:
             "confirmed_facts": deepcopy(self.confirmed_facts),
             "unresolved_questions": list(self.unresolved_questions),
         }
+
+    @classmethod
+    def from_dict(cls, value: dict) -> EvidenceAgentState:
+        fields = {
+            "project_version",
+            "jd_version",
+            "project_label",
+            "jd_label",
+            "artifacts",
+            "evidence",
+            "claims",
+            "outputs",
+            "dependencies",
+            "confirmed_facts",
+            "unresolved_questions",
+        }
+        return cls(**{key: deepcopy(value.get(key)) for key in fields if key in value})
 
 
 class Planner(Protocol):
@@ -124,6 +148,9 @@ def detect_change(previous: EvidenceAgentState | None, request: RunRequest) -> d
             "added": sorted(request.artifacts),
             "removed": [],
             "changed": [],
+            "project_changed": True,
+            "jd_changed": True,
+            "correction_present": bool(request.correction),
         }
 
     previous_paths = set(previous.artifacts)
@@ -154,7 +181,47 @@ def detect_change(previous: EvidenceAgentState | None, request: RunRequest) -> d
         "added": added,
         "removed": removed,
         "changed": changed,
+        "project_changed": project_changed,
+        "jd_changed": jd_changed,
+        "correction_present": bool(request.correction),
     }
+
+
+def eligible_actions(observation: dict) -> tuple[str, ...]:
+    """Return only actions that are valid for the observed state."""
+    if observation.get("factual_confirmation_required"):
+        return ("request_confirmation",)
+    if observation.get("correction_present") and not observation.get(
+        "correction_approved"
+    ):
+        return ("stop",)
+
+    actions_taken = set(observation.get("actions_taken", []))
+    project_changed = bool(observation.get("project_changed"))
+    jd_changed = bool(observation.get("jd_changed"))
+    detected = observation.get("detected_change")
+
+    if detected == "unchanged":
+        return ("stop",)
+    if detected == "new":
+        if "refresh_jd_context" not in actions_taken:
+            return (
+                "refresh_jd_context",
+                "investigate_evidence",
+                "produce_brief",
+            )
+        if "produce_brief" not in actions_taken:
+            return ("produce_brief",)
+        return ("stop",)
+    if observation.get("correction_present") and observation.get(
+        "correction_approved"
+    ) and "investigate_evidence" not in actions_taken:
+        return ("investigate_evidence",)
+    if project_changed and "investigate_evidence" not in actions_taken:
+        return ("investigate_evidence",)
+    if jd_changed and "refresh_jd_context" not in actions_taken:
+        return ("refresh_jd_context",)
+    return ("stop",)
 
 
 def affected_output_ids(state: EvidenceAgentState, roots: set[str]) -> set[str]:
@@ -271,6 +338,9 @@ class StatefulEvidenceAgent:
         invalidated = self._invalidated(state, request, change)
         observation = {
             "detected_change": change["kind"],
+            "project_changed": change["project_changed"],
+            "jd_changed": change["jd_changed"],
+            "correction_present": change["correction_present"],
             "changed_artifacts": {
                 key: change[key] for key in ("added", "removed", "changed")
             },
@@ -278,12 +348,15 @@ class StatefulEvidenceAgent:
             "correction_approved": bool(
                 request.correction and request.correction.get("approved")
             ),
+            "factual_confirmation_required": request.factual_confirmation_required,
+            "actions_taken": [],
         }
         trace: list[dict] = []
         affected: set[str] = set()
         stop_reason = ""
         repairs = 0
         capability_calls = 0
+        events: list[dict] = []
 
         if not request.permission_to_read and change["kind"] != "unchanged":
             stop_reason = "permission_required"
@@ -304,10 +377,11 @@ class StatefulEvidenceAgent:
                 stop_reason = "budget_exhausted"
                 break
             turn += 1
+            allowed = eligible_actions(observation)
             action = self.planner.select(
-                deepcopy(observation), tuple(sorted(ALLOWED_ACTIONS))
+                deepcopy(observation), allowed
             )
-            if action not in ALLOWED_ACTIONS:
+            if action not in ALLOWED_ACTIONS or action not in allowed:
                 stop_reason = "policy_stop"
                 trace.append(
                     self._trace_step(
@@ -339,20 +413,24 @@ class StatefulEvidenceAgent:
                     },
                 },
             )
-            self._apply_result(state, result)
+            candidate = state.copy()
+            self._apply_result(candidate, result)
             changed_outputs = set(result.get("affected_outputs", []))
-            affected.update(changed_outputs)
-            failures = validate_state(state, changed_outputs)
+            failures = validate_state(candidate, changed_outputs)
             validation = "passed"
             if failures:
                 if repairs < self.budget.max_repairs:
-                    repaired = repair_state(state, failures)
+                    repaired = repair_state(candidate, failures)
                     repairs += 1
-                    affected.update(repaired)
-                    failures = validate_state(state, changed_outputs)
+                    changed_outputs.update(repaired)
+                    failures = validate_state(candidate, changed_outputs)
                     validation = "repaired" if not failures else "failed"
                 else:
                     validation = "failed"
+            if not failures:
+                state = candidate
+                affected.update(changed_outputs)
+            events.extend(deepcopy(result.get("events", [])))
             preserved = set(state.outputs) - affected
             trace.append(
                 self._trace_step(
@@ -363,12 +441,25 @@ class StatefulEvidenceAgent:
                     sorted(changed_outputs),
                     sorted(preserved),
                     validation,
-                    result.get("usage", {}),
+                    self._event_usage(result.get("events", [])),
+                    result.get("capability", action),
+                    result.get("events", []),
                 )
             )
             observation = {
                 "detected_change": change["kind"],
+                "project_changed": change["project_changed"],
+                "jd_changed": change["jd_changed"],
+                "correction_present": change["correction_present"],
+                "correction_approved": bool(
+                    request.correction and request.correction.get("approved")
+                ),
+                "factual_confirmation_required": request.factual_confirmation_required,
                 "last_action": action,
+                "actions_taken": [
+                    *observation.get("actions_taken", []),
+                    action,
+                ],
                 "validation": validation,
                 "validation_failures": failures,
                 "affected_outputs": sorted(affected),
@@ -378,9 +469,17 @@ class StatefulEvidenceAgent:
             elif result.get("stop"):
                 stop_reason = result.get("stop_reason", "complete")
 
-        state.project_version = request.project_version
-        state.jd_version = request.jd_version
-        state.artifacts = dict(request.artifacts)
+        if stop_reason not in {
+            "validation_failed",
+            "permission_required",
+            "correction_approval_required",
+            "policy_stop",
+        }:
+            state.project_version = request.project_version
+            state.jd_version = request.jd_version
+            state.project_label = request.project_label or state.project_label
+            state.jd_label = request.jd_label or state.jd_label
+            state.artifacts = dict(request.artifacts)
         preserved = sorted(
             output_id
             for output_id, value in state.outputs.items()
@@ -392,6 +491,9 @@ class StatefulEvidenceAgent:
                 "state_summary": {
                     "project_version": request.project_version,
                     "jd_version": request.jd_version,
+                    "project_changed": change["project_changed"],
+                    "jd_changed": change["jd_changed"],
+                    "correction_present": change["correction_present"],
                     "evidence_count": len(state.evidence),
                     "claim_count": len(state.claims),
                     "output_count": len(state.outputs),
@@ -411,6 +513,7 @@ class StatefulEvidenceAgent:
                     "capability_calls": capability_calls,
                     "repairs": repairs,
                     "latency_ms": round((perf_counter() - started) * 1000, 3),
+                    **self._event_usage(events),
                 },
             },
         }
@@ -424,7 +527,7 @@ class StatefulEvidenceAgent:
         roots = set(change["added"] + change["removed"] + change["changed"])
         if request.correction:
             roots.add(request.correction.get("claim_id", ""))
-        if change["kind"] in {"jd", "both"}:
+        if change["jd_changed"]:
             roots.add("jd")
         return affected_output_ids(state, roots)
 
@@ -446,6 +549,8 @@ class StatefulEvidenceAgent:
         preserved: list[str],
         validation: str,
         usage: dict | None = None,
+        capability: str | None = None,
+        events: list[dict] | None = None,
     ) -> dict:
         return {
             "turn": turn,
@@ -454,10 +559,36 @@ class StatefulEvidenceAgent:
                 "last_action": observation.get("last_action"),
             },
             "selected_action": action,
-            "capability_used": action,
+            "capability_used": capability or action,
             "observation_summary": summary,
             "validation_result": validation,
             "affected_outputs": affected,
             "preserved_outputs": preserved,
             "usage": deepcopy(usage or {}),
+            "events": deepcopy(events or []),
         }
+
+    @staticmethod
+    def _event_usage(events: list[dict]) -> dict:
+        opened: set[str] = set()
+        usage = {
+            "files_opened": 0,
+            "questions_asked": 0,
+            "tool_calls": 0,
+        }
+        token_usage = 0
+        tokens_available = False
+        for event in events:
+            kind = event.get("kind")
+            if kind == "file_opened":
+                opened.add(str(event.get("path", "")))
+            if kind == "question_asked":
+                usage["questions_asked"] += 1
+            if kind == "tool_call":
+                usage["tool_calls"] += 1
+            if kind == "token_usage" and isinstance(event.get("tokens"), int):
+                token_usage += event["tokens"]
+                tokens_available = True
+        usage["token_usage"] = token_usage if tokens_available else None
+        usage["files_opened"] = len(opened)
+        return usage

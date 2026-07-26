@@ -1,0 +1,874 @@
+{
+  "project": {
+    "name": "Etsy 0-1 Auto-Test Lab"
+  },
+  "jd": {
+    "label": "Temporary dogfood fixture \u2014 TikTok Shop Product Operations Intern (Apps and API)"
+  },
+  "result": {
+    "stop_reason": "complete",
+    "changed_outputs": 23,
+    "preserved_outputs": 0,
+    "changes": [
+      {
+        "output": "Interview process evidence",
+        "before": null,
+        "after": "Official early-career guidance says interviews typically last 30\u201360 minutes. Independent Product Operations reports mention recruiter, hiring-manager, case, and multi-round paths; the exact loop for this team is unknown.",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Official product context",
+        "before": null,
+        "after": "TikTok Shop's developer platform supports seller-authorized apps, public/custom app models, app review, API scopes, and seller workflow automation.",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "APIs and third-party integrations",
+        "before": null,
+        "after": "TRANSFERABLE",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Seller and ISV market studies",
+        "before": null,
+        "after": "GAP",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Proposed TikTok Shop partner product design",
+        "before": null,
+        "after": "GAP",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Strategy, ROI, prerequisites, and prioritization",
+        "before": null,
+        "after": "TRANSFERABLE",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "User acceptance testing and quality review",
+        "before": null,
+        "after": "TRANSFERABLE",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Company/product-derived question",
+        "before": null,
+        "after": "How would you choose between a public app, a custom app, and a widget for one seller workflow?",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Gap-attack question",
+        "before": null,
+        "after": "What direct evidence do you have that your research reflects real seller or partner needs?",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "JD-derived question",
+        "before": null,
+        "after": "How would you study the needs of sellers, ISVs, and creators before prioritizing an API product requirement?",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Project-triggered question",
+        "before": null,
+        "after": "What failed in the Auto-Test Lab, and how did that failure change the release control?",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Single reported question",
+        "before": null,
+        "after": "Describe a time you used data to make a decision.",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Single reported question",
+        "before": null,
+        "after": "Tell me about a product challenge you faced, and what you would improve.",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Likely technical follow-up",
+        "before": null,
+        "after": "How would seller authorization, access scopes, app review, webhooks, and fallback behavior affect your UAT plan?",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Recommended Route",
+        "before": null,
+        "after": "$p2j-upgrade",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Delivery & Learning Loop",
+        "before": null,
+        "after": 3,
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Evaluation & Reliability",
+        "before": null,
+        "after": 3,
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Problem & User Evidence",
+        "before": null,
+        "after": 2,
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Product Judgment",
+        "before": null,
+        "after": 4,
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Technical System",
+        "before": null,
+        "after": 4,
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Designing safe API automation boundaries",
+        "before": null,
+        "after": "The project checks capabilities, preserves human approval, and falls back rather than inventing unavailable data.",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Turning an asset failure into a stronger control",
+        "before": null,
+        "after": "A product artifact failed review, was repaired, and produced a reusable learning without being promoted as commercial impact.",
+        "why": "Its supporting evidence changed."
+      },
+      {
+        "output": "Supporting project for this Product Operations role",
+        "before": null,
+        "after": "Strong evidence of bounded operations, API capability checks, quality gates, and learning from failure. The largest gaps are direct TikTok Shop partner-product work, seller or ISV primary research, commercial impact, and confirmed personal ownership.",
+        "why": "Its supporting evidence changed."
+      }
+    ]
+  },
+  "state": {
+    "project_version": "project-v1",
+    "jd_version": "jd-v1",
+    "project_label": "Etsy 0-1 Auto-Test Lab",
+    "jd_label": "Temporary dogfood fixture \u2014 TikTok Shop Product Operations Intern (Apps and API)",
+    "artifacts": {
+      "README.md": "0f91ca213dd45922b23face16cd641857f3966a4e03fa71268767bf425f08c64",
+      "agents/asset_generator.md": "6668689443efa002fc1bfe49188795c1562979195c7f7d1b9d49b8bd0d420a1f",
+      "agents/growth_controller.md": "7f142f898f301bbe6919574e7d47f162be01989fd0acf31a660251e27d64a5ec",
+      "agents/product_strategist.md": "596c8ed0dbad27682bd3b51e7e987cc82b40b3dec576ad1e45ddaf7240ff311c",
+      "agents/production_builder.md": "850a57ddb40fabd6d6b67650f99dd074d81b566e326c482e982eac50065d3058",
+      "agents/research_scout.md": "ae774ac1e7e5cb5ac1d1df65801bedcbb4b19083d13162ae9f09af40380b58af",
+      "bin/capability_check.py": "6b3adfdea728ed52026ff5638ba5ab7b32238437ca342e18be3758318aa2b68d",
+      "bin/create_draft.py": "5b08d0f32796af48a608ff12ed48345a9ec9b04b9434e2df821563a2bc920469",
+      "bin/etsy_client.py": "99c138a00c6f65e0e7c8b202fbe5f6282f7e601edd2053325972698b49686ba1",
+      "bin/etsy_oauth_setup.py": "eb4cda42df25dd176d67be4c9addcd84c98314df0bf3e7e43d300453d1979eb9",
+      "bin/lab_state.py": "1d15b8c83b6e7ef162436acb772133a5ddcdc6a7973e7370812d8f87d6100a5d",
+      "bin/niche_sample.py": "4a4cb94a8113d487057960562597c39b8db39ba7f31b3c1ab9f29048cc1307e9",
+      "bin/publish_gate.py": "07aa0d186d017fc3384541d858ee71db93373fd062b8bc6c804ee35d02f337c9",
+      "bin/qa_gate.py": "664f03462be88fce30ecda8b13d65ed34477f35dd9a9cc1986bac5dc93785bfb",
+      "bin/selftest.sh": "24adb125120b426d1a78a905bbc8510f7cb4ef65c7630081d3ba5317acfe61ab",
+      "bin/snapshot_stats.py": "9e742cfe2f80382052df8e39282906f6cb2c6d27b19bffa7f008fca43b8e8924",
+      "bin/tick_prompt.md": "23358f493d4ca83c7be617df038df5c159f48678d045c3982b2b5d04d94f81f1",
+      "bin/validate_schema.py": "aed52a5f5036e083594560d2abdf11bf3ac2322fd4e911f898593f537ac1ec34",
+      "codex_runbook.md": "162ad8e22f39f13bcf5302feda973c63f3bc0c2d5f1335eeab4563a1a70a6bc2",
+      "config/api_capabilities.md": "4775ea022676ede3a4fbf4aa883d56feab12ae5c312f25a6325a472f5f0df8b6",
+      "config/automation_policy.json": "7d264e60c1fc46393364015f3c6fc0944f943f57c266b584568281a6ae8caad8",
+      "config/blocked_terms.txt": "64111a3a18806bd42706b953ab701710cd9ea52509a5171a6e9bc13252738a5a",
+      "config/canva_overlay_policy.md": "d896324d96aa34fd275d279f7a14c6a6be07de1b7f7b3b01b2eab3ebce5b5466",
+      "config/official_sources.md": "35358af5f881bf26cf61bdd080d3a0aead54d298548a55c5e9c85b3c11e566ce",
+      "config/production_sop.md": "da7c65d04fe9adc7214bfb87c289fae7e56227c7443aaea397d99729fd349d42",
+      "config/qa_gate_contract.md": "6722731e134ca71c497d8109165817ce235effbf050e30ca4a1305afb2738f85",
+      "config/research_neutrality.md": "c96bd664de2eefeb4489546192f50b313406d16a30764f240a696c90bd6eda09",
+      "config/scoring_rubric.json": "ea28edf834840324dd6a9f228a6bc10e1a9fa6c32e366b2e1e6648edb309a8e8",
+      "config/semrush_credit_guard.json": "43ad3b30fb7d7ee23ebae6fd4ed96afa87a06347f2cfae0702b2bffe9b9b3399",
+      "config/shop_direction.md": "97afa737752f4157a3f18312f51f9ef0cb702e6b6f50a4e0fa647afc97d960d4",
+      "config/source_mix_rules.json": "da913812cbe2281c5939e164f7b86bd1877e48063b9249e2047608ddc68c3c56",
+      "config/target_buyer_lens.md": "11c52281f6eda2735e6551c8ffe5b5767fe9064e97ffab34239e1515b4e7efcd",
+      "config/test_cases.md": "306ef65ea6e188d3c0acfe63215925d1ffb49739b189b6668eb28cca9c0bf3de",
+      "gates/active_publish_gate.md": "baa09d718f1e70f8ef944b0b932e3af4fd6767ccd7f87d01037738e64a944c10",
+      "gates/red_team_gate.md": "581604034571fcf3706d0f90f8622ba1f523738b52ba2aaca590f90d1163ed52",
+      "learnings/candidate_backlog.md": "95d3470fec92916eb2d85ac5fa2e5bfd1ef2de160cc882d117f47ad21e4ce1ac",
+      "learnings/learnings.md": "51f17bd50e46be9efc40c4939cf72178320ea3ffdbcde86ffd6de73b4122d7ef",
+      "quality_test_protocol.md": "f6bdf7bb6a0992856318055fee23c83ef0a22b23ed180b940bdd5ef0f239ad1f",
+      "runs/EXP-2026-0001/00_capability_check.json": "b4a470e78576d00957903e6b0bc0d8c4299461432eb9f8d4d901043eb9d35c75",
+      "runs/EXP-2026-0001/01_research_report.json": "8e4f97a5e3575cb80de9f5ee8087cbddb44bce902f55baded2ad763a4691db98",
+      "runs/EXP-2026-0001/02_keyword_validation.json": "30e0189f154a722165516a82a68d352b1269dc8ee95311ab5aafa26dfd558890",
+      "runs/EXP-2026-0001/03_product_thesis.json": "a54d7a65bfb72b86d57501f9371672450f46fe3374332f4544714cda35b18be3",
+      "runs/EXP-2026-0001/04_red_team_report.json": "ef10287806af722835b20f1b3ae25cbf3cbed74e33e9c19904262279d0fb16a6",
+      "runs/EXP-2026-0001/05_listing_package.json": "5ee672e799b2114726f36e635d1e3a0c7d308a71a1877e281a27a6ce0fa6c426",
+      "runs/EXP-2026-0001/06_qa_report.json": "9b3134718fed8b5d1502694c03bf1b5ad784d1f1299b93bc3c4c562ac8a23135",
+      "runs/EXP-2026-0001/07_publish_gate.json": "815d697265ba44862ee63827aafefbc20302b28628baca4c36187cb4e560f449",
+      "runs/EXP-2026-0001/08_publish_log.json": "9ec2adce7815001111f8abca3c9bb19b613384a7087829adbde3a27ce63d43e4",
+      "runs/EXP-2026-0001/11_reflection.md": "7546abf01a0a1f0d5d7e3073502908e155e681a1d4d6ed870af7448802de2d95",
+      "runs/EXP-2026-0001/assets/asset_audit.json": "1e03dbe2e295d2006b8144dca7330a246a6c3802297fe0dfe59223569e6a2e97",
+      "runs/EXP-2026-0001/assets/asset_audit_v2.json": "a4ddb42c0cc53af4bb6f69a17c8db0a7dcefb20c9e4df41307ba395cb3b81ffe",
+      "runs/EXP-2026-0001/assets/asset_manifest.json": "c43539e7bd230e799e40cec86c69519444ee2ae80b988329befd3445467dc62f",
+      "runs/EXP-2026-0001/assets/files/print_readme.txt": "53190a9fa8c73970876e065eef78069d68eea5f477cb2b0d4d31d0d21f406476",
+      "runs/EXP-2026-0002/00_capability_check.json": "22bc7d1843369d30a812dedf53ca9365f715189fc22cb6e2ad73c7dfe77e76b2",
+      "runs/EXP-2026-0002/01_research_report.json": "19be2f40e3ab977f0a9dbcfe8210fde203772ac79cbb11b2f85ceb226797bff9",
+      "runs/EXP-2026-0002/02_keyword_validation.json": "89e888e0d99ec8a539ebe5654935293572a5758c728b8ecdd70b6cdb4a40bcc5",
+      "runs/EXP-2026-0002/03_product_thesis.json": "2091d5409d2165b9d4847d7801bfbd734977c0476ec3736c358fd995a9852a66",
+      "runs/EXP-2026-0002/03_product_thesis_v2.json": "7c082e508c4af6d00a66ae77f88a53069bd8c6a433495779856d747c9637860c",
+      "runs/EXP-2026-0002/03b_product_spec.json": "e6d6f736ab253f15899289f84c89d92d581651dbf0eb48cc6dc5ac7ed8e7a93c",
+      "runs/EXP-2026-0002/03c_review_packet.md": "f02dbef3504374a8e908482a5aa6530c523d82d24053f2bea950941994b15978",
+      "runs/EXP-2026-0002/04_red_team_report.json": "9ead45f5bd124fb91716fd6c02ba3d92bc7d86e96b69c3eabcd04dfb82ee157c",
+      "runs/EXP-2026-0002/04_red_team_report_v2.json": "cf3f61e8802d90e79daf9e5cfcf6984d24cb163d1a97304aa8ec2cf11bdab7ed",
+      "runs/EXP-2026-0003/00_capability_check.json": "71fc35f31dfcb57c4f21dfb10adb8a62c2a07bd13495d681ea6831e7370b7e21",
+      "runs/EXP-2026-0003/01_research_report.json": "4670d7e70c4ddc269a782e17ff0d3adb435034d84bad636f9287181d5dd2c648",
+      "runs/EXP-2026-0003/02_keyword_validation.json": "a369b74727e2f729a453283ff9ce03d67b7ab2c93a0458f9994ad728b7a9f25b",
+      "runs/EXP-2026-0003/03_product_thesis.json": "0a0b0d6591f6114951b1541ff9479d120ff1d58dda5d06e7d872326c33330e6c",
+      "runs/EXP-2026-0003/03b_product_spec.json": "7db8467ab7c1bf50161454f58b0096e8e56c27b2c1e416c4da21d9aff0954612",
+      "runs/EXP-2026-0003/03c_review_packet.md": "a2dfe450619379e374d5d35a2f0c6ede00d30d3cca26a6cc6cb4ba64c2002e2b",
+      "runs/EXP-2026-0003/04_red_team_report.json": "087a0a20be84748c9ba7b79cdd2cf6c10217f84c34fc0bfa27332a83c265e919",
+      "runs/EXP-2026-0003/05_listing_package.json": "0a1924ea30eac2c34746d64fcc50d4cf57adeba998bb8880f16f3d4e367784be",
+      "runs/EXP-2026-0003/06_qa_report.json": "a09311bf21a02eca68816cd26487c346fd3aea802465d1b4ef155e59b61bee98",
+      "runs/EXP-2026-0003/07_publish_gate.json": "70fdce082993a6c8195b4c6d5d473047ec90125ffab390e308a2e7f7396e5d7b",
+      "runs/EXP-2026-0003/08_publish_log.json": "a768e46cf7b08d8a2dd4a2de4e35f55118abaf5b3f0bd01f6b83499935f97805",
+      "runs/EXP-2026-0003/assets/asset_audit.json": "5587521a787fdc69fbbd3e0bf5c8a373c1f72f942caff810a6c2d664c2a6deb1",
+      "runs/EXP-2026-0003/assets/asset_manifest.json": "666d596b00980dfe95fded42c75dd617d088d0ef3fc3f879dbcb034967c4c990",
+      "runs/EXP-2026-0003/assets/asset_manifest_v3.json": "44c8b1c5b600cbc85c0f0f718fa91ed9dd8df348285aaa5a491e6edaa03766ee",
+      "runs/EXP-2026-0003/assets/asset_manifest_v4.json": "0e4f4df40cf74de539919e780755392b1494fa9f4e93d3b76f6a27f6adb8af95",
+      "runs/EXP-2026-0003/assets/canva_handoff.md": "14488fd2d6fa982b8e982a4dcbf7caa21420d0c5c58164d2a3d6ec478aba2cb4",
+      "runs/EXP-2026-0003/assets/canva_handoff_v4.md": "f1ebe15e6af2a5334b8ce959735b012624d6c0493f445d9b32de172d185f1869",
+      "runs/EXP-2026-0003/assets/canva_product_design.json": "f337cecae19e4e4f7cd613970e6382c6764e96aa496113d952ae4d5f982f3d46",
+      "runs/EXP-2026-0003/assets/design_philosophy.md": "65f6306707edffbb3630731bf065bdc8edb2b8b045f9c3c99d75accbb61bf592",
+      "runs/EXP-2026-0003/assets/design_philosophy_v4.md": "c77d48b2f161b41e759ca2c7dd6221f23276a10d2ca546e9ce103c780ae4a272",
+      "runs/EXP-2026-0003/assets/files/print_readme.txt": "8abd7d12c85894b7a9ea9a01e666a193f0bdfa7ee7257725dec62196bbc0c044",
+      "runs/EXP-2026-0003/assets/files/print_readme_v2.txt": "8abd7d12c85894b7a9ea9a01e666a193f0bdfa7ee7257725dec62196bbc0c044",
+      "runs/EXP-2026-0003/assets/proofs/audit_record_evidence_visual_philosophy.md": "7bc78f6ad39ed0998a00e802dd4557492bc3f5881e6afe5f8332941c16555603",
+      "runs/EXP-2026-0003/assets/proofs/listing_comparison_visual_philosophy.md": "1de863ba3d656c44041cd6494d73fa3e92f6a8f245305239e744c0f62f0211a8",
+      "runs/EXP-2026-0003/assets/proofs/repair_writeback_evidence_visual_philosophy.md": "c512f659d3667b9d916c94261382c48a1448aa2a982b8b61c07a6b79bf62b870",
+      "runs/EXP-2026-0003/assets/proofs/three_gate_evidence_visual_philosophy.md": "b2625eceab7ba0be6baddf6d1f0f90ab62850edf9ad5d9cfb83d588888b30c29",
+      "runs/EXP-2026-0003/assets/work/before_imagegen.txt": "d2515336016e0019f1276ca7ff6e1505dc317ed8730c8ec66b38f3ea8734fd4d",
+      "runs/EXP-2026-0003/tmp/make_audit_record_proofs.py": "4a0ede0c400e37ee6df22d911bba9833e08f157effee3522a019553a01591d0a",
+      "runs/EXP-2026-0003/tmp/make_listing_comparison_squares.py": "0473324933b652dacac19c79b0f5eabd662cebe263b016ef69939a09f9993203",
+      "runs/EXP-2026-0003/tmp/make_repair_writeback_proofs.py": "08106f609ccfab590c88c0671944140b120a228d929fe182644ab3e0a2a403fa",
+      "runs/EXP-2026-0003/tmp/make_three_gate_evidence.py": "b6a792f1e645b019ce8cdf2d40c7f8214e88c8de34edd40f6ed0aa50e6beda6e",
+      "runs/README.md": "dd49d8e404b9e83b8d872d8f7528c48f2d9993ed8f5c6e30852c922458ea3636",
+      "schemas/active_publish_gate.schema.json": "3f0e115dfe4639531ef6e5fbbdeb777b33e94065e332f11fc0466f93fae95a4c",
+      "schemas/growth_review.schema.json": "e912bb1f5748e1211736ba8bfdeb7d1920b6e481cbba595e16a5162412cb59c8",
+      "schemas/listing_package.schema.json": "1512ce5fb8ef7cb064d41212cd3304fdcdcb1bd46c5e8b8d90f0a6855486c519",
+      "schemas/product_spec.schema.json": "68bfc21819f0724db5ff5834b2a17ed2a42559cb1a619807554dce3ff59dc4eb",
+      "schemas/product_thesis.schema.json": "ec120f3cb45814966f327251efd68e024e0518c4c19bdb7b429302556236f213",
+      "schemas/qa_report.schema.json": "46cf7264613ee4c1e2b05841b11639ea98edbcd34585e91df18f048168d165c3",
+      "schemas/red_team_report.schema.json": "61d3904bfc8c228a3ed34496c4684233ecd3f9d8316ed3bb9d3a647823627621",
+      "schemas/research_report.schema.json": "c6dbabcf27cef5a448842978c29eabf3845947e78a7eb434ed4de3ba69567f8f",
+      "state/experiments.json": "76de3090aae192daf08d2d5ba723dbf2357747d3f9c18ea2b0a25e332faef132"
+    },
+    "evidence": {
+      "e_problem": {
+        "source": "README.md",
+        "location": "README.md:29-55",
+        "summary": "The project defines a research-neutrality boundary and requires external evidence before advancing."
+      },
+      "e_product": {
+        "source": "config/automation_policy.json",
+        "location": "publishing_policy and hard_blocks",
+        "summary": "The product encodes explicit human checkpoints, release boundaries, and hard blocks."
+      },
+      "e_technical": {
+        "source": "bin/publish_gate.py",
+        "location": "bin/publish_gate.py:50-150",
+        "summary": "A deterministic gate composes QA, capability, cost, consent, and disclosure checks."
+      },
+      "e_eval": {
+        "source": "runs/EXP-2026-0001/06_qa_report.json",
+        "location": "overall_status and checks",
+        "summary": "One committed QA report records check-level results and a revise outcome."
+      },
+      "e_delivery": {
+        "source": "runs/EXP-2026-0001/11_reflection.md",
+        "location": "What Happened and Learning",
+        "summary": "A failed asset audit caused regeneration and a reusable learning."
+      }
+    },
+    "claims": {
+      "c_problem": {
+        "statement": "The project defines a bounded seller-workflow research problem.",
+        "status": "partially_supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_product": {
+        "statement": "The project makes explicit automation, approval, and release-boundary decisions.",
+        "status": "supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_technical": {
+        "statement": "The project implements a deterministic API-backed operations workflow with human gates.",
+        "status": "supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_eval": {
+        "statement": "The existing Project record links an asset-audit failure, repair, later pass, and a separate draft-only release decision.",
+        "status": "partially_supported",
+        "attribution_scope": "unresolved",
+        "score_if_supported": 3,
+        "direct_competency": false,
+        "match_if_supported": "TRANSFERABLE",
+        "story_if_supported": "A controlled summary makes the existing failure, repair, second audit pass, and draft-only boundary easier to defend without claiming a new capability.",
+        "question_if_supported": "How did the existing asset-audit failure lead to a repair while the separate disclosure boundary still kept the release draft-only?"
+      },
+      "c_delivery": {
+        "statement": "The project records delivery state, failures, and learning across multiple experiment runs.",
+        "status": "supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_market": {
+        "statement": "The project contains primary research with TikTok Shop sellers or ISV partners.",
+        "status": "not_found",
+        "attribution_scope": "unresolved"
+      },
+      "c_platform": {
+        "statement": "The temporary dogfood Project copy contains a simulated proposed TikTok Shop partner API UAT plan grounded in official documentation.",
+        "status": "not_found",
+        "attribution_scope": "unresolved",
+        "direct_competency": false,
+        "match_if_supported": "TRANSFERABLE",
+        "match_evidence_if_supported": "A simulated, source-grounded partner API and UAT plan demonstrates proposed product judgment only.",
+        "match_missing_if_supported": "Executed TikTok Shop integration, completed UAT, seller or ISV experience, and platform outcomes remain unproven.",
+        "question_if_supported": "How would you validate seller authorization, access scopes, app review, and safe failure handling in the proposed partner API plan?",
+        "route_if_supported": "$p2j-answer",
+        "route_summary_if_supported": "Draft an evidence-bounded answer for the partner API UAT design while clearly labeling it proposed rather than executed target-platform work."
+      }
+    },
+    "outputs": {
+      "intel_product": {
+        "kind": "company_intelligence",
+        "label": "Official product context",
+        "summary": "TikTok Shop's developer platform supports seller-authorized apps, public/custom app models, app review, API scopes, and seller workflow automation.",
+        "basis": "Official TikTok Shop Partner Center and TikTok for Developers",
+        "sources": [
+          "https://partner.tiktokshop.com/docv2/page/developer",
+          "https://partner.tiktokshop.com/docv2/page/create-your-app",
+          "https://partner.tiktokshop.com/docv2/page/seller-api-overview",
+          "https://partner.tiktokshop.com/docv2/page/access-scope",
+          "https://developers.tiktok.com/blog/tiktok-shop-developer-updates"
+        ],
+        "depends_on": [
+          "jd"
+        ]
+      },
+      "intel_process": {
+        "kind": "company_intelligence",
+        "label": "Interview process evidence",
+        "summary": "Official early-career guidance says interviews typically last 30\u201360 minutes. Independent Product Operations reports mention recruiter, hiring-manager, case, and multi-round paths; the exact loop for this team is unknown.",
+        "basis": "Official early-career guidance plus independent reports",
+        "sources": [
+          "https://lifeattiktok.com/campus/interview-tips",
+          "https://www.glassdoor.com/Interview/TikTok-Product-Operations-Manager-Interview-Questions-EI_IE2230881.0,6_KO7,33.htm"
+        ],
+        "depends_on": [
+          "jd"
+        ]
+      },
+      "q_reported_product": {
+        "kind": "question",
+        "label": "Single reported question",
+        "summary": "Tell me about a product challenge you faced, and what you would improve.",
+        "basis": "One Product Operations candidate report; not guaranteed",
+        "depends_on": [
+          "jd"
+        ]
+      },
+      "q_reported_data": {
+        "kind": "question",
+        "label": "Single reported question",
+        "summary": "Describe a time you used data to make a decision.",
+        "basis": "One Product Operations candidate report; not guaranteed",
+        "depends_on": [
+          "jd"
+        ]
+      },
+      "q_jd_research": {
+        "kind": "question",
+        "label": "JD-derived question",
+        "summary": "How would you study the needs of sellers, ISVs, and creators before prioritizing an API product requirement?",
+        "basis": "JD responsibilities: quantitative and qualitative market studies",
+        "depends_on": [
+          "jd",
+          "c_market"
+        ]
+      },
+      "q_company_api": {
+        "kind": "question",
+        "label": "Company/product-derived question",
+        "summary": "How would you choose between a public app, a custom app, and a widget for one seller workflow?",
+        "basis": "Official TikTok Shop developer documentation",
+        "depends_on": [
+          "jd"
+        ]
+      },
+      "q_project_failure": {
+        "kind": "question",
+        "label": "Project-triggered question",
+        "summary": "What failed in the Auto-Test Lab, and how did that failure change the release control?",
+        "basis": "Project QA, reflection, and experiment-state evidence",
+        "depends_on": [
+          "c_eval",
+          "c_delivery"
+        ]
+      },
+      "q_gap_market": {
+        "kind": "question",
+        "label": "Gap-attack question",
+        "summary": "What direct evidence do you have that your research reflects real seller or partner needs?",
+        "basis": "Missing primary seller/ISV evidence",
+        "depends_on": [
+          "c_market"
+        ]
+      },
+      "q_technical_scope": {
+        "kind": "question",
+        "label": "Likely technical follow-up",
+        "summary": "How would seller authorization, access scopes, app review, webhooks, and fallback behavior affect your UAT plan?",
+        "basis": "Official API documentation plus JD preference for APIs and 3P integrations",
+        "depends_on": [
+          "jd",
+          "c_platform"
+        ]
+      },
+      "verdict": {
+        "kind": "verdict",
+        "label": "Supporting project for this Product Operations role",
+        "summary": "Strong evidence of bounded operations, API capability checks, quality gates, and learning from failure. The largest gaps are direct TikTok Shop partner-product work, seller or ISV primary research, commercial impact, and confirmed personal ownership.",
+        "depends_on": [
+          "c_product",
+          "c_technical",
+          "c_eval",
+          "c_market"
+        ]
+      },
+      "score_problem": {
+        "kind": "score",
+        "label": "Problem & User Evidence",
+        "value": 2,
+        "explanation": "The seller workflow and evidence requirements are explicit, but inspected sources show secondary/public research rather than primary seller research.",
+        "depends_on": [
+          "c_problem",
+          "c_market"
+        ]
+      },
+      "score_product": {
+        "kind": "score",
+        "label": "Product Judgment",
+        "value": 4,
+        "explanation": "Human checkpoints, hold conditions, capability fallbacks, and rejected automation scope are inspectable.",
+        "depends_on": [
+          "c_product"
+        ]
+      },
+      "score_technical": {
+        "kind": "score",
+        "label": "Technical System",
+        "value": 4,
+        "explanation": "The project separates contracts, deterministic enforcement, state, API capabilities, and human control.",
+        "depends_on": [
+          "c_technical"
+        ]
+      },
+      "score_evaluation": {
+        "kind": "score",
+        "label": "Evaluation & Reliability",
+        "value": 3,
+        "explanation": "Committed QA and failure evidence exist, but the evaluation-to-decision chain is split across artifacts.",
+        "depends_on": [
+          "c_eval"
+        ]
+      },
+      "score_delivery": {
+        "kind": "score",
+        "label": "Delivery & Learning Loop",
+        "value": 3,
+        "explanation": "Experiment state, draft creation, holds, repairs, and learning are visible; commercial impact is not established.",
+        "depends_on": [
+          "c_delivery"
+        ]
+      },
+      "match_uat": {
+        "kind": "jd_match",
+        "label": "User acceptance testing and quality review",
+        "match": "TRANSFERABLE",
+        "evidence": "Committed QA checks, a revise decision, and a documented repair.",
+        "missing": "One direct evidence record linking evaluation, repair, and changed product control.",
+        "depends_on": [
+          "c_eval"
+        ]
+      },
+      "match_api": {
+        "kind": "jd_match",
+        "label": "APIs and third-party integrations",
+        "match": "TRANSFERABLE",
+        "evidence": "Etsy OAuth, capability checks, API gates, and safe fallbacks are inspectable.",
+        "missing": "TikTok Shop Open API or App Ecosystem experience.",
+        "depends_on": [
+          "c_technical"
+        ]
+      },
+      "match_market": {
+        "kind": "jd_match",
+        "label": "Seller and ISV market studies",
+        "match": "GAP",
+        "evidence": "A secondary/public research process is defined.",
+        "missing": "Primary TikTok Shop seller or ISV research.",
+        "depends_on": [
+          "c_market"
+        ]
+      },
+      "match_strategy": {
+        "kind": "jd_match",
+        "label": "Strategy, ROI, prerequisites, and prioritization",
+        "match": "TRANSFERABLE",
+        "evidence": "Cost caps, prerequisite checks, hard blocks, and one-variable next actions are explicit.",
+        "missing": "A documented ROI prioritization decision for a partner platform.",
+        "depends_on": [
+          "c_product"
+        ]
+      },
+      "match_platform": {
+        "kind": "jd_match",
+        "label": "Proposed TikTok Shop partner product design",
+        "match": "GAP",
+        "evidence": "No direct target-platform artifact.",
+        "missing": "A source-grounded TikTok Shop partner API design and UAT plan.",
+        "depends_on": [
+          "c_platform"
+        ]
+      },
+      "story_failure": {
+        "kind": "story",
+        "label": "Turning an asset failure into a stronger control",
+        "summary": "A product artifact failed review, was repaired, and produced a reusable learning without being promoted as commercial impact.",
+        "depends_on": [
+          "c_eval",
+          "c_delivery"
+        ]
+      },
+      "story_api": {
+        "kind": "story",
+        "label": "Designing safe API automation boundaries",
+        "summary": "The project checks capabilities, preserves human approval, and falls back rather than inventing unavailable data.",
+        "depends_on": [
+          "c_product",
+          "c_technical"
+        ]
+      },
+      "route": {
+        "kind": "route",
+        "label": "Recommended Route",
+        "route": "$p2j-upgrade",
+        "summary": "Review one source-grounded TikTok Shop partner API UAT build because target-platform product evidence is the highest-leverage remaining gap.",
+        "depends_on": [
+          "c_platform",
+          "c_market"
+        ]
+      }
+    },
+    "dependencies": {
+      "jd": [
+        "match_uat",
+        "match_api",
+        "match_market",
+        "match_strategy",
+        "match_platform",
+        "intel_product",
+        "intel_process",
+        "q_reported_product",
+        "q_reported_data",
+        "q_jd_research",
+        "q_company_api",
+        "q_gap_market",
+        "q_technical_scope",
+        "route"
+      ],
+      "README.md": [
+        "e_problem"
+      ],
+      "config/automation_policy.json": [
+        "e_product"
+      ],
+      "bin/publish_gate.py": [
+        "e_technical"
+      ],
+      "runs/EXP-2026-0001/06_qa_report.json": [
+        "e_eval"
+      ],
+      "runs/EXP-2026-0001/11_reflection.md": [
+        "e_delivery"
+      ],
+      "e_problem": [
+        "c_problem"
+      ],
+      "e_product": [
+        "c_product"
+      ],
+      "e_technical": [
+        "c_technical"
+      ],
+      "e_eval": [
+        "c_eval"
+      ],
+      "e_delivery": [
+        "c_delivery"
+      ],
+      "c_problem": [
+        "score_problem"
+      ],
+      "c_product": [
+        "score_product",
+        "match_strategy",
+        "story_api",
+        "verdict"
+      ],
+      "c_technical": [
+        "score_technical",
+        "match_api",
+        "story_api",
+        "verdict"
+      ],
+      "c_eval": [
+        "score_evaluation",
+        "match_uat",
+        "story_failure",
+        "q_project_failure",
+        "verdict"
+      ],
+      "c_delivery": [
+        "score_delivery",
+        "story_failure",
+        "q_project_failure"
+      ],
+      "c_market": [
+        "score_problem",
+        "match_market",
+        "q_jd_research",
+        "q_gap_market",
+        "route",
+        "verdict"
+      ],
+      "c_platform": [
+        "match_platform",
+        "q_technical_scope",
+        "route"
+      ]
+    },
+    "confirmed_facts": {
+      "ownership_boundary": {
+        "scope": "unresolved",
+        "confirmed": false
+      }
+    },
+    "unresolved_questions": []
+  },
+  "trace": {
+    "state_summary": {
+      "project_version": "project-v1",
+      "jd_version": "jd-v1",
+      "project_changed": true,
+      "jd_changed": true,
+      "correction_present": false,
+      "evidence_count": 5,
+      "claim_count": 7,
+      "output_count": 23
+    },
+    "detected_change": "new",
+    "steps": [
+      {
+        "turn": 1,
+        "state_summary": {
+          "detected_change": "new",
+          "last_action": null
+        },
+        "selected_action": "refresh_jd_context",
+        "capability_used": "p2j-intel:host_research",
+        "observation_summary": "Bounded company and interview intelligence was supplied by the host research capability and kept separate from Project evidence.",
+        "validation_result": "passed",
+        "affected_outputs": [
+          "intel_process",
+          "intel_product",
+          "q_company_api",
+          "q_gap_market",
+          "q_jd_research",
+          "q_project_failure",
+          "q_reported_data",
+          "q_reported_product",
+          "q_technical_scope"
+        ],
+        "preserved_outputs": [],
+        "usage": {
+          "files_opened": 0,
+          "questions_asked": 0,
+          "tool_calls": 0,
+          "token_usage": null
+        },
+        "events": [
+          {
+            "kind": "capability_event",
+            "name": "p2j-intel"
+          },
+          {
+            "kind": "host_research_summary",
+            "search_queries": 8,
+            "pages_opened": 5,
+            "browser_pages": 0,
+            "stop_reason": "sufficient_bounded_evidence",
+            "remaining_gaps": [
+              "The specific team and exact interview loop could not be established.",
+              "No exact question was sufficiently repeated to label repeatedly reported."
+            ]
+          }
+        ]
+      },
+      {
+        "turn": 2,
+        "state_summary": {
+          "detected_change": "new",
+          "last_action": "refresh_jd_context"
+        },
+        "selected_action": "produce_brief",
+        "capability_used": "p2j-brief:host_analysis",
+        "observation_summary": "The host supplied a bounded, source-linked Project2Job Brief; the deterministic runtime validated and recorded it.",
+        "validation_result": "passed",
+        "affected_outputs": [
+          "match_api",
+          "match_market",
+          "match_platform",
+          "match_strategy",
+          "match_uat",
+          "route",
+          "score_delivery",
+          "score_evaluation",
+          "score_problem",
+          "score_product",
+          "score_technical",
+          "story_api",
+          "story_failure",
+          "verdict"
+        ],
+        "preserved_outputs": [],
+        "usage": {
+          "files_opened": 5,
+          "questions_asked": 0,
+          "tool_calls": 0,
+          "token_usage": null
+        },
+        "events": [
+          {
+            "kind": "capability_event",
+            "name": "p2j-brief"
+          },
+          {
+            "kind": "file_opened",
+            "path": "README.md"
+          },
+          {
+            "kind": "file_opened",
+            "path": "config/automation_policy.json"
+          },
+          {
+            "kind": "file_opened",
+            "path": "bin/publish_gate.py"
+          },
+          {
+            "kind": "file_opened",
+            "path": "runs/EXP-2026-0001/06_qa_report.json"
+          },
+          {
+            "kind": "file_opened",
+            "path": "runs/EXP-2026-0001/11_reflection.md"
+          }
+        ]
+      }
+    ],
+    "affected_outputs": [
+      "intel_process",
+      "intel_product",
+      "match_api",
+      "match_market",
+      "match_platform",
+      "match_strategy",
+      "match_uat",
+      "q_company_api",
+      "q_gap_market",
+      "q_jd_research",
+      "q_project_failure",
+      "q_reported_data",
+      "q_reported_product",
+      "q_technical_scope",
+      "route",
+      "score_delivery",
+      "score_evaluation",
+      "score_problem",
+      "score_product",
+      "score_technical",
+      "story_api",
+      "story_failure",
+      "verdict"
+    ],
+    "preserved_outputs": [],
+    "stop_reason": "complete",
+    "budgets": {
+      "max_turns": 4,
+      "max_capability_calls": 3,
+      "max_repairs": 1
+    },
+    "usage": {
+      "turns": 2,
+      "capability_calls": 2,
+      "repairs": 0,
+      "latency_ms": 0.868,
+      "files_opened": 5,
+      "questions_asked": 0,
+      "tool_calls": 0,
+      "token_usage": null
+    }
+  },
+  "metrics": {
+    "files_opened": 5,
+    "questions_asked": 0,
+    "capability_calls": 2,
+    "outputs_regenerated": 23,
+    "outputs_preserved": 0,
+    "expected_outputs_correctly_updated": 23,
+    "unrelated_outputs_incorrectly_changed": 0,
+    "latency_ms": 0.868,
+    "token_usage": null
+  },
+  "host_mediated_decisions": [
+    {
+      "observation": {
+        "detected_change": "new",
+        "project_changed": true,
+        "jd_changed": true,
+        "correction_present": false,
+        "last_action": null
+      },
+      "proposed_action": "refresh_jd_context",
+      "eligible_actions": [
+        "refresh_jd_context",
+        "investigate_evidence",
+        "produce_brief"
+      ],
+      "selected_action": "refresh_jd_context"
+    },
+    {
+      "observation": {
+        "detected_change": "new",
+        "project_changed": true,
+        "jd_changed": true,
+        "correction_present": false,
+        "last_action": "refresh_jd_context"
+      },
+      "proposed_action": "produce_brief",
+      "eligible_actions": [
+        "produce_brief"
+      ],
+      "selected_action": "produce_brief"
+    }
+  ],
+  "saved": true,
+  "run_id": "run_c1165f0a304b4dd2bd2812045e3b1c9a"
+}

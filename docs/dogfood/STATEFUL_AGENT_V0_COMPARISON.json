@@ -1,70 +1,73 @@
 {
-  "comparison_type": "deterministic_scripted_dogfood",
+  "comparison_type": "observed_integrated_host_replay",
+  "changed_artifact_classification": [
+    "controlled_summary_existing_fact"
+  ],
   "expected_changed_outputs": [
-    "match_eval",
-    "score_evaluation"
+    "q_project_failure",
+    "story_failure"
   ],
   "expected_preserved_outputs": [
+    "intel_process",
+    "intel_product",
     "match_api",
-    "match_commercial",
+    "match_market",
+    "match_platform",
+    "match_strategy",
+    "match_uat",
+    "q_company_api",
+    "q_gap_market",
+    "q_jd_research",
+    "q_reported_data",
+    "q_reported_product",
+    "q_technical_scope",
     "route",
     "score_delivery",
+    "score_evaluation",
     "score_problem",
     "score_product",
     "score_technical",
-    "story_failure",
-    "story_reliability"
+    "story_api",
+    "verdict"
   ],
   "stateful_agent_update": {
-    "files_read": 1,
-    "repeated_questions": 0,
+    "files_opened": 1,
+    "questions_asked": 0,
     "capability_calls": 1,
-    "affected_outputs_correctly_updated": 2,
-    "unaffected_outputs_incorrectly_changed": 0,
     "outputs_regenerated": 2,
-    "latency_ms": 0.167,
-    "token_usage": 0,
-    "trace_clarity": {
-      "has_detected_change": true,
-      "has_stop_reason": true,
-      "steps_with_validation": 1
-    }
+    "outputs_preserved": 21,
+    "expected_outputs_correctly_updated": 2,
+    "unrelated_outputs_incorrectly_changed": 0,
+    "latency_ms": 1.123,
+    "token_usage": null
   },
   "fresh_skill_rerun": {
-    "files_read": 5,
-    "repeated_questions": 1,
+    "files_opened": 6,
+    "questions_asked": 0,
     "capability_calls": 2,
-    "affected_outputs_correctly_updated": 2,
-    "unaffected_outputs_incorrectly_changed": 0,
-    "outputs_regenerated": 11,
-    "latency_ms": 0.09,
-    "token_usage": 0,
-    "trace_clarity": {
-      "has_detected_change": true,
-      "has_stop_reason": true,
-      "steps_with_validation": 2
-    }
+    "outputs_regenerated": 23,
+    "outputs_preserved": 0,
+    "expected_outputs_correctly_updated": 2,
+    "unrelated_outputs_incorrectly_changed": 0,
+    "latency_ms": 0.759,
+    "token_usage": null
   },
-  "host_mediated_decision": {
-    "observation": {
-      "detected_change": "project",
-      "changed_artifacts": {
-        "added": [
-          "eval_results.csv"
-        ],
-        "removed": [],
-        "changed": []
-      },
-      "invalidated_outputs": [],
-      "correction_approved": false
-    },
-    "selected_action": "investigate_evidence",
-    "decision_source": "host_supplied_after_observation"
+  "correctness": {
+    "stateful_expected_values_present": 2,
+    "fresh_expected_values_present": 2,
+    "stateful_before_values_recorded": 2
   },
-  "conclusion": "The scripted stateful update read fewer files, repeated no confirmed question, and regenerated only expected outputs while preserving the same deterministic output correctness.",
+  "trace_clarity": {
+    "stateful_detected_change": "project",
+    "stateful_stop_reason": "complete",
+    "fresh_detected_change": "new",
+    "fresh_stop_reason": "complete"
+  },
   "limitations": [
-    "This is scripted repository dogfood, not target-user validation.",
+    "Both runs used deterministic orchestration and host-supplied analysis; no live model planner was called.",
+    "The fresh run replayed the final source-grounded host analysis to measure full-read and regeneration cost.",
+    "The controlled summary surfaces an existing fact and is not counted as a new Project capability or executed result.",
     "Token usage is unavailable because no model call was made.",
-    "Sub-millisecond local latency is not representative of a live model path."
+    "This is repository dogfood, not target-user validation."
   ]
 }

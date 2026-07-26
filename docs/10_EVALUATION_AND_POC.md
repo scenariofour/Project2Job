@@ -158,12 +158,14 @@ Measure:
 - update run reduces repeated work
 - traces and budgets are visible
 
-The scripted V0 case in
+The integrated V0 case in
 `docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json` passes these mechanical
-conditions for one added evaluation artifact: 2/2 expected outputs changed,
-0 unrelated outputs changed, one file was read instead of five, and no
-confirmed question was repeated. This is repository dogfood, not target-user or
-live-model validation.
+conditions for one controlled summary of existing evaluation facts: 2/2
+presentation outputs changed,
+0 unrelated outputs changed, one file was opened instead of six, and no
+Project score or JD Match was inflated. The fresh path replays the final
+source-grounded host analysis, so this is observed repository dogfood rather
+than target-user or live-model validation.
 
 ### User-value PoC passes when
 

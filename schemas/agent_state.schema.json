@@ -18,6 +18,8 @@
   "properties": {
     "project_version": {"type": "string"},
     "jd_version": {"type": "string"},
+    "project_label": {"type": "string"},
+    "jd_label": {"type": "string"},
     "artifacts": {
       "type": "object",
       "additionalProperties": {"type": "string"}
@@ -55,7 +57,15 @@
       "properties": {
         "source": {"type": "string"},
         "location": {"type": "string"},
-        "summary": {"type": "string"}
+        "summary": {"type": "string"},
+        "artifact_type": {
+          "enum": [
+            "controlled_summary_existing_fact",
+            "simulated_proposed_artifact",
+            "executed_new_result",
+            "unclassified_changed_evidence"
+          ]
+        }
       }
     },
     "claim": {
@@ -93,7 +103,12 @@
             "story",
             "route",
             "resume_bullet",
-            "answer"
+            "answer",
+            "company_intelligence",
+            "question",
+            "upgrade_plan",
+            "mock",
+            "verdict"
           ]
         },
         "depends_on": {

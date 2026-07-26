@@ -18,6 +18,8 @@ CANONICAL_FILES = (
     "references/role_profiles/ai_pm_early_career.v0.1.0.json",
     "references/shared_contract.v1.json",
     "schemas/application_pack.schema.json",
+    "schemas/agent_state.schema.json",
+    "schemas/agent_trace.schema.json",
     "schemas/context_registry.schema.json",
     "schemas/gold_case.schema.json",
     "schemas/interview_context.schema.json",
@@ -63,6 +65,12 @@ def install_suite(destination: Path, replace: bool = False) -> list[Path]:
         target = canonical_root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
+
+    shutil.copytree(
+        repo / "src" / "career_desk",
+        destination / "p2j" / "scripts" / "career_desk",
+        ignore=shutil.ignore_patterns("__pycache__", "*.py[co]"),
+    )
 
     errors = validate(destination, require_canonical=True)
     if errors:

@@ -49,8 +49,14 @@ The first persistent write must follow the user's one-time consent and include
 `--consent`. If the user says not to save, add `--do-not-save`; this writes
 nothing and does not request consent.
 
+One-time Skill use remains a first-class path. `$p2j`, `$p2j-brief`,
+`$p2j-intel`, and `$p2j-upgrade` may produce their normal useful host-native
+result without loading or invoking the stateful update runtime. Do not create a
+registry directory or consent file merely because a Skill was invoked.
+
 Save only supported or user-confirmed facts, claim-level ownership boundaries,
-source references, scores, matches, unresolved questions, known gaps, output
+source references, the canonical Agent evidence/claim/output/dependency state,
+privacy-safe traces, observed usage, unresolved questions, known gaps, output
 references, and the recommended route. Never save source bodies, credentials,
 secrets, full generated answers, or unrelated personal data.
 Use `fact_id`, `claim_id`, `question_id`, or `gap_id` plus `source_paths` on

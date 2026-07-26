@@ -24,8 +24,10 @@ Treat `/p2j-intel` as an alias for `$p2j-intel`.
    - business-task interpretation
    - company / track / level signals
    - reported process and questions at their supported strength
-   - repeated, JD-derived, company-derived, project-triggered, and gap-attack
-     questions
+   - repeatedly reported, single reported, JD-derived, company/product-derived,
+     Project-triggered, gap-attack, and likely technical follow-up questions
+   - the basis for every question and language that never guarantees it will be
+     asked
    - likely follow-up style as an evidence-backed implication
    - research usage, stop reason, conflicts, and gaps
 
