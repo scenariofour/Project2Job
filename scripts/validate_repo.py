@@ -24,6 +24,7 @@ REQUIRED = [
     "docs/05_SKILL_PRODUCT_SPEC.md",
     "docs/06_AGENT_PRODUCT_SPEC.md",
     "schemas/application_pack.schema.json",
+    "schemas/context_registry.schema.json",
     "schemas/jd_intake.schema.json",
     "schemas/interview_context.schema.json",
     "schemas/intake_result.schema.json",

@@ -2,7 +2,8 @@
 
 ## Product role
 
-The Project2Job Evidence Agent turns the one-time Skill analysis into a maintained project evidence system.
+The Project2Job Evidence Agent turns Skill analysis and passive Context Registry
+state into a maintained project evidence system.
 
 ## Independent user value
 
@@ -18,6 +19,11 @@ Required Agent advantages:
 - updates only affected outputs
 - explains changes
 - reduces repeated reading and questions
+
+The local Context Registry can already recognize versions and return compatible
+facts on an invoked Skill run. The Agent is justified only by active
+orchestration: monitoring or receiving a change, resolving dependencies,
+regenerating affected assets, and explaining the update as one managed cycle.
 
 ## MVP runs
 

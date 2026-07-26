@@ -17,6 +17,26 @@ role model and not a total candidate score.
 Keep one primary domain per evaluated claim. Use secondary tags only for
 retrieval and explanation.
 
+## Brief presentation
+
+The Brief runs the same internal coverage checks but presents five
+project-focused dimensions:
+
+| Visible dimension | Internal coverage |
+| --- | --- |
+| Problem & User Evidence | Business & User Problem |
+| Product Judgment | Product & AI Judgment |
+| Technical System | Technical Product System |
+| Evaluation & Reliability | Evaluation, Reliability & Safety |
+| Delivery & Learning Loop | Delivery, Metrics & Learning Loop |
+
+Show `1–5` or `N/A` plus one concise evidence-based explanation for each. Give
+an understandable preliminary overall rating without exposing domain IDs,
+subdimension arithmetic, raw levels, caps, Gate calculations, or policy
+terminology. Ownership is provenance, not a sixth visible score: missing
+ownership metadata does not lower project quality, while mixed or conflicting
+attribution narrows only the affected external-facing claim.
+
 ## Strict 0–5 score
 
 Score every applicable canonical domain first:

@@ -10,8 +10,10 @@ Treat `/p2j-answer` as an alias for `$p2j-answer`.
 1. Read `../p2j/references/core-contract.md`,
    `../p2j/references/interview-engine.md`, and
    `../p2j/references/frameworks.md`.
-2. Identify the question family and interviewer intent. Reuse confirmed facts
-   and any existing Brief/Audit first. Otherwise reconstruct relevant events
+2. Resolve shared context, then identify the question family and interviewer
+   intent. Use the latest compatible supported claims and confirmed ownership
+   from Brief/Audit first; never use a claim invalidated by changed evidence.
+   Otherwise reconstruct relevant events
    from at most twelve line-targeted sections across original files, Git,
    committed tests, evals, traces, and decisions. Do not execute project code or
    tests. When an implemented-versus-specified distinction changes the answer,

@@ -294,3 +294,30 @@ a giant `SKILL.md` or duplicated ontology. A suite lets the host progressively
 load only the audit, research, answer, mock, or build guidance needed for the
 current task. Installing canonical source snapshots from one repository source
 keeps the package self-contained without creating a second editable contract.
+
+## D-019: Add a consent-gated local Context Registry
+
+Decision:
+
+- Keep `$p2j` plus its six specialists as the only user-facing Skills.
+- Add one shared deterministic Context Registry for Project, JD, and Analysis
+  Run records. Default to `~/.project2job`, respect `P2J_HOME`, and require
+  one-time consent before the first persistent write.
+- Store identities, versions, fingerprints, bounded confirmed facts and
+  ownership boundaries, source/output references, unresolved questions, and
+  known gaps. Do not store credentials, secrets, source bodies, complete
+  generated answers, or unrelated personal data.
+- Resolve source changes before every Skill run. Preserve unaffected facts,
+  invalidate only dependent outputs, and keep current source evidence
+  authoritative.
+- Support refresh, analyze from scratch, do not save, and selective forget.
+- Keep the Agent boundary: the registry is passive storage and resolution; the
+  future Agent actively orchestrates change-driven regeneration and explains
+  updates.
+
+Reason:
+
+Repeated Brief, Audit, Answer, Mock, Intel, and Upgrade runs should not discard
+confirmed work or repeat ownership questions. One shared local envelope avoids
+duplicating state across seven Skills while preserving the product boundary:
+one Project, one JD, no background process, and no general candidate database.

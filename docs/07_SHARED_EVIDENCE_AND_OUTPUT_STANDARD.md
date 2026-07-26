@@ -191,3 +191,12 @@ A correction must:
 - identify dependent outputs
 - invalidate or regenerate affected outputs
 - become an eval candidate when it reveals system failure
+
+## Saved context
+
+The Context Registry may reuse a source-linked fact or ownership boundary after
+consent, but it is not independent evidence. Current source evidence remains
+authoritative. A changed or removed source invalidates every dependent saved
+claim or output; unaffected confirmed facts may survive into the new Project
+version. A changed JD invalidates role matching and route, not unchanged Project
+evidence.

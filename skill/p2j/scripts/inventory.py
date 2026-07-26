@@ -92,22 +92,38 @@ def evidence_surfaces(relative_path: str) -> list[str]:
     ]
 
 
-def inventory(root: Path, git_limit: int = 20) -> dict:
+def inventory(
+    root: Path,
+    git_limit: int = 20,
+    cached_files: dict[str, dict] | None = None,
+) -> dict:
     resolved = root.resolve()
     files = []
     duplicates: dict[str, list[str]] = {}
+    cached_files = cached_files or {}
     for path in sorted(resolved.rglob("*")):
         if not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
             continue
         relative = str(path.relative_to(resolved))
-        digest = sha256(path)
-        duplicates.setdefault(digest, []).append(relative)
         stat = path.stat()
+        cached = cached_files.get(relative, {})
+        if (
+            cached.get("size_bytes") == stat.st_size
+            and cached.get("mtime_ns") == stat.st_mtime_ns
+            and cached.get("ctime_ns") == stat.st_ctime_ns
+            and cached.get("fingerprint")
+        ):
+            digest = cached["fingerprint"]
+        else:
+            digest = sha256(path)
+        duplicates.setdefault(digest, []).append(relative)
         files.append(
             {
                 "path": relative,
                 "suffix": path.suffix.lower(),
                 "size_bytes": stat.st_size,
+                "mtime_ns": stat.st_mtime_ns,
+                "ctime_ns": stat.st_ctime_ns,
                 "is_text_candidate": path.suffix.lower() in TEXT_EXTENSIONS,
                 "sha256": digest,
                 "evidence_surfaces": evidence_surfaces(relative),
