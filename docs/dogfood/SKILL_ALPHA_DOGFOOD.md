@@ -181,8 +181,8 @@ production latency, cost, adoption, and hiring outcomes.
 - all seven Skills passed the Skill Creator structural validator
 - `make validate`: passed; 14 active documents, 16 JSON files, 72 JSONL cases,
   12 public fixture files, 66 schema references, and 10 canonical domains
-- `make test`: 125 passed; 13 optional `jsonschema` cases skipped in the default
-  zero-dependency environment
+- `make test`: 125 run; 112 passed and 13 optional `jsonschema` cases skipped in
+  the default zero-dependency environment
 - isolated environment with `jsonschema>=4`: 125 passed with no skips; an
   invalid Application Pack was rejected by the installed output validator
 - `make inventory`: 3 files, no duplicate groups, project-scoped Git history
