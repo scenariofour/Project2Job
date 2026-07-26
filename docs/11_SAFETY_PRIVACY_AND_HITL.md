@@ -17,7 +17,9 @@ Career Desk handles:
 - no application submission
 - no repository modification
 - no external upload without consent
-- no long-term storage in the Skill
+- no persistent Skill context before one-time consent
+- no source bodies, credentials, secrets, or unrelated personal data in the
+  local Context Registry
 - no job-platform login, credential, or session cookie is ever requested or stored
 - no bulk or automated job retrieval
 
@@ -120,6 +122,23 @@ Human approval decides:
 - whether an external-facing output can be used
 - whether a connector or persistent storage is allowed
 
+## Local Context Registry
+
+The default location is `~/.project2job`; `P2J_HOME` overrides it and tests must
+use a temporary directory. Before the first write, show what will be retained
+and obtain one-time consent. A do-not-save run writes nothing.
+
+The registry may store only Project/JD identity and versions, content
+fingerprints, confirmed facts and claim-level ownership boundaries, prior Skill
+run/output references, unresolved questions, and known gaps. Complete source
+files, complete JD bodies, credentials, secrets, and unnecessary raw personal
+data are prohibited.
+
+Refresh and analyze-from-scratch do not delete history. Forget deletes only the
+selected Project2Job Project or JD record and linked runs; it never deletes user
+source files. A corrupt registry is reported visibly and is never overwritten
+as a recovery shortcut.
+
 ## Failure behavior
 
 - preserve the current state
@@ -131,7 +150,8 @@ Human approval decides:
 
 ## Deletion and correction
 
-The Agent must support:
+The Context Registry supports selective forgetting. The Agent must additionally
+support:
 
 - deletion of stored project evidence
 - correction history

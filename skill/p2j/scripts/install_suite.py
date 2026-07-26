@@ -18,6 +18,7 @@ CANONICAL_FILES = (
     "references/role_profiles/ai_pm_early_career.v0.1.0.json",
     "references/shared_contract.v1.json",
     "schemas/application_pack.schema.json",
+    "schemas/context_registry.schema.json",
     "schemas/gold_case.schema.json",
     "schemas/interview_context.schema.json",
     "schemas/intake_result.schema.json",

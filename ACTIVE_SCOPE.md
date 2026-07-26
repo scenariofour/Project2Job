@@ -163,6 +163,19 @@ project changes or new evidence
 → explain what changed
 ```
 
+## Skill Context Registry
+
+The Skill suite may retain minimal local Project, JD, and Analysis Run context
+after one-time user consent. This registry recognizes unchanged inputs, reuses
+confirmed facts and ownership boundaries, and invalidates saved results when
+their source artifacts change. It stores fingerprints and bounded derived state,
+not complete project or JD bodies.
+
+The registry is not the Agent: it does not monitor files, run in the background,
+choose work autonomously, or regenerate outputs after a change. Users can
+refresh, analyze from scratch, run without saving, or forget selected context.
+The scope remains one Project, one JD, and their analysis history.
+
 ## Role family
 
 P0 uses one versioned role standard:
@@ -198,7 +211,8 @@ Still excluded:
 - email monitoring
 - referral automation
 - multiple deep project analyses
-- any persisted company question database; research caching is per run only
+- any cross-Project or cross-user company question database; persisted research
+  reuse is limited to the selected JD and its freshness rules
 - broad MCP integrations
 
 Bounded automatic public-web research is in scope and required. Job discovery,

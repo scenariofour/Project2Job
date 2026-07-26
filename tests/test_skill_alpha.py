@@ -147,6 +147,9 @@ class SkillSuiteTests(unittest.TestCase):
             self.assertTrue(
                 (destination / "p2j" / "scripts" / "validate_output.py").is_file()
             )
+            self.assertTrue(
+                (destination / "p2j" / "scripts" / "context_registry.py").is_file()
+            )
             for name in ("sample_jd.md", "sample_project.md", "sample_brief.md"):
                 self.assertTrue(
                     (destination / "p2j" / "examples" / name).is_file(),
@@ -185,8 +188,8 @@ class SkillSuiteTests(unittest.TestCase):
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-        self.assertEqual(len(cases), 14)
-        self.assertEqual(len({case["id"] for case in cases}), 14)
+        self.assertEqual(len(cases), 20)
+        self.assertEqual(len({case["id"] for case in cases}), 20)
         no_event = next(case for case in cases if case["id"] == "A11_NO_EVENT")
         self.assertIn("select strongest", no_event["must"])
         self.assertIn("dead end", no_event["must_not"])
@@ -198,12 +201,64 @@ class SkillSuiteTests(unittest.TestCase):
             router["must"],
         )
 
-    def test_brief_forbids_project_execution_and_caps_reads(self) -> None:
+    def test_brief_contract_is_project_focused_and_hides_internal_scoring(self) -> None:
         text = (ROOT / "skill" / "p2j-brief" / "SKILL.md").read_text(
             encoding="utf-8"
         )
         self.assertIn("at most eight", text)
         self.assertIn("Do not run project tests, builds, or", text)
+        for section in (
+            "Project Verdict",
+            "Preliminary Project Scores",
+            "JD Match",
+            "Interview Value",
+            "Recommended Route",
+        ):
+            self.assertIn(section, text)
+        for dimension in (
+            "Problem & User Evidence",
+            "Product Judgment",
+            "Technical System",
+            "Evaluation & Reliability",
+            "Delivery &",
+            "Learning Loop",
+        ):
+            self.assertIn(dimension, text)
+        self.assertIn("`**EXACT MATCH**`", text)
+        self.assertIn("`TRANSFERABLE`", text)
+        self.assertIn("`` `GAP` ``", text)
+        self.assertIn("return as many as the evidence", text)
+        self.assertIn("select exactly one of", text)
+        self.assertIn("absent ownership metadata", text)
+        self.assertNotIn("Preliminary Gate Scores", text)
+        self.assertNotIn("Highest-Priority Questions", text)
+
+    def test_all_skills_resolve_shared_context(self) -> None:
+        router = (ROOT / "skill" / "p2j" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("context_registry.py", router)
+        for name in SKILLS[1:]:
+            text = (ROOT / "skill" / name / "SKILL.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("Resolve shared context", text)
+
+    def test_sample_brief_uses_only_public_project_language(self) -> None:
+        text = (ROOT / "skill" / "p2j" / "examples" / "sample_brief.md").read_text(
+            encoding="utf-8"
+        )
+        for section in (
+            "## Project Verdict",
+            "## Preliminary Project Scores",
+            "## JD Match",
+            "## Interview Value",
+            "## Recommended Route",
+        ):
+            self.assertIn(section, text)
+        self.assertNotIn("Preliminary Gate Scores", text)
+        self.assertNotRegex(text, r"\bG[1-6]\b")
+        self.assertNotRegex(text, r"\bD(?:10|[1-9])\b")
 
     def test_answer_and_audit_bound_forensics(self) -> None:
         audit = (ROOT / "skill" / "p2j-audit" / "SKILL.md").read_text(

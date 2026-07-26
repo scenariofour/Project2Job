@@ -1,6 +1,6 @@
 # Project Status
 
-Updated: 2026-07-25
+Updated: 2026-07-26
 
 Highest completed Day: 1
 
@@ -57,10 +57,12 @@ Host-native Skill Alpha:
 - bounded project forensics and public company research contracts
 - ranked interview-answer reconstruction with explicit factual framing
 - installer, portable archive builder, suite validator, and behavior evals
+- consent-gated local Context Registry for one Project, one JD, and compatible
+  Analysis Run history, including selective reuse and invalidation
 
 The Alpha runs inside a compatible Agent host. It depends on that host for file,
-Git, search, fetch, browser, and session-context capabilities; it is not a
-standalone runtime and does not persist product state.
+Git, search, fetch, browser, and local-storage capabilities; it is not a
+standalone runtime and does not monitor or regenerate in the background.
 
 ## Tested
 
@@ -71,9 +73,15 @@ standalone runtime and does not persist product state.
 - documentation consistency checks in `tests/test_document_consistency.py`
 - sample project inventory is deterministic
 - seven Skill packages pass structural validation and install validation
-- fourteen Skill behavior cases cover routing, Gates, Answer Lab, research,
+- twenty Skill behavior cases cover routing, Brief UX, shared context, Gates,
+  Answer Lab, research,
   N/A, source caps, ownership, conflict, injection, no-event recovery, and One
   Next Build, plus visibly labeled mock practice
+- twenty Context Registry unit tests cover consent, cross-process and
+  cross-Skill reuse, versioning, incremental invalidation, controls, identity,
+  privacy, and corrupt-state failure
+- `make test` passes 148 tests; 13 optional `jsonschema` instance tests are
+  skipped because that dependency is not installed
 - fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
   without executing the inspected project
 
