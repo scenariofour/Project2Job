@@ -444,6 +444,82 @@ class ContextRegistryTests(unittest.TestCase):
         )
         self.assertNotIn("Build reliable AI product workflows.", stored)
 
+    def test_registry_rejects_secret_fields_and_raw_project_bodies(self) -> None:
+        unsafe_values = [
+            (
+                "authorization",
+                {
+                    "agent_state": {
+                        "outputs": {
+                            "summary": {
+                                "kind": "story",
+                                "depends_on": ["claim-summary"],
+                                "authorization": "real credential value",
+                            }
+                        }
+                    }
+                },
+            ),
+            *[
+                (
+                    field,
+                    {
+                        "agent_state": {
+                            field: f"Complete raw {field} source text."
+                        }
+                    },
+                )
+                for field in (
+                    "project_body",
+                    "jd_body",
+                    "resume",
+                    "transcript",
+                    "document",
+                )
+            ],
+        ]
+        for field, value in unsafe_values:
+            with self.subTest(field=field):
+                with self.assertRaises(registry_module.RegistryError):
+                    registry_module.safe_analysis(value)
+
+    def test_agent_state_identifiers_are_data_in_schema_defined_maps(self) -> None:
+        selected = registry_module.safe_analysis(
+            {
+                "agent_state": {
+                    "artifacts": {
+                        "sessions/user-session.json": "a" * 64,
+                    },
+                    "evidence": {
+                        "secret-evidence-id": {
+                            "source": "sessions/user-session.json",
+                            "summary": "Bounded evidence metadata.",
+                        }
+                    },
+                    "claims": {
+                        "token-claim-id": {
+                            "status": "supported",
+                            "attribution_scope": "ai_assisted",
+                        }
+                    },
+                    "outputs": {
+                        "authorization-output-id": {
+                            "kind": "upgrade_plan",
+                            "content": "Bounded derived Agent output.",
+                            "depends_on": ["token-claim-id"],
+                        }
+                    },
+                    "dependencies": {
+                        "credential-dependency-id": ["token-claim-id"],
+                    },
+                }
+            }
+        )
+        self.assertIn(
+            "authorization-output-id",
+            selected["agent_state"]["outputs"],
+        )
+
     def test_p2j_home_isolates_context(self) -> None:
         self.save(consent=True)
         other = self.root / "other-home"

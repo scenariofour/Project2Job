@@ -120,7 +120,7 @@
         "label": {"type": "string"},
         "value": {"type": "integer", "minimum": 1, "maximum": 5},
         "match": {"enum": ["EXACT MATCH", "TRANSFERABLE", "GAP"]},
-        "content": {"type": "string"},
+        "content": {"type": "string", "maxLength": 4000},
         "before": {},
         "why": {"type": "string"},
         "exported": {"type": "boolean"}

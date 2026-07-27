@@ -122,6 +122,53 @@ class IntegratedAgentTests(unittest.TestCase):
         self.assertIn("agent_trace", latest)
         self.assertIn("observed_metrics", latest)
 
+    def test_large_project_with_session_path_and_bounded_content_restores(self) -> None:
+        for index in range(324):
+            (self.project / f"artifact-{index:03d}.md").write_text(
+                f"Compact artifact {index}.\n",
+                encoding="utf-8",
+            )
+        (self.project / "user-session-summary.md").write_text(
+            "A normal artifact whose filename contains session.\n",
+            encoding="utf-8",
+        )
+        seed = self._seed()
+        seed["state"]["outputs"]["upgrade_plan"] = {
+            "kind": "upgrade_plan",
+            "label": "One Next Build",
+            "content": "One bounded, derived Agent recommendation.",
+            "depends_on": ["c_delivery"],
+        }
+        seed["state"]["dependencies"]["c_delivery"].append("upgrade_plan")
+        large_seed = self.root / "large-seed.json"
+        large_seed.write_text(json.dumps(seed), encoding="utf-8")
+
+        initial = self.command("--seed", str(large_seed), "--consent")
+        self.assertTrue(initial["saved"])
+        stored = json.loads(
+            (self.home / "context-registry.json").read_text(encoding="utf-8")
+        )
+        artifacts = stored["projects"][0]["versions"][0]["artifacts"]
+        self.assertGreater(len(artifacts), 324)
+        self.assertIn(
+            "user-session-summary.md",
+            {artifact["path"] for artifact in artifacts},
+        )
+        self.assertEqual(
+            stored["analysis_runs"][0]["agent_state"]["outputs"]["upgrade_plan"][
+                "content"
+            ],
+            "One bounded, derived Agent recommendation.",
+        )
+
+        restored = self.command()
+        self.assertEqual(restored["result"]["stop_reason"], "no_relevant_changes")
+        self.assertEqual(
+            restored["state"]["outputs"]["upgrade_plan"],
+            initial["state"]["outputs"]["upgrade_plan"],
+        )
+        self.assertEqual(restored["metrics"]["files_opened"], 0)
+
     def test_approved_correction_persists_only_named_claim_and_dependents(self) -> None:
         initial = self.command("--seed", str(self.seed), "--consent")
         correction = self.root / "correction.json"
@@ -441,24 +488,80 @@ class IntegratedAgentTests(unittest.TestCase):
         result = execution_handoff(
             "/project",
             {
-                "gap": "Add one inspectable error-analysis artifact.",
+                "gap": "The Project lacks executed evaluation evidence.",
+                "jd_mismatch": (
+                    "The JD asks for evaluation judgment, while the Project "
+                    "shows only a plan."
+                ),
                 "why_it_matters": "The JD emphasizes evaluation judgment.",
-                "steps": ["Inspect existing eval outputs.", "Record one failure slice."],
-                "acceptance_criteria": [
-                    "Artifact cites an existing test result.",
-                    "No unsupported outcome is added.",
+                "capability_category": "Evaluation and error analysis",
+                "current_match": "GAP",
+                "recommended_evidence_direction": (
+                    "Create executed, inspectable evaluation evidence for one "
+                    "product-relevant failure mode."
+                ),
+                "product_and_safety_boundaries": [
+                    "Keep the existing user task and product identity.",
+                    "Do not weaken approval, privacy, or evidence controls.",
                 ],
-                "required_artifact": "docs/error-analysis.md",
+                "evidence_artifacts_needed": [
+                    "Executed evaluation results",
+                    "Failure analysis and resulting keep, revise, or stop decision",
+                ],
                 "outputs_expected_to_change": ["Evaluation & Reliability"],
                 "interview_questions_unlocked": [
                     "How did an evaluation failure change the product?"
                 ],
+                "requires_human_review": True,
             },
         )
         prompt = result["execution_handoff_prompt"]
-        self.assertIn("Inspect the existing Project", prompt)
+        lowered_prompt = " ".join(prompt.lower().split())
+        for required in (
+            "why the current project does not fully satisfy",
+            "exactly one evidence direction",
+            "current product goals, architecture, workflows",
+            "compare reasonable implementation options",
+            "smallest justified implementation and state model",
+            "exploration brief",
+            "stop for product-owner approval",
+            "bounded prototype, experiment, or evaluation",
+            "return a better evidence direction",
+            "real human judgments",
+            "meaningful disagreements",
+        ):
+            self.assertIn(required, lowered_prompt)
         self.assertIn("Do not invent metrics, users, outcomes, ownership", prompt)
         self.assertIn("Report changed files, commands", prompt)
+        self.assertEqual(result["current_match"], "GAP")
+
+    def test_proposed_work_keeps_match_until_sufficient_evidence_exists(self) -> None:
+        from src.career_desk.capabilities import Project2JobCapabilities
+
+        output = {
+            "kind": "jd_match",
+            "match": "GAP",
+            "depends_on": ["c_eval"],
+        }
+        claim = {
+            "status": "supported",
+            "direct_competency": False,
+            "match_if_supported": "TRANSFERABLE",
+        }
+        proposed = Project2JobCapabilities._recompute(
+            output,
+            claim,
+            "docs/proposal.md",
+            "simulated_proposed_artifact",
+        )
+        self.assertEqual(proposed["match"], "GAP")
+        completed = Project2JobCapabilities._recompute(
+            output,
+            claim,
+            "docs/results.json",
+            "executed_new_result",
+        )
+        self.assertEqual(completed["match"], "TRANSFERABLE")
 
     def test_interview_dogfood_keeps_project_facts_unchanged(self) -> None:
         payload = json.loads(

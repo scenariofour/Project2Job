@@ -4,22 +4,23 @@
     "No primary research with TikTok Shop sellers, creators, or ISV partners.",
     "No supported commercial impact or confirmed personal ownership."
   ],
-  "gap": "Add one source-grounded TikTok Shop partner API design and UAT plan.",
+  "gap": "The Project has no completed target-platform partner-product or UAT evidence.",
+  "jd_mismatch": "The JD asks for Open API Platform partner-product design, UAT, and third-party integration judgment, while the current Project shows adjacent Etsy implementation and no completed TikTok Shop evidence.",
   "why_it_matters": "The JD directly emphasizes the Open API Platform, partner product design, UAT, and experience with APIs and third-party integrations.",
-  "steps": [
-    "Inspect the existing Auto-Test Lab architecture and official TikTok Shop developer documentation.",
-    "Choose one bounded seller workflow and state the user, app type, authorization boundary, API scopes, dependencies, failure modes, and fallback.",
-    "Write UAT cases for happy path, missing authorization, insufficient scope, app-review constraint, stale data, and safe stop.",
-    "Separate proposed TikTok Shop design from executed Etsy evidence."
+  "capability_category": "Partner-platform product design, API integration, and UAT",
+  "current_match": "GAP",
+  "recommended_evidence_direction": "Explore one product-relevant target-platform partner workflow and, after approval, produce bounded implementation and UAT evidence.",
+  "product_and_safety_boundaries": [
+    "Preserve the Auto-Test Lab's current user task, core identity, and evidence boundaries.",
+    "Do not use credentials, claim target-platform access that does not exist, or weaken authorization and human-approval controls.",
+    "Keep proposed target-platform work separate from executed Etsy evidence."
   ],
-  "acceptance_criteria": [
-    "Every TikTok Shop fact cites an official public source.",
-    "The plan names one seller workflow and one public/custom app decision.",
-    "Authorization, scopes, app review, failure handling, and UAT pass/fail criteria are explicit.",
-    "No target-platform implementation, user result, metric, or ownership is claimed.",
-    "The artifact is reviewable without credentials and no project code is executed."
+  "evidence_artifacts_needed": [
+    "A product-owner-approved exploration brief with repository-grounded options, product fit, boundaries, and evaluation design.",
+    "Inspectable approved implementation or bounded experiment artifacts.",
+    "Executed UAT or evaluation results with failure analysis and a keep, revise, or stop decision.",
+    "Human-review records if subjective workflow quality becomes part of acceptance."
   ],
-  "required_artifact": "docs/tiktok-shop-partner-api-uat-plan.md",
   "outputs_expected_to_change": [
     "TikTok Shop partner product design",
     "Likely technical follow-up",
@@ -29,5 +30,6 @@
     "How would you design and validate a TikTok Shop partner app for one seller workflow?",
     "How do authorization scopes and app review change your rollout and UAT plan?"
   ],
+  "requires_human_review": true,
   "runner_up_rejected": "Primary seller or ISV research would address the second gap, but it requires external participant access and would not produce the bounded API/UAT artifact most directly tied to this JD."
 }

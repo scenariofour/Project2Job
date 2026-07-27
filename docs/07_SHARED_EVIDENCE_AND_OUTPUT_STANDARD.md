@@ -175,12 +175,19 @@ An interview question inherits the strength of its source, never more:
 Must include:
 
 - gap
-- why now
-- steps
-- acceptance criteria
-- expected new evidence
+- why the current Project evidence does not fully satisfy the target JD
+- relevant hiring capability category
+- exactly one evidence direction
+- product and safety boundaries
+- bounded handoff steps and evidence acceptance criteria
+- expected new evidence for reassessment
 - output dependency
 - estimated effort band
+
+Project2Job defines the diagnosis and evidence direction. Concrete
+implementation subclasses and evaluation mechanics come from downstream
+inspection of the Project. Proposed work keeps the current Match; only completed
+and sufficient evidence may change it.
 
 ## User corrections
 

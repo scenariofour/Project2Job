@@ -519,6 +519,8 @@ class Project2JobCapabilities:
             updated["before"] = output.get("value")
             updated["value"] = value
         elif output.get("kind") == "jd_match":
+            if artifact_type == "simulated_proposed_artifact":
+                return output
             if status == "supported":
                 direct = bool(claim.get("direct_competency"))
                 match = (
@@ -589,32 +591,112 @@ class Project2JobCapabilities:
 def execution_handoff(project: str, build: dict) -> dict:
     """Return the bounded p2j-upgrade contract without modifying the Project."""
     required = {
+        "capability_category",
+        "current_match",
+        "evidence_artifacts_needed",
         "gap",
+        "jd_mismatch",
+        "product_and_safety_boundaries",
+        "recommended_evidence_direction",
+        "requires_human_review",
         "why_it_matters",
-        "steps",
-        "acceptance_criteria",
-        "required_artifact",
         "outputs_expected_to_change",
         "interview_questions_unlocked",
     }
     missing = required - set(build)
     if missing:
         raise ValueError(f"upgrade handoff is missing: {', '.join(sorted(missing))}")
+    match_states = {"EXACT MATCH", "TRANSFERABLE", "GAP"}
+    if build["current_match"] not in match_states:
+        raise ValueError(
+            "current_match must be EXACT MATCH, TRANSFERABLE, or GAP"
+        )
+    direction = build["recommended_evidence_direction"]
+    if not isinstance(direction, str) or not direction.strip():
+        raise ValueError(
+            "recommended_evidence_direction must contain exactly one direction"
+        )
+    list_fields = (
+        "evidence_artifacts_needed",
+        "product_and_safety_boundaries",
+        "outputs_expected_to_change",
+        "interview_questions_unlocked",
+    )
+    for field in list_fields:
+        if not isinstance(build[field], list) or not build[field]:
+            raise ValueError(f"{field} must be a non-empty list")
+    if not isinstance(build["requires_human_review"], bool):
+        raise ValueError("requires_human_review must be a boolean")
+
+    human_review = (
+        """
+Because subjective product quality matters here, the evidence must include
+genuine human review. In the exploration brief, propose the review sample,
+rubric, and workflow based on the implementation and risk. In the completed
+evidence, preserve the real human judgments, meaningful disagreements, and the
+resulting keep, revise, or stop decision. Do not substitute synthetic review
+for human judgment."""
+        if build["requires_human_review"]
+        else """
+If repository inspection shows that subjective product quality materially
+affects acceptance, add genuine human review. Propose the review sample, rubric,
+and workflow from the implementation and risk, and preserve real judgments,
+meaningful disagreements, and the resulting keep, revise, or stop decision."""
+    )
     prompt = f"""Inspect the existing Project at {project} before editing.
 
-Implement only this bounded task: {build['gap']}
+Project2Job diagnosis
+- Current Match: {build['current_match']}
+- Evidence gap: {build['gap']}
+- Why the current Project does not fully satisfy the target JD: {build['jd_mismatch']}
+- Why this matters now: {build['why_it_matters']}
+- Hiring capability category: {build['capability_category']}
+- Exactly one evidence direction: {direction}
 
-Preserve the existing architecture unless inspected evidence requires a change.
-Produce this evidence artifact: {build['required_artifact']}
-Bounded implementation steps:
-{chr(10).join(f"- {item}" for item in build['steps'])}
+Preserve these product and safety boundaries:
+{chr(10).join(f"- {item}" for item in build['product_and_safety_boundaries'])}
 
-Acceptance checks:
-{chr(10).join(f"- {item}" for item in build['acceptance_criteria'])}
+Produce inspectable evidence sufficient for later Project2Job reassessment:
+{chr(10).join(f"- {item}" for item in build['evidence_artifacts_needed'])}
 
+After completed evidence exists, Project2Job expects to reconsider only:
+{chr(10).join(f"- {item}" for item in build['outputs_expected_to_change'])}
+
+The proposal itself must not change the current Match. Completed and sufficient
+evidence may support a later move from GAP to TRANSFERABLE. Use only EXACT
+MATCH, TRANSFERABLE, and GAP when discussing Match.
+
+Phase 1 — repository-grounded exploration
+- Inspect the current product goals, architecture, workflows, known failures,
+  tests, and safety boundaries.
+- Confirm that the recommended direction plausibly serves the Project's
+  existing user task, and identify one relevant limitation, failure mode, or
+  unmet need.
+- Identify the smallest product-relevant problem worth addressing.
+- Compare reasonable implementation options before choosing one.
+- Define the smallest justified implementation and state model.
+- Define an evaluation approach appropriate to the feature and risk.
+- Derive concrete subclasses such as state names, turn limits, prompt
+  structure, UI behavior, corpus size, metrics, and file organization only
+  after inspecting the repository.
+- Keep the product-fit check lightweight: preserve the Project's core identity
+  and safety boundaries while establishing a plausible user-task connection.
+- When relevance is uncertain, propose a bounded prototype, experiment, or
+  evaluation that can resolve the uncertainty.
+- When the direction does not fit the Project, return a better evidence
+  direction instead of forcing it into the repository.
+{human_review}
+
+Return one exploration brief with the diagnosis, product-fit finding, options
+and tradeoffs, recommended smallest implementation, proposed state model,
+evaluation plan, evidence plan, affected files, risks, and open questions.
+Then stop for product-owner approval before implementation.
+
+Phase 2 — only after explicit approval
+Implement the approved direction and produce the inspectable evidence above.
 Do not invent metrics, users, outcomes, ownership, or test results. Run real
 verification appropriate to the repository. Report changed files, commands,
-exact results, remaining limitations, and the produced evidence artifact."""
+exact results, remaining limitations, and every produced evidence artifact."""
     return {
         **deepcopy(build),
         "execution_handoff_prompt": prompt,

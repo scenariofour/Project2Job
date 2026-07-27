@@ -112,13 +112,19 @@ Agents/tools; evaluation; safety/governance; metrics/economics; and delivery.
 Return exactly one action with:
 
 - gap
-- why now
-- bounded steps
-- acceptance criteria
-- expected new evidence and artifact
+- why the current evidence does not fully satisfy the target JD
+- relevant hiring capability category
+- one broad evidence direction
+- product and safety boundaries
+- repository-inspection and product-approval handoff
+- bounded handoff steps and evidence acceptance criteria
+- expected new evidence and artifacts for reassessment
 - output dependency across Gates/questions/stories/bullets
 - estimated effort band
 - interview question unlocked
 
 Prefer the action that creates the most direct evidence across several important
-surfaces. Explicitly reject the runner-up.
+surfaces. Explicitly reject the runner-up. Project2Job chooses the career
+diagnosis and evidence direction; the downstream working Agent derives concrete
+implementation subclasses after inspecting the Project. Proposed work does not
+change the current Match.

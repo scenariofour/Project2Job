@@ -200,6 +200,18 @@ class SkillSuiteTests(unittest.TestCase):
             "APPLICATION_PACK leads with concise Brief then completes canonical pack",
             router["must"],
         )
+        upgrade = next(case for case in cases if case["id"] == "A12_NEXT_BUILD")
+        for behavior in (
+            "gap and JD mismatch diagnosis",
+            "one evidence direction",
+            "capability category may use JD or company evidence",
+            "concrete subclasses come from Project inspection",
+            "bounded product-fit exploration",
+            "human-reviewed evidence for subjective quality",
+            "proposed work preserves current Match",
+            "EXACT MATCH, TRANSFERABLE, and GAP only",
+        ):
+            self.assertIn(behavior, upgrade["must"])
 
     def test_brief_contract_is_project_focused_and_hides_internal_scoring(self) -> None:
         text = (ROOT / "skill" / "p2j-brief" / "SKILL.md").read_text(
