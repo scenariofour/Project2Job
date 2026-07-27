@@ -1,0 +1,338 @@
+{
+  "report": {
+    "project_name": "Etsy 0-1 Auto-Test Lab",
+    "jd_label": "Temporary dogfood fixture — TikTok Shop Product Operations Intern (Apps and API)"
+  },
+  "research": {
+    "execution": "host_mediated_public_web",
+    "search_queries": 8,
+    "pages_opened": 5,
+    "browser_pages": 0,
+    "stop_reason": "sufficient_bounded_evidence",
+    "sources": [
+      "https://lifeattiktok.com/campus/interview-tips",
+      "https://partner.tiktokshop.com/docv2/page/developer",
+      "https://partner.tiktokshop.com/docv2/page/create-your-app",
+      "https://partner.tiktokshop.com/docv2/page/seller-api-overview",
+      "https://partner.tiktokshop.com/docv2/page/access-scope",
+      "https://developers.tiktok.com/blog/tiktok-shop-developer-updates",
+      "https://www.glassdoor.com/Interview/TikTok-Product-Operations-Manager-Interview-Questions-EI_IE2230881.0,6_KO7,33.htm"
+    ],
+    "remaining_gaps": [
+      "The specific team and exact interview loop could not be established.",
+      "No exact question was sufficiently repeated to label repeatedly reported."
+    ]
+  },
+  "state": {
+    "project_version": "",
+    "jd_version": "",
+    "artifacts": {},
+    "evidence": {
+      "e_problem": {
+        "source": "README.md",
+        "location": "README.md:29-55",
+        "summary": "The project defines a research-neutrality boundary and requires external evidence before advancing."
+      },
+      "e_product": {
+        "source": "config/automation_policy.json",
+        "location": "publishing_policy and hard_blocks",
+        "summary": "The product encodes explicit human checkpoints, release boundaries, and hard blocks."
+      },
+      "e_technical": {
+        "source": "bin/publish_gate.py",
+        "location": "bin/publish_gate.py:50-150",
+        "summary": "A deterministic gate composes QA, capability, cost, consent, and disclosure checks."
+      },
+      "e_eval": {
+        "source": "runs/EXP-2026-0001/06_qa_report.json",
+        "location": "overall_status and checks",
+        "summary": "One committed QA report records check-level results and a revise outcome."
+      },
+      "e_delivery": {
+        "source": "runs/EXP-2026-0001/11_reflection.md",
+        "location": "What Happened and Learning",
+        "summary": "A failed asset audit caused regeneration and a reusable learning."
+      }
+    },
+    "claims": {
+      "c_problem": {
+        "statement": "The project defines a bounded seller-workflow research problem.",
+        "status": "partially_supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_product": {
+        "statement": "The project makes explicit automation, approval, and release-boundary decisions.",
+        "status": "supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_technical": {
+        "statement": "The project implements a deterministic API-backed operations workflow with human gates.",
+        "status": "supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_eval": {
+        "statement": "The existing Project record links an asset-audit failure, repair, later pass, and a separate draft-only release decision.",
+        "status": "partially_supported",
+        "attribution_scope": "unresolved",
+        "score_if_supported": 3,
+        "direct_competency": false,
+        "match_if_supported": "TRANSFERABLE",
+        "story_if_supported": "A controlled summary makes the existing failure, repair, second audit pass, and draft-only boundary easier to defend without claiming a new capability.",
+        "question_if_supported": "How did the existing asset-audit failure lead to a repair while the separate disclosure boundary still kept the release draft-only?"
+      },
+      "c_delivery": {
+        "statement": "The project records delivery state, failures, and learning across multiple experiment runs.",
+        "status": "supported",
+        "attribution_scope": "unresolved"
+      },
+      "c_market": {
+        "statement": "The project contains primary research with TikTok Shop sellers or ISV partners.",
+        "status": "not_found",
+        "attribution_scope": "unresolved"
+      },
+      "c_platform": {
+        "statement": "The temporary dogfood Project copy contains a simulated proposed TikTok Shop partner API UAT plan grounded in official documentation.",
+        "status": "not_found",
+        "attribution_scope": "unresolved",
+        "direct_competency": false,
+        "match_if_supported": "TRANSFERABLE",
+        "match_evidence_if_supported": "A simulated, source-grounded partner API and UAT plan demonstrates proposed product judgment only.",
+        "match_missing_if_supported": "Executed TikTok Shop integration, completed UAT, seller or ISV experience, and platform outcomes remain unproven.",
+        "question_if_supported": "How would you validate seller authorization, access scopes, app review, and safe failure handling in the proposed partner API plan?",
+        "route_if_supported": "$p2j-answer",
+        "route_summary_if_supported": "Draft an evidence-bounded answer for the partner API UAT design while clearly labeling it proposed rather than executed target-platform work."
+      }
+    },
+    "outputs": {
+      "verdict": {
+        "kind": "verdict",
+        "label": "Supporting project for this Product Operations role",
+        "summary": "Strong evidence of bounded operations, API capability checks, quality gates, and learning from failure. The largest gaps are direct TikTok Shop partner-product work, seller or ISV primary research, commercial impact, and confirmed personal ownership.",
+        "depends_on": [
+          "c_product",
+          "c_technical",
+          "c_eval",
+          "c_market"
+        ]
+      },
+      "score_problem": {
+        "kind": "score",
+        "label": "Problem & User Evidence",
+        "value": 2,
+        "explanation": "The seller workflow and evidence requirements are explicit, but inspected sources show secondary/public research rather than primary seller research.",
+        "depends_on": ["c_problem", "c_market"]
+      },
+      "score_product": {
+        "kind": "score",
+        "label": "Product Judgment",
+        "value": 4,
+        "explanation": "Human checkpoints, hold conditions, capability fallbacks, and rejected automation scope are inspectable.",
+        "depends_on": ["c_product"]
+      },
+      "score_technical": {
+        "kind": "score",
+        "label": "Technical System",
+        "value": 4,
+        "explanation": "The project separates contracts, deterministic enforcement, state, API capabilities, and human control.",
+        "depends_on": ["c_technical"]
+      },
+      "score_evaluation": {
+        "kind": "score",
+        "label": "Evaluation & Reliability",
+        "value": 3,
+        "explanation": "Committed QA and failure evidence exist, but the evaluation-to-decision chain is split across artifacts.",
+        "depends_on": ["c_eval"]
+      },
+      "score_delivery": {
+        "kind": "score",
+        "label": "Delivery & Learning Loop",
+        "value": 3,
+        "explanation": "Experiment state, draft creation, holds, repairs, and learning are visible; commercial impact is not established.",
+        "depends_on": ["c_delivery"]
+      },
+      "match_uat": {
+        "kind": "jd_match",
+        "label": "User acceptance testing and quality review",
+        "match": "TRANSFERABLE",
+        "evidence": "Committed QA checks, a revise decision, and a documented repair.",
+        "missing": "One direct evidence record linking evaluation, repair, and changed product control.",
+        "depends_on": ["c_eval"]
+      },
+      "match_api": {
+        "kind": "jd_match",
+        "label": "APIs and third-party integrations",
+        "match": "TRANSFERABLE",
+        "evidence": "Etsy OAuth, capability checks, API gates, and safe fallbacks are inspectable.",
+        "missing": "TikTok Shop Open API or App Ecosystem experience.",
+        "depends_on": ["c_technical"]
+      },
+      "match_market": {
+        "kind": "jd_match",
+        "label": "Seller and ISV market studies",
+        "match": "GAP",
+        "evidence": "A secondary/public research process is defined.",
+        "missing": "Primary TikTok Shop seller or ISV research.",
+        "depends_on": ["c_market"]
+      },
+      "match_strategy": {
+        "kind": "jd_match",
+        "label": "Strategy, ROI, prerequisites, and prioritization",
+        "match": "TRANSFERABLE",
+        "evidence": "Cost caps, prerequisite checks, hard blocks, and one-variable next actions are explicit.",
+        "missing": "A documented ROI prioritization decision for a partner platform.",
+        "depends_on": ["c_product"]
+      },
+      "match_platform": {
+        "kind": "jd_match",
+        "label": "Proposed TikTok Shop partner product design",
+        "match": "GAP",
+        "evidence": "No direct target-platform artifact.",
+        "missing": "A source-grounded TikTok Shop partner API design and UAT plan.",
+        "depends_on": ["c_platform"]
+      },
+      "story_failure": {
+        "kind": "story",
+        "label": "Turning an asset failure into a stronger control",
+        "summary": "A product artifact failed review, was repaired, and produced a reusable learning without being promoted as commercial impact.",
+        "depends_on": ["c_eval", "c_delivery"]
+      },
+      "story_api": {
+        "kind": "story",
+        "label": "Designing safe API automation boundaries",
+        "summary": "The project checks capabilities, preserves human approval, and falls back rather than inventing unavailable data.",
+        "depends_on": ["c_product", "c_technical"]
+      },
+      "intel_product": {
+        "kind": "company_intelligence",
+        "label": "Official product context",
+        "summary": "TikTok Shop's developer platform supports seller-authorized apps, public/custom app models, app review, API scopes, and seller workflow automation.",
+        "basis": "Official TikTok Shop Partner Center and TikTok for Developers",
+        "sources": [
+          "https://partner.tiktokshop.com/docv2/page/developer",
+          "https://partner.tiktokshop.com/docv2/page/create-your-app",
+          "https://partner.tiktokshop.com/docv2/page/seller-api-overview",
+          "https://partner.tiktokshop.com/docv2/page/access-scope",
+          "https://developers.tiktok.com/blog/tiktok-shop-developer-updates"
+        ],
+        "depends_on": ["jd"]
+      },
+      "intel_process": {
+        "kind": "company_intelligence",
+        "label": "Interview process evidence",
+        "summary": "Official early-career guidance says interviews typically last 30–60 minutes. Independent Product Operations reports mention recruiter, hiring-manager, case, and multi-round paths; the exact loop for this team is unknown.",
+        "basis": "Official early-career guidance plus independent reports",
+        "sources": [
+          "https://lifeattiktok.com/campus/interview-tips",
+          "https://www.glassdoor.com/Interview/TikTok-Product-Operations-Manager-Interview-Questions-EI_IE2230881.0,6_KO7,33.htm"
+        ],
+        "depends_on": ["jd"]
+      },
+      "q_reported_product": {
+        "kind": "question",
+        "label": "Single reported question",
+        "summary": "Tell me about a product challenge you faced, and what you would improve.",
+        "basis": "One Product Operations candidate report; not guaranteed",
+        "depends_on": ["jd"]
+      },
+      "q_reported_data": {
+        "kind": "question",
+        "label": "Single reported question",
+        "summary": "Describe a time you used data to make a decision.",
+        "basis": "One Product Operations candidate report; not guaranteed",
+        "depends_on": ["jd"]
+      },
+      "q_jd_research": {
+        "kind": "question",
+        "label": "JD-derived question",
+        "summary": "How would you study the needs of sellers, ISVs, and creators before prioritizing an API product requirement?",
+        "basis": "JD responsibilities: quantitative and qualitative market studies",
+        "depends_on": ["jd", "c_market"]
+      },
+      "q_company_api": {
+        "kind": "question",
+        "label": "Company/product-derived question",
+        "summary": "How would you choose between a public app, a custom app, and a widget for one seller workflow?",
+        "basis": "Official TikTok Shop developer documentation",
+        "depends_on": ["jd"]
+      },
+      "q_project_failure": {
+        "kind": "question",
+        "label": "Project-triggered question",
+        "summary": "What failed in the Auto-Test Lab, and how did that failure change the release control?",
+        "basis": "Project QA, reflection, and experiment-state evidence",
+        "depends_on": ["c_eval", "c_delivery"]
+      },
+      "q_gap_market": {
+        "kind": "question",
+        "label": "Gap-attack question",
+        "summary": "What direct evidence do you have that your research reflects real seller or partner needs?",
+        "basis": "Missing primary seller/ISV evidence",
+        "depends_on": ["c_market"]
+      },
+      "q_technical_scope": {
+        "kind": "question",
+        "label": "Likely technical follow-up",
+        "summary": "How would seller authorization, access scopes, app review, webhooks, and fallback behavior affect your UAT plan?",
+        "basis": "Official API documentation plus JD preference for APIs and 3P integrations",
+        "depends_on": ["jd", "c_platform"]
+      },
+      "route": {
+        "kind": "route",
+        "label": "Recommended Route",
+        "route": "$p2j-upgrade",
+        "summary": "Review one source-grounded TikTok Shop partner API UAT build because target-platform product evidence is the highest-leverage remaining gap.",
+        "depends_on": ["c_platform", "c_market"]
+      }
+    },
+    "dependencies": {
+      "README.md": ["e_problem"],
+      "config/automation_policy.json": ["e_product"],
+      "bin/publish_gate.py": ["e_technical"],
+      "runs/EXP-2026-0001/06_qa_report.json": ["e_eval"],
+      "runs/EXP-2026-0001/11_reflection.md": ["e_delivery"],
+      "e_problem": ["c_problem"],
+      "e_product": ["c_product"],
+      "e_technical": ["c_technical"],
+      "e_eval": ["c_eval"],
+      "e_delivery": ["c_delivery"],
+      "c_problem": ["score_problem"],
+      "c_product": ["score_product", "match_strategy", "story_api", "verdict"],
+      "c_technical": ["score_technical", "match_api", "story_api", "verdict"],
+      "c_eval": ["score_evaluation", "match_uat", "story_failure", "q_project_failure", "verdict"],
+      "c_delivery": ["score_delivery", "story_failure", "q_project_failure"],
+      "c_market": ["score_problem", "match_market", "q_jd_research", "q_gap_market", "route", "verdict"],
+      "c_platform": ["match_platform", "q_technical_scope", "route"],
+      "jd": [
+        "match_uat",
+        "match_api",
+        "match_market",
+        "match_strategy",
+        "match_platform",
+        "intel_product",
+        "intel_process",
+        "q_reported_product",
+        "q_reported_data",
+        "q_jd_research",
+        "q_company_api",
+        "q_gap_market",
+        "q_technical_scope",
+        "route"
+      ]
+    },
+    "confirmed_facts": {
+      "ownership_boundary": {
+        "scope": "unresolved",
+        "confirmed": false
+      }
+    },
+    "unresolved_questions": []
+  },
+  "expected_changed_outputs": [
+    "q_project_failure",
+    "story_failure"
+  ],
+  "expected_final_outputs": {
+    "q_project_failure": "How did the existing asset-audit failure lead to a repair while the separate disclosure boundary still kept the release draft-only?",
+    "story_failure": "A controlled summary makes the existing failure, repair, second audit pass, and draft-only boundary easier to defend without claiming a new capability."
+  }
+}

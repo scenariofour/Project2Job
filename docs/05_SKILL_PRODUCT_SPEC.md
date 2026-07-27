@@ -2,9 +2,12 @@
 
 ## Product role
 
-The Project2Job Skill is the lowest-friction product entry and open-source distribution surface.
+The Project2Job Skill is the lowest-friction product entry and open-source
+distribution surface.
 
-It performs a one-session JD-to-Application transformation inside the user's existing Agent host.
+It is a reusable method that performs a JD-to-Application transformation inside
+the user's existing Agent host. With one-time consent, the suite's shared local
+Context Registry can reuse bounded Project/JD/run state across sessions.
 
 ## User contract
 
@@ -62,30 +65,32 @@ The Skill cannot guarantee:
 
 - identical models across hosts
 - identical tool availability
-- persistent state
+- persistent state when consent or local storage is unavailable
 - consistent token telemetry
-- update tracking across sessions
+- background update tracking or change-driven regeneration
 - centralized product analytics
 
 ## Execution sequence
 
-1. inspect artifacts with the inventory script
-2. route the request
-3. load only relevant references
-4. extract the JD into a `JdIntake`: company, team, role family, track, level,
+1. resolve Project/JD identity and compatible local context
+2. inventory only new or changed artifacts
+3. route the request
+4. load only relevant references
+5. extract the JD into a `JdIntake`: company, team, role family, track, level,
    location, requirements, likely interview risks, unknowns
-5. extract the top 5–7 role requirements as the Role Demand Map
-6. run one bounded public-web research pass for company and interview context,
+6. extract the top 5–7 role requirements as the Role Demand Map
+7. run one bounded public-web research pass for company and interview context,
    merging anything the user pasted or uploaded
-7. read the optional resume and extract project candidates for routing only
-8. recommend one project, then return the `Intake Result` and stop for input
-9. extract project claims from the selected project
-10. verify high-value claims against sources
-11. produce the Application and Interview Pack
-12. ask for correction
-13. stop
+8. read the optional resume and extract project candidates for routing only
+9. recommend one project, then return the `Intake Result` and stop for input
+10. extract project claims from the selected project
+11. verify high-value claims against sources
+12. produce the Application and Interview Pack
+13. after consent, save only the minimal compatible context
+14. ask for correction
+15. stop
 
-Step 8 is a real stopping point, not a pause. The Intake Result must stand on its
+Step 9 is a real stopping point, not a pause. The Intake Result must stand on its
 own if the user never supplies a project.
 
 ## Progressive loading
@@ -96,6 +101,8 @@ Load:
 
 - role standard only when role analysis is needed
 - evidence rubric for claim verification
+- Context Registry resolver before every run; continue without saving when local
+  reuse is unavailable or declined
 - routing reference only when a resume with several projects is present
 - resume reference only for bullet generation
 - interview reference only for interview output
@@ -110,7 +117,8 @@ Load:
   `render_required`, and list them as gaps rather than guessing their content
 - no screenshot reading: ask for the JD as pasted text
 - no code execution: create a manual inventory
-- no persistent storage: state the session limitation
+- no persistent storage or no consent: continue without saving and state the
+  session limitation
 - no reliable source location: mark provenance as coarse
 
 ## Skill effectiveness

@@ -1,6 +1,6 @@
 {
   "contract_id": "project2job-shared-foundation",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "role_profile": {
     "path": "references/role_profiles/ai_pm_early_career.v0.1.0.json",
     "role_id": "ai_pm_early_career",
@@ -34,6 +34,10 @@
     "intake_result": {
       "path": "schemas/intake_result.schema.json",
       "schema_id": "https://project2job.dev/schemas/intake-result/1.0.0"
+    },
+    "context_registry": {
+      "path": "schemas/context_registry.schema.json",
+      "schema_id": "https://project2job.dev/schemas/context-registry/1.0.0"
     }
   },
   "gold_dataset": {
@@ -73,6 +77,10 @@
     {
       "version": "2.0.0",
       "change": "Day 2 JD-first revision: added jd_intake, interview_context, and intake_result; Application Pack moved to 2.0.0 as the Application and Interview Pack. Gold dataset 0.1.0 reviewed and unchanged because its cases assert role-profile and evidence-status behavior only and reference no pack schema ID. Major bump: the output schema ID changed, so any consumer pinned to the 1.x contract breaks."
+    },
+    {
+      "version": "2.1.0",
+      "change": "Added the consent-gated local Context Registry envelope for Project, JD, and Analysis Run history. Existing project evidence, JD intake, interview context, and output contracts remain authoritative."
     }
   ]
 }

@@ -27,18 +27,22 @@ rest produce an `Application and Interview Pack`.
 The product has been designed and a bounded evidence loop is implemented. Its
 user value has not been validated.
 
-## Skill and Agent responsibilities
+## Skill, Context Registry, and Agent responsibilities
 
-The host-native Project2Job Skill Alpha is the low-friction, session-scoped
-entry point. Its `$p2j` router and six specialists produce a concise Brief,
-six-Gate evidence audit, company intelligence, grounded answer lab, interactive
-mock, and One Next Build. It runs in the user's Agent host and does not maintain
-product state.
+The host-native Project2Job Skill Alpha is the low-friction method. Its `$p2j`
+router and six specialists produce a concise Brief, evidence audit, company
+intelligence, grounded answer lab, interactive mock, and One Next Build.
 
-The planned Project2Job Evidence Agent is the stateful product. It is responsible for
-maintaining user-confirmed evidence, applying corrections, detecting one project
-update, invalidating dependent claims, and regenerating affected assets. It does
-not have permission to fabricate claims or take external action.
+After one-time consent, the shared local Context Registry stores minimal
+Project/JD/run identity, fingerprints, confirmed facts, ownership boundaries,
+gaps, and output references. It lets Skills reuse compatible work across
+sessions. It is passive infrastructure: it does not monitor files, decide what
+to run, or regenerate outputs in the background.
+
+The Project2Job Evidence Agent is the stateful product. Its V0 runtime handles
+one Project or JD update, resolves dependencies, regenerates affected assets,
+preserves unrelated results, and explains what changed. It does not have
+permission to fabricate claims or take external action.
 
 Both products share evidence rules, schemas, source boundaries, evaluation
 cases, and safety requirements. They do not require the same runtime.
@@ -66,8 +70,12 @@ invoke `/p2j` or `/p2j-brief` after the host has reloaded its Skills. Start with
 one JD and, for project analysis, one local project folder.
 
 The suite depends on the host for local file reads, Git history, public search
-and fetch, optional browser rendering, and current-session context. It has no
-standalone service, persistent memory, background refresh, or Web UI.
+and fetch, optional browser rendering, and local storage. The Context Registry
+defaults to `~/.project2job`; set `P2J_HOME` to override it. The first write
+requires consent, and users may refresh, analyze from scratch, run without
+saving, or forget selected context. The Skill suite has no standalone service
+or background refresh. A separate local report renderer demonstrates four Agent
+states; it is not a production Web UI.
 
 ## Current MVP
 
@@ -83,7 +91,7 @@ The MVP is limited to:
 It excludes job discovery and bulk scraping, automatic login to any job platform
 or professional network, auto-apply, application tracking, email monitoring,
 referral automation, Gmail or Calendar, multiple deep project analyses, any
-persisted company question database, full resume generation, networking
+cross-Project company question database, full resume generation, networking
 automation, broad MCP integrations, multi-agent, and Deep Agents.
 
 After the JD arrives the MVP runs one bounded public-web research pass for
@@ -104,18 +112,20 @@ supported and merged with what research finds.
   budgets, a permitted-source boundary, and committed deterministic traces.
 - Day 1 uses deterministic scripted read-only tools. It is not a production
   model-powered Agent runtime.
-- The full WO-02 stateful project-update cycle is not complete.
+- WO-02 stateful mechanics are implemented and deterministically tested:
+  Project/JD change detection, corrections, dependency invalidation, selective
+  updates, one repair, structured traces, and a fresh-Skill comparison.
 - Day 2 revised the product contracts around the JD-first flow. Those contracts
   and their eval cases exist. The host-native Skill Alpha implements the
   JD/project routing and interview-prep workflows through host tools; no
   standalone intake or pack runtime exists.
 
-Unproven: user value beyond dogfood, cross-host consistency, the Web UI,
-production RAG, production model behavior, latency, cost, and any Agent
-advantage over a strong one-shot prompt or a fixed workflow.
+Unproven: user value beyond dogfood, cross-host live behavior, production Web
+UI and RAG, production model behavior, latency and cost targets, and Agent
+advantage beyond the single scripted update comparison.
 
-Other files under `src/` are interfaces or stubs imported from v6; their
-presence does not mean those runtime features are implemented.
+The stateful V0 implementation is in `src/career_desk/orchestrator.py`. Other
+interfaces under `src/` do not imply additional production runtime features.
 
 ## Safety and source handling
 

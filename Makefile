@@ -1,7 +1,7 @@
 PYTHON ?= python3
 SKILL_DEST ?=
 
-.PHONY: validate test inventory skill-package skill-install
+.PHONY: validate test inventory agent-demo skill-package skill-install
 
 validate:
 	$(PYTHON) scripts/validate_repo.py
@@ -12,6 +12,15 @@ test:
 
 inventory:
 	$(PYTHON) skill/p2j/scripts/inventory.py examples/sample_project
+
+agent-demo:
+	$(PYTHON) scripts/build_agent_demo.py
+	@mkdir -p dist/agent-report
+	@for fixture in apps/web/fixtures/*.json; do \
+		name=$$(basename "$$fixture" .json); \
+		$(PYTHON) apps/web/render_report.py "$$fixture" \
+			--output "dist/agent-report/$$name.html"; \
+	done
 
 skill-package:
 	$(PYTHON) skill/p2j/scripts/install_suite.py --archive dist/project2job-skill-suite-alpha.zip

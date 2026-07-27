@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/context-registry/1.0.0",
+  "title": "Project2JobContextRegistry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "projects",
+    "jds",
+    "analysis_runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/project"
+      }
+    },
+    "jds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/jd"
+      }
+    },
+    "analysis_runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/analysisRun"
+      }
+    }
+  },
+  "$defs": {
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "fingerprint",
+        "observed_at"
+      ],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact"
+          }
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "fingerprint",
+        "size_bytes",
+        "mtime_ns",
+        "ctime_ns",
+        "evidence_surfaces"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mtime_ns": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ctime_ns": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidence_surfaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fact_id",
+        "text",
+        "status",
+        "source_paths"
+      ],
+      "properties": {
+        "fact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "status": {
+          "$ref": "https://project2job.dev/schemas/project-evidence/1.0.0#/$defs/claim/properties/status"
+        },
+        "source_paths": {
+          "$ref": "#/$defs/sourcePaths"
+        }
+      }
+    },
+    "boundedItem": {
+      "type": "object",
+      "required": [
+        "source_paths"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "gap_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "boundary": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "status": {
+          "type": "string"
+        },
+        "source_paths": {
+          "$ref": "#/$defs/sourcePaths"
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "claim_id"
+          ]
+        },
+        {
+          "required": [
+            "question_id"
+          ]
+        },
+        {
+          "required": [
+            "gap_id"
+          ]
+        }
+      ]
+    },
+    "sourcePaths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "project_id",
+        "identity_kind",
+        "versions",
+        "confirmed_facts",
+        "ownership_boundaries",
+        "unresolved_questions",
+        "known_gaps"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "project"
+        },
+        "project_id": {
+          "type": "string",
+          "pattern": "^project_[a-f0-9]{24}$"
+        },
+        "identity_kind": {
+          "enum": [
+            "git_remote",
+            "canonical_path"
+          ]
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/version"
+          },
+          "minItems": 1
+        },
+        "confirmed_facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fact"
+          }
+        },
+        "ownership_boundaries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/boundedItem"
+          }
+        },
+        "unresolved_questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/boundedItem"
+          }
+        },
+        "known_gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/boundedItem"
+          }
+        }
+      }
+    },
+    "jd": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "jd_id",
+        "identity_kind",
+        "versions"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "jd"
+        },
+        "jd_id": {
+          "type": "string",
+          "pattern": "^jd_[a-f0-9]{24}$"
+        },
+        "identity_kind": {
+          "enum": [
+            "url",
+            "user_key",
+            "canonical_path",
+            "content"
+          ]
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/version"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "analysisRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "run_id",
+        "created_at",
+        "project_id",
+        "project_version",
+        "jd_id",
+        "jd_version",
+        "skill"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "analysis_run"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^run_[a-f0-9]{32}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "project_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "project_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "jd_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "jd_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "skill": {
+          "enum": [
+            "p2j",
+            "p2j-brief",
+            "p2j-audit",
+            "p2j-intel",
+            "p2j-answer",
+            "p2j-mock",
+            "p2j-upgrade"
+          ]
+        },
+        "agent_state": {
+          "$ref": "https://project2job.dev/schemas/agent-state/1.0.0"
+        },
+        "agent_trace": {
+          "$ref": "https://project2job.dev/schemas/agent-trace/1.0.0"
+        },
+        "observed_metrics": {
+          "type": "object"
+        },
+        "evidence": {
+          "type": "array"
+        },
+        "scores": {},
+        "matches": {},
+        "reused_fact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved_questions": {
+          "type": "array"
+        },
+        "recommended_route": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "output_references": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -140,6 +140,14 @@ class StatusTruthTests(unittest.TestCase):
         ):
             self.assertIn(area, section)
 
+    def test_skill_registry_and_agent_have_distinct_responsibilities(self) -> None:
+        glossary = prose("GLOSSARY.md")
+        self.assertIn("Skill instructions do not themselves monitor change", glossary)
+        self.assertIn("Consent-gated local infrastructure", glossary)
+        self.assertIn(
+            "stateful product runtime that resolves saved context", glossary
+        )
+
 
 class OutputQuantityTests(unittest.TestCase):
     def test_scope_and_prd_make_counts_evidence_dependent(self) -> None:
@@ -162,6 +170,7 @@ class GlossaryTests(unittest.TestCase):
         "Project2Job",
         "Career Desk",
         "Skill",
+        "Context Registry",
         "Agent",
         "Evidence Investigator",
         "Work Order",

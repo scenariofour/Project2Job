@@ -37,6 +37,8 @@ Skill host:
 - discover Skill via name and description
 - load `SKILL.md` when selected
 - load references only when required
+- resolve compatible local context before source retrieval
+- reuse cached fingerprints and source-linked facts for unchanged artifacts
 - run scripts only when required
 
 Agent runtime:
@@ -94,6 +96,15 @@ Cost discipline for the pass:
 - read changed files and dependent evidence first
 - do not re-open unchanged sources without reason
 - regenerate only dependent assets
+
+### Skill context reuse
+
+- compare Project and JD fingerprints before evidence retrieval
+- do not reopen unchanged sources without a named evidence need
+- reparse a changed JD without repeating the Project audit
+- on a changed Project, read changed artifacts and dependent evidence first
+- `refresh` recomputes while retaining compatible confirmed facts
+- `fresh` bypasses reuse without deleting history
 
 ## Telemetry
 

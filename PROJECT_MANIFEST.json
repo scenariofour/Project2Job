@@ -88,6 +88,7 @@
       "docs/10_EVALUATION_AND_POC.md",
       "docs/11_SAFETY_PRIVACY_AND_HITL.md",
       "schemas/agent_state.schema.json",
+      "schemas/agent_trace.schema.json",
       "lab/evals/agent_cases.jsonl"
     ],
     "web_poc": [

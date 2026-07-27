@@ -2,7 +2,8 @@
 
 ## Product role
 
-The Project2Job Evidence Agent turns the one-time Skill analysis into a maintained project evidence system.
+The Project2Job Evidence Agent turns Skill analysis and passive Context Registry
+state into a maintained project evidence system.
 
 ## Independent user value
 
@@ -18,6 +19,11 @@ Required Agent advantages:
 - updates only affected outputs
 - explains changes
 - reduces repeated reading and questions
+
+The local Context Registry can already recognize versions and return compatible
+facts on an invoked Skill run. The Agent is justified only by active
+orchestration after an invoked update: observe the change, resolve dependencies,
+regenerate affected assets, and explain the update as one managed cycle.
 
 ## MVP runs
 
@@ -112,3 +118,16 @@ The second run must be measurably better than starting over:
 - lower cost or latency at similar quality
 - correct dependency updates
 - clear change explanation
+
+## V0 implementation boundary
+
+The V0 runtime is an explicit orchestration layer above stable capability
+interfaces. It resolves saved context, observes Project/JD/correction changes,
+selects one allowed action, executes one capability, validates affected
+outputs, permits at most one repair, updates dependencies, and stops.
+
+The deterministic policy owns permissions, allowed actions, budgets, claim
+safety, output validation, and stop conditions. A scripted planner supports
+tests; a host-mediated planner accepts one action selected from the current
+observation for dogfood. The runtime does not monitor in the background or
+introduce another user-facing Skill.

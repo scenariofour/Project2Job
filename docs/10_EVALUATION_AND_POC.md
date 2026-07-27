@@ -158,6 +158,15 @@ Measure:
 - update run reduces repeated work
 - traces and budgets are visible
 
+The integrated V0 case in
+`docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json` passes these mechanical
+conditions for one controlled summary of existing evaluation facts: 2/2
+presentation outputs changed,
+0 unrelated outputs changed, one file was opened instead of six, and no
+Project score or JD Match was inflated. The fresh path replays the final
+source-grounded host analysis, so this is observed repository dogfood rather
+than target-user or live-model validation.
+
 ### User-value PoC passes when
 
 - target users receive a useful asset

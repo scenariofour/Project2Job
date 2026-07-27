@@ -1,0 +1,76 @@
+{
+  "comparison_type": "execution_cost_and_replay_consistency",
+  "changed_artifact_classification": [
+    "controlled_summary_existing_fact"
+  ],
+  "expected_changed_outputs": [
+    "q_project_failure",
+    "story_failure"
+  ],
+  "expected_preserved_outputs": [
+    "intel_process",
+    "intel_product",
+    "match_api",
+    "match_market",
+    "match_platform",
+    "match_strategy",
+    "match_uat",
+    "q_company_api",
+    "q_gap_market",
+    "q_jd_research",
+    "q_reported_data",
+    "q_reported_product",
+    "q_technical_scope",
+    "route",
+    "score_delivery",
+    "score_evaluation",
+    "score_problem",
+    "score_product",
+    "score_technical",
+    "story_api",
+    "verdict"
+  ],
+  "stateful_agent_update": {
+    "files_opened": 1,
+    "questions_asked": 0,
+    "capability_calls": 1,
+    "outputs_regenerated": 2,
+    "outputs_preserved": 21,
+    "expected_output_ids_changed": 2,
+    "expected_final_values_matched": 2,
+    "unrelated_outputs_changed": 0,
+    "latency_ms": 1.123,
+    "token_usage": null
+  },
+  "fresh_skill_rerun": {
+    "files_opened": 6,
+    "questions_asked": 0,
+    "capability_calls": 2,
+    "outputs_regenerated": 23,
+    "outputs_preserved": 0,
+    "expected_output_ids_changed": 2,
+    "expected_final_values_matched": 2,
+    "unrelated_outputs_changed": 0,
+    "latency_ms": 0.759,
+    "token_usage": null
+  },
+  "replay_consistency": {
+    "expected_final_values": 2,
+    "fresh_expected_final_values_matched": 2,
+    "stateful_before_values_recorded": 2
+  },
+  "trace_clarity": {
+    "stateful_detected_change": "project",
+    "stateful_stop_reason": "complete",
+    "fresh_detected_change": "new",
+    "fresh_stop_reason": "complete"
+  },
+  "limitations": [
+    "Both runs used deterministic orchestration and host-supplied analysis; no live model planner was called.",
+    "The fresh run replayed the final source-grounded host analysis to measure full-read and regeneration cost.",
+    "This is not an independent quality comparison or evidence of general Agent superiority.",
+    "The controlled summary surfaces an existing fact and is not counted as a new Project capability or executed result.",
+    "Token usage is unavailable because no model call was made.",
+    "This is repository dogfood, not target-user validation."
+  ]
+}

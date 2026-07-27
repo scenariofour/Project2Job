@@ -7,6 +7,9 @@ rules in specialist references.
 
 - Start from one target JD. A resume may route among self-reported project
   summaries, but exactly one project may receive deep analysis.
+- Before routing, read `context-registry.md` and resolve the supplied Project/JD.
+  Reuse only compatible saved context; current source evidence remains
+  authoritative.
 - With a JD and no project, produce a useful Intake/Intel result and one next
   input. With a project and no JD, use the default role standard and name the JD
   as an optional unlock.
@@ -14,6 +17,22 @@ rules in specialist references.
   ownership, source conflict, or factual truth materially changes.
 - Give one concise first result, then disclose evidence detail on request.
 - End with exactly one next action.
+
+## Shared local context
+
+- The Context Registry is consent-gated local Project/JD/run state shared by
+  all seven Skills. It is not another Skill. The invoked stateful runtime uses
+  it to restore one canonical evidence/output/dependency state.
+- Reuse confirmed facts and claim-level ownership boundaries. Do not repeat a
+  resolved question or reopen unchanged sources without a named evidence need.
+- On a Project change, preserve unaffected facts and recompute only outputs
+  dependent on added, changed, or removed artifacts. On a JD change, reuse
+  Project evidence and recompute role matching and route.
+- Show one short reuse sentence only when prior context materially affects the
+  result. Keep internal states, IDs, versions, hashes, and storage details out
+  of normal user output.
+- Honor refresh, analyze-from-scratch, do-not-save, and selective forget
+  requests as defined in `context-registry.md`.
 
 ## Canonical inputs
 
@@ -131,7 +150,8 @@ The Alpha relies on host capabilities:
 | Git | decisions, chronology, authorship leads | mark history/ownership gaps |
 | public search/fetch | bounded company research | user-supplied-only mode |
 | browser rendering | selected public page after plain fetch fails | record `render_required` |
-| session context | confirmed facts and answer bank | state that reuse is session-only |
+| local context | consented Project/JD/Agent-state reuse | continue session-only without saving |
 
 Never log in, use credentials, bypass a block, crawl, send messages, apply to a
-job, or claim persistent/standalone runtime behavior.
+job, modify the inspected Project, or claim background refresh or a standalone
+service.

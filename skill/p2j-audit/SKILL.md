@@ -9,7 +9,9 @@ Treat `/p2j-audit` as an alias for `$p2j-audit`.
 
 1. Read `../p2j/references/core-contract.md` and
    `../p2j/references/gates.md`.
-2. Inventory before analysis. Inspect project facts across files, Git history,
+2. Resolve shared context first. Continue from compatible Brief/Audit inventory,
+   confirmed facts, ownership boundaries, and unresolved evidence. Inventory
+   only new or changed artifacts before analysis. Inspect project facts across files, Git history,
    decisions, committed tests, evals, traces, failures, release evidence,
    feedback, and ownership records. Use no more than six evidence searches and
    four rereads for any high-value claim and no more than twenty line-targeted
@@ -30,5 +32,7 @@ Treat `/p2j-audit` as an alias for `$p2j-audit`.
    - dangerous claims and likely follow-up attacks
    - exactly one Next Build using the required contract
 
-Ask no more than one pre-value question. Ownership uncertainty caps the affected
-claim; it does not block the rest of the audit.
+Ask no more than one pre-value question. Reuse resolved ownership and ask only
+about newly ambiguous attribution. Ownership uncertainty narrows the affected
+claim; it does not lower unrelated project quality or block the rest of the
+audit.

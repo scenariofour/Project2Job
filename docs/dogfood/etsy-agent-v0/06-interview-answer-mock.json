@@ -1,0 +1,42 @@
+{
+  "execution": {
+    "type": "host_mediated_codex_dogfood",
+    "capabilities": [
+      "$p2j-answer",
+      "$p2j-mock"
+    ],
+    "live_model_planner": false,
+    "target_user_validation": false
+  },
+  "selected_question": {
+    "category": "Project-triggered question",
+    "question": "What failed in the Auto-Test Lab, and how did that failure change the release control?",
+    "basis": [
+      "runs/EXP-2026-0001/11_reflection.md:18-29",
+      "runs/EXP-2026-0001/06_qa_report.json:1-68",
+      "runs/EXP-2026-0001/07_publish_gate.json:1-28"
+    ],
+    "priority": "P0"
+  },
+  "answer": {
+    "factual_frame": "Observed project record; personal ownership remains unresolved.",
+    "short": "The project caught a buyer-facing PDF overflow during asset review, regenerated the page with a safer two-line label, tightened the listing wording, and passed the second asset audit. A separate disclosure warning still kept the listing draft-only, so fixing the artifact did not get converted into a claim that the whole release was ready.",
+    "sixty_to_ninety_seconds": "The clearest failure was in the actual deliverable, not the listing image: the first asset audit found that the long 12th Grade / Senior Year heading overflowed the printable border. The project treated that as buyer-unready, regenerated the PDF with a two-line label, tightened the package wording to the 16-page bundle, and reran the asset audit to a pass. The broader QA gate still returned revise because the required user-written AI disclosure was blank. The publish gate therefore kept the listing draft-only. That sequence is useful because it separates an artifact repair from release readiness and preserves a human decision boundary instead of treating technical completion as commercial impact.",
+    "confirmation_slot": "What part of the diagnosis, repair choice, and gate decision did you personally own?"
+  },
+  "mock": {
+    "label": "Mock Interview — simulated practice",
+    "answered_question": true,
+    "exact_weak_sentence": "The project treated that as buyer-unready, regenerated the PDF with a two-line label, tightened the package wording to the 16-page bundle, and reran the asset audit to a pass.",
+    "weakness": "The answer explains the sequence but leaves the repair rationale and personal ownership boundary implicit.",
+    "replacement_wording": "The record shows a two-line label was used to keep the full grade meaning inside the printable border; it does not establish who selected that repair, so I would confirm my role before presenting it as my decision.",
+    "follow_up": "Why was a two-line label the right tradeoff, and which part of that decision did you personally own?",
+    "next_practice_focus": "State the rejected alternative and confirm ownership before using first-person language."
+  },
+  "fact_set_check": {
+    "project_claims_before": 7,
+    "project_claims_after": 7,
+    "facts_added_by_answer_or_mock": 0,
+    "facts_changed_by_answer_or_mock": 0
+  }
+}

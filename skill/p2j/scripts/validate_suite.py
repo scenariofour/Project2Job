@@ -16,6 +16,7 @@ SKILLS = (
 )
 SHARED_REFERENCES = (
     "core-contract.md",
+    "context-registry.md",
     "gates.md",
     "interview-engine.md",
     "frameworks.md",
@@ -35,6 +36,12 @@ REQUIRED_BEHAVIOR_CASES = {
     "A12_NEXT_BUILD",
     "A13_MOCK_LABEL",
     "A14_ROUTER_OUTPUTS",
+    "A15_BRIEF_MATCH",
+    "A16_BRIEF_STORIES",
+    "A17_CONTEXT_REUSE",
+    "A18_CONTEXT_CHANGE",
+    "A19_CONTEXT_CONTROLS",
+    "A20_CONTEXT_SAFETY",
 }
 
 
@@ -80,9 +87,20 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
     for name in SHARED_REFERENCES:
         if not (reference_root / name).is_file():
             errors.append(f"p2j: missing shared reference {name}")
-    for name in ("inventory.py", "install_suite.py", "validate_output.py"):
+    for name in (
+        "context_registry.py",
+        "inventory.py",
+        "install_suite.py",
+        "stateful_agent.py",
+        "validate_output.py",
+    ):
         if not (root / "p2j" / "scripts" / name).is_file():
             errors.append(f"p2j: missing script {name}")
+    runtime = root / "p2j" / "scripts" / "career_desk"
+    if runtime.exists():
+        for name in ("capabilities.py", "orchestrator.py", "runtime.py"):
+            if not (runtime / name).is_file():
+                errors.append(f"p2j: missing bundled runtime {name}")
     for name in ("sample_jd.md", "sample_project.md", "sample_brief.md"):
         if not (root / "p2j" / "examples" / name).is_file():
             errors.append(f"p2j: missing example {name}")
@@ -139,6 +157,9 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
             "ACTIVE_SCOPE.md",
             "references/role_profiles/ai_pm_early_career.v0.1.0.json",
             "schemas/application_pack.schema.json",
+            "schemas/agent_state.schema.json",
+            "schemas/agent_trace.schema.json",
+            "schemas/context_registry.schema.json",
             "schemas/interview_context.schema.json",
         ):
             if not (canonical / relative).is_file():

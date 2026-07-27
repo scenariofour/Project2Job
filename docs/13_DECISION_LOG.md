@@ -294,3 +294,84 @@ a giant `SKILL.md` or duplicated ontology. A suite lets the host progressively
 load only the audit, research, answer, mock, or build guidance needed for the
 current task. Installing canonical source snapshots from one repository source
 keeps the package self-contained without creating a second editable contract.
+
+## D-019: Add a consent-gated local Context Registry
+
+Decision:
+
+- Keep `$p2j` plus its six specialists as the only user-facing Skills.
+- Add one shared deterministic Context Registry for Project, JD, and Analysis
+  Run records. Default to `~/.project2job`, respect `P2J_HOME`, and require
+  one-time consent before the first persistent write.
+- Store identities, versions, fingerprints, bounded confirmed facts and
+  ownership boundaries, source/output references, unresolved questions, and
+  known gaps. Do not store credentials, secrets, source bodies, complete
+  generated answers, or unrelated personal data.
+- Resolve source changes before every Skill run. Preserve unaffected facts,
+  invalidate only dependent outputs, and keep current source evidence
+  authoritative.
+- Support refresh, analyze from scratch, do not save, and selective forget.
+- Keep the Agent boundary: the registry is passive storage and resolution; the
+  future Agent actively orchestrates change-driven regeneration and explains
+  updates.
+
+Reason:
+
+Repeated Brief, Audit, Answer, Mock, Intel, and Upgrade runs should not discard
+confirmed work or repeat ownership questions. One shared local envelope avoids
+duplicating state across seven Skills while preserving the product boundary:
+one Project, one JD, no background process, and no general candidate database.
+
+## D-020: Add one bounded orchestration layer and one data-driven report
+
+Decision:
+
+- Keep the existing Evidence Investigator and seven user-facing Skills.
+- Add one explicit runtime that accepts scripted or host-mediated action
+  selection while deterministic policy enforces the allowed actions,
+  permissions, budgets, validation, one repair, and stop.
+- Store dependency edges from artifacts through evidence and claims to outputs,
+  then regenerate only dependency descendants.
+- Render Initial Analysis, Evidence Inspection, Project Updated, and No Relevant
+  Changes from structured state and traces through one local HTML shell.
+- Do not add an Agent SDK, LangGraph, frontend framework, background monitor, or
+  another Skill.
+
+Reason:
+
+The requested initial, correction, Project-update, JD-update, and unchanged
+paths require durable state and selective dependency work, but not durable graph
+checkpointing or a production Web service. One small policy loop and one
+renderer make the Agent behavior inspectable without creating framework-shaped
+architecture.
+
+## D-021: Persist one canonical Agent state and integrate one real update path
+
+Decision:
+
+- Persist the orchestrator's evidence, claims, outputs, dependencies, trace, and
+  observed metrics inside the existing Context Registry Analysis Run rather
+  than introducing a second state store.
+- Restore that state in a separate process and save the next valid state with
+  the registry's existing atomic write.
+- Limit the first real capability adapter to explicitly named changed evidence
+  artifacts. Run the existing bounded Evidence Investigator on that surface,
+  then recompute only dependency descendants.
+- Keep initial Brief, company research, Answer, and Mock generation
+  host-provided and label them as such.
+- Keep one-time Skill use independent: without save consent, a host-native Skill
+  may return its normal result without loading the update runtime or creating
+  registry/consent files.
+- Classify controlled dogfood additions as an existing-fact summary, a
+  simulated proposal, or an actually executed result. Only the last may add
+  executed capability evidence.
+- Generate a Codex/Claude Code execution handoff from `$p2j-upgrade`; never
+  execute the inspected Project modification from Project2Job.
+
+Reason:
+
+Cross-process restoration and a real selective update require one source of
+state truth, but they do not require a service, provider API, graph framework,
+or another user-facing Skill. Restricting the real adapter to a labeled changed
+surface makes the evidence boundary inspectable and deterministically testable
+while host-native generation remains available in Codex or Claude Code.

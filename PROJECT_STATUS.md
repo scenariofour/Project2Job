@@ -1,13 +1,14 @@
 # Project Status
 
-Updated: 2026-07-25
+Updated: 2026-07-26
 
 Highest completed Day: 1
 
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
-implemented and tested. A seven-Skill host-native Alpha is implemented and
+implemented and tested. Stateful Agent V0 mechanics are implemented and
+deterministically tested. A seven-Skill host-native Alpha is implemented and
 installable.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
@@ -43,9 +44,25 @@ Day 1 bounded Agent Loop:
 - a permitted-source boundary that tool results cannot expand
 - deterministic visible traces committed under `docs/build_journal/traces/`
 
-Day 1 uses **deterministic scripted read-only tools**. It is not a production
-model-powered Agent runtime, and it does not implement the full WO-02
-project-update cycle.
+Day 1 still uses **deterministic scripted read-only tools**. The new V0 layer
+adds the WO-02 Project/JD update mechanics, but it is not a production
+model-powered Agent runtime.
+
+Stateful Agent V0:
+
+- consent-gated local Project/JD context with cross-process reuse
+- Project and JD version/change detection
+- explicit allowed-action orchestrator with scripted and host-mediated planners
+- dependency-aware correction, removal, Project-update, and JD-update paths
+- selective output preservation, one bounded repair, visible stop conditions,
+  and privacy-safe structured traces
+- one real changed-artifact path through the existing Evidence Investigator;
+  scores and JD Matches are recomputed but change only when evidence adds the
+  corresponding capability
+- one shared local renderer for Initial Analysis, Evidence Inspection, Project
+  Updated, and No Relevant Changes
+- observed execution-cost and replay-consistency comparison between a stateful
+  update and fresh host replay
 
 Host-native Skill Alpha:
 
@@ -57,10 +74,12 @@ Host-native Skill Alpha:
 - bounded project forensics and public company research contracts
 - ranked interview-answer reconstruction with explicit factual framing
 - installer, portable archive builder, suite validator, and behavior evals
+- consent-gated local Context Registry for one Project, one JD, and compatible
+  Analysis Run history, including selective reuse and invalidation
 
 The Alpha runs inside a compatible Agent host. It depends on that host for file,
-Git, search, fetch, browser, and session-context capabilities; it is not a
-standalone runtime and does not persist product state.
+Git, search, fetch, browser, and local-storage capabilities; it is not a
+standalone runtime and does not monitor or regenerate in the background.
 
 ## Tested
 
@@ -71,9 +90,16 @@ standalone runtime and does not persist product state.
 - documentation consistency checks in `tests/test_document_consistency.py`
 - sample project inventory is deterministic
 - seven Skill packages pass structural validation and install validation
-- fourteen Skill behavior cases cover routing, Gates, Answer Lab, research,
+- twenty Skill behavior cases cover routing, Brief UX, shared context, Gates,
+  Answer Lab, research,
   N/A, source caps, ownership, conflict, injection, no-event recovery, and One
   Next Build, plus visibly labeled mock practice
+- twenty Context Registry unit tests cover consent, cross-process and
+  cross-Skill reuse, versioning, incremental invalidation, controls, identity,
+  privacy, and corrupt-state failure
+- integrated tests cover separate-process restore, the real changed-artifact
+  path, all Project/JD/correction flag combinations, invalid action rejection,
+  and the Upgrade handoff boundary
 - fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
   without executing the inspected project
 
@@ -86,8 +112,8 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
   acceptance criteria are defined; the host-native Skill now exercises them,
   but no standalone runtime exists
 - target-user testing and cross-host behavior comparison
-- the full WO-02 stateful project-update cycle
-- thin Web UI, production retrieval comparison, and failure injection
+- production retrieval comparison and failure injection beyond deterministic
+  fixtures
 - evaluation runs, model decision, target-user pilot, and measured results
 
 ## Not yet proven
@@ -97,11 +123,12 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
 - Skill runtime outside fresh Codex dogfood, including cross-host behavior;
   install validation succeeded in Codex and Claude Code locations, but the
   Claude invocation was blocked by an expired host OAuth token
-- Web UI and production RAG behavior
+- production Web UI and production RAG behavior; the local report is a
+  demonstration surface only
 - production model behavior
 - Skill advantage over a strong generic prompt
-- Agent advantage over a strong one-shot prompt or a fixed
-  extract-search-validate workflow
+- Agent advantage beyond the single observed execution-cost and
+  replay-consistency comparison
 - latency, token, and cost targets
 - role-standard relationship to hiring outcomes
 - that the JD-first ordering matches how users actually work
@@ -111,5 +138,5 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
 
 ## Next required action
 
-Run the first target-user Alpha test; do not begin WO-05 standalone runtime or
-the Web UI.
+Run the first target-user Alpha test and a live-model planner comparison; do not
+expand the local report into a production Web application.
