@@ -46,6 +46,25 @@ RAW_CONTENT_KEYS = {
     "source_text",
     "transcript",
 }
+RAW_SOURCE_BODY_KEYS = {
+    "document_body",
+    "document_text",
+    "jd_body",
+    "jd_text",
+    "project_body",
+    "project_text",
+    "resume_body",
+    "resume_text",
+    "transcript_body",
+    "transcript_text",
+}
+AGENT_STATE_ID_MAPS = {
+    "artifacts",
+    "claims",
+    "dependencies",
+    "evidence",
+    "outputs",
+}
 SECRET_PATTERNS = (
     re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
     re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
@@ -275,25 +294,79 @@ def jd_snapshot(
     }
 
 
-def validate_safe_value(value: object, path: str = "value", depth: int = 0) -> None:
+def agent_state_id_map(context: tuple[object, ...]) -> bool:
+    return (
+        len(context) >= 2
+        and context[-2] == "agent_state"
+        and context[-1] in AGENT_STATE_ID_MAPS
+    )
+
+
+def bounded_output_content(
+    context: tuple[object, ...], key: str
+) -> bool:
+    return (
+        key == "content"
+        and len(context) >= 3
+        and context[-3] == "agent_state"
+        and context[-2] == "outputs"
+        and isinstance(context[-1], str)
+    )
+
+
+def complete_artifact_manifest(context: tuple[object, ...]) -> bool:
+    return (
+        len(context) >= 3
+        and context[-3] == "versions"
+        and isinstance(context[-2], int)
+        and context[-1] == "artifacts"
+    )
+
+
+def validate_safe_value(
+    value: object,
+    path: str = "value",
+    depth: int = 0,
+    context: tuple[object, ...] = (),
+) -> None:
     if depth > 10:
         raise RegistryError(f"{path} is too deeply nested to persist.")
     if isinstance(value, dict):
+        keys_are_ids = agent_state_id_map(context)
         for key, item in value.items():
-            lowered = str(key).lower()
-            if lowered not in SAFE_TELEMETRY_KEYS and (
-                lowered in SECRET_KEYS
-                or any(part in lowered for part in SECRET_KEYS)
-            ):
-                raise RegistryError(f"{path}.{key} may contain a secret and was not saved.")
-            if lowered in RAW_CONTENT_KEYS:
-                raise RegistryError(f"{path}.{key} contains source body content and was not saved.")
-            validate_safe_value(item, f"{path}.{key}", depth + 1)
+            normalized_key = str(key)
+            lowered = normalized_key.lower()
+            if not keys_are_ids:
+                if lowered not in SAFE_TELEMETRY_KEYS and (
+                    lowered in SECRET_KEYS
+                    or any(part in lowered for part in SECRET_KEYS)
+                ):
+                    raise RegistryError(
+                        f"{path}.{key} may contain a secret and was not saved."
+                    )
+                if (
+                    lowered in RAW_CONTENT_KEYS
+                    or lowered in RAW_SOURCE_BODY_KEYS
+                ) and not bounded_output_content(context, normalized_key):
+                    raise RegistryError(
+                        f"{path}.{key} contains source body content and was not saved."
+                    )
+            validate_safe_value(
+                item,
+                f"{path}.{key}",
+                depth + 1,
+                (*context, normalized_key),
+            )
     elif isinstance(value, list):
-        if len(value) > 200:
+        if len(value) > 200 and not complete_artifact_manifest(context):
             raise RegistryError(f"{path} contains too many items to persist.")
         for index, item in enumerate(value):
-            validate_safe_value(item, f"{path}[{index}]", depth + 1)
+            validate_safe_value(
+                item,
+                f"{path}[{index}]",
+                depth + 1,
+                (*context, index),
+            )
     elif isinstance(value, str):
         if len(value) > 4000:
             raise RegistryError(f"{path} is too large to persist.")

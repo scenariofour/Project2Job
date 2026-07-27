@@ -375,3 +375,29 @@ state truth, but they do not require a service, provider API, graph framework,
 or another user-facing Skill. Restricting the real adapter to a labeled changed
 surface makes the evidence boundary inspectable and deterministically testable
 while host-native generation remains available in Codex or Claude Code.
+
+## D-022: Validate persisted state by schema role and split Upgrade diagnosis from execution exploration
+
+Decision:
+
+- Validate dynamic artifact, evidence, claim, output, and dependency identifiers
+  as data in their defined Agent-state maps, while continuing to scan every
+  persisted string for secret patterns.
+- Allow the complete compact Project artifact manifest and bounded derived
+  output `content` in their schema-defined locations. Continue to reject
+  credential fields and raw Project, JD, resume, transcript, and document
+  bodies.
+- Make `$p2j-upgrade` own the evidence gap, JD mismatch, capability category,
+  one evidence direction, boundaries, and reassessment evidence.
+- Make the downstream working Agent inspect the Project, compare options,
+  propose concrete implementation and evaluation details, stop for
+  product-owner approval, and only then implement and produce evidence.
+- Keep the current Match for proposed work. Reassess only completed evidence,
+  using `EXACT MATCH`, `TRANSFERABLE`, and `GAP`.
+
+Reason:
+
+The first consented real-project run exposed false positives from a
+field-name-only persistence check and an undersized generic list limit. The same
+test showed that a useful Upgrade diagnosis should constrain the career evidence
+goal without pre-choosing repository-specific solution details.
