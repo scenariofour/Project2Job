@@ -717,8 +717,9 @@
     "capability_calls": 1,
     "outputs_regenerated": 3,
     "outputs_preserved": 20,
-    "expected_outputs_correctly_updated": 3,
-    "unrelated_outputs_incorrectly_changed": 0,
+    "expected_output_ids_changed": 3,
+    "expected_final_values_matched": null,
+    "unrelated_outputs_changed": 0,
     "latency_ms": 1.562,
     "token_usage": null
   },

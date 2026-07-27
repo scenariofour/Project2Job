@@ -1,5 +1,5 @@
 {
-  "comparison_type": "observed_integrated_host_replay",
+  "comparison_type": "execution_cost_and_replay_consistency",
   "changed_artifact_classification": [
     "controlled_summary_existing_fact"
   ],
@@ -36,8 +36,9 @@
     "capability_calls": 1,
     "outputs_regenerated": 2,
     "outputs_preserved": 21,
-    "expected_outputs_correctly_updated": 2,
-    "unrelated_outputs_incorrectly_changed": 0,
+    "expected_output_ids_changed": 2,
+    "expected_final_values_matched": 2,
+    "unrelated_outputs_changed": 0,
     "latency_ms": 1.123,
     "token_usage": null
   },
@@ -47,14 +48,15 @@
     "capability_calls": 2,
     "outputs_regenerated": 23,
     "outputs_preserved": 0,
-    "expected_outputs_correctly_updated": 2,
-    "unrelated_outputs_incorrectly_changed": 0,
+    "expected_output_ids_changed": 2,
+    "expected_final_values_matched": 2,
+    "unrelated_outputs_changed": 0,
     "latency_ms": 0.759,
     "token_usage": null
   },
-  "correctness": {
-    "stateful_expected_values_present": 2,
-    "fresh_expected_values_present": 2,
+  "replay_consistency": {
+    "expected_final_values": 2,
+    "fresh_expected_final_values_matched": 2,
     "stateful_before_values_recorded": 2
   },
   "trace_clarity": {
@@ -66,6 +68,7 @@
   "limitations": [
     "Both runs used deterministic orchestration and host-supplied analysis; no live model planner was called.",
     "The fresh run replayed the final source-grounded host analysis to measure full-read and regeneration cost.",
+    "This is not an independent quality comparison or evidence of general Agent superiority.",
     "The controlled summary surfaces an existing fact and is not counted as a new Project capability or executed result.",
     "Token usage is unavailable because no model call was made.",
     "This is repository dogfood, not target-user validation."

@@ -5,11 +5,18 @@ import re
 from copy import deepcopy
 from pathlib import Path
 
-from .contracts import InvestigationRequest, RunBudget
+from .contracts import EvidenceStatus, InvestigationRequest, RunBudget
 from .runtime import EvidenceInvestigator
 
 
 EVIDENCE_FILE = re.compile(r"^p2j-evidence--([a-zA-Z0-9_.-]+)\.md$")
+CORRECTABLE_CLAIM_FIELDS = {"statement", "status", "attribution_scope"}
+ATTRIBUTION_SCOPES = {
+    "directly_owned",
+    "ai_assisted",
+    "collaborator_owned",
+    "unresolved",
+}
 
 
 class LocalEvidenceTools:
@@ -218,14 +225,22 @@ class Project2JobCapabilities:
         }
 
     def _investigate(self, context: dict) -> dict:
-        state = context["state"]
+        state = deepcopy(context["state"])
         change = context["change"]
+        correction = context["request"].get("correction")
         changed_paths = [
             *change.get("added", []),
             *change.get("changed", []),
         ]
         removed_paths = change.get("removed", [])
-        affected_claims = self._claims_for_paths(state, changed_paths + removed_paths)
+        removed_evidence = {
+            evidence_id
+            for evidence_id, item in state.get("evidence", {}).items()
+            if item.get("source") in removed_paths
+        }
+        affected_claims = self._claims_for_paths(
+            state, changed_paths + removed_paths + sorted(removed_evidence)
+        )
 
         for path in changed_paths:
             match = EVIDENCE_FILE.match(Path(path).name)
@@ -237,6 +252,18 @@ class Project2JobCapabilities:
         outputs: dict[str, dict] = {}
         dependencies: dict[str, list[str]] = {}
         events: list[dict] = []
+
+        if correction:
+            corrected_claim, corrected_outputs, correction_event = (
+                self._apply_correction(state, correction)
+            )
+            claim_id = correction["claim_id"]
+            claims[claim_id] = corrected_claim
+            outputs.update(corrected_outputs)
+            state["claims"][claim_id] = corrected_claim
+            state["outputs"].update(corrected_outputs)
+            events.append(correction_event)
+            affected_claims.discard(claim_id)
 
         for claim_id in sorted(affected_claims):
             prior_claim = deepcopy(state["claims"][claim_id])
@@ -289,8 +316,20 @@ class Project2JobCapabilities:
                 dependencies[evidence_id] = [claim_id]
                 events.extend(tools.events)
             else:
-                status = "not_found"
-                source_path = removed_paths[0] if removed_paths else ""
+                remaining_evidence = any(
+                    evidence_id not in removed_evidence
+                    and claim_id in self._descendants(state, evidence_id)
+                    for evidence_id in state.get("evidence", {})
+                )
+                status = "partially_supported" if remaining_evidence else "not_found"
+                source_path = next(
+                    (
+                        state["evidence"][evidence_id]["source"]
+                        for evidence_id in removed_evidence
+                        if claim_id in self._descendants(state, evidence_id)
+                    ),
+                    removed_paths[0] if removed_paths else "",
+                )
 
             updated_claim = deepcopy(prior_claim)
             updated_claim["status"] = status
@@ -349,10 +388,90 @@ class Project2JobCapabilities:
             "claims": claims,
             "outputs": outputs,
             "dependencies": dependencies,
+            "removed_evidence": sorted(removed_evidence),
+            "removed_dependency_nodes": sorted(
+                set(removed_paths) | removed_evidence
+            ),
             "affected_outputs": sorted(outputs),
             "observation_summary": summary,
             "events": events,
             "stop": not change.get("jd_changed", False),
+        }
+
+    def _apply_correction(
+        self, state: dict, correction: dict
+    ) -> tuple[dict, dict[str, dict], dict]:
+        if not correction.get("approved"):
+            raise ValueError("correction must be approved before application")
+        claim_id = correction.get("claim_id")
+        if claim_id not in state.get("claims", {}):
+            raise ValueError("correction names an unknown claim")
+        fields = correction.get("fields")
+        if fields is None:
+            fields = {
+                key: value
+                for key, value in correction.items()
+                if key in CORRECTABLE_CLAIM_FIELDS
+            }
+        if not isinstance(fields, dict) or not fields:
+            raise ValueError("correction must name at least one claim field")
+        unknown = set(fields) - CORRECTABLE_CLAIM_FIELDS
+        if unknown:
+            raise ValueError(
+                "correction cannot update claim fields: "
+                + ", ".join(sorted(unknown))
+            )
+        if (
+            "status" in fields
+            and fields["status"] not in {status.value for status in EvidenceStatus}
+        ):
+            raise ValueError("correction has an invalid evidence status")
+        if (
+            "attribution_scope" in fields
+            and fields["attribution_scope"] not in ATTRIBUTION_SCOPES
+        ):
+            raise ValueError("correction has an invalid attribution scope")
+
+        prior = state["claims"][claim_id]
+        updated = deepcopy(prior)
+        changes = []
+        for field, value in fields.items():
+            before = prior.get(field)
+            if before == value:
+                continue
+            updated[field] = value
+            changes.append(
+                {
+                    "field": field,
+                    "before": before,
+                    "after": value,
+                    "why": "The user approved this claim correction.",
+                }
+            )
+        if not changes:
+            return updated, {}, {
+                "kind": "approved_correction",
+                "claim_id": claim_id,
+                "changes": [],
+            }
+
+        outputs = {}
+        for output_id in sorted(self._descendants(state, claim_id)):
+            if output_id not in state.get("outputs", {}):
+                continue
+            before = state["outputs"][output_id]
+            after = self._recompute(
+                before,
+                updated,
+                "",
+                "approved_correction",
+            )
+            if after != before:
+                outputs[output_id] = after
+        return updated, outputs, {
+            "kind": "approved_correction",
+            "claim_id": claim_id,
+            "changes": changes,
         }
 
     @staticmethod
@@ -419,13 +538,17 @@ class Project2JobCapabilities:
                 updated["missing"] = claim["match_missing_if_supported"]
         elif output.get("kind") == "story":
             summary = claim.get("story_if_supported")
-            if status != "supported" or not summary or summary == output.get("summary"):
+            if status != "supported":
+                summary = "Current Project evidence does not support this story."
+            if not summary or summary == output.get("summary"):
                 return output
             updated["before"] = output.get("summary")
             updated["summary"] = summary
         elif output.get("kind") == "question":
             summary = claim.get("question_if_supported")
-            if status != "supported" or not summary or summary == output.get("summary"):
+            if status != "supported":
+                summary = "Current Project evidence does not support this question."
+            if not summary or summary == output.get("summary"):
                 return output
             updated["before"] = output.get("summary")
             updated["summary"] = summary
@@ -439,7 +562,12 @@ class Project2JobCapabilities:
                 updated["summary"] = claim["route_summary_if_supported"]
         else:
             return output
-        if artifact_type == "controlled_summary_existing_fact":
+        if artifact_type == "approved_correction":
+            updated["why"] = (
+                "An approved correction changed the supporting claim; no Project "
+                "source evidence was added."
+            )
+        elif artifact_type == "controlled_summary_existing_fact":
             updated["why"] = (
                 "This controlled summary made an existing source link easier to "
                 "inspect; it did not add a new Project capability."

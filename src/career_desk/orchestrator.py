@@ -252,8 +252,10 @@ def validate_state(state: EvidenceAgentState, output_ids: set[str]) -> list[dict
     for output_id in sorted(output_ids):
         output = state.outputs[output_id]
         dependencies = set(output.get("depends_on", []))
-        if output.get("kind") == "score" and not has_evidence_ancestor(
-            state, output_id
+        if (
+            output.get("kind") == "score"
+            and output.get("value", 1) > 1
+            and not has_evidence_ancestor(state, output_id)
         ):
             failures.append(
                 {"output_id": output_id, "code": "score_without_evidence"}
@@ -533,6 +535,17 @@ class StatefulEvidenceAgent:
 
     @staticmethod
     def _apply_result(state: EvidenceAgentState, result: dict) -> None:
+        removed_evidence = set(result.get("removed_evidence", []))
+        for evidence_id in removed_evidence:
+            state.evidence.pop(evidence_id, None)
+        removed_nodes = set(result.get("removed_dependency_nodes", []))
+        for node in removed_nodes:
+            state.dependencies.pop(node, None)
+        if removed_nodes:
+            for parent, children in list(state.dependencies.items()):
+                state.dependencies[parent] = [
+                    child for child in children if child not in removed_nodes
+                ]
         for collection in ("evidence", "claims", "outputs"):
             getattr(state, collection).update(deepcopy(result.get(collection, {})))
         for parent, children in result.get("dependencies", {}).items():

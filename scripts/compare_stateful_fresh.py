@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def compare(stateful_path: Path, project: Path, jd_file: Path) -> dict:
-    """Compare an observed selective run with an observed fresh host replay."""
+    """Compare execution cost and replay consistency for two observed runs."""
     stateful = json.loads(stateful_path.read_text(encoding="utf-8"))
     expected = set(stateful["trace"]["affected_outputs"])
     seed = {
@@ -58,12 +58,23 @@ def compare(stateful_path: Path, project: Path, jd_file: Path) -> dict:
     }
     preserved = set(stateful["trace"]["preserved_outputs"])
     fresh_outputs = fresh["state"]["outputs"]
+    stateful_metrics = deepcopy(stateful["metrics"])
+    stateful_metrics["expected_output_ids_changed"] = len(
+        set(stateful["trace"]["affected_outputs"]) & expected
+    )
+    stateful_metrics.setdefault("expected_final_values_matched", None)
+    stateful_metrics["unrelated_outputs_changed"] = len(
+        set(stateful["trace"]["affected_outputs"]) - expected
+    )
     fresh_metrics = deepcopy(fresh["metrics"])
-    fresh_metrics["expected_outputs_correctly_updated"] = sum(
+    fresh_metrics["expected_output_ids_changed"] = len(
+        set(fresh["trace"]["affected_outputs"]) & expected
+    )
+    fresh_metrics["expected_final_values_matched"] = sum(
         fresh_outputs.get(output_id) == output
         for output_id, output in expected_values.items()
     )
-    fresh_metrics["unrelated_outputs_incorrectly_changed"] = sum(
+    fresh_metrics["unrelated_outputs_changed"] = sum(
         fresh_outputs.get(output_id)
         != stateful["state"]["outputs"].get(output_id)
         for output_id in preserved
@@ -77,15 +88,15 @@ def compare(stateful_path: Path, project: Path, jd_file: Path) -> dict:
     )
 
     return {
-        "comparison_type": "observed_integrated_host_replay",
+        "comparison_type": "execution_cost_and_replay_consistency",
         "changed_artifact_classification": classifications,
         "expected_changed_outputs": sorted(expected),
         "expected_preserved_outputs": sorted(preserved),
-        "stateful_agent_update": stateful["metrics"],
+        "stateful_agent_update": stateful_metrics,
         "fresh_skill_rerun": fresh_metrics,
-        "correctness": {
-            "stateful_expected_values_present": len(expected_values),
-            "fresh_expected_values_present": sum(
+        "replay_consistency": {
+            "expected_final_values": len(expected_values),
+            "fresh_expected_final_values_matched": sum(
                 fresh_outputs.get(output_id) == output
                 for output_id, output in expected_values.items()
             ),
@@ -103,6 +114,7 @@ def compare(stateful_path: Path, project: Path, jd_file: Path) -> dict:
         "limitations": [
             "Both runs used deterministic orchestration and host-supplied analysis; no live model planner was called.",
             "The fresh run replayed the final source-grounded host analysis to measure full-read and regeneration cost.",
+            "This is not an independent quality comparison or evidence of general Agent superiority.",
             "The controlled summary surfaces an existing fact and is not counted as a new Project capability or executed result.",
             "Token usage is unavailable because no model call was made.",
             "This is repository dogfood, not target-user validation.",

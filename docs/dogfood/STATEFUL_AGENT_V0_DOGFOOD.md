@@ -137,7 +137,7 @@ implicit. It supplied narrower replacement wording and one follow-up. The
 Project fact set remained seven claims before and after, with zero facts added
 or changed.
 
-## Observed stateful versus fresh comparison
+## Execution-cost and replay-consistency comparison
 
 The comparison runs the integrated CLI for both paths. The fresh path replays
 the same final source-grounded host analysis from scratch; its metrics come
@@ -150,16 +150,19 @@ from adapter events and traces, not fixture-assigned numbers.
 | Capability calls | 1 | 2 |
 | Outputs regenerated | 2 | 23 |
 | Outputs preserved | 21 | 0 |
-| Expected outputs correctly updated | 2 | 2 |
-| Unrelated outputs incorrectly changed | 0 | 0 |
+| Expected output IDs changed | 2 | 2 |
+| Expected final values matched | 2 | 2 |
+| Unrelated outputs changed | 0 | 0 |
 | Latency | 1.123 ms | 0.759 ms |
 | Token usage | unavailable | unavailable |
 
-The stateful run reduced reads, calls, and regeneration while preserving the
-same output correctness in this case. The comparison treats the changed file as
-a controlled summary of existing facts, not as new capability evidence. The
-local latency difference is too small and environment-dependent to support a
-latency advantage claim.
+The stateful run reduced reads, calls, and regeneration while the fresh replay
+matched the two named final values in this case. This is an execution-cost and
+replay-consistency comparison, not an independent quality comparison or
+evidence of general Agent superiority. The changed file remains a controlled
+summary of existing facts, not new capability evidence. The local latency
+difference is too small and environment-dependent to support a latency
+advantage claim.
 
 ## Visible artifacts
 

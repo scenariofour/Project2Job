@@ -61,7 +61,8 @@ Stateful Agent V0:
   corresponding capability
 - one shared local renderer for Initial Analysis, Evidence Inspection, Project
   Updated, and No Relevant Changes
-- observed integrated stateful-update versus fresh-run comparison
+- observed execution-cost and replay-consistency comparison between a stateful
+  update and fresh host replay
 
 Host-native Skill Alpha:
 
@@ -126,7 +127,8 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
   demonstration surface only
 - production model behavior
 - Skill advantage over a strong generic prompt
-- Agent advantage beyond the single observed repository update comparison
+- Agent advantage beyond the single observed execution-cost and
+  replay-consistency comparison
 - latency, token, and cost targets
 - role-standard relationship to hiring outcomes
 - that the JD-first ordering matches how users actually work

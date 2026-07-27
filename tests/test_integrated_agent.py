@@ -122,6 +122,134 @@ class IntegratedAgentTests(unittest.TestCase):
         self.assertIn("agent_trace", latest)
         self.assertIn("observed_metrics", latest)
 
+    def test_approved_correction_persists_only_named_claim_and_dependents(self) -> None:
+        initial = self.command("--seed", str(self.seed), "--consent")
+        correction = self.root / "correction.json"
+        correction.write_text(
+            json.dumps(
+                {
+                    "claim_id": "c_eval",
+                    "approved": True,
+                    "fields": {"status": "supported"},
+                }
+            ),
+            encoding="utf-8",
+        )
+        correction_seed = self.root / "correction-seed.json"
+        seed = self._seed()
+        seed["expected_changed_outputs"] = [
+            "match_eval",
+            "question_eval",
+            "score_evaluation",
+        ]
+        seed["expected_final_outputs"] = {
+            "match_eval": "EXACT MATCH",
+            "question_eval": (
+                "How did the evaluation gate change a product decision?"
+            ),
+            "score_evaluation": 4,
+        }
+        correction_seed.write_text(json.dumps(seed), encoding="utf-8")
+
+        corrected = self.command(
+            "--seed",
+            str(correction_seed),
+            "--correction",
+            str(correction),
+        )
+        self.assertTrue(corrected["saved"])
+        self.assertEqual(
+            corrected["state"]["claims"]["c_eval"]["status"], "supported"
+        )
+        self.assertEqual(corrected["state"]["evidence"], initial["state"]["evidence"])
+        self.assertEqual(
+            set(corrected["trace"]["affected_outputs"]),
+            {"match_eval", "question_eval", "score_evaluation"},
+        )
+        self.assertIn("score_technical", corrected["trace"]["preserved_outputs"])
+        self.assertEqual(
+            corrected["state"]["outputs"]["score_technical"],
+            initial["state"]["outputs"]["score_technical"],
+        )
+        self.assertEqual(corrected["metrics"]["expected_output_ids_changed"], 3)
+        self.assertEqual(corrected["metrics"]["expected_final_values_matched"], 3)
+        self.assertEqual(corrected["metrics"]["unrelated_outputs_changed"], 0)
+        self.assertTrue(
+            all(
+                change["before"] is not None
+                and change["after"] is not None
+                and "approved correction" in change["why"].lower()
+                for change in corrected["result"]["changes"]
+            )
+        )
+
+        restored = self.command()
+        self.assertEqual(restored["result"]["stop_reason"], "no_relevant_changes")
+        self.assertEqual(restored["state"]["claims"], corrected["state"]["claims"])
+        self.assertEqual(restored["state"]["outputs"], corrected["state"]["outputs"])
+        self.assertEqual(restored["state"]["evidence"], initial["state"]["evidence"])
+
+    def test_removed_evidence_and_edges_stay_absent_after_restore(self) -> None:
+        evidence_path = self.project / "eval.md"
+        evidence_path.write_text(
+            "The evaluation gate is documented here.\n",
+            encoding="utf-8",
+        )
+        seed = self._seed()
+        seed["state"]["evidence"]["e_eval"]["source"] = "eval.md"
+        seed["state"]["dependencies"]["README.md"].remove("e_eval")
+        seed["state"]["dependencies"]["eval.md"] = ["e_eval"]
+        seed["expected_changed_outputs"] = [
+            "match_eval",
+            "question_eval",
+            "score_evaluation",
+        ]
+        seed["expected_final_outputs"] = {
+            "match_eval": "GAP",
+            "question_eval": (
+                "Current Project evidence does not support this question."
+            ),
+            "score_evaluation": 1,
+        }
+        removal_seed = self.root / "removal-seed.json"
+        removal_seed.write_text(json.dumps(seed), encoding="utf-8")
+        initial = self.command("--seed", str(removal_seed), "--consent")
+
+        evidence_path.unlink()
+        removed = self.command("--seed", str(removal_seed))
+        self.assertTrue(removed["saved"])
+        self.assertNotIn("e_eval", removed["state"]["evidence"])
+        self.assertNotIn("eval.md", removed["state"]["dependencies"])
+        self.assertNotIn("e_eval", removed["state"]["dependencies"])
+        self.assertTrue(
+            all(
+                "e_eval" not in children
+                for children in removed["state"]["dependencies"].values()
+            )
+        )
+        self.assertEqual(
+            removed["state"]["claims"]["c_eval"]["status"], "not_found"
+        )
+        self.assertEqual(
+            set(removed["trace"]["affected_outputs"]),
+            {"match_eval", "question_eval", "score_evaluation"},
+        )
+        self.assertEqual(
+            removed["state"]["outputs"]["score_technical"],
+            initial["state"]["outputs"]["score_technical"],
+        )
+        self.assertEqual(removed["metrics"]["expected_output_ids_changed"], 3)
+        self.assertEqual(removed["metrics"]["expected_final_values_matched"], 3)
+        self.assertEqual(removed["metrics"]["unrelated_outputs_changed"], 0)
+
+        restored = self.command()
+        self.assertEqual(restored["result"]["stop_reason"], "no_relevant_changes")
+        self.assertNotIn("e_eval", restored["state"]["evidence"])
+        self.assertNotIn("eval.md", restored["state"]["dependencies"])
+        self.assertNotIn("e_eval", restored["state"]["dependencies"])
+        self.assertEqual(restored["state"]["claims"], removed["state"]["claims"])
+        self.assertEqual(restored["state"]["outputs"], removed["state"]["outputs"])
+
     def test_combined_changes_remain_independent_and_policy_orders_actions(self) -> None:
         self.command("--seed", str(self.seed), "--consent")
         (self.project / "p2j-evidence--c_eval.md").write_text(

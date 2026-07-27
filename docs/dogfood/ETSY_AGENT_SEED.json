@@ -330,5 +330,9 @@
   "expected_changed_outputs": [
     "q_project_failure",
     "story_failure"
-  ]
+  ],
+  "expected_final_outputs": {
+    "q_project_failure": "How did the existing asset-audit failure lead to a repair while the separate disclosure boundary still kept the release draft-only?",
+    "story_failure": "A controlled summary makes the existing failure, repair, second audit pass, and draft-only boundary easier to defend without claiming a new capability."
+  }
 }

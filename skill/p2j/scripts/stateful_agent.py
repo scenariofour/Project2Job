@@ -32,7 +32,19 @@ except ModuleNotFoundError:
     )
 
 
-def observed_metrics(trace: dict, expected: set[str]) -> dict:
+def output_final_value(output: dict) -> object:
+    for field in ("value", "match", "route", "summary", "content"):
+        if field in output:
+            return output[field]
+    return None
+
+
+def observed_metrics(
+    trace: dict,
+    expected: set[str],
+    outputs: dict[str, dict],
+    expected_final: dict[str, object],
+) -> dict:
     affected = set(trace["affected_outputs"])
     file_paths = {
         event.get("path")
@@ -47,8 +59,16 @@ def observed_metrics(trace: dict, expected: set[str]) -> dict:
         "capability_calls": usage["capability_calls"],
         "outputs_regenerated": len(affected),
         "outputs_preserved": len(trace["preserved_outputs"]),
-        "expected_outputs_correctly_updated": len(affected & expected),
-        "unrelated_outputs_incorrectly_changed": len(affected - expected),
+        "expected_output_ids_changed": len(affected & expected),
+        "expected_final_values_matched": (
+            sum(
+                output_final_value(outputs.get(output_id, {})) == value
+                for output_id, value in expected_final.items()
+            )
+            if expected_final
+            else None
+        ),
+        "unrelated_outputs_changed": len(affected - expected),
         "latency_ms": usage["latency_ms"],
         "token_usage": usage.get("token_usage"),
     }
@@ -183,7 +203,12 @@ def run(args: argparse.Namespace) -> dict:
             or seed.get("expected_changed_outputs", trace["affected_outputs"])
         )
     )
-    metrics = observed_metrics(trace, expected)
+    metrics = observed_metrics(
+        trace,
+        expected,
+        result["state"].outputs,
+        seed.get("expected_final_outputs", {}),
+    )
     payload = {
         "project": {
             "name": result["state"].project_label
