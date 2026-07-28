@@ -230,21 +230,29 @@ def affected_output_ids(state: EvidenceAgentState, roots: set[str]) -> set[str]:
 
 
 def has_evidence_ancestor(state: EvidenceAgentState, output_id: str) -> bool:
+    return bool(evidence_ancestor_ids(state, output_id))
+
+
+def evidence_ancestor_ids(
+    state: EvidenceAgentState, node_id: str
+) -> set[str]:
     parents: dict[str, set[str]] = {}
     for parent, children in state.dependencies.items():
         for child in children:
             parents.setdefault(child, set()).add(parent)
-    frontier = [output_id]
+    frontier = [node_id]
     seen: set[str] = set()
+    evidence_ids: set[str] = set()
     while frontier:
         node = frontier.pop()
         if node in state.evidence:
-            return True
+            evidence_ids.add(node)
+            continue
         if node in seen:
             continue
         seen.add(node)
         frontier.extend(parents.get(node, set()))
-    return False
+    return evidence_ids
 
 
 def validate_state(state: EvidenceAgentState, output_ids: set[str]) -> list[dict]:
@@ -273,15 +281,40 @@ def validate_state(state: EvidenceAgentState, output_ids: set[str]) -> list[dict
                     {"output_id": output_id, "code": "overstrong_exact_match"}
                 )
         if output.get("exported"):
+            claim_dependencies = [
+                item for item in dependencies if item in state.claims
+            ]
             unsupported = [
                 item
-                for item in dependencies
-                if item in state.claims
-                and state.claims[item].get("status") != "supported"
+                for item in claim_dependencies
+                if state.claims[item].get("status") != "supported"
             ]
             if unsupported:
                 failures.append(
                     {"output_id": output_id, "code": "unsupported_export"}
+                )
+            ungrounded = not claim_dependencies or any(
+                not any(
+                    state.evidence[evidence_id].get("assessment") == "direct"
+                    for evidence_id in evidence_ancestor_ids(state, item)
+                )
+                for item in claim_dependencies
+            )
+            if ungrounded:
+                failures.append(
+                    {"output_id": output_id, "code": "ungrounded_export"}
+                )
+            unresolved_attribution = [
+                item
+                for item in claim_dependencies
+                if state.claims[item].get("attribution_scope") == "unresolved"
+            ]
+            if unresolved_attribution:
+                failures.append(
+                    {
+                        "output_id": output_id,
+                        "code": "unresolved_attribution_export",
+                    }
                 )
         for claim_id in dependencies:
             claim = state.claims.get(claim_id)
@@ -309,10 +342,23 @@ def repair_state(state: EvidenceAgentState, failures: list[dict]) -> set[str]:
             output["match"] = "TRANSFERABLE"
             output["why"] = "Direct competency evidence was not available."
             repaired.add(failure["output_id"])
-        elif failure["code"] == "unsupported_export":
+        elif failure["code"] in {
+            "unsupported_export",
+            "ungrounded_export",
+            "unresolved_attribution_export",
+        }:
             output["before"] = output.get("content", "")
             output["exported"] = False
-            output["why"] = "The claim is not supported for external use."
+            reasons = {
+                "unsupported_export": "The claim is not supported for external use.",
+                "ungrounded_export": (
+                    "No direct source evidence supports the claim for external use."
+                ),
+                "unresolved_attribution_export": (
+                    "Personal attribution requires confirmed ownership."
+                ),
+            }
+            output["why"] = reasons[failure["code"]]
             repaired.add(failure["output_id"])
     return repaired
 

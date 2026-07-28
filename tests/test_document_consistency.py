@@ -57,8 +57,8 @@ class JournalStatusTests(unittest.TestCase):
             build_repo(root, statuses, highest_completed)
             return validate_repo.validate_journal_statuses(root)
 
-    def test_current_repository_reports_day_2_completed(self) -> None:
-        self.assertEqual(validate_repo.validate_journal_statuses(), 2)
+    def test_current_repository_reports_day_3_completed(self) -> None:
+        self.assertEqual(validate_repo.validate_journal_statuses(), 3)
 
     def test_completed_prefix_passes(self) -> None:
         statuses = ["VALIDATED", "IMPLEMENTED", "PLANNED", "PLANNED"]
@@ -281,6 +281,23 @@ class TraceabilityTests(unittest.TestCase):
         committed = json.loads(ARTIFACT.read_text(encoding="utf-8"))
         self.assertEqual(committed, build())
         self.assertEqual(committed["cross_reference_errors"], [])
+
+    def test_day_3_maps_every_ac_to_cases_and_tests(self) -> None:
+        text = read("docs/build_journal/DAY_3.md")
+        self.assertIn("## Acceptance traceability", text)
+        rows = [line for line in text.splitlines() if line.startswith("| D3-AC-")]
+        self.assertEqual(len(rows), 8)
+        for index, row in enumerate(rows, start=1):
+            self.assertIn(f"D3-AC-{index:02d}", row)
+            self.assertIn("`test_", row)
+
+    def test_day_3_comparison_artifact_matches_the_runner(self) -> None:
+        from lab.day3_context_comparison import build_report
+
+        committed = json.loads(
+            read("docs/build_journal/traces/day3_context_comparison.json")
+        )
+        self.assertEqual(committed, build_report())
 
 
 class ManifestTests(unittest.TestCase):

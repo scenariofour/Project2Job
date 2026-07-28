@@ -302,12 +302,21 @@ class Project2JobCapabilities:
                 source_path = candidate_paths[0]
                 fields = tools.fields_for(source_path)
                 evidence_id = f"evidence:{claim_id}:{source_path}"
+                assessment = next(
+                    (
+                        item["assessment"]
+                        for item in reversed(run.state.evidence)
+                        if item.get("assessment")
+                    ),
+                    "irrelevant",
+                )
                 evidence[evidence_id] = {
                     "source": source_path,
                     "location": fields.get("source location", "evidence record"),
                     "summary": fields.get(
                         "evidence summary", "The changed artifact was inspected."
                     ),
+                    "assessment": assessment,
                     "artifact_type": fields.get(
                         "artifact type", "unclassified_changed_evidence"
                     ),
