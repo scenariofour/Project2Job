@@ -19,6 +19,11 @@
 - stop behavior
 - failure handling
 - token and context behavior
+- selective Skill invocation and explicit Full Preparation
+- Project Evidence Profile reuse across JDs
+- Company Intelligence Profile reuse, freshness, and material-change handling
+- JD-specific framing from the same verified Project fact pool
+- external-asset versus Private Defense separation
 - consistency across Skill hosts
 - Agent update correctness
 
@@ -102,6 +107,8 @@ Measure:
 - unnecessary search
 - ask timing
 - stop timing
+- unnecessary specialist invocation
+- unchanged-file reopening
 
 ### Efficiency
 
@@ -148,6 +155,12 @@ Measure:
 - company emphasis changes wording without changing fact sets
 - blind reviewer preference over generic prompt is positive
 - output is usable with minor editing
+- normal asset requests do not run the full specialist suite
+- the same Project and fresh company profile are reused across JDs only when
+  normalized company/track keys match exactly
+- external career assets contain no weakness or Private Defense leakage
+- every run reports file opens, model calls, Skill invocations, and
+  cached/uncached/output token counts when the host exposes them
 
 ### Agent PoC passes when
 

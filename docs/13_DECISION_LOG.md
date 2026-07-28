@@ -578,3 +578,61 @@ warnings leaked into the spoken script and made the candidate sound weaker than
 the evidence required. An ad hoc correction worked after it separated the
 external script from private risks. This is product-owner target-user dogfood,
 not independent validation, measured hiring impact, or a completed Day 5 gate.
+
+## D-030: Route selectively over three reusable context profiles
+
+Decision:
+
+- Keep all seven public Skills and every existing capability.
+- Replace the implicit JD-plus-Project full-suite path with deterministic
+  request planning that generates only the requested asset.
+- Build one source-linked Project Evidence Profile per Project version, reuse it
+  across JDs, and update only sections affected by changed source paths.
+- Build Company Intelligence Profiles through `$p2j-intel`, key them by company
+  and exact normalized track string, and reuse them across JDs only while fresh
+  and materially unchanged.
+- Extract one lightweight JD Demand Map per JD version and bind it to the
+  resolved Company profile key.
+- Make Full Preparation an explicit mode that assembles the complete pack and
+  uses all specialist capability contracts while satisfying fresh Audit/Intel
+  dependencies from cache.
+- Keep strategy, story selection, company adaptation, and career writing
+  model-driven; keep fingerprints, change detection, cache eligibility, routing,
+  schema checks, and usage arithmetic deterministic.
+- Keep weakness lists, unsupported claims, difficult follow-ups, and fallback
+  language in Private Defense for Mock preparation. Frame relevant bad cases as
+  signal → diagnosis → decision → change → stronger result → hiring signal.
+
+Reason:
+
+The full-suite path preserved capability breadth but spent context and model
+calls even when the user requested one asset. The three profiles separate stable
+Project truth, reusable company/track research, and per-JD demand so the router
+can reuse expensive work without allowing company research to alter Project
+facts. This amends the prior one-JD persistence boundary while retaining one JD
+per run, consent, freshness, source provenance, factual-safety regressions, and
+the bounded Agent update contract.
+
+## D-031: Close selective-routing prerequisite and invalidation gaps
+
+Decision:
+
+- A Project + JD Brief must reuse fresh Company Intelligence for the exact
+  normalized company/track or invoke bounded `$p2j-intel` before writing.
+- The visible Brief returns one strongest positioning and one route; limitation,
+  weakness, and broad missing-evidence inventories stay in Private Defense or
+  `$p2j-upgrade`.
+- Added Project files conservatively stale every profile section until the new
+  source is opened and its evidence surfaces are inspected.
+- A JD Demand Map is reusable only when its `company_profile_key` matches the
+  resolved Company Intelligence Profile.
+- Selective planning remains host-native. `stateful_agent.py` owns explicit
+  persisted update mechanics and does not select normal Skill routes.
+
+Reason:
+
+PR #16's first implementation planned profile reuse but allowed a Brief without
+company context, could reuse a JD map across Company-profile keys, and derived
+added-file dependencies only from old `source_paths`. Those behaviors made the
+claimed adaptation and incremental invalidation contracts stronger than the
+implementation.

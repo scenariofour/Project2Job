@@ -6,7 +6,10 @@ from pathlib import Path
 
 SCHEMAS = {
     "application_pack": "application_pack.schema.json",
+    "company_intelligence_profile": "company_intelligence_profile.schema.json",
     "intake_result": "intake_result.schema.json",
+    "jd_demand_map": "jd_demand_map.schema.json",
+    "project_evidence_profile": "project_evidence_profile.schema.json",
 }
 
 

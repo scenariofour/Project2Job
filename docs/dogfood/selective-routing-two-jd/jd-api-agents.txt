@@ -1,0 +1,12 @@
+Source: https://openai.com/careers/product-manager-api-agents-san-francisco/
+Retrieved: 2026-07-28
+
+Role: Product Manager, API Agents
+Track: API Product Management
+
+Officially stated demand, paraphrased for bounded dogfood:
+- understand agent-builder problems;
+- prioritize agentic infrastructure around user outcomes;
+- translate research and engineering into SDK and API products;
+- deliver quickly while maintaining product quality;
+- communicate clearly and drive action through ambiguity.

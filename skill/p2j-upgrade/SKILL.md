@@ -11,7 +11,8 @@ Treat `/p2j-upgrade` as an alias for `$p2j-upgrade`.
    `../p2j/references/gates.md`.
 2. Resolve shared context. Reuse current gaps and acceptance evidence; remove a
    completed build from consideration and recompute only gaps affected by
-   changed evidence.
+   changed evidence. Use the current Project Evidence Profile; do not rerun the
+   audit unless an affected profile section is stale.
 3. Compare only material evidence gaps. Rank candidate evidence directions by:
    - number and importance of Gates improved
    - target-JD relevance

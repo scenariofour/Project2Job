@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/project-evidence-profile/1.0.0",
+  "title": "ProjectEvidenceProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "project_fingerprint",
+    "built_at",
+    "sections"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "built_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verified_facts",
+        "ownership",
+        "decisions",
+        "architecture",
+        "results",
+        "bad_cases",
+        "stories",
+        "hiring_signals"
+      ],
+      "properties": {
+        "verified_facts": {
+          "$ref": "#/$defs/section"
+        },
+        "ownership": {
+          "$ref": "#/$defs/section"
+        },
+        "decisions": {
+          "$ref": "#/$defs/section"
+        },
+        "architecture": {
+          "$ref": "#/$defs/section"
+        },
+        "results": {
+          "$ref": "#/$defs/section"
+        },
+        "bad_cases": {
+          "$ref": "#/$defs/section"
+        },
+        "stories": {
+          "$ref": "#/$defs/section"
+        },
+        "hiring_signals": {
+          "$ref": "#/$defs/section"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "source_paths"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200
+        },
+        "source_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

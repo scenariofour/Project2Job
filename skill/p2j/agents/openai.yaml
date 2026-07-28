@@ -1,4 +1,4 @@
 interface:
   display_name: "Project2Job"
-  short_description: "Route one project into the right interview-prep skill."
-  default_prompt: "Use $p2j with my target JD and project folder to choose the strongest next analysis."
+  short_description: "Generate only the career asset you need."
+  default_prompt: "Use $p2j with my target JD and project to generate only the strongest requested career asset, or run Full Preparation explicitly."

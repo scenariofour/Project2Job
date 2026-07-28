@@ -7,7 +7,7 @@ distribution surface.
 
 It is a reusable method that performs a JD-to-Application transformation inside
 the user's existing Agent host. With one-time consent, the suite's shared local
-Context Registry can reuse bounded Project/JD/run state across sessions.
+Context Registry can reuse bounded Project/company/JD/run state across sessions.
 
 ## User contract
 
@@ -74,24 +74,42 @@ The Skill cannot guarantee:
 
 1. resolve Project/JD identity and compatible local context
 2. inventory only new or changed artifacts
-3. route the request
+3. resolve the three profile states and route the requested asset
 4. load only relevant references
 5. extract the JD into a `JdIntake`: company, team, role family, track, level,
    location, requirements, likely interview risks, unknowns
 6. extract the top 5–7 role requirements as the Role Demand Map
-7. run one bounded public-web research pass for company and interview context,
+7. reuse fresh company intelligence or run one bounded public-web research pass,
    merging anything the user pasted or uploaded
 8. read the optional resume and extract project candidates for routing only
 9. recommend one project, then return the `Intake Result` and stop for input
-10. extract project claims from the selected project
-11. verify high-value claims against sources
-12. produce the Application and Interview Pack
+10. reuse the Project Evidence Profile or extract and verify high-value claims
+11. generate only the requested asset
+12. when the user explicitly requests Full Preparation, produce the complete
+    Application and Interview Pack
 13. after consent, save only the minimal compatible context
 14. ask for correction
 15. stop
 
 Step 9 is a real stopping point, not a pause. The Intake Result must stand on its
 own if the user never supplies a project.
+
+JD plus Project without a narrower request reuses fresh Company Intelligence or
+runs one bounded Intel prerequisite, then returns a concise strategic Brief with
+one strongest positioning and one recommended next Skill. It does not
+automatically run Brief, Audit, Answer, Mock, and Upgrade.
+
+## Reusable profiles
+
+- **Project Evidence Profile:** deep, source-linked facts, ownership, decisions,
+  architecture, results, bad cases, stories, and hiring signals. Build once per
+  Project version and update only affected sections.
+- **Company Intelligence Profile:** `$p2j-intel` output keyed by exact normalized
+  company and track string, including culture, values, product/AI direction,
+  role/team priorities, interview signals, sources, and freshness.
+- **JD Demand Map:** lightweight per-JD role tasks, stated level, hiring signals,
+  must-haves, and preferred qualifications, bound to the resolved Company
+  profile key.
 
 ## Progressive loading
 
@@ -103,6 +121,7 @@ Load:
 - evidence rubric for claim verification
 - Context Registry resolver before every run; continue without saving when local
   reuse is unavailable or declined
+- profile contract before source retrieval; build only missing or stale profiles
 - routing reference only when a resume with several projects is present
 - resume reference only for bullet generation
 - interview reference only for interview output
