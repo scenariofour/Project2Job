@@ -103,13 +103,60 @@ role_requirement_id
 
 ## Career output policy
 
+### Career-asset packaging
+
+Canonical objective:
+
+> Maximize hiring impact through the strongest defensible interpretation of the
+> candidate's facts, decisions, and transferable implications.
+
+Truthful does not mean self-disqualifying. Facts are bounded. Interpretation is
+expandable. Framing is strategic.
+
+Apply these distinctions to every copyable resume bullet, introduction, and
+interview answer:
+
+1. **Historical fact boundary.** Events, ownership, users, stakeholder
+   relationships, metrics, experiments, production status, and outcomes must
+   not exceed Supported or user-confirmed facts.
+2. **Defensible interpretation.** Synthesize linked facts into capabilities,
+   product judgment, causal mechanisms, learning, transferable skills, and
+   role relevance when the reasoning chain is defensible and creates no new
+   historical event. The capability wording does not need to appear verbatim
+   in a source; cite the facts that support the interpretation.
+3. **Strategic framing.** Select, reorder, compress, and emphasize the strongest
+   role-relevant subset of verified facts. A career asset does not need to
+   repeat every known limitation or every fact in the evidence record.
+4. **Private risk separation.** Keep unsupported claims, missing validation,
+   follow-up risks, and material limitations in `warnings`,
+   `unsupported_areas`, `claim_safety_review`, or follow-up defense by default.
+   These fields are private preparation material, not sentences to append
+   automatically to the copyable asset.
+5. **Material disclosure.** Include a limitation in the external asset only
+   when the question explicitly asks for it or omission would make the answer
+   false or materially misleading. Never hide a boundary that changes what an
+   asserted fact means.
+6. **Failure stories.** Describe the relevant failure, lead with the
+   product/user problem, and end on containment, product change, result,
+   judgment, repeat-prevention, or role-relevant capability. Do not end on an
+   unrelated disclaimer or unfinished-work list.
+7. **Company relevance.** Use the JD to select the strongest story,
+   capability, terminology, and emphasis. Do not append a company name or copy
+   JD keywords into the conclusion. Company context cannot create or
+   strengthen a project fact.
+8. **Spoken quality.** Keep answers concise and conversational, with short
+   sentences. Frameworks stay internal. Avoid report-style labels, dense
+   abstractions, and unnecessary disclaimer sentences.
+
 ### Resume bullets
 
 May contain only:
 
 - Supported facts
 - user-confirmed facts
-- explicitly labeled current-state limitations when useful
+- defensible interpretations grounded in linked Supported or user-confirmed
+  facts
+- current-state limitations only when material disclosure requires them
 
 Must not contain:
 
@@ -125,8 +172,10 @@ May include:
 
 - supported answer ingredients
 - partial areas
+- defensible capability and role-relevance interpretations grounded in the
+  verified evidence
 - likely follow-up questions
-- explicit missing evidence
+- private missing-evidence and risk review
 
 Must not fabricate a polished answer that the project cannot support.
 
@@ -141,25 +190,29 @@ question
 → likely follow-ups
 ```
 
-The claim-safety review is a gate, not a note. A draft that exceeds its evidence
-is narrowed or dropped before the pack is emitted.
+The claim-safety review is a private gate, not copy for the answer. A draft that
+exceeds its evidence is narrowed or dropped before the pack is emitted; the
+rejected wording and remaining risk stay outside the copyable draft.
 
 ### Company emphasis
 
 Company and track signals may change:
 
+- which relevant subset of verified facts is selected
 - which verified facts an answer leads with
 - the order and wording of those facts
 - which follow-ups are anticipated
 
 They may never change:
 
-- the fact set behind the answer
+- the verified project-fact pool
 - any metric, scope, date, or ownership statement
-- the evidence boundary
+- a selected fact's evidence boundary
+- whether omitting a material limitation would make the answer misleading
 
-Two runs of the same question against the same project must resolve to the same
-fact IDs regardless of company emphasis.
+Selected fact IDs may differ by question, company, or role emphasis. Every
+selected fact ID must resolve to the same verified project-fact pool, and
+company research may never supply a missing project fact.
 
 ### Interview questions
 

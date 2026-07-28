@@ -6,8 +6,9 @@ Review gate: PENDING HUMAN REVIEW
 
 The reproducible offline package is prepared and automated checks have run.
 Day 5 is not implemented or validated because blind reviewer scores,
-disagreement adjudication, target-user feedback, and a resulting model/product
-decision do not exist.
+disagreement adjudication, a complete bounded pilot record, and a resulting
+model/product decision do not exist. One later product-owner target-user
+dogfood session is recorded, but it is not independent validation.
 
 ## Question
 
@@ -44,6 +45,23 @@ automated gate therefore fails regardless of any future average score.
 The ownership case also remains explicitly pending human adjudication because
 both systems use first-person team framing while individual contribution is
 unconfirmed.
+
+## Product-owner target-user dogfood
+
+A real product-owner target-user dogfood session reviewed a Project2Job Day 5
+interview answer. The participant rated the asset 8/10 and said they would use
+it after minor-to-moderate editing. Actual external use was not observed.
+
+The bad case was career-asset packaging: accurate safety and evidence warnings
+leaked into the spoken answer, making pending validation, failed gates, and
+missing outcomes more memorable than the supported achievement, product
+judgment, and role relevance. An ad hoc correction successfully separated the
+strong external script from private warnings.
+
+The session is recorded in
+`docs/dogfood/PROJECT2JOB_DAY5_CAREER_ASSET_DOGFOOD.md` and now backs a shared
+policy plus behavioral regressions. It is product-owner target-user dogfood,
+not independent user validation or proof of hiring impact.
 
 ## Observable efficiency only
 
@@ -89,6 +107,20 @@ Focused verification on 2026-07-27:
 - `git diff --check` passed with no output;
 - `make skill-package` built `dist/project2job-skill-suite-alpha.zip`.
 
+Career-asset packaging verification on 2026-07-28:
+
+- the Skill Creator validator passed `p2j`, `p2j-answer`, and `p2j-mock`;
+- 90 focused Skill and Application Pack tests passed with
+  `jsonschema>=4`;
+- `make validate` passed with 14 active documents, 42 JSON files, 119 JSONL
+  cases, 20 public fixture files, 84 schema references, and highest completed
+  Day 4;
+- `make test` ran 256 tests: 239 passed and 17 optional `jsonschema` tests
+  skipped in the default environment;
+- `make inventory` found 3 files and no duplicate groups;
+- `git diff --check` passed with no output;
+- `make skill-package` built `dist/project2job-skill-suite-alpha.zip`.
+
 ## Human review still required
 
 Before Day 5 can change status:
@@ -99,9 +131,10 @@ Before Day 5 can change status:
    be adjudicated;
 3. the exact-source failure must remain a failed case or be corrected through
    a new recorded Skill run and regression;
-4. at least one eligible target user must complete a bounded pilot record,
-   including first useful output, corrections, selected asset, edit level, and
-   any action actually taken;
+4. a bounded target-user pilot record must include first useful output,
+   corrections, selected asset, edit level, and any action actually taken; the
+   product-owner dogfood captured the correction, rating, and stated use but
+   not first-use timing or actual external use;
 5. only then may the project record reviewer preference, product usability, or
    a continue/change/stop decision.
 
@@ -117,8 +150,8 @@ Before Day 5 can change status:
 ## What is not yet proven
 
 - that Project2Job beats the strong prompt;
-- that either output is usable with minor editing;
-- that a target user receives value or takes action;
+- independent usability or actual use beyond the product owner's stated intent;
+- that a target user takes an external action;
 - complete latency or provider-cost differences;
 - model-specific quality;
 - Agent advantage beyond the existing deterministic mechanics comparison.
@@ -127,5 +160,6 @@ Before Day 5 can change status:
 
 - Publish the unchanged baseline prompt.
 - Lead with the exact-source failure and unresolved ownership wording.
-- Keep reviewer and pilot fields blank until observed.
+- Keep blind-review fields blank until observed and leave any uncaptured pilot
+  fields null.
 - Never rename this offline comparison as an A/B test.

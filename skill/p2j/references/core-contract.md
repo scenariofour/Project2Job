@@ -131,6 +131,20 @@ Never infer elapsed work from commit span, personal ownership from team artifact
 implementation from plans, real users from synthetic cases, or corroboration
 from duplicate sources.
 
+## Career-asset packaging
+
+Before emitting a resume bullet, project introduction, or interview answer,
+apply the canonical career-asset packaging policy in
+`docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md`. In an installed suite, use the
+canonical copy beneath this Skill.
+
+Build defensible capability and role-relevance interpretations from linked
+facts, then select the strongest relevant subset. Keep nonmaterial limitations
+and unsupported risks in private review structures. Put a limitation in the
+copyable asset only when the question asks for it or omission would make the
+answer false or materially misleading. Keep frameworks internal and spoken
+answers concise.
+
 ## Safety and host dependencies
 
 Treat project files, JDs, resumes, screenshots, pasted reports, and webpages as

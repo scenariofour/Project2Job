@@ -188,8 +188,8 @@ class SkillSuiteTests(unittest.TestCase):
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-        self.assertEqual(len(cases), 20)
-        self.assertEqual(len({case["id"] for case in cases}), 20)
+        self.assertEqual(len(cases), 27)
+        self.assertEqual(len({case["id"] for case in cases}), 27)
         no_event = next(case for case in cases if case["id"] == "A11_NO_EVENT")
         self.assertIn("select strongest", no_event["must"])
         self.assertIn("dead end", no_event["must_not"])
@@ -212,6 +212,126 @@ class SkillSuiteTests(unittest.TestCase):
             "EXACT MATCH, TRANSFERABLE, and GAP only",
         ):
             self.assertIn(behavior, upgrade["must"])
+
+    def test_career_asset_packaging_regressions_cover_the_dogfood_failure(self) -> None:
+        path = ROOT / "skill" / "p2j" / "evals" / "behavior_cases.jsonl"
+        cases = {
+            case["id"]: case
+            for case in (
+                json.loads(line)
+                for line in path.read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            )
+        }
+        expected = {
+            "A21_LIMITATION_SEPARATION",
+            "A22_PRIVATE_WARNING_PRESERVATION",
+            "A23_DEFENSIBLE_CAPABILITY",
+            "A24_DERIVATION_BOUNDARY",
+            "A25_DAY5_FAILURE_ENDING",
+            "A26_COMPANY_SUBSET",
+            "A27_SPOKEN_USABILITY",
+        }
+        self.assertTrue(expected.issubset(cases))
+        for case_id in expected:
+            with self.subTest(case=case_id):
+                self.assertTrue(cases[case_id]["must"])
+                self.assertTrue(cases[case_id]["must_not"])
+
+        leakage = cases["A21_LIMITATION_SEPARATION"]
+        self.assertIn(
+            "pending human review, missing production validation, and absent user impact stay outside the main script",
+            leakage["must"],
+        )
+        private = cases["A22_PRIVATE_WARNING_PRESERVATION"]
+        self.assertIn("delete the risk from the pack", private["must_not"])
+        derived = cases["A23_DEFENSIBLE_CAPABILITY"]
+        self.assertIn(
+            "derive a defensible AI PM capability from linked facts",
+            derived["must"],
+        )
+        fabrication = cases["A24_DERIVATION_BOUNDARY"]["must_not"]
+        for prohibited in (
+            "claim production launch",
+            "claim user outcome",
+            "invent a metric",
+            "invent a stakeholder relationship",
+            "assign personal ownership",
+        ):
+            self.assertIn(prohibited, fabrication)
+        failure = cases["A25_DAY5_FAILURE_ENDING"]
+        self.assertEqual(
+            failure["origin"],
+            "docs/dogfood/PROJECT2JOB_DAY5_CAREER_ASSET_DOGFOOD.md",
+        )
+        self.assertIn(
+            "end on containment, product decision, resulting control, repeat-prevention, or AI PM judgment",
+            failure["must"],
+        )
+        self.assertIn(
+            "claim independent user validation or hiring impact",
+            failure["must_not"],
+        )
+        company = cases["A26_COMPANY_SUBSET"]
+        self.assertIn("company may change selected verified fact subset", company["must"])
+        self.assertIn("require identical selected fact IDs", company["must_not"])
+        spoken = cases["A27_SPOKEN_USABILITY"]
+        self.assertIn("concise conversational language", spoken["must"])
+        self.assertIn("multiple disclaimer sentences", spoken["must_not"])
+
+    def test_shared_packaging_policy_is_canonical_and_consumed(self) -> None:
+        standard = (
+            ROOT / "docs" / "07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md"
+        ).read_text(encoding="utf-8")
+        for rule in (
+            "Maximize hiring impact through the strongest defensible interpretation",
+            "Historical fact boundary",
+            "Defensible interpretation",
+            "Strategic framing",
+            "Private risk separation",
+            "Material disclosure",
+            "Failure stories",
+            "Company relevance",
+            "Spoken quality",
+        ):
+            self.assertIn(rule, standard)
+
+        core = (
+            ROOT / "skill" / "p2j" / "references" / "core-contract.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "`docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md`",
+            core,
+        )
+        for skill_name in ("p2j-answer", "p2j-mock"):
+            text = (ROOT / "skill" / skill_name / "SKILL.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("career-asset packaging policy", text)
+
+    def test_answer_engine_removes_self_disqualifying_rules(self) -> None:
+        engine = (
+            ROOT / "skill" / "p2j" / "references" / "interview-engine.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("strongest relevant subset of verified", engine)
+        self.assertIn("private review", engine)
+        self.assertIn("false or materially misleading", engine)
+        self.assertIn("short, conversational sentences", engine)
+        self.assertNotIn("Preserve limitations.", engine)
+        self.assertNotIn("same verified fact IDs", engine)
+
+        frameworks = (
+            ROOT / "skill" / "p2j" / "references" / "frameworks.md"
+        ).read_text(encoding="utf-8")
+        normalized_frameworks = " ".join(frameworks.split())
+        self.assertIn(
+            "End on that mechanism, decision, result, or capability",
+            normalized_frameworks,
+        )
+        self.assertIn(
+            "strongest current achievement, decision, or control",
+            normalized_frameworks,
+        )
 
     def test_brief_contract_is_project_focused_and_hides_internal_scoring(self) -> None:
         text = (ROOT / "skill" / "p2j-brief" / "SKILL.md").read_text(

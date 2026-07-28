@@ -132,7 +132,7 @@ value, or any advantage over a strong prompt.
 | D2-AC-09 | A stale report is never presented as likely | D2-007, D2-012 | `test_a_stale_report_is_never_presented_as_likely` | Pass |
 | D2-AC-10 | One reported experience is never presented more strongly than reported once | D2-008, D2-013 | `test_one_report_stays_reported_once`; the D2-008 pack wording is not executed | Partial |
 | D2-AC-11 | An answer draft may not exceed its verified evidence | D2-009 | `test_a_draft_exceeding_its_evidence_cannot_validate` in `tests/test_jd_first_contracts.py` | Contract only |
-| D2-AC-12 | Company emphasis may change wording and order, never the fact set | D2-010 | `test_emphasis_carries_the_invariant_fact_set` in `tests/test_jd_first_contracts.py` | Contract only |
+| D2-AC-12 | Company emphasis may select, reorder, and reword a relevant subset of the verified project-fact pool without adding or strengthening a historical fact | D2-010 | `test_company_emphasis_case_allows_bounded_subset_selection` in `tests/test_jd_first_contracts.py` | Contract only |
 | D2-AC-13 | The Intake Result names exactly one next input | D2-001 | `test_exactly_one_next_input_is_returned` | Pass |
 | D2-AC-14 | No step logs in, bypasses a restriction, crawls a domain, or special-cases a named platform; the run degrades to user-supplied material when web access is unavailable | D2-001, D2-002, D2-015 | `test_a_walled_or_blocked_page_is_recorded_and_abandoned`, `test_every_intake_stage_case_is_executed` | Pass |
 | D2-AC-15 | An official source and independent reports are combined, official first, each keeping its own status | D2-011 | `test_official_pages_are_fetched_before_independent_reports`, `test_official_and_reported_statuses_are_not_merged` | Pass |
@@ -169,10 +169,11 @@ D2-AC-15, D2-AC-20, D2-AC-22, and D2-AC-23 are behavioral and eval-only. No
 document schema can prove that a search stopped early or that injected text was
 ignored.
 
-D2-AC-12 is **not** schema-enforceable. Emphasis invariance is a property of two
-runs compared against each other, which no single-document schema can express.
-`emphasisProfile.fact_ids` is required so the invariant is recorded; eval case
-D2-010 is what checks it.
+D2-AC-12 is **not** fully schema-enforceable. Verified-pool membership is a
+property of the project evidence and multiple emphasized runs, which no single
+document schema can express. `emphasisProfile.fact_ids` is required so each
+selected subset is recorded; eval case D2-010 checks that every selection stays
+inside the same verified project-fact pool.
 
 Cross-object ID references are likewise beyond JSON Schema and belong to the
 WO-05 output validator, now implemented as
