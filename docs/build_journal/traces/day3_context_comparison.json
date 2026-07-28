@@ -1,0 +1,330 @@
+{
+  "schema_version": "1.0.0",
+  "comparison": "day3_context_selection",
+  "measurements": [
+    "file_open_events",
+    "unique_files_opened",
+    "content_chars_opened",
+    "relevant_sources_found",
+    "critical_sources_missed",
+    "irrelevant_file_open_events",
+    "claim_to_source_correct",
+    "provenance_coverage"
+  ],
+  "measurement_notes": [
+    "File-open events count Project artifact bodies opened per case; case definitions and the manifest control file are not context.",
+    "Content characters are Python string lengths of opened fixture bodies, not token estimates.",
+    "Targeted selection ranks manifest paths by exact filename-term overlap; it is not semantic retrieval or production RAG."
+  ],
+  "not_measured": [
+    "runtime",
+    "tokens",
+    "cost",
+    "model_quality",
+    "user_value"
+  ],
+  "strategies": [
+    {
+      "strategy": "broad_full_project",
+      "case_count": 3,
+      "file_open_events": 21,
+      "unique_files_opened": [
+        "README.md",
+        "docs/roadmap.md",
+        "docs/team.md",
+        "eval/design.md",
+        "eval/results.md",
+        "notes/changelog.md",
+        "research/company-interview.md"
+      ],
+      "content_chars_opened": 2841,
+      "relevant_sources_found": 3,
+      "critical_sources_missed": 0,
+      "irrelevant_file_open_events": 18,
+      "claim_to_source_correct": 3,
+      "provenance_coverage": {
+        "source_linked_supported_claims": 1,
+        "supported_claims": 1
+      },
+      "cases": [
+        {
+          "case_id": "D3-001",
+          "opened_files": [
+            "README.md",
+            "docs/roadmap.md",
+            "docs/team.md",
+            "eval/design.md",
+            "eval/results.md",
+            "notes/changelog.md",
+            "research/company-interview.md"
+          ],
+          "status": "supported",
+          "expected_status": "supported",
+          "supporting_sources_found": [
+            "eval/results.md"
+          ],
+          "critical_sources_found": [],
+          "critical_sources_missed": [],
+          "citation": "eval/results.md",
+          "citation_supports_claim": true,
+          "grounded_source": "eval/results.md",
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md",
+            "docs/roadmap.md",
+            "docs/team.md",
+            "eval/design.md",
+            "notes/changelog.md",
+            "research/company-interview.md"
+          ]
+        },
+        {
+          "case_id": "D3-002",
+          "opened_files": [
+            "README.md",
+            "docs/roadmap.md",
+            "docs/team.md",
+            "eval/design.md",
+            "eval/results.md",
+            "notes/changelog.md",
+            "research/company-interview.md"
+          ],
+          "status": "unsupported",
+          "expected_status": "unsupported",
+          "supporting_sources_found": [],
+          "critical_sources_found": [],
+          "critical_sources_missed": [],
+          "citation": "README.md",
+          "citation_supports_claim": false,
+          "grounded_source": null,
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md",
+            "docs/roadmap.md",
+            "docs/team.md",
+            "eval/design.md",
+            "eval/results.md",
+            "notes/changelog.md",
+            "research/company-interview.md"
+          ]
+        },
+        {
+          "case_id": "D3-003",
+          "opened_files": [
+            "README.md",
+            "docs/roadmap.md",
+            "docs/team.md",
+            "eval/design.md",
+            "eval/results.md",
+            "notes/changelog.md",
+            "research/company-interview.md"
+          ],
+          "status": "needs_confirmation",
+          "expected_status": "needs_confirmation",
+          "supporting_sources_found": [
+            "eval/design.md"
+          ],
+          "critical_sources_found": [
+            "docs/team.md"
+          ],
+          "critical_sources_missed": [],
+          "citation": "eval/design.md",
+          "citation_supports_claim": true,
+          "grounded_source": null,
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md",
+            "docs/roadmap.md",
+            "eval/results.md",
+            "notes/changelog.md",
+            "research/company-interview.md"
+          ]
+        }
+      ]
+    },
+    {
+      "strategy": "manifest_scoped",
+      "case_count": 3,
+      "file_open_events": 12,
+      "unique_files_opened": [
+        "README.md",
+        "docs/team.md",
+        "eval/design.md",
+        "eval/results.md"
+      ],
+      "content_chars_opened": 1815,
+      "relevant_sources_found": 3,
+      "critical_sources_missed": 0,
+      "irrelevant_file_open_events": 9,
+      "claim_to_source_correct": 3,
+      "provenance_coverage": {
+        "source_linked_supported_claims": 1,
+        "supported_claims": 1
+      },
+      "cases": [
+        {
+          "case_id": "D3-001",
+          "opened_files": [
+            "README.md",
+            "eval/results.md",
+            "eval/design.md",
+            "docs/team.md"
+          ],
+          "status": "supported",
+          "expected_status": "supported",
+          "supporting_sources_found": [
+            "eval/results.md"
+          ],
+          "critical_sources_found": [],
+          "critical_sources_missed": [],
+          "citation": "eval/results.md",
+          "citation_supports_claim": true,
+          "grounded_source": "eval/results.md",
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md",
+            "eval/design.md",
+            "docs/team.md"
+          ]
+        },
+        {
+          "case_id": "D3-002",
+          "opened_files": [
+            "README.md",
+            "eval/results.md",
+            "eval/design.md",
+            "docs/team.md"
+          ],
+          "status": "unsupported",
+          "expected_status": "unsupported",
+          "supporting_sources_found": [],
+          "critical_sources_found": [],
+          "critical_sources_missed": [],
+          "citation": "README.md",
+          "citation_supports_claim": false,
+          "grounded_source": null,
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md",
+            "eval/results.md",
+            "eval/design.md",
+            "docs/team.md"
+          ]
+        },
+        {
+          "case_id": "D3-003",
+          "opened_files": [
+            "README.md",
+            "eval/results.md",
+            "eval/design.md",
+            "docs/team.md"
+          ],
+          "status": "needs_confirmation",
+          "expected_status": "needs_confirmation",
+          "supporting_sources_found": [
+            "eval/design.md"
+          ],
+          "critical_sources_found": [
+            "docs/team.md"
+          ],
+          "critical_sources_missed": [],
+          "citation": "eval/design.md",
+          "citation_supports_claim": true,
+          "grounded_source": null,
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md",
+            "eval/results.md"
+          ]
+        }
+      ]
+    },
+    {
+      "strategy": "targeted_filename_selection",
+      "case_count": 3,
+      "file_open_events": 3,
+      "unique_files_opened": [
+        "README.md",
+        "eval/design.md",
+        "eval/results.md"
+      ],
+      "content_chars_opened": 435,
+      "relevant_sources_found": 2,
+      "critical_sources_missed": 1,
+      "irrelevant_file_open_events": 1,
+      "claim_to_source_correct": 2,
+      "provenance_coverage": {
+        "source_linked_supported_claims": 1,
+        "supported_claims": 1
+      },
+      "cases": [
+        {
+          "case_id": "D3-001",
+          "opened_files": [
+            "eval/results.md"
+          ],
+          "status": "supported",
+          "expected_status": "supported",
+          "supporting_sources_found": [
+            "eval/results.md"
+          ],
+          "critical_sources_found": [],
+          "critical_sources_missed": [],
+          "citation": "eval/results.md",
+          "citation_supports_claim": true,
+          "grounded_source": "eval/results.md",
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": []
+        },
+        {
+          "case_id": "D3-002",
+          "opened_files": [
+            "README.md"
+          ],
+          "status": "unsupported",
+          "expected_status": "unsupported",
+          "supporting_sources_found": [],
+          "critical_sources_found": [],
+          "critical_sources_missed": [],
+          "citation": "README.md",
+          "citation_supports_claim": false,
+          "grounded_source": null,
+          "claim_to_source_correct": true,
+          "irrelevant_files_opened": [
+            "README.md"
+          ]
+        },
+        {
+          "case_id": "D3-003",
+          "opened_files": [
+            "eval/design.md"
+          ],
+          "status": "unsafe_boundary_missed",
+          "expected_status": "needs_confirmation",
+          "supporting_sources_found": [
+            "eval/design.md"
+          ],
+          "critical_sources_found": [],
+          "critical_sources_missed": [
+            "docs/team.md"
+          ],
+          "citation": "eval/design.md",
+          "citation_supports_claim": true,
+          "grounded_source": null,
+          "claim_to_source_correct": false,
+          "irrelevant_files_opened": []
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "selected_architecture": "manifest_scoped_context",
+    "retrieval_layer": "deferred",
+    "evidence": {
+      "manifest_matches_broad_claim_to_source_correctness": true,
+      "manifest_opens_fewer_chars_than_broad": true,
+      "targeted_critical_boundary_misses": 1
+    },
+    "boundary": "This deterministic synthetic comparison supports the repository context choice only; it does not establish production retrieval quality or user value."
+  }
+}

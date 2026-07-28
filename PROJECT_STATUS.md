@@ -2,15 +2,15 @@
 
 Updated: 2026-07-27
 
-Highest completed Day: 2
+Highest completed Day: 3
 
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
-implemented and tested. Stateful Agent V0 mechanics are implemented and
-deterministically tested. A seven-Skill host-native Alpha is implemented and
-installable. The Day 2 JD-first intake runtime turns one JD into one Intake
-Result and executes every intake-stage Day 2 eval case.**
+implemented and tested. Day 2 JD-first intake and Day 3 context/evidence
+behavior are implemented and tested. Stateful Agent V0 mechanics are
+implemented and deterministically tested. A seven-Skill host-native Alpha is
+implemented and installable.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
 The Alpha has been dogfooded in Codex, but product quality and user value are
@@ -97,6 +97,17 @@ Day 2 JD-first intake (WO-05):
 - a cross-object output validator and an executable runner for the
   intake-stage Day 2 eval cases
 
+Day 3 context, provenance, and evidence:
+
+- a deterministic broad/full versus manifest-scoped versus targeted-selection
+  comparison over three synthetic cases and seven focused artifacts
+- an inspectable committed result with observed file-open, character,
+  relevance, critical-miss, irrelevant-open, claim/source, and provenance counts
+- one targeted-selection bad case that misses the separate ownership boundary
+- an external-export gate requiring Supported claims, a direct evidence
+  ancestor, and resolved attribution
+- the measured decision to retain manifest-scoped context and defer retrieval/RAG
+
 The intake runtime opens no socket of its own and does not generate an
 Application and Interview Pack. Its `runtime_seconds` and `total_tokens` are a
 deterministic cost model, not measurements.
@@ -127,6 +138,8 @@ deterministic cost model, not measurements.
 - every Intake Result the eval cases produce validates against
   `schemas/intake_result.schema.json` and passes the cross-reference validator
 - one JD-first dogfood over committed fixtures, pinned to the runtime
+- ten focused Day 3 tests cover the deterministic comparison, citation-only
+  grounding failure, direct evidence, unresolved attribution, and bounded repair
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,
@@ -139,8 +152,7 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
   consumes it, so the three `pack`-stage Day 2 cases stay unexecuted
 - a live-host research pass; every executed case uses a fixture host
 - target-user testing and cross-host behavior comparison
-- production retrieval comparison and failure injection beyond deterministic
-  fixtures
+- live-corpus and live-model context comparison beyond deterministic fixtures
 - evaluation runs, model decision, target-user pilot, and measured results
 
 ## Not yet proven
@@ -152,6 +164,9 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
   Claude invocation was blocked by an expired host OAuth token
 - production Web UI and production RAG behavior; the local report is a
   demonstration surface only
+- production retrieval quality; Day 3 intentionally defers a retrieval layer
+- model token use, latency, and cost for the Day 3 context strategies; only file
+  opens and characters were observed
 - production model behavior
 - Skill advantage over a strong generic prompt
 - Agent advantage beyond the single observed execution-cost and
@@ -168,5 +183,6 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 
 ## Next required action
 
-Run the first target-user Alpha test and a live-model planner comparison; do not
-expand the local report into a production Web application.
+Run the first target-user Alpha test and a live-model planner comparison. Day 4
+and later implementation remain separate tasks; do not expand the local report
+or add retrieval without new evidence.

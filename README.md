@@ -121,6 +121,11 @@ supported and merged with what research finds.
   recommended project or `no_clear_choice`, and exactly one next input. The 17
   intake-stage Day 2 eval cases execute. No pack runtime consumes the Intake
   Result yet, and no case has run against a live host.
+- Day 3 context, provenance, and evidence are implemented and tested: a
+  deterministic three-strategy comparison retains manifest-scoped context,
+  records one targeted-selection ownership-boundary miss, and defers retrieval
+  or RAG. External exports require direct source support and resolved
+  attribution. This is synthetic repository evidence, not user validation.
 - The host-native Skill Alpha implements the JD/project routing and
   interview-prep workflows through host tools.
 
@@ -135,6 +140,7 @@ additional production runtime features.
 
 ```bash
 python3 scripts/run_day2_intake_evals.py
+python3 scripts/run_day3_context_comparison.py --check
 ```
 
 ## Safety and source handling
@@ -192,9 +198,9 @@ git diff --check
 ```
 
 These checks validate repository structure, JSON/JSONL parsing, Day journal
-status ordering, documentation consistency, the Day 1 Agent loop, and
-deterministic sample-project inventory. They do not validate product quality or
-user value.
+status ordering, documentation consistency, the Day 1 Agent loop, the Day 3
+comparison result, and deterministic sample-project inventory. They do not
+validate product quality or user value.
 
 `docs/DOCUMENT_GOVERNANCE.md` records which file owns which question and what a
 contract change must update.

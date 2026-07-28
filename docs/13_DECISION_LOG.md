@@ -469,3 +469,24 @@ Reason:
 Pack generation belongs to WO-01 and WO-02. Marking Day 2 `IMPLEMENTED` requires
 executable acceptance evidence for what it claims, and claiming the pack-stage
 criteria would be exactly the overstatement the journal exists to prevent.
+
+## D-026: Retain manifest-scoped context and defer retrieval
+
+Decision:
+
+- Keep broad/full Project context as a comparison baseline, not the default.
+- Retain the existing manifest-scoped context policy.
+- Do not add an index, vector store, embedding model, or RAG layer for Day 3.
+- Require external exports to traverse a direct Evidence → Claim dependency
+  path and to have resolved attribution; a citation alone is insufficient.
+
+Reason:
+
+The deterministic three-case comparison opened 21 files and 2,841 characters
+for broad context, 12 files and 1,815 characters for manifest scope, and 3 files
+and 435 characters for targeted filename selection. Manifest scope matched the
+broad baseline on 3/3 claim-to-source judgments and missed no critical source.
+The targeted selector scored 2/3 because it missed the separate team-ownership
+boundary. Runtime, tokens, cost, model quality, and user value were not measured.
+The observed context saving does not justify accepting a known boundary failure
+or adding retrieval complexity.

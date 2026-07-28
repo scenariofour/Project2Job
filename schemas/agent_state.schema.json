@@ -58,6 +58,9 @@
         "source": {"type": "string"},
         "location": {"type": "string"},
         "summary": {"type": "string"},
+        "assessment": {
+          "enum": ["direct", "partial", "contradictory", "irrelevant"]
+        },
         "artifact_type": {
           "enum": [
             "controlled_summary_existing_fact",
