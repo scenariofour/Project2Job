@@ -12,7 +12,7 @@ remain authoritative.
 | --- | --- | --- |
 | 0 | Safe repository foundation | Enables all Work Orders; no Work Order completed |
 | 1 | Agent loop and observable control | WO-02 |
-| 2 | Problem, MVP, intent, and routing | WO-00, WO-01, WO-02 |
+| 2 | Problem, MVP, intent, and routing | WO-00, WO-05, WO-01, WO-02 |
 | 3 | Context, retrieval, provenance, and evidence | WO-00, WO-02, WO-04 |
 | 4 | Skill/Agent boundary and human control | WO-01, WO-02, WO-03 |
 | 5 | Evaluation and model decisions | WO-00, WO-01, WO-02, WO-04 |

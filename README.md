@@ -115,17 +115,27 @@ supported and merged with what research finds.
 - WO-02 stateful mechanics are implemented and deterministically tested:
   Project/JD change detection, corrections, dependency invalidation, selective
   updates, one repair, structured traces, and a fresh-Skill comparison.
-- Day 2 revised the product contracts around the JD-first flow. Those contracts
-  and their eval cases exist. The host-native Skill Alpha implements the
-  JD/project routing and interview-prep workflows through host tools; no
-  standalone intake or pack runtime exists.
+- Day 2 JD-first intake (WO-05) is implemented and tested: JD extraction with
+  unknowns, a Role Demand Map, one bounded research pass over a host-supplied
+  web capability, routing-only resume candidates that stay `self_reported`, one
+  recommended project or `no_clear_choice`, and exactly one next input. The 17
+  intake-stage Day 2 eval cases execute. No pack runtime consumes the Intake
+  Result yet, and no case has run against a live host.
+- The host-native Skill Alpha implements the JD/project routing and
+  interview-prep workflows through host tools.
 
 Unproven: user value beyond dogfood, cross-host live behavior, production Web
 UI and RAG, production model behavior, latency and cost targets, and Agent
 advantage beyond the single scripted update comparison.
 
-The stateful V0 implementation is in `src/career_desk/orchestrator.py`. Other
-interfaces under `src/` do not imply additional production runtime features.
+The stateful V0 implementation is in `src/career_desk/orchestrator.py`, and the
+JD-first intake is in `src/career_desk/jd_intake.py` and
+`src/career_desk/research.py`. Other interfaces under `src/` do not imply
+additional production runtime features.
+
+```bash
+python3 scripts/run_day2_intake_evals.py
+```
 
 ## Safety and source handling
 

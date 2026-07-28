@@ -1,7 +1,7 @@
 """Contract tests for the Day 2 JD-first flow.
 
-These assert the shape of the contracts and the eval cases. No intake, routing,
-or pack runtime exists yet, so nothing here tests product behavior.
+These assert the shape of the contracts and the eval cases. Intake behavior is
+tested in `tests/test_jd_first_intake.py`; no pack runtime exists yet.
 """
 
 from __future__ import annotations
@@ -700,9 +700,21 @@ class Day2EvalCaseTests(unittest.TestCase):
 
 
 class Day2ScopeTests(unittest.TestCase):
-    def test_day_2_stays_planned(self) -> None:
+    def test_day_2_is_implemented_and_not_claimed_validated(self) -> None:
         journal = (ROOT / "docs/build_journal/DAY_2.md").read_text(encoding="utf-8")
-        self.assertIn("Status: PLANNED", journal)
+        self.assertIn("Status: IMPLEMENTED", journal)
+        self.assertIn("Not validated", journal)
+
+    def test_pack_stage_criteria_are_not_claimed_as_behavior(self) -> None:
+        """WO-05 stops at the Intake Result; the pack criteria stay contract-only."""
+        journal = (ROOT / "docs/build_journal/DAY_2.md").read_text(encoding="utf-8")
+        rows = {
+            row.split("|")[1].strip(): row
+            for row in journal.splitlines()
+            if row.startswith("| D2-AC-")
+        }
+        for criterion in ("D2-AC-11", "D2-AC-12"):
+            self.assertIn("Contract only", rows[criterion])
 
     def test_excluded_platform_integrations_stay_excluded(self) -> None:
         scope = (ROOT / "ACTIVE_SCOPE.md").read_text(encoding="utf-8").lower()

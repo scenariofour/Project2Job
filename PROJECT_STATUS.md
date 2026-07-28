@@ -1,15 +1,16 @@
 # Project Status
 
-Updated: 2026-07-26
+Updated: 2026-07-27
 
-Highest completed Day: 1
+Highest completed Day: 2
 
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
 implemented and tested. Stateful Agent V0 mechanics are implemented and
 deterministically tested. A seven-Skill host-native Alpha is implemented and
-installable.**
+installable. The Day 2 JD-first intake runtime turns one JD into one Intake
+Result and executes every intake-stage Day 2 eval case.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
 The Alpha has been dogfooded in Codex, but product quality and user value are
@@ -81,6 +82,25 @@ The Alpha runs inside a compatible Agent host. It depends on that host for file,
 Git, search, fetch, browser, and local-storage capabilities; it is not a
 standalone runtime and does not monitor or regenerate in the background.
 
+Day 2 JD-first intake (WO-05):
+
+- deterministic JD extraction that records every unstated field as unknown
+- Role Demand Map derived from the versioned role profile
+- one bounded research pass over a host-supplied search / read-only fetch /
+  Playwright capability, with canonical-URL and page-body deduplication,
+  official-tier-first ordering, escalation reasons, blocked-page abandonment,
+  budget accounting, and one recorded stop reason on every path
+- resume candidate extraction that stays `self_reported`, five routing bands,
+  an evidence-availability gate that keyword overlap cannot pass, and
+  `no_clear_choice` instead of a weak winner
+- Required Evidence Checklist and exactly one next input
+- a cross-object output validator and an executable runner for the
+  intake-stage Day 2 eval cases
+
+The intake runtime opens no socket of its own and does not generate an
+Application and Interview Pack. Its `runtime_seconds` and `total_tokens` are a
+deterministic cost model, not measurements.
+
 ## Tested
 
 - 13 Day 1 Agent-loop unit tests and 10 `D1-001`–`D1-010` eval cases
@@ -102,15 +122,22 @@ standalone runtime and does not monitor or regenerate in the background.
   and the Upgrade handoff boundary
 - fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
   without executing the inspected project
+- 43 Day 2 intake behavior tests, plus the 17 intake-stage `D2-0xx` eval cases
+  executed end to end with 85 checks and no failure
+- every Intake Result the eval cases produce validates against
+  `schemas/intake_result.schema.json` and passes the cross-reference validator
+- one JD-first dogfood over committed fixtures, pinned to the runtime
 
-See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
-`docs/dogfood/SKILL_ALPHA_DOGFOOD.md` for the Alpha inspection report.
+See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
+`docs/build_journal/DAY_2.md` for intake traceability,
+`docs/dogfood/SKILL_ALPHA_DOGFOOD.md` for the Alpha inspection report, and
+`docs/dogfood/DAY2_JD_FIRST_DOGFOOD.md` for the JD-first dogfood.
 
 ## Planned
 
-- WO-05 JD-first intake and project routing: contracts, eval cases, and
-  acceptance criteria are defined; the host-native Skill now exercises them,
-  but no standalone runtime exists
+- WO-05 pack handoff: the Intake Result is produced but no pack generator
+  consumes it, so the three `pack`-stage Day 2 cases stay unexecuted
+- a live-host research pass; every executed case uses a fixture host
 - target-user testing and cross-host behavior comparison
 - production retrieval comparison and failure injection beyond deterministic
   fixtures
@@ -135,6 +162,9 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability and
 - that the project recommendation beats the user's own instinct
 - that public evidence plus optional user-supplied material will support a useful
   company brief
+- intake behavior against a live host: search results, page structure, latency,
+  and token cost are all fixture-level
+- that the routing bands agree with a human reviewer on real resume prose
 
 ## Next required action
 
