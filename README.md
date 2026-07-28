@@ -163,7 +163,7 @@ engineering dependencies:
 
 ### Repository build
 
-`████░░░░  4 / 8 Days implemented`
+`█████░░░  5 / 8 Days implemented`
 
 ### Public series
 
@@ -177,7 +177,7 @@ engineering dependencies:
 | [Day 1](docs/build_journal/DAY_1.md) | Skill, Workflow, and Agent Loop | Implemented and tested | Published |
 | [Day 2](docs/build_journal/DAY_2.md) | JD-First Product Flow | Implemented and tested | Not published |
 | [Day 3](docs/build_journal/DAY_3.md) | Context, Evidence, and RAG Decision | Implemented and tested | Not published |
-| [Day 4](docs/build_journal/DAY_4.md) | Skill, Agent, and Human Control | Formal closeout pending | Not published |
+| [Day 4](docs/build_journal/DAY_4.md) | Skill, Agent, and Human Control | Implemented and tested | Not published |
 | [Day 5](docs/build_journal/DAY_5.md) | Evaluation and Model Decisions | Planned | Not published |
 | [Day 6](docs/build_journal/DAY_6.md) | Tools, APIs, Frameworks, and Safe Failure | Planned | Not published |
 | [Day 7](docs/build_journal/DAY_7.md) | Product Experience and Defense | Planned | Not published |

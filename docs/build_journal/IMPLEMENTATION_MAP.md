@@ -26,5 +26,11 @@ public narrative discusses a concept earlier or later.
 Day 3 is IMPLEMENTED and TESTED through the existing WO-00/WO-02 foundations,
 the focused WO-04-style deterministic comparison in
 `docs/build_journal/traces/day3_context_comparison.json`, and D-026. The result
-does not complete WO-04's user-pilot or outcome requirements. Days 4–7 remain
+does not complete WO-04's user-pilot or outcome requirements. Days 5–7 remain
 PLANNED.
+
+Day 4 is IMPLEMENTED and TESTED through the existing WO-01/WO-02 Skill,
+Context Registry, and Stateful Agent paths, the focused correction/update/export
+coverage, `docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json`, and D-027. It adds no
+WO-03 Web implementation and does not complete target-user or live-model
+validation. Days 5–7 remain PLANNED.
