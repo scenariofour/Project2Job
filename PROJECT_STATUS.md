@@ -155,6 +155,10 @@ deterministic cost model, not measurements.
 - focused Day 4 closeout coverage reuses the Stateful Agent, integrated
   cross-process, external-claim, and comparison tests; the stale-state eval is
   explicitly labeled
+- seven focused Day 5 package tests pass, all six recorded comparison outputs
+  passed full Application Pack schema validation in an isolated
+  `jsonschema>=4` environment, and the full default suite ran 250 tests with
+  233 passing and 17 optional schema tests skipped
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,
@@ -163,12 +167,18 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 
 ## Planned
 
+- Day 5 evaluation review: a reproducible three-case generic-prompt versus
+  Project2Job package now exists with raw outputs, severe gates, a blind packet,
+  observed host token/runtime fields, and an open exact-source failure. Day 5
+  remains planned pending two independent blind reviews, disagreement
+  adjudication, and a bounded target-user pilot.
 - WO-05 pack handoff: the Intake Result is produced but no pack generator
   consumes it, so the three `pack`-stage Day 2 cases stay unexecuted
 - a live-host research pass; every executed case uses a fixture host
 - target-user testing and cross-host behavior comparison
 - live-corpus and live-model context comparison beyond deterministic fixtures
-- evaluation runs, model decision, target-user pilot, and measured results
+- blind human evaluation, model decision, target-user pilot, and measured
+  product results
 
 ## Not yet proven
 
@@ -198,6 +208,6 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 
 ## Next required action
 
-Run the first target-user Alpha test and a live-model planner comparison. Day 5
-and later implementation remain separate tasks; do not expand the local report
-or add retrieval without new evidence.
+Complete the Day 5 blind review and bounded target-user pilot, starting with the
+open exact-source failure in `lab/day5/bad_cases.jsonl`. Do not add retrieval,
+fine-tuning, or product scope without evidence from that review.

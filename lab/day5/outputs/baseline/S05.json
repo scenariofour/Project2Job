@@ -1,0 +1,568 @@
+{
+  "schema_version": "2.0.0",
+  "interview_context": {
+    "schema_version": "1.0.0",
+    "company": "Unknown synthetic employer",
+    "level": "Junior AI Product Manager",
+    "research": {
+      "mode": "unavailable",
+      "usage": {
+        "search_queries": 0,
+        "pages_fetched": 0,
+        "playwright_pages": 0,
+        "navigation_depth_used": 0,
+        "total_tokens": 0,
+        "max_retries_used_per_page": 0,
+        "runtime_seconds": 0
+      },
+      "queries": [],
+      "pages": [],
+      "stop_reason": "research_not_run",
+      "gaps": [
+        "Company identity is unknown.",
+        "Product track and team are unknown.",
+        "No official or reported interview-process evidence was supplied."
+      ]
+    },
+    "signals": [
+      {
+        "signal_id": "SIG-JD-01",
+        "layer": "track_team_level_requirement",
+        "statement": "The role emphasizes identifying valuable generative-AI workflows, MVP definition, evaluation, agent reliability, failure analysis, and product communication.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 1-11"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior AI Product Manager"
+      }
+    ],
+    "questions": [],
+    "unknowns": [
+      "Company identity",
+      "Track or team",
+      "Location",
+      "Official interview stages",
+      "Reported interview stages",
+      "Previously asked interview questions"
+    ]
+  },
+  "role_profile_ref": {
+    "role_id": "junior-ai-product-manager",
+    "version": "target_jd-unversioned"
+  },
+  "project_version": "S05-unversioned",
+  "run_type": "agent_initial",
+  "intent": "application_pack",
+  "role_fit_map": [
+    {
+      "role_requirement_id": "JD-R1",
+      "capability_id": "user-workflow-discovery",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "lines 3-5"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "line 4"
+        }
+      ],
+      "boundary": "The JD requires identification of valuable generative-AI workflows. The project source explicitly contains no user research or user-task evidence, so it does not establish workflow discovery. Missing evidence does not establish missing ability.",
+      "interview_risk": "No grounded example is available for user discovery, problem selection, or workflow prioritization."
+    },
+    {
+      "role_requirement_id": "JD-R2",
+      "capability_id": "mvp-scope-and-requirements",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 6"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "lines 1-4"
+        }
+      ],
+      "boundary": "The source identifies repository components but contains no MVP scope, requirements, prioritization record, or product decision.",
+      "interview_risk": "The candidate cannot safely claim requirements ownership or MVP scoping from the supplied evidence."
+    },
+    {
+      "role_requirement_id": "JD-R3",
+      "capability_id": "cross-functional-collaboration",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 7"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "lines 1-4"
+        }
+      ],
+      "boundary": "No engineering or design collaboration, team composition, or individual contribution is documented.",
+      "interview_risk": "Cross-functional behavior and individual ownership remain unverified."
+    },
+    {
+      "role_requirement_id": "JD-R4",
+      "capability_id": "evaluation-and-quality-measurement",
+      "relevance": "required",
+      "status": "partially_supported",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 8"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "Structured output tests support the existence of a quality-checking mechanism. They do not establish who designed it, what quality dimensions it measures, whether tests passed, or whether quality improved.",
+      "interview_risk": "A reviewer may ask for the evaluation rubric, test cases, baseline, results, and candidate ownership; none are supplied."
+    },
+    {
+      "role_requirement_id": "JD-R5",
+      "capability_id": "agent-systems-understanding",
+      "relevance": "required",
+      "status": "partially_supported",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 9"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "The repository contains an agent loop and tool registry, directly matching agent and tool concepts. It does not establish the candidate's ownership, understanding of context management, reliability behavior, or safety decisions.",
+      "interview_risk": "Tool use and component presence do not prove product judgment or individual technical understanding."
+    },
+    {
+      "role_requirement_id": "JD-R6",
+      "capability_id": "failure-analysis-and-prioritization",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 10"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "lines 3-4"
+        }
+      ],
+      "boundary": "Tests are mentioned, but no failures, taxonomy, analysis, prioritization, remediation, or before-and-after result is documented.",
+      "interview_risk": "The project cannot support a story about diagnosing failures or prioritizing improvements."
+    },
+    {
+      "role_requirement_id": "JD-R7",
+      "capability_id": "product-decisions-and-tradeoffs",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 11"
+        },
+        {
+          "source_id": "S05_project.md",
+          "location": "lines 1-4"
+        }
+      ],
+      "boundary": "No decision record, alternatives, tradeoff analysis, stakeholder communication, or candidate ownership is supplied.",
+      "interview_risk": "There is no evidence-grounded product-decision narrative."
+    }
+  ],
+  "project_highlights": [
+    {
+      "text": "The repository contains an agent loop.",
+      "source_refs": [
+        {
+          "source_id": "S05_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "This establishes component presence only; it does not establish implementation ownership, reliability, usage, or outcomes."
+    },
+    {
+      "text": "The repository contains a tool registry.",
+      "source_refs": [
+        {
+          "source_id": "S05_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "This establishes component presence only; tool use does not prove product judgment, safety, or candidate ownership."
+    },
+    {
+      "text": "The repository contains structured output tests.",
+      "source_refs": [
+        {
+          "source_id": "S05_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "This establishes test presence, not test design ownership, coverage, passing results, measured quality, or improvement."
+    }
+  ],
+  "resume_bullets": [],
+  "interview_pack": {
+    "intro_30_seconds": "This project is an AI-agent repository containing an agent loop, a tool registry, and structured output tests. Those artifacts make it relevant to agent architecture and evaluation discussions. The supplied evidence does not identify the user problem, document product decisions, confirm my ownership, or show adoption and outcomes, so I would present it as a technical artifact and clearly separate those open questions from verified facts.",
+    "intro_source_refs": [
+      {
+        "source_id": "S05_project.md",
+        "location": "lines 1-4"
+      }
+    ],
+    "company_track_brief": "Source fact: the target is a Junior AI Product Manager role focused on generative-AI workflow discovery, MVP definition, evaluation, agent reliability, failure analysis, collaboration, and tradeoff communication. Unknown: the synthetic JD supplies no company, track, location, or public interview evidence. No company-specific conclusion is available.",
+    "interview_loop_hypothesis": [
+      {
+        "stage": "unknown",
+        "expected_focus": "The interview process and its stages are unknown; any proposed sequence would be speculative.",
+        "source_status": "unknown",
+        "basis": "No official or reported interview-process evidence was supplied."
+      }
+    ],
+    "priority_questions": [
+      {
+        "question_id": "Q1",
+        "text": "Walk me through the agent loop, tool registry, and structured output tests in this project.",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 8-10"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD asks for evaluation and an understanding of agent tools and reliability; this is an inference from the JD, not evidence of an expected interview question.",
+        "level": "Junior AI Product Manager"
+      },
+      {
+        "question_id": "Q2",
+        "text": "What does the available evidence prove about the project's evaluation approach, and what remains unknown?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, line 8"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly includes evaluation and quality measurement.",
+        "level": "Junior AI Product Manager"
+      },
+      {
+        "question_id": "Q3",
+        "text": "Which product evidence is missing from this project, and how would you gather it?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 5-6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD emphasizes valuable user workflows and MVP definition, while the project source reports no user research or user-task evidence.",
+        "level": "Junior AI Product Manager"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How would you evaluate the reliability and safety of this agent system?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 8-10"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD names evaluation, reliability, safety, and failure analysis.",
+        "level": "Junior AI Product Manager"
+      },
+      {
+        "question_id": "Q5",
+        "text": "How would you turn observed agent failures into a prioritized improvement backlog?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, line 10"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires failure analysis and improvement prioritization.",
+        "level": "Junior AI Product Manager"
+      },
+      {
+        "question_id": "Q6",
+        "text": "What MVP scope and requirements would you define once a valuable user workflow is validated?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 5-6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD links workflow identification with MVP scope and product requirements.",
+        "level": "Junior AI Product Manager"
+      }
+    ],
+    "answer_drafts": [
+      {
+        "question_id": "Q1",
+        "question": "Walk me through the agent loop, tool registry, and structured output tests in this project.",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "The repository contains an agent loop, tool registry, and structured output tests.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S05_project.md",
+                "location": "line 3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Name the three verified repository components.",
+          "Connect them cautiously to agent execution, tool availability, and output checking.",
+          "State that implementation details, ownership, and test results are not supplied."
+        ],
+        "grounded_draft": "The verified artifact is a repository with three named components: an agent loop, a tool registry, and structured output tests. At a high level, those correspond to repeated agent execution, available tool definitions, and checks on output structure. The source does not contain enough detail for me to claim how the loop operates, which tools exist, whether tests pass, or what I personally implemented, so I would verify those points before giving a deeper technical or ownership account.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I built an agent platform with reliable tool execution and validated outputs."
+        },
+        "likely_followups": [
+          "What were the loop's stop conditions?",
+          "How were tools selected and authorized?",
+          "What did the structured output tests validate?",
+          "Which parts did you personally own?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-01"
+          ]
+        }
+      },
+      {
+        "question_id": "Q2",
+        "question": "What does the available evidence prove about the project's evaluation approach, and what remains unknown?",
+        "verified_evidence": [
+          {
+            "fact_id": "F2",
+            "text": "Structured output tests are present in the repository.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S05_project.md",
+                "location": "line 3"
+              }
+            ]
+          },
+          {
+            "fact_id": "F3",
+            "text": "No adoption or outcome evidence is included.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S05_project.md",
+                "location": "line 4"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Separate test presence from measured quality.",
+          "Identify absent rubric, coverage, baseline, pass results, and outcome evidence.",
+          "Avoid attributing test design or results to the candidate."
+        ],
+        "grounded_draft": "The evidence proves only that structured output tests exist. That is relevant to evaluation because it shows an output-checking artifact, but it does not establish the evaluation dimensions, test coverage, pass rate, baseline, or any improvement in reliability. The source also explicitly says that outcome evidence is absent. I would therefore describe evaluation infrastructure as present while treating its design, performance, and my ownership as unconfirmed.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F2",
+            "F3"
+          ],
+          "narrowed_from": "I designed an evaluation framework that improved agent reliability."
+        },
+        "likely_followups": [
+          "Which quality dimensions should be measured?",
+          "How would you build a representative evaluation set?",
+          "What thresholds would determine launch readiness?",
+          "How would you measure improvement?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F2",
+            "F3"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-01"
+          ]
+        }
+      },
+      {
+        "question_id": "Q3",
+        "question": "Which product evidence is missing from this project, and how would you gather it?",
+        "verified_evidence": [
+          {
+            "fact_id": "F4",
+            "text": "No user research, user-task, adoption, or outcome evidence is included.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S05_project.md",
+                "location": "line 4"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Name each explicitly absent evidence category.",
+          "Explain that absence limits claims about value and outcomes.",
+          "Present user research and task validation as a recommendation, not completed work."
+        ],
+        "grounded_draft": "The source explicitly lacks user research, a documented user task, adoption evidence, and outcome evidence. As a result, I cannot claim that the project solves a validated workflow or produces user value. My next step would be to select one candidate workflow, interview representative users, observe the current task, define success and failure criteria, and test a narrow prototype. That is a recommended validation plan, not work already demonstrated by this project.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F4"
+          ],
+          "narrowed_from": "I identified and validated a valuable user workflow for the agent."
+        },
+        "likely_followups": [
+          "Which workflow would you investigate first?",
+          "How would you recruit representative users?",
+          "What evidence would justify building an MVP?",
+          "Which outcome metric would you choose?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F4"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-01"
+          ]
+        }
+      }
+    ],
+    "questions_to_ask_interviewer": [
+      "Which user workflows is this role currently expected to investigate or improve?",
+      "How does the team define agent quality, reliability, and launch readiness?",
+      "What evidence is expected before an AI feature moves from prototype to MVP?",
+      "How are product, engineering, and design responsibilities divided during agent failure analysis?",
+      "Which interview stages and assessment formats should candidates expect?"
+    ],
+    "mock_interview_round": {
+      "round_format": "hiring_manager_project_deep_dive",
+      "question_ids": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ],
+      "time_box_minutes": 30,
+      "scoring_dimensions": [
+        "evidence_grounding",
+        "claim_boundary_discipline",
+        "role_relevance",
+        "specificity",
+        "followup_recovery"
+      ],
+      "stop_condition": "Stop after all four questions and one follow-up per question, or at 30 minutes, whichever occurs first."
+    },
+    "unsupported_areas": [
+      "Candidate ownership of any repository component",
+      "User research or validated user workflow",
+      "MVP scope or product requirements",
+      "Engineering or design collaboration",
+      "Evaluation design, coverage, or results",
+      "Agent context-management behavior",
+      "Reliability or safety decisions",
+      "Failure analysis or prioritization",
+      "Adoption, outcomes, or measurable impact",
+      "Company-specific interview expectations"
+    ]
+  },
+  "next_build": {
+    "gap": "No validated user task or user-research evidence connects the agent repository to a valuable workflow.",
+    "why_now": "This is the highest-priority gap because workflow identification anchors MVP scope, evaluation criteria, prioritization, and credible outcome measurement for the target role.",
+    "steps": [
+      "Choose one narrowly defined workflow that could plausibly use the existing agent loop and tools.",
+      "Recruit representative users and document their current process, pain points, frequency, and failure cost.",
+      "Define the smallest testable agent-assisted task and explicit non-goals.",
+      "Create task-level success, reliability, and safety criteria.",
+      "Run observed prototype sessions and retain anonymized notes, failure cases, and measurements.",
+      "Record the resulting scope decision and tradeoffs."
+    ],
+    "acceptance_criteria": [
+      "A clearly identified user segment and recurring task are documented.",
+      "At least three observed sessions or interviews are recorded with consent and anonymized notes.",
+      "A prioritized problem statement and narrow MVP scope are documented.",
+      "A task-based evaluation set contains representative successes, failures, and safety cases.",
+      "Results include measured task performance and a decision to proceed, revise, or stop.",
+      "The candidate's individual contributions are explicitly confirmed."
+    ],
+    "expected_evidence": "Research notes, task map, problem statement, MVP requirements, evaluation cases, measured results, decision log, and an ownership statement.",
+    "output_dependency": "Could strengthen user-workflow discovery, MVP scoping, evaluation, failure prioritization, the project introduction, resume bullets, and answer drafts.",
+    "estimated_effort_band": "medium",
+    "interview_question_unlocked": "Tell me about a user workflow you validated and how the evidence changed your MVP scope and evaluation plan."
+  },
+  "correction_prompt": "Please correct or confirm only facts you can substantiate: What did you personally own in the agent loop, tool registry, or structured output tests; what user task was targeted; which product decisions did you make; who did you collaborate with; what failures and tradeoffs did you analyze; and what measured results exist? For each correction, provide a source ID and exact location.",
+  "warnings": [
+    "No resume bullets were produced because the supplied source does not confirm individual ownership.",
+    "The project supports component-presence claims only; it does not establish implementation, product judgment, execution quality, or results.",
+    "Structured output tests are not evidence of a complete evaluation strategy or measured improvement.",
+    "No user, adoption, outcome, collaboration, decision, or experiment claims are supported.",
+    "Company, track, and interview process remain unknown because the synthetic JD has no public company or interview evidence.",
+    "All priority interview questions are inferred from the JD and are possible preparation topics, not expected or previously reported questions."
+  ]
+}

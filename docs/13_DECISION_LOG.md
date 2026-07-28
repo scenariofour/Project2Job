@@ -522,3 +522,29 @@ value. No live model planner ran, token use was unavailable, the fresh path
 replayed source-grounded host analysis, and no target user evaluated the result.
 The comparison did not show a latency advantage or independent quality
 superiority.
+
+## D-028: Keep Day 5 pending and defer the model/architecture decision
+
+Decision:
+
+- Preserve the unchanged strong generic prompt as the comparison baseline.
+- Use the three existing `S01`, `S02`, and `S05` boundary cases for the smallest
+  representative live-output set, plus the existing `A17_COMPARISON` Agent
+  mechanics record.
+- Treat every severe per-case failure as an aggregate override. The current
+  Project2Job `S01` exact-source failure therefore blocks an automated pass.
+- Record only host-observed tokens and wall time. Leave the missing first
+  baseline runtime, model identifier, provider cost, human scores,
+  disagreement, target-user feedback, and product value `null`.
+- Make no prompt-versus-Skill winner, RAG, fine-tuning, framework, or runtime
+  decision until blind review, disagreement adjudication, and a bounded
+  target-user pilot exist.
+
+Reason:
+
+All six outputs validate structurally, but structural validity is not product
+quality. The exact-source failure shows why averages cannot approve a career
+output, and the ownership case still requires human judgment. The host also
+loaded the global Skill catalog during baseline sessions, so observed token
+differences cannot be cleanly attributed to Project2Job instructions. The
+package is reproducible evidence for review, not evidence of product advantage.

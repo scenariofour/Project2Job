@@ -1,0 +1,585 @@
+{
+  "schema_version": "2.0.0",
+  "interview_context": {
+    "schema_version": "1.0.0",
+    "company": "Unknown (synthetic JD)",
+    "level": "Junior",
+    "research": {
+      "mode": "user_supplied_only",
+      "usage": {
+        "search_queries": 0,
+        "pages_fetched": 0,
+        "playwright_pages": 0,
+        "navigation_depth_used": 0,
+        "total_tokens": 0,
+        "max_retries_used_per_page": 0,
+        "runtime_seconds": 0
+      },
+      "queries": [],
+      "pages": [],
+      "stop_reason": "research_not_run",
+      "gaps": [
+        "Company, team, track, location, and interview process are not stated.",
+        "No public or user-supplied interview evidence exists beyond the synthetic JD."
+      ]
+    },
+    "signals": [
+      {
+        "signal_id": "SIG-JD-01",
+        "layer": "track_team_level_requirement",
+        "statement": "The role prioritizes valuable generative-AI user workflows, MVP definition, and product requirements.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:1,5-6"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      },
+      {
+        "signal_id": "SIG-JD-02",
+        "layer": "track_team_level_requirement",
+        "statement": "The role prioritizes evaluation, quality measurement, failure analysis, reliability, safety, tools, and context.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:8-10"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      },
+      {
+        "signal_id": "SIG-JD-03",
+        "layer": "track_team_level_requirement",
+        "statement": "The role expects cross-functional work and communication of product decisions and tradeoffs.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:7,11"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      }
+    ],
+    "questions": [
+      {
+        "question_id": "Q1",
+        "text": "What valuable user workflow did the project analysis Agent address, and what evidence made it valuable?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:5"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibility at target_jd.md:5"
+      },
+      {
+        "question_id": "Q2",
+        "text": "How did you define the MVP and what did you deliberately exclude?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibility at target_jd.md:6"
+      },
+      {
+        "question_id": "Q3",
+        "text": "How did the Agent manage tools, context, stop conditions, reliability, and safety?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:9"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibility at target_jd.md:9"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How did you evaluate quality, and which failure changed the product?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:8,10"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibilities at target_jd.md:8 and 10"
+      },
+      {
+        "question_id": "Q5",
+        "text": "Which project decisions were yours, which were shared, and how did engineering or design input change them?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:7,11"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibilities at target_jd.md:7 and 11; project ownership is undocumented at S02_project.md:3"
+      },
+      {
+        "question_id": "Q6",
+        "text": "What is the strongest result you can prove, and what remains unvalidated?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:8,10-11"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD emphasizes measurement, failure analysis, and decision communication."
+      }
+    ],
+    "unknowns": [
+      "Company, track, team, location, and interview stages are unknown.",
+      "No reported interview questions or process evidence was supplied.",
+      "The candidate's personal ownership, project decisions, implementation, evaluation, users, and outcomes are unknown."
+    ]
+  },
+  "role_profile_ref": {
+    "role_id": "ai_pm_early_career",
+    "version": "0.1.0"
+  },
+  "project_version": "S02_project.md supplied snapshot",
+  "run_type": "skill_initial",
+  "intent": "application_pack",
+  "role_fit_map": [
+    {
+      "role_requirement_id": "JD-01",
+      "capability_id": "D1",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "The source names a project analysis Agent but provides no user, workflow, pain, alternative, or user evidence.",
+      "interview_risk": "Cannot answer why this was a valuable workflow without inventing discovery evidence."
+    },
+    {
+      "role_requirement_id": "JD-02",
+      "capability_id": "D2",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "No MVP scope, PRD, priority decision, rejected alternative, or acceptance criterion is supplied.",
+      "interview_risk": "Cannot defend product judgment or scope tradeoffs."
+    },
+    {
+      "role_requirement_id": "JD-03",
+      "capability_id": "D9",
+      "relevance": "important",
+      "status": "needs_confirmation",
+      "source_refs": [
+        {
+          "source_id": "S02",
+          "location": "S02_project.md:1-3"
+        }
+      ],
+      "boundary": "The artifact establishes a team project but does not identify collaboration events, delivery evidence, or the candidate's contribution.",
+      "interview_risk": "Using first-person singular would overstate team evidence."
+    },
+    {
+      "role_requirement_id": "JD-04",
+      "capability_id": "D6",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "The source says an evaluation existed only by noting that its designer is unidentified; it supplies no rubric, cases, results, failures, or decisions.",
+      "interview_risk": "The existence of an unspecified evaluation cannot support a quality or learning claim."
+    },
+    {
+      "role_requirement_id": "JD-05",
+      "capability_id": "D4",
+      "relevance": "required",
+      "status": "partially_supported",
+      "source_refs": [
+        {
+          "source_id": "S02",
+          "location": "S02_project.md:3"
+        }
+      ],
+      "boundary": "Supported only that the team built something described as a project analysis Agent; workflow, state, actions, tools, context, permissions, stop conditions, reliability, and safety are not documented.",
+      "interview_risk": "Calling it a bounded Agent system or claiming specific technical decisions would exceed the evidence."
+    },
+    {
+      "role_requirement_id": "JD-06",
+      "capability_id": "D10",
+      "relevance": "required",
+      "status": "needs_confirmation",
+      "source_refs": [
+        {
+          "source_id": "S02",
+          "location": "S02_project.md:3"
+        }
+      ],
+      "boundary": "The document explicitly does not identify who designed the workflow, wrote the evaluation, or implemented the tools.",
+      "interview_risk": "Personal ownership and decision rationale cannot be claimed until confirmed and source-linked."
+    }
+  ],
+  "project_highlights": [
+    {
+      "text": "A team built a project analysis Agent.",
+      "source_refs": [
+        {
+          "source_id": "S02",
+          "location": "S02_project.md:1-3"
+        }
+      ],
+      "boundary": "Team-level existence claim only; no personal ownership, implementation detail, evaluation result, user outcome, or delivery outcome is established."
+    }
+  ],
+  "resume_bullets": [],
+  "interview_pack": {
+    "intro_30_seconds": "My team built a project analysis Agent. The supplied project record does not establish my individual role, the user workflow, system design, evaluation method, or results, so I would present it only as a team project until I can substantiate those details.",
+    "intro_source_refs": [
+      {
+        "source_id": "S02",
+        "location": "S02_project.md:1-3"
+      }
+    ],
+    "company_track_brief": "No company or track is provided. The synthetic Junior AI Product Manager JD emphasizes generative-AI workflow selection, MVP scope, cross-functional execution, evaluation, Agent tools and context, reliability and safety, failure analysis, and tradeoff communication.",
+    "interview_loop_hypothesis": [
+      {
+        "stage": "unknown",
+        "expected_focus": "Possible project deep dive covering user value, MVP choices, Agent boundaries, evaluation, failures, collaboration, and ownership; no actual interview sequence is known.",
+        "source_status": "inferred_from_jd",
+        "basis": "SIG-JD-01, SIG-JD-02, SIG-JD-03"
+      }
+    ],
+    "priority_questions": [
+      {
+        "question_id": "Q1",
+        "text": "What valuable user workflow did the project analysis Agent address, and what evidence made it valuable?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:5"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibility at target_jd.md:5"
+      },
+      {
+        "question_id": "Q2",
+        "text": "How did you define the MVP and what did you deliberately exclude?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibility at target_jd.md:6"
+      },
+      {
+        "question_id": "Q3",
+        "text": "How did the Agent manage tools, context, stop conditions, reliability, and safety?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:9"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibility at target_jd.md:9"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How did you evaluate quality, and which failure changed the product?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:8,10"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibilities at target_jd.md:8 and 10"
+      },
+      {
+        "question_id": "Q5",
+        "text": "Which project decisions were yours, which were shared, and how did engineering or design input change them?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:7,11"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "JD responsibilities at target_jd.md:7 and 11; project ownership is undocumented at S02_project.md:3"
+      },
+      {
+        "question_id": "Q6",
+        "text": "What is the strongest result you can prove, and what remains unvalidated?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md:8,10-11"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD emphasizes measurement, failure analysis, and decision communication."
+      }
+    ],
+    "answer_drafts": [
+      {
+        "question_id": "Q1",
+        "question": "What valuable user workflow did the project analysis Agent address, and what evidence made it valuable?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "A team built a project analysis Agent.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S02",
+                "location": "S02_project.md:1-3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "State only that this was a team-built project analysis Agent.",
+          "Say that the target user, workflow, pain, and validation evidence are not present in the supplied record."
+        ],
+        "grounded_draft": "The verified fact is that my team built a project analysis Agent. The supplied record does not identify the target user or provide evidence that the workflow was valuable, so I cannot make a stronger user-value claim from this material.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I identified and validated a valuable project-analysis workflow."
+        },
+        "likely_followups": [
+          "Who was the target user?",
+          "What observation or research validated the pain?",
+          "What alternative did users use before?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-01"
+          ]
+        }
+      },
+      {
+        "question_id": "Q3",
+        "question": "How did the Agent manage tools, context, stop conditions, reliability, and safety?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "A team built a project analysis Agent.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S02",
+                "location": "S02_project.md:1-3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Identify the artifact only as a team-built Agent.",
+          "Do not claim any tool, context, safety, or reliability mechanism without another source."
+        ],
+        "grounded_draft": "The source supports only that the team built something described as a project analysis Agent. It does not document its tools, context policy, stop conditions, reliability controls, or safety mechanisms, so those technical details remain unsupported.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I designed a permission-bounded Agent with tested reliability and safety controls."
+        },
+        "likely_followups": [
+          "What actions could the Agent take?",
+          "What caused it to stop or ask?",
+          "How were untrusted inputs and tool failures handled?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-02"
+          ]
+        }
+      },
+      {
+        "question_id": "Q5",
+        "question": "Which project decisions were yours, which were shared, and how did engineering or design input change them?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "A team built a project analysis Agent.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S02",
+                "location": "S02_project.md:1-3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Use team language.",
+          "State that the supplied artifact does not attribute workflow design, evaluation authorship, or tool implementation."
+        ],
+        "grounded_draft": "This is documented only as a team project. The source explicitly does not identify who designed the workflow, wrote the evaluation, or implemented the tools, so I would not assign those decisions to myself without confirmation and supporting artifacts.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I owned the workflow, evaluation, and tools end to end."
+        },
+        "likely_followups": [
+          "What exactly did you own?",
+          "Which decision can you personally defend?",
+          "What evidence separates your contribution from the team's?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-03"
+          ]
+        }
+      }
+    ],
+    "questions_to_ask_interviewer": [
+      "Which evidence matters most for this junior role: user discovery, MVP decisions, evaluation design, or implemented Agent reliability?",
+      "How are product, engineering, and design responsibilities divided for Agent workflow and quality decisions?"
+    ],
+    "mock_interview_round": {
+      "round_format": "hiring_manager_project_deep_dive",
+      "question_ids": [
+        "Q1",
+        "Q3",
+        "Q5"
+      ],
+      "time_box_minutes": 20,
+      "scoring_dimensions": [
+        "evidence_grounding",
+        "claim_boundary_discipline",
+        "role_relevance",
+        "specificity",
+        "followup_recovery"
+      ],
+      "stop_condition": "Stop after three follow-up levels per question or when the evidence boundary is explicit; do not fill gaps with invented details."
+    },
+    "unsupported_areas": [
+      "Candidate ownership of workflow design, evaluation, or tool implementation",
+      "Target user, user research, pain, workflow, and success condition",
+      "MVP scope, requirements, rejected alternatives, and release criteria",
+      "Agent state, actions, tools, context, permissions, stop conditions, reliability, and safety controls",
+      "Evaluation cases, rubric, executed results, failure analysis, and product changes",
+      "Delivery, cross-functional decisions, metrics, users, outcomes, and impact"
+    ]
+  },
+  "next_build": {
+    "gap": "The project has no inspectable, attributable evidence chain connecting a real user task to a bounded Agent workflow, evaluation results, failures, and a product decision.",
+    "why_now": "One bounded end-to-end evaluation-and-decision evidence package would address the JD's highest-value evaluation, failure-analysis, Agent reliability, and tradeoff requirements while preserving ownership boundaries. A documentation-only ownership memo is the rejected runner-up because it would clarify attribution but would not demonstrate product or technical judgment.",
+    "steps": [
+      "Have a downstream working Agent inspect the existing project goals, architecture, workflows, known failures, tests, and safety boundaries before proposing implementation details.",
+      "Choose one current, product-relevant project-analysis task and compare the existing Agent behavior with a simple non-Agent baseline on a small versioned case set; define human review, failure labels, stop or ask behavior, and safety boundaries from the inspected system.",
+      "Return an exploration brief for product-owner approval and stop before implementation; only after explicit approval, implement and verify the approved evaluation direction.",
+      "Report changed files, commands, exact results, reviewer judgments and disagreements, remaining limitations, produced artifacts, and attributable ownership; do not invent metrics, users, outcomes, ownership, or test results."
+    ],
+    "acceptance_criteria": [
+      "A source-linked user task and limitation justify why the chosen evaluation is product-relevant.",
+      "Versioned cases, baseline, rubric, failure taxonomy, and decision rules are inspectable.",
+      "Executed results include bad cases and preserve genuine human judgments and disagreements where subjective quality matters.",
+      "At least one result causes a documented keep, revise, or stop decision, with Agent stop or ask and safety boundaries tested where applicable.",
+      "Artifacts distinguish personal, shared, and system contributions and state remaining unvalidated claims."
+    ],
+    "expected_evidence": "An approved evaluation brief; versioned cases and baseline; human-review rubric and records; executed results and bad cases; reliability or safety traces; a decision log linking results to one product change; and ownership attribution.",
+    "output_dependency": "Only completed evidence may update D1, D3-D8, D10, JD match, project highlights, resume bullets, Q1/Q3/Q4/Q5/Q6 answers, and mock follow-up defenses; the current match does not improve from this proposal.",
+    "estimated_effort_band": "medium",
+    "interview_question_unlocked": "Which failure in your Agent evaluation changed the product, and how did you decide whether to revise, stop, or ship?"
+  },
+  "correction_prompt": "Provide source-linked corrections for the candidate's exact contribution, target user and workflow, MVP decisions, Agent design, evaluation artifacts and results, failures, delivery evidence, or outcomes; unsupported corrections will remain unconfirmed.",
+  "warnings": [
+    "Preliminary verdict: not recommended as the lead project for this role on the supplied evidence; the only supported highlight is that a team built a project analysis Agent.",
+    "No context was saved.",
+    "No web research was run because the JD is synthetic and the user prohibited web search.",
+    "No project code, tests, builds, or package commands were executed; only the canonical read-only inventory was run, and it found no repository evidence because the supplied project is a single document.",
+    "Do not use first-person ownership, technical implementation, evaluation, user, metric, delivery, or impact claims until they are confirmed and source-linked."
+  ]
+}

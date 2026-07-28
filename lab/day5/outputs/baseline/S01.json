@@ -1,0 +1,535 @@
+{
+  "schema_version": "2.0.0",
+  "interview_context": {
+    "schema_version": "1.0.0",
+    "company": "Unknown (synthetic JD)",
+    "level": "Junior AI Product Manager",
+    "research": {
+      "mode": "unavailable",
+      "usage": {
+        "search_queries": 0,
+        "pages_fetched": 0,
+        "playwright_pages": 0,
+        "navigation_depth_used": 0,
+        "total_tokens": 0,
+        "max_retries_used_per_page": 0,
+        "runtime_seconds": 0
+      },
+      "queries": [],
+      "pages": [],
+      "stop_reason": "research_not_run",
+      "gaps": [
+        "Company is not identified.",
+        "Product track, location, and actual interview stages are unknown.",
+        "No official or reported interview evidence was supplied."
+      ]
+    },
+    "signals": [],
+    "questions": [],
+    "unknowns": [
+      "Company",
+      "Product or team track",
+      "Location",
+      "Official interview process",
+      "Reported interview stages and questions"
+    ]
+  },
+  "role_profile_ref": {
+    "role_id": "junior-ai-product-manager",
+    "version": "target_jd.md-unversioned"
+  },
+  "project_version": "S01_project.md-unversioned",
+  "run_type": "agent_initial",
+  "intent": "application_pack",
+  "role_fit_map": [
+    {
+      "role_requirement_id": "JD-EVALUATION",
+      "capability_id": "evaluation-and-quality-measurement",
+      "relevance": "required",
+      "status": "partially_supported",
+      "source_refs": [
+        {
+          "source_id": "S01_project.md",
+          "location": "line 3"
+        },
+        {
+          "source_id": "target_jd.md",
+          "location": "line 8"
+        }
+      ],
+      "boundary": "The evidence supports that the team designed a 20-case evaluation plan. It does not establish the candidate's individual ownership, the evaluation criteria, execution, findings, or measured quality.",
+      "interview_risk": "The plan has not been run, so it proves planning only and cannot support claims about results."
+    },
+    {
+      "role_requirement_id": "JD-RELIABILITY-SAFETY",
+      "capability_id": "agent-reliability-and-safety",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 9"
+        }
+      ],
+      "boundary": "The JD requires understanding Agent tools, context, reliability, and safety. The project document does not identify tools, context handling, reliability mechanisms, safety analysis, or safeguards.",
+      "interview_risk": "The README's improvement claim is not evidence of reliability or safety competence."
+    },
+    {
+      "role_requirement_id": "JD-FAILURE-ANALYSIS",
+      "capability_id": "failure-analysis-and-prioritization",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 10"
+        },
+        {
+          "source_id": "S01_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "The role requires failure analysis and prioritization, but the unexecuted plan produced no documented failures, analysis, or improvement priorities.",
+      "interview_risk": "Do not present planned cases as observed failures or prioritized improvements."
+    },
+    {
+      "role_requirement_id": "JD-MVP-REQUIREMENTS",
+      "capability_id": "mvp-scope-and-product-requirements",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 6"
+        }
+      ],
+      "boundary": "The JD requires MVP scope and product requirements. No scope, requirements, acceptance criteria, or candidate-authored product decisions appear in the project source.",
+      "interview_risk": "The evaluation plan should not be relabeled as an MVP definition or product requirements document."
+    },
+    {
+      "role_requirement_id": "JD-USER-WORKFLOWS",
+      "capability_id": "generative-ai-workflow-discovery",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 5"
+        }
+      ],
+      "boundary": "The JD calls for identifying valuable generative-AI workflows. The project source identifies no users, workflow, need, discovery method, or value evidence.",
+      "interview_risk": "Do not invent a target user or workflow from the generic project title."
+    },
+    {
+      "role_requirement_id": "JD-CROSS-FUNCTIONAL",
+      "capability_id": "engineering-and-design-collaboration",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 7"
+        },
+        {
+          "source_id": "S01_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "The source uses team language but does not identify engineering or design partners, the candidate's role, or any collaboration activity.",
+      "interview_risk": "Team language does not establish individual collaboration or ownership."
+    },
+    {
+      "role_requirement_id": "JD-DECISIONS-TRADEOFFS",
+      "capability_id": "product-decision-communication",
+      "relevance": "supporting",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "line 11"
+        }
+      ],
+      "boundary": "The JD requires communication of product decisions and tradeoffs. No decision, alternative, tradeoff, rationale, or communication artifact is documented.",
+      "interview_risk": "Do not infer product judgment merely from the existence of an evaluation plan."
+    }
+  ],
+  "project_highlights": [
+    {
+      "text": "The project team designed an evaluation plan covering 20 cases.",
+      "source_refs": [
+        {
+          "source_id": "S01_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "Supported as a team planning activity; individual ownership, case design quality, and execution are not established."
+    },
+    {
+      "text": "The project documentation explicitly states that the 20-case evaluation plan has not been run.",
+      "source_refs": [
+        {
+          "source_id": "S01_project.md",
+          "location": "line 3"
+        }
+      ],
+      "boundary": "This establishes project status, not evaluation results or system performance."
+    }
+  ],
+  "resume_bullets": [],
+  "interview_pack": {
+    "intro_30_seconds": "I can discuss an agent project in which the team designed a 20-case evaluation plan. The available record says the plan has not yet been run, so I would present this as evaluation-planning experience rather than evidence of measured improvement. The README states an intended improvement in evidence accuracy, but no result currently verifies that claim.",
+    "intro_source_refs": [
+      {
+        "source_id": "S01_project.md",
+        "location": "lines 1-4"
+      }
+    ],
+    "company_track_brief": "Source fact: the synthetic JD targets a Junior AI Product Manager responsible for workflow discovery, MVP definition, cross-functional work, evaluation, Agent reliability and safety, failure analysis, and decision communication. Unknown: no company, product track, location, or public interview evidence exists. Inference: preparation should emphasize those JD responsibilities, but they do not establish an actual interview format.",
+    "interview_loop_hypothesis": [
+      {
+        "stage": "unknown",
+        "expected_focus": "The interview stages and their focus cannot be established from the supplied sources.",
+        "source_status": "unknown",
+        "basis": "No official or reported interview-process source was supplied."
+      }
+    ],
+    "priority_questions": [
+      {
+        "question_id": "Q1",
+        "text": "How would you design and execute an evaluation for a generative-AI product?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, line 8"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires evaluation and quality-measurement design."
+      },
+      {
+        "question_id": "Q2",
+        "text": "What did the 20-case evaluation plan test, and what evidence would running it produce?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, line 8"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The project contains a role-relevant but unexecuted evaluation plan."
+      },
+      {
+        "question_id": "Q3",
+        "text": "How would you investigate Agent reliability, context, and safety failures?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 9-10"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly names Agent reliability, safety, failure analysis, and improvement prioritization."
+      },
+      {
+        "question_id": "Q4",
+        "text": "How do you distinguish a quality target from a measured product result?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, line 8"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The role requires quality measurement, while the project contains an intended improvement claim without a completed evaluation."
+      },
+      {
+        "question_id": "Q5",
+        "text": "How would you identify a valuable user workflow and translate it into MVP requirements?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, lines 5-6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The first two JD responsibilities concern workflow discovery and MVP definition."
+      },
+      {
+        "question_id": "Q6",
+        "text": "Describe a product decision, the alternatives considered, and the tradeoff you communicated.",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, line 11"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires communicating product decisions and tradeoffs."
+      }
+    ],
+    "answer_drafts": [
+      {
+        "question_id": "Q1",
+        "question": "How would you design and execute an evaluation for a generative-AI product?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "The team designed an evaluation plan for 20 cases.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S01_project.md",
+                "location": "line 3"
+              }
+            ]
+          },
+          {
+            "fact_id": "F2",
+            "text": "The plan has not been run.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S01_project.md",
+                "location": "line 3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "State that the documented experience is evaluation planning.",
+          "Name the documented scale of 20 cases.",
+          "Disclose that execution and results are still missing.",
+          "Describe execution as a proposed next step, not past work."
+        ],
+        "grounded_draft": "The evidence I can verify is that my project team designed a 20-case evaluation plan. The plan has not been run, so I would not claim measured performance or improvement. The next step I recommend is to define pass criteria and a baseline, execute all 20 cases consistently, record case-level failures, and summarize the results so improvement priorities can be based on observed evidence.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1",
+            "F2"
+          ],
+          "narrowed_from": "I designed and ran a 20-case evaluation that improved evidence accuracy."
+        },
+        "likely_followups": [
+          "What were the 20 cases?",
+          "What metrics and pass thresholds would you use?",
+          "What was your individual role in designing the plan?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1",
+            "F2"
+          ],
+          "emphasis_signal_ids": []
+        }
+      },
+      {
+        "question_id": "Q3",
+        "question": "How would you investigate Agent reliability, context, and safety failures?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "The team designed an evaluation plan for 20 cases.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S01_project.md",
+                "location": "line 3"
+              }
+            ]
+          },
+          {
+            "fact_id": "F2",
+            "text": "The plan has not been run.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S01_project.md",
+                "location": "line 3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Use the evaluation plan only as evidence of planning.",
+          "Acknowledge that no observed failure data exists.",
+          "Frame failure taxonomy and prioritization as recommendations."
+        ],
+        "grounded_draft": "The project gives me a starting point—a team-designed plan with 20 cases—but it does not yet provide reliability or safety findings because the plan has not been run. I would execute the cases, record failures without collapsing them into one score, classify issues such as context loss, unsupported evidence, tool errors, and unsafe behavior, and then prioritize by user impact, frequency, and severity. That is my proposed method, not a claim about completed project analysis.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1",
+            "F2"
+          ],
+          "narrowed_from": "I analyzed Agent failures and prioritized reliability and safety improvements."
+        },
+        "likely_followups": [
+          "Which failure categories were actually included in the plan?",
+          "How would you assess low-frequency, high-severity safety failures?",
+          "What evidence would change your prioritization?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1",
+            "F2"
+          ],
+          "emphasis_signal_ids": []
+        }
+      },
+      {
+        "question_id": "Q4",
+        "question": "How do you distinguish a quality target from a measured product result?",
+        "verified_evidence": [
+          {
+            "fact_id": "F2",
+            "text": "The evaluation plan has not been run.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S01_project.md",
+                "location": "line 3"
+              }
+            ]
+          },
+          {
+            "fact_id": "F3",
+            "text": "The README claims that the system will improve evidence accuracy.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S01_project.md",
+                "location": "line 4"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Identify improved evidence accuracy as a documented claim.",
+          "Identify the unrun evaluation as the boundary.",
+          "Explain that a baseline and completed measurement are needed before claiming an outcome."
+        ],
+        "grounded_draft": "In this project, the README says the system will improve evidence accuracy, but that is an intended outcome, not a measured result. The evaluation plan has not been run. I would therefore describe improved evidence accuracy as a hypothesis until a defined metric, baseline, execution record, and comparison show whether the system actually improved.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F2",
+            "F3"
+          ],
+          "narrowed_from": "The system improved evidence accuracy."
+        },
+        "likely_followups": [
+          "How would you operationalize evidence accuracy?",
+          "What baseline would you choose?",
+          "What result would count as meaningful improvement?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F2",
+            "F3"
+          ],
+          "emphasis_signal_ids": []
+        }
+      }
+    ],
+    "questions_to_ask_interviewer": [
+      "Which user workflows are the highest priority for this AI PM role?",
+      "How does the team define and measure quality for Agent behavior?",
+      "What decisions would the junior PM own versus support?",
+      "Which reliability or safety gaps are currently most important?",
+      "How do product, engineering, and design review evaluation findings and prioritize improvements?"
+    ],
+    "mock_interview_round": {
+      "round_format": "hiring_manager_project_deep_dive",
+      "question_ids": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ],
+      "time_box_minutes": 30,
+      "scoring_dimensions": [
+        "evidence_grounding",
+        "claim_boundary_discipline",
+        "role_relevance",
+        "specificity",
+        "followup_recovery"
+      ],
+      "stop_condition": "Stop after all four questions and one follow-up per question, or when 30 minutes elapse; score only evidence use, claim boundaries, role relevance, specificity, and follow-up recovery."
+    },
+    "unsupported_areas": [
+      "Individual ownership of the evaluation plan",
+      "Evaluation criteria, metrics, thresholds, and case contents",
+      "Execution of the evaluation",
+      "Measured evidence-accuracy improvement",
+      "Observed failures or prioritized improvements",
+      "User research or workflow selection",
+      "MVP scope and product requirements",
+      "Engineering and design collaboration",
+      "Agent tool, context, reliability, or safety implementation",
+      "Product decisions and tradeoffs",
+      "Company, track, and interview process"
+    ]
+  },
+  "next_build": {
+    "gap": "The 20-case evaluation plan has not been executed, leaving the central quality claim unverified.",
+    "why_now": "Running the existing plan is the shortest path from planning evidence to observable results, failure analysis, and defensible interview material.",
+    "steps": [
+      "Document each case's input, expected behavior, scoring rule, and safety or reliability category.",
+      "Define an evidence-accuracy metric, pass threshold, and baseline before execution.",
+      "Run all 20 cases under a recorded system version and consistent conditions.",
+      "Capture case-level outputs, scores, and failure notes.",
+      "Summarize results and prioritize improvements by severity, frequency, and user impact."
+    ],
+    "acceptance_criteria": [
+      "All 20 cases have reproducible inputs and expected outcomes.",
+      "The metric, threshold, and baseline are documented before results are interpreted.",
+      "Every case has a recorded output and score.",
+      "Failures are categorized with traceable examples.",
+      "The final summary separates measured findings from hypotheses and identifies prioritized next steps."
+    ],
+    "expected_evidence": "A versioned evaluation specification, completed 20-case results table, baseline comparison, failure taxonomy, and prioritized improvement list.",
+    "output_dependency": "Would strengthen the evaluation role-fit item and could support new project highlights, resume bullets if individual ownership is confirmed, and evidence-rich answers to Q1-Q4.",
+    "estimated_effort_band": "medium",
+    "interview_question_unlocked": "What did your evaluation reveal, and how did you prioritize improvements from the observed failures?"
+  },
+  "correction_prompt": "Please correct or confirm any of the following with exact source locations: your individual role in designing the 20-case plan; the case definitions and evaluation criteria; any completed runs or measured results; the intended users and workflow; product decisions or tradeoffs; engineering or design collaboration; and reliability or safety work. I will update only claims supported by the new evidence.",
+  "warnings": [
+    "No resume bullets are included because the only planning activity is attributed to the team and individual ownership is not confirmed.",
+    "The evaluation plan has not been run; it supports planning but not execution, findings, or results.",
+    "The README's statement about improved evidence accuracy is a claim, not a measured outcome.",
+    "No company or public interview evidence exists for this synthetic JD; company, track, interview stages, and reported questions remain unknown.",
+    "Priority interview questions are JD-derived possibilities, not official or reported interview questions.",
+    "Exactly three answer drafts are provided as required, but each is deliberately narrow because project evidence is sparse."
+  ]
+}

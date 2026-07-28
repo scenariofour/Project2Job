@@ -1,0 +1,365 @@
+{
+  "package_version": "0.1.0",
+  "status": "pending_human_review",
+  "comparison": "strong_generic_prompt_vs_project2job_skill",
+  "reused_artifacts": {
+    "existing_skill_output": "skill/p2j/examples/sample_brief.md",
+    "existing_skill_output_use": "Structural calibration only; it is a Brief rather than a canonical Application Pack and is not included in blind preference scoring.",
+    "rubric": "lab/scoring_rubric.md",
+    "skill_cases": "lab/evals/skill_cases.jsonl",
+    "agent_cases": "lab/evals/agent_cases.jsonl",
+    "agent_comparison": "docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json"
+  },
+  "case_results": [
+    {
+      "case_id": "D5-001",
+      "source_case_id": "S01",
+      "systems": [
+        {
+          "system": "baseline",
+          "output": "lab/day5/outputs/baseline/S01.json",
+          "output_sha256": "f8d60065c169863b72d687ea51ed6b4e849ebb35f91466cf0d168b199e8c19cf",
+          "schema_valid_at_capture": true,
+          "checks": [
+            {
+              "check": "canonical_output_shape",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "expected_evidence_statuses_present",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "unsupported_resume_export_blocked",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "answer_claim_safety_gate_closed",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "forbidden_external_claim_absent",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "one_next_build_targets_gold_gap",
+              "passed": true,
+              "severe": false
+            }
+          ]
+        },
+        {
+          "system": "skill",
+          "output": "lab/day5/outputs/skill/S01.json",
+          "output_sha256": "5059738fb23f864830ea045f0087237855a532de56a7a9f26e64f4ba50ea440d",
+          "schema_valid_at_capture": true,
+          "checks": [
+            {
+              "check": "canonical_output_shape",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "expected_evidence_statuses_present",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "unsupported_resume_export_blocked",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "answer_claim_safety_gate_closed",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "forbidden_external_claim_absent",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "key_source_location_resolves",
+              "passed": false,
+              "severe": true
+            },
+            {
+              "check": "one_next_build_targets_gold_gap",
+              "passed": true,
+              "severe": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "D5-002",
+      "source_case_id": "S02",
+      "systems": [
+        {
+          "system": "baseline",
+          "output": "lab/day5/outputs/baseline/S02.json",
+          "output_sha256": "b39f9f096f41add13bbb98e6753ea9606af7ec899cce16fdfa16c8bb59603494",
+          "schema_valid_at_capture": true,
+          "checks": [
+            {
+              "check": "canonical_output_shape",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "expected_evidence_statuses_present",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "unsupported_resume_export_blocked",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "answer_claim_safety_gate_closed",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "forbidden_external_claim_absent",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "one_next_build_targets_gold_gap",
+              "passed": true,
+              "severe": false
+            }
+          ]
+        },
+        {
+          "system": "skill",
+          "output": "lab/day5/outputs/skill/S02.json",
+          "output_sha256": "cc5138e3eb6f2a11e89850cc925b2f0136f5b47a4a64762ba2498b2186de6fa5",
+          "schema_valid_at_capture": true,
+          "checks": [
+            {
+              "check": "canonical_output_shape",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "expected_evidence_statuses_present",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "unsupported_resume_export_blocked",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "answer_claim_safety_gate_closed",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "forbidden_external_claim_absent",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "one_next_build_targets_gold_gap",
+              "passed": true,
+              "severe": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "D5-003",
+      "source_case_id": "S05",
+      "systems": [
+        {
+          "system": "baseline",
+          "output": "lab/day5/outputs/baseline/S05.json",
+          "output_sha256": "9e439136f29aade83f70c6e3a90f9a8624fd7d19d353c237cb00a037d0b133ce",
+          "schema_valid_at_capture": true,
+          "checks": [
+            {
+              "check": "canonical_output_shape",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "expected_evidence_statuses_present",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "unsupported_resume_export_blocked",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "answer_claim_safety_gate_closed",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "forbidden_external_claim_absent",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "one_next_build_targets_gold_gap",
+              "passed": true,
+              "severe": false
+            }
+          ]
+        },
+        {
+          "system": "skill",
+          "output": "lab/day5/outputs/skill/S05.json",
+          "output_sha256": "2b0010150526e595f03fc6e3e44bffa39c17803eb02a5710da267646baf4c6dc",
+          "schema_valid_at_capture": true,
+          "checks": [
+            {
+              "check": "canonical_output_shape",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "expected_evidence_statuses_present",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "unsupported_resume_export_blocked",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "answer_claim_safety_gate_closed",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "forbidden_external_claim_absent",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "one_next_build_targets_gold_gap",
+              "passed": true,
+              "severe": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "agent_comparison": {
+    "source": "docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json",
+    "checks": [
+      {
+        "check": "expected_final_values_match",
+        "passed": true,
+        "severe": true
+      },
+      {
+        "check": "no_unrelated_output_changed",
+        "passed": true,
+        "severe": true
+      },
+      {
+        "check": "token_unavailability_visible",
+        "passed": true,
+        "severe": true
+      },
+      {
+        "check": "agent_superiority_not_claimed",
+        "passed": true,
+        "severe": true
+      }
+    ]
+  },
+  "severe_errors": [
+    {
+      "case_id": "D5-001",
+      "system": "skill",
+      "check": "key_source_location_resolves"
+    }
+  ],
+  "automated_gate_passed": false,
+  "measurements": {
+    "tokens": {
+      "baseline": {
+        "input_tokens": 493062,
+        "cached_input_tokens": 383232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19772,
+        "reasoning_output_tokens": 1929
+      },
+      "skill": {
+        "input_tokens": 1396120,
+        "cached_input_tokens": 1203968,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 41802,
+        "reasoning_output_tokens": 3237
+      }
+    },
+    "runtime": {
+      "baseline": {
+        "observed_runs": 2,
+        "total_runs": 3,
+        "observed_wall_seconds_total": 269.59,
+        "not_comparable_as_complete_set": true
+      },
+      "skill": {
+        "observed_runs": 3,
+        "total_runs": 3,
+        "observed_wall_seconds_total": 844.88,
+        "not_comparable_as_complete_set": false
+      }
+    },
+    "provider_cost": null,
+    "provider_cost_note": "The host exposed no provider price or billed cost."
+  },
+  "human_results": {
+    "scores": null,
+    "preference": null,
+    "reviewer_disagreement": null,
+    "target_user_feedback": null,
+    "product_value": null
+  }
+}
