@@ -13,7 +13,7 @@
   "project_evidence_profile": {
     "schema_version": "1.0.0",
     "profile_id": "project2job-selective-routing-2026-07-28",
-    "project_fingerprint": "43c06d02cf0fe3b5d4283863b4e7a1b73027f1ca7c229b5fb724df030325e264",
+    "project_fingerprint": "2f1ed24f985ba4ff275a78de9a00028b6e56064e1220b7190bd8f68eafc95d7b",
     "built_at": "2026-07-28T19:00:00+00:00",
     "sections": {
       "verified_facts": {
@@ -280,7 +280,8 @@
         },
         "saved": [
           "project_evidence_profile",
-          "company_intelligence_profile"
+          "company_intelligence_profile",
+          "jd_demand_map"
         ],
         "reused": [],
         "after": {

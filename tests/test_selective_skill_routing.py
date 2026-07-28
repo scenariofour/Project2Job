@@ -591,7 +591,11 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
         self.assertEqual(len(runs), 2)
         self.assertEqual(
             runs[0]["profiles"]["saved"],
-            ["project_evidence_profile", "company_intelligence_profile"],
+            [
+                "project_evidence_profile",
+                "company_intelligence_profile",
+                "jd_demand_map",
+            ],
         )
         self.assertEqual(
             runs[1]["profiles"]["reused"],
