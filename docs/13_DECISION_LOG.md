@@ -548,3 +548,33 @@ output, and the ownership case still requires human judgment. The host also
 loaded the global Skill catalog during baseline sessions, so observed token
 differences cannot be cleanly attributed to Project2Job instructions. The
 package is reproducible evidence for review, not evidence of product advantage.
+
+## D-029: Separate copyable career assets from private evidence risks
+
+Decision:
+
+- Make `docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md` the canonical owner of
+  career-asset packaging.
+- Maximize hiring impact through the strongest defensible interpretation of the
+  candidate's supported facts, decisions, and transferable implications.
+- Keep historical events, ownership, users, metrics, production status,
+  stakeholder relationships, experiments, and outcomes bounded by Supported or
+  user-confirmed evidence.
+- Allow defensible capability and role-relevance interpretations, plus
+  question/JD-specific selection of a verified fact subset, when the reasoning
+  creates no new historical event.
+- Keep nonmaterial limitations and unsupported risks in private warnings,
+  unsupported areas, claim-safety review, or follow-up defense. Put a
+  limitation into copyable language only when asked or when omission would make
+  the asset false or materially misleading.
+- Make failure stories end on containment, product change, result, control,
+  repeat-prevention, or role-relevant judgment.
+
+Reason:
+
+A product-owner target-user dogfood session rated a Project2Job Day 5 interview
+asset 8/10 and would use it after minor-to-moderate editing, but accurate
+warnings leaked into the spoken script and made the candidate sound weaker than
+the evidence required. An ad hoc correction worked after it separated the
+external script from private risks. This is product-owner target-user dogfood,
+not independent validation, measured hiring impact, or a completed Day 5 gate.

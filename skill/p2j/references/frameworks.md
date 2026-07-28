@@ -20,8 +20,11 @@ Learning.
 
 ### FLAIR
 
-Use for failure: Failure signal → Loss/risk → Action and root cause → Insight →
-Repeat-prevention. Require a mechanism that reduces recurrence.
+Use for failure: Product/user problem → relevant Failure signal → Loss/risk →
+containment and root cause → product change or decision → result/control →
+repeat-prevention and role-relevant judgment. Require a mechanism that reduces
+recurrence. End on that mechanism, decision, result, or capability—not on the
+failure signal, an unrelated disclaimer, or pending work.
 
 ### ALIGN
 
@@ -40,12 +43,17 @@ what still needs confirmation.
 ## Project introduction
 
 - 30 seconds: target user/workflow → product/AI approach → ownership → strongest
-  current evidence → role relevance.
+  current achievement, decision, or control → role relevance.
 - 90 seconds: user/problem → inadequate alternative → MVP/system choice →
-  defining tradeoff → bad case/change → result/limitation → role relevance.
+  defining tradeoff → bad case/change → containment or product decision →
+  result/control → role relevance.
 - Deep dive: prepare branches for discovery, scope, AI fit, architecture,
   context/retrieval, evals, reliability, economics, delivery, ownership, and
   learning rather than one monologue.
+
+Apply the material-disclosure rule before adding a limitation to an
+introduction. If disclosure is necessary, state it briefly without letting it
+become the final emphasis.
 
 ## Technical
 
@@ -118,6 +126,10 @@ defensibility, risks, sequencing, metrics, and decision points.
 ## Company adapters
 
 Research adapters; never infer them from reputation.
+
+Use an adapter to select the strongest relevant story, terminology, and
+emphasis. Keep the facts project-grounded. Do not force a company name,
+principle, or copied JD phrase into the final sentence.
 
 ### Amazon
 

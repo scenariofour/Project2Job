@@ -105,6 +105,7 @@
     },
     "warnings": {
       "type": "array",
+      "description": "Private preparation risks and limitations. These are not part of any copyable career asset unless material disclosure is required.",
       "items": {
         "type": "string"
       }
@@ -295,7 +296,8 @@
       ],
       "properties": {
         "intro_30_seconds": {
-          "type": "string"
+          "type": "string",
+          "description": "Copyable spoken introduction. Select the strongest defensible subset of verified facts and keep nonmaterial warnings outside this string."
         },
         "intro_source_refs": {
           "type": "array",
@@ -345,7 +347,7 @@
         },
         "unsupported_areas": {
           "type": "array",
-          "description": "Claims the project evidence does not support or the user has not confirmed.",
+          "description": "Private preparation list of claims the project evidence does not support or the user has not confirmed. Do not append these items automatically to copyable answers.",
           "items": {
             "type": "string"
           }
@@ -389,7 +391,7 @@
     "answerDraft": {
       "type": "object",
       "additionalProperties": false,
-      "description": "question -> verified evidence -> answer ingredients -> grounded draft -> claim-safety review -> likely follow-ups.",
+      "description": "question -> verified evidence -> answer ingredients -> grounded draft -> claim-safety review -> likely follow-ups. The grounded draft is copyable external language; claim-safety review and unsupported risks are private preparation material.",
       "required": [
         "question_id",
         "question",
@@ -420,13 +422,15 @@
         "answer_ingredients": {
           "type": "array",
           "minItems": 1,
+          "description": "May include defensible capability, judgment, mechanism, learning, and role-relevance interpretations derived from verified fact IDs. Must not create a new historical event.",
           "items": {
             "type": "string"
           }
         },
         "grounded_draft": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Copyable spoken answer using the strongest relevant subset of verified facts. Include a limitation only when the question asks for it or omission would be false or materially misleading."
         },
         "claim_safety_review": {
           "$ref": "#/$defs/claimSafetyReview"
@@ -479,6 +483,7 @@
     "claimSafetyReview": {
       "type": "object",
       "additionalProperties": false,
+      "description": "Private export gate and rejected-claim record. Its warnings are not automatically part of the copyable draft.",
       "required": [
         "exceeds_evidence",
         "checked_fact_ids"
@@ -504,7 +509,7 @@
     "emphasisProfile": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Company signals may reorder or reweight the same facts. fact_ids is the invariant: it must not change when emphasis changes. Invariance is across runs, so no schema can check it; eval case D2-010 does.",
+      "description": "Company and question signals may select, reorder, or reweight a relevant subset of the verified project-fact pool. Every fact_id must resolve to verified_evidence; emphasis may not add or strengthen a historical fact. Cross-run pool membership is checked by eval case D2-010.",
       "required": [
         "fact_ids",
         "emphasis_signal_ids"

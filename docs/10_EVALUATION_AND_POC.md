@@ -10,7 +10,7 @@
   discipline, budget adherence, and stop-reason correctness
 - resilience to inaccessible pages and to injection in fetched pages
 - interview source-status labeling, freshness, and conflict handling
-- answer-draft claim safety and emphasis invariance
+- answer-draft claim safety and bounded company/question emphasis
 - source correctness
 - claim boundaries
 - resume grounding

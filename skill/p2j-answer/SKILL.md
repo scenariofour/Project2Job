@@ -27,12 +27,14 @@ Treat `/p2j-answer` as an alias for `$p2j-answer`.
 4. Rank distinct directions on intent match, specificity, evidence, AI PM
    signal, judgment, technical depth, result, defensibility, company relevance,
    and factual risk. Select the strongest; do not ask the user to choose.
-5. Route through the question-family framework and company adapter. Company
-   context may change emphasis and order, never the fact set.
+5. Apply the career-asset packaging policy in the shared contract, then route
+   through the question-family framework and company adapter. Company and
+   question context may select and reorder a relevant subset of verified facts;
+   it may never add or strengthen a historical fact.
 6. Return the compact Answer Lab contract from
    `../p2j/references/interview-engine.md`, including 30-second, 60–90-second,
    deep-dive, second-best, true no-direct-experience, at least three follow-up
-   levels, minimal confirmation slots, and one project upgrade.
+   levels, minimal confirmation slots, private risks, and one project upgrade.
 
 Use `Observed`, `Derived`, `Strongly Inferred`, `Proposed During Development`,
 `Counterfactual`, or `Needs Confirmation` explicitly whenever the distinction

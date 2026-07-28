@@ -612,10 +612,30 @@ class ApplicationPackTests(unittest.TestCase):
         statuses = self.defs["verifiedFact"]["properties"]["status"]["enum"]
         self.assertEqual(set(statuses), {"supported", "partially_supported"})
 
-    def test_emphasis_carries_the_invariant_fact_set(self) -> None:
+    def test_emphasis_carries_selected_fact_and_signal_ids(self) -> None:
         emphasis = self.defs["emphasisProfile"]
         self.assertEqual(set(emphasis["required"]), {"fact_ids", "emphasis_signal_ids"})
         self.assertIn("emphasis", self.defs["answerDraft"]["required"])
+
+    def test_pack_separates_copyable_assets_from_private_risks(self) -> None:
+        warnings = self.schema["properties"]["warnings"]["description"]
+        unsupported = self.pack["unsupported_areas"]["description"]
+        draft = self.defs["answerDraft"]["properties"]["grounded_draft"][
+            "description"
+        ]
+        review = self.defs["claimSafetyReview"]["description"]
+        self.assertIn("Private preparation", warnings)
+        self.assertIn("Private preparation", unsupported)
+        self.assertIn("Copyable spoken answer", draft)
+        self.assertIn("materially misleading", draft)
+        self.assertIn("Private export gate", review)
+
+    def test_emphasis_selects_only_from_the_verified_fact_pool(self) -> None:
+        description = self.defs["emphasisProfile"]["description"]
+        self.assertIn("relevant subset", description)
+        self.assertIn("verified project-fact pool", description)
+        self.assertIn("may not add or strengthen a historical fact", description)
+        self.assertNotIn("fact_ids is the invariant", description)
 
     def test_mock_round_scores_evidence_not_personality(self) -> None:
         dimensions = self.defs["mockInterviewRound"]["properties"]["scoring_dimensions"]
@@ -662,7 +682,7 @@ class Day2EvalCaseTests(unittest.TestCase):
             "stale interview report",
             "single reported question",
             "exceeds project evidence",
-            "emphasis changes wording",
+            "emphasis changes selection and wording",
             "official source plus independent reports",
             "conflicting public reports",
             "overstated as common",
@@ -675,6 +695,20 @@ class Day2EvalCaseTests(unittest.TestCase):
             "early stopping",
         ):
             self.assertIn(scenario, names, f"No case covers: {scenario}")
+
+    def test_company_emphasis_case_allows_bounded_subset_selection(self) -> None:
+        case = next(case for case in self.cases if case["case_id"] == "D2-010")
+        expect = case["expect"]
+        self.assertIs(expect["selected_fact_ids_may_differ_across_runs"], True)
+        self.assertIs(
+            expect["all_selected_fact_ids_resolve_to_verified_fact_pool"],
+            True,
+        )
+        self.assertNotIn("fact_ids_identical_across_runs", expect)
+        self.assertIn(
+            "turn implementation into production launch or user outcome",
+            expect["must_not"],
+        )
 
     def test_cases_reference_registered_schemas(self) -> None:
         contract = load("references/shared_contract.v1.json")

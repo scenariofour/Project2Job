@@ -147,8 +147,10 @@ question
 → likely follow-ups
 ```
 
-Company signals may change which facts an answer leads with and how it is worded.
-They may never change the underlying facts, add a fact, or drop a boundary.
+Company signals may select the strongest relevant subset of verified project
+facts and change which facts an answer leads with and how it is worded. They may
+never alter, add, or strengthen a project fact, or omit a boundary when that
+would make the answer materially misleading.
 
 ## Agent MVP extension
 

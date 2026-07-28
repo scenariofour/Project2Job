@@ -2,6 +2,12 @@
 
 Status: prepared; pending blind human review and target-user pilot.
 
+A later product-owner target-user dogfood session is recorded separately in
+`docs/dogfood/PROJECT2JOB_DAY5_CAREER_ASSET_DOGFOOD.md`. It found a career-asset
+packaging failure and produced the regression policy in this change. It is not
+part of the captured six-output comparison, does not replace blind review, and
+is not independent user validation.
+
 This package compares the unchanged strong generic prompt in
 `lab/baseline_prompt.md` with the Project2Job `APPLICATION_PACK` path on three
 existing synthetic cases:

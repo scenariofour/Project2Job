@@ -1,6 +1,6 @@
 # Project Status
 
-Updated: 2026-07-27
+Updated: 2026-07-28
 
 Highest completed Day: 4
 
@@ -13,8 +13,9 @@ Stateful Agent V0 mechanics are implemented and deterministically tested. A
 seven-Skill host-native Alpha is implemented and installable.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
-The Alpha has been dogfooded in Codex, but product quality and user value are
-not yet validated with target users.
+The Alpha has been dogfooded in Codex. One product-owner target-user dogfood
+session rated a Day 5 interview asset 8/10 and exposed a packaging failure; this
+is not independent target-user validation or proof of hiring impact.
 
 ## Implemented
 
@@ -74,6 +75,8 @@ Host-native Skill Alpha:
   and N/A handling
 - bounded project forensics and public company research contracts
 - ranked interview-answer reconstruction with explicit factual framing
+- shared career-asset packaging that separates strong copyable language from
+  private evidence risks while preserving material disclosure
 - installer, portable archive builder, suite validator, and behavior evals
 - consent-gated local Context Registry for one Project, one JD, and compatible
   Analysis Run history, including selective reuse and invalidation
@@ -133,10 +136,10 @@ deterministic cost model, not measurements.
 - documentation consistency checks in `tests/test_document_consistency.py`
 - sample project inventory is deterministic
 - seven Skill packages pass structural validation and install validation
-- twenty Skill behavior cases cover routing, Brief UX, shared context, Gates,
+- twenty-seven Skill behavior cases cover routing, Brief UX, shared context, Gates,
   Answer Lab, research,
   N/A, source caps, ownership, conflict, injection, no-event recovery, and One
-  Next Build, plus visibly labeled mock practice
+  Next Build, plus career-asset packaging and visibly labeled mock practice
 - twenty Context Registry unit tests cover consent, cross-process and
   cross-Skill reuse, versioning, incremental invalidation, controls, identity,
   privacy, and corrupt-state failure
@@ -145,6 +148,10 @@ deterministic cost model, not measurements.
   and the Upgrade handoff boundary
 - fresh Codex host dogfood produced a concise Brief and a grounded Answer Lab
   without executing the inspected project
+- product-owner target-user dogfood exposed limitation leakage in a Day 5
+  interview answer; the 8/10 rating and stated willingness to use after
+  minor-to-moderate editing do not establish independent validation or actual
+  external use
 - 43 Day 2 intake behavior tests, plus the 17 intake-stage `D2-0xx` eval cases
   executed end to end with 85 checks and no failure
 - every Intake Result the eval cases produce validates against
@@ -159,6 +166,9 @@ deterministic cost model, not measurements.
   passed full Application Pack schema validation in an isolated
   `jsonschema>=4` environment, and the full default suite ran 250 tests with
   233 passing and 17 optional schema tests skipped
+- the career-asset packaging fix passes 90 focused Skill/Application Pack tests
+  with `jsonschema>=4`; the full default suite runs 256 tests with 239 passing
+  and 17 optional schema tests skipped
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,

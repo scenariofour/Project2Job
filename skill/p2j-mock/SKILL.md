@@ -21,12 +21,15 @@ Treat `/p2j-mock` as an alias for `$p2j-mock`.
    - quote or pinpoint the exact weak sentence
    - diagnose missing alternative, rationale, technical detail, metric, result,
      ownership, or evidence boundary
-   - provide replacement wording that does not exceed evidence
+   - apply the shared career-asset packaging policy: provide strong,
+     conversational replacement wording that does not exceed evidence, and keep
+     nonmaterial warnings outside the copyable answer
    - ask one contextual follow-up
 5. Continue through at least three follow-up levels unless the user stops or the
    evidence boundary is already clear.
-6. End the round with an updated answer-bank entry: confirmed facts, corrections,
-   remaining risks, best answer version, and one next practice focus.
+6. End the round with an updated answer-bank entry that visibly separates the
+   best copyable answer from confirmed facts, corrections, private remaining
+   risks, and one next practice focus.
 
 Do not give generic encouragement, ask several questions at once, invent a fact
 to improve fluency, or score personality/culture fit.

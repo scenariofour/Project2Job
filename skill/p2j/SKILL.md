@@ -35,8 +35,9 @@ a conversational alias; `$p2j` is the host-native explicit invocation.
      concise `$p2j-brief`, then assemble the canonical `Application and
      Interview Pack` from the audit, intelligence, answer, mock-round, and One
      Next Build contracts; generate Project Highlights and resume bullets only
-     from source-linked `Supported` evidence and return fewer or none when the
-     evidence cannot support them
+     from source-linked `Supported` evidence, apply the shared career-asset
+     packaging policy to every copyable asset, and return fewer or none when
+     the evidence cannot support them
    - project only → `PROJECT_COMPASS`: use the default role standard, lead with
      `$p2j-brief`, and assemble the company-independent pack fields
    - explicit company-research request → `$p2j-intel`

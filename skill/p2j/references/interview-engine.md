@@ -82,13 +82,23 @@ Return:
 7. second-best alternative
 8. true no-direct-experience answer
 9. at least three follow-up levels with suggested answers
-10. minimal confirmation slots
+10. minimal confirmation slots and private risks, outside the copyable answers
 11. exactly one project upgrade
 
 Answer in the first 1–2 sentences. Use one core story. Keep context shorter than
 action, decision, and result. Include a rejected alternative and causal
-mechanism. Preserve limitations. Company style may reorder the same verified
-fact IDs but may not add, drop, or strengthen facts.
+mechanism. End the main answer on achievement, decision, containment, control,
+learning, or role relevance. Select the strongest relevant subset of verified
+facts for the question and company. Put unsupported claims, missing validation,
+and follow-up risks in private review; disclose a limitation in the main answer
+only when asked or when omission would be false or materially misleading.
+Company style may not add or strengthen a historical fact.
+
+Use short, conversational sentences. Keep framework names and report-style
+factual labels out of the spoken script unless a label is necessary to
+distinguish an executed event from a proposal or counterfactual. Use the JD to
+choose the story and emphasis; do not append the company name or JD keywords to
+the conclusion.
 
 ## Experiment boundary
 
