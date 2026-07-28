@@ -156,21 +156,31 @@ python3 scripts/run_day3_context_comparison.py --check
 
 Public examples are synthetic and contain no identifying data.
 
-## Build and learning path
+## Day 0–Day 7 Progress
 
 The concise public narrative is in `docs/build_journal/`. Days do not replace
 engineering dependencies:
 
-| Day | Focus |
-| --- | --- |
-| 0 | Safe Foundation |
-| 1 | Agent Loop |
-| 2 | JD-First Product Flow |
-| 3 | Context, RAG, and Evidence |
-| 4 | Skill, Agent, and Human Control |
-| 5 | Evaluation and Model Decisions |
-| 6 | Tools, API, and Safe Failure |
-| 7 | Product Experience and Defense |
+### Repository build
+
+`████░░░░  4 / 8 Days implemented`
+
+### Public series
+
+`██░░░░░░  2 / 8 Days published`
+
+“Public series” means the Xiaohongshu Day 0–Day 7 posts.
+
+| Day | Focus | Repository | Public series |
+| --- | --- | --- | --- |
+| [Day 0](docs/build_journal/DAY_0.md) | Safe Foundation | Implemented | Published |
+| [Day 1](docs/build_journal/DAY_1.md) | Skill, Workflow, and Agent Loop | Implemented and tested | Published |
+| [Day 2](docs/build_journal/DAY_2.md) | JD-First Product Flow | Implemented and tested | Not published |
+| [Day 3](docs/build_journal/DAY_3.md) | Context, Evidence, and RAG Decision | Implemented and tested | Not published |
+| [Day 4](docs/build_journal/DAY_4.md) | Skill, Agent, and Human Control | Formal closeout pending | Not published |
+| [Day 5](docs/build_journal/DAY_5.md) | Evaluation and Model Decisions | Planned | Not published |
+| [Day 6](docs/build_journal/DAY_6.md) | Tools, APIs, Frameworks, and Safe Failure | Planned | Not published |
+| [Day 7](docs/build_journal/DAY_7.md) | Product Experience and Defense | Planned | Not published |
 
 Work Orders in `work_orders/` remain the technical dependency and acceptance
 system. `PROJECT_MANIFEST.json` defines the smallest context set for each task;
