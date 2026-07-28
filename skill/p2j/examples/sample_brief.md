@@ -11,18 +11,13 @@ workflow into one bounded, evidence-linked decision with explicit release
 controls. That directly supports a role emphasizing trustworthy AI product
 judgment.
 
-## Preliminary Project Scores
+## Strongest Demonstrated Signals
 
-Preliminary overall rating: **strong scope judgment with a clearly specified
-product system**.
-
-| Dimension | Score | Evidence-based explanation |
-| --- | ---: | --- |
-| Problem & User Evidence | 1/5 | The interview-practice need and target user are stated (`sample_project.md#Problem and scope`). |
-| Product Judgment | 2/5 | The design limits analysis to one project and rejects auto-apply (`sample_project.md#Problem and scope`). |
-| Technical System | 2/5 | Structured output, citations, bounded tools, and fallback are specified (`sample_project.md#Technical plan`). |
-| Evaluation & Reliability | 2/5 | A comparison and severe-error rejection rule are specified (`sample_project.md#Evaluation plan`). |
-| Delivery & Learning Loop | 1/5 | The evaluation plan defines the intended decision loop (`sample_project.md#Evaluation plan`). |
+| Demonstrated signal | Evidence |
+| --- | --- |
+| Product scope and prioritization | The design limits analysis to one project and rejects auto-apply (`sample_project.md#Problem and scope`). |
+| Trustworthy AI product boundaries | The plan specifies citations, bounded tools, fallback, and a severe-error rejection rule (`sample_project.md#Technical plan`; `sample_project.md#Evaluation plan`). |
+| Structured technical-product thinking | Structured output and an explicit comparison approach are specified (`sample_project.md#Technical plan`; `sample_project.md#Evaluation plan`). |
 
 ## JD Match
 
@@ -30,7 +25,6 @@ product system**.
 | --- | --- | --- |
 | Define the MVP | **EXACT MATCH** | One-project scope and an explicit auto-apply exclusion (`sample_project.md#Problem and scope`) |
 | Set tool and context boundaries | TRANSFERABLE | Bounded tools, citations, and fallback are designed (`sample_project.md#Technical plan`) |
-| Use customer signals to prioritize | `GAP` | The current source set establishes a target user and problem statement, but not a completed customer-signal decision |
 
 ## Interview Value
 
@@ -40,5 +34,5 @@ product system**.
 
 ## Recommended Route
 
-Run `$p2j-audit` because deeper source verification is needed before the design
-claims can support external-facing interview language.
+Run `$p2j-upgrade` to choose the single highest-value evidence-producing action
+that can strengthen this positioning.

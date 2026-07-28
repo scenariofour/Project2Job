@@ -601,6 +601,12 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
             runs[1]["profiles"]["reused"],
             ["project_evidence_profile", "company_intelligence_profile"],
         )
+        allowed_fact_ids = {
+            item["fact_id"]
+            for section in report["project_evidence_profile"]["sections"].values()
+            for item in section["items"]
+            if isinstance(item, dict) and isinstance(item.get("fact_id"), str)
+        }
         observed_at = datetime(2026, 7, 28, 20, 0, tzinfo=timezone.utc)
         expected_prerequisites = [
             profile_router.plan_request(
@@ -642,7 +648,7 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
             artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
             self.assertEqual(
                 profile_router.validate_external_asset(
-                    artifact, set(artifact["fact_ids"])
+                    artifact, allowed_fact_ids
                 ),
                 [],
             )

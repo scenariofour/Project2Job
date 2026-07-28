@@ -357,7 +357,7 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("Do not run project tests, builds, or", text)
         for section in (
             "Project Verdict",
-            "Preliminary Project Scores",
+            "Strongest Demonstrated Signals",
             "JD Match",
             "Interview Value",
             "Recommended Route",
@@ -374,7 +374,8 @@ class SkillSuiteTests(unittest.TestCase):
             self.assertIn(dimension, text)
         self.assertIn("`**EXACT MATCH**`", text)
         self.assertIn("`TRANSFERABLE`", text)
-        self.assertIn("`` `GAP` ``", text)
+        self.assertIn("assessment internal", text)
+        self.assertIn("Do not display `GAP` rows", text)
         self.assertIn("Return exactly one strongest", text)
         self.assertIn("bounded `$p2j-intel` pass before", text)
         self.assertIn("Private Defense", text)
@@ -400,7 +401,7 @@ class SkillSuiteTests(unittest.TestCase):
         )
         for section in (
             "## Project Verdict",
-            "## Preliminary Project Scores",
+            "## Strongest Demonstrated Signals",
             "## JD Match",
             "## Interview Value",
             "## Recommended Route",
@@ -410,6 +411,8 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertNotIn("most important limitation", text.lower())
         self.assertNotIn("| Missing |", text)
         self.assertNotIn("| Story direction |", text)
+        self.assertNotIn("`GAP`", text)
+        self.assertNotRegex(text, r"\b[1-5]/5\b")
         self.assertNotRegex(text, r"\bG[1-6]\b")
         self.assertNotRegex(text, r"\bD(?:10|[1-9])\b")
 

@@ -28,29 +28,31 @@ host-native `$p2j-brief`.
    code; committed test code and results are evidence to inspect, not commands
    to execute. Do not treat filenames or keywords as proof.
 4. Evaluate the project internally against the role standard and highest-value
-   JD requirements. Keep ownership as provenance: absent ownership metadata
-   never lowers a project-quality score. Narrow only claims with mixed
-   attribution; block only conflicting attribution and route it to `$p2j-audit`.
+   JD requirements. Keep the full five-dimension `1–5` or `N/A` scoring and
+   `EXACT MATCH` / `TRANSFERABLE` / `GAP` assessment internal. Keep ownership as
+   provenance: absent ownership metadata never lowers a project-quality score.
+   Narrow only claims with mixed attribution; block only conflicting
+   attribution and route it to `$p2j-audit`.
 5. Return exactly these five visible sections:
    - **Project Verdict** — one concise paragraph classifying the project as
      `lead project`, `supporting project`, or `not recommended for this role`;
      state one strongest positioning and its company- and JD-specific hiring
      value.
-   - **Preliminary Project Scores** — show `1–5` or `N/A` and one concise,
-     evidence-based explanation for each: Problem & User Evidence; Product Judgment;
-     Technical System; Evaluation & Reliability; Delivery & Learning Loop. Add a
-     plain-language preliminary overall rating. Do not expose internal domain
-     identifiers, subdimension math, raw calculations, caps, Gate arithmetic,
-     policy terms, a weakness list, or a gap inventory.
+   - **Strongest Demonstrated Signals** — show only the strongest
+     evidence-supported signals from Problem & User Evidence; Product Judgment;
+     Technical System; Evaluation & Reliability; and Delivery & Learning Loop.
+     Do not show numeric scores, low-confidence dimensions, internal domain
+     identifiers, calculations, caps, policy terms, a weakness list, or a gap
+     inventory.
    - **JD Match** — use `| JD requirement | Match | Evidence |` for only the
-     highest-value requirements. Match must be `**EXACT MATCH**` for a
-     directly demonstrated competency, `TRANSFERABLE` when platform, domain,
-     user group, scope, or outcome differs, or `` `GAP` `` when evidence is
-     insufficient. Keep exact source locations concise without adding a
-     `Missing` column or broad inventory. Never call secondary research primary
-     research, adjacent-platform work direct target-platform experience,
-     technical delivery a commercial outcome, or missing evidence a supported
-     claim.
+     strongest supported requirements. Match must be `**EXACT MATCH**` for a
+     directly demonstrated competency or `TRANSFERABLE` when platform, domain,
+     user group, scope, or outcome differs. Do not display `GAP` rows. Keep
+     insufficient-match assessment internal for Private Defense or route the
+     single highest-value improvement to `$p2j-upgrade`. Never call secondary
+     research primary research, adjacent-platform work direct target-platform
+     experience, technical delivery a commercial outcome, or missing evidence
+     a supported claim.
    - **Interview Value** — use
      `| Strongest story | What it can prove |`. Return exactly one strongest
      evidence-supported story and positioning. If no story is defensible, say
