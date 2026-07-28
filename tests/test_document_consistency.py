@@ -57,8 +57,8 @@ class JournalStatusTests(unittest.TestCase):
             build_repo(root, statuses, highest_completed)
             return validate_repo.validate_journal_statuses(root)
 
-    def test_current_repository_reports_day_1_completed(self) -> None:
-        self.assertEqual(validate_repo.validate_journal_statuses(), 1)
+    def test_current_repository_reports_day_2_completed(self) -> None:
+        self.assertEqual(validate_repo.validate_journal_statuses(), 2)
 
     def test_completed_prefix_passes(self) -> None:
         statuses = ["VALIDATED", "IMPLEMENTED", "PLANNED", "PLANNED"]
@@ -243,6 +243,44 @@ class TraceabilityTests(unittest.TestCase):
                 any(name in row for name in test_names),
                 f"Row references no existing unit test: {row}",
             )
+
+
+    def test_day_2_maps_every_ac_to_cases_and_tests(self) -> None:
+        text = read("docs/build_journal/DAY_2.md")
+        self.assertIn("## Acceptance traceability", text)
+
+        test_names = {
+            line.split("def ")[1].split("(")[0]
+            for relative in ("tests/test_jd_first_intake.py", "tests/test_jd_first_contracts.py")
+            for line in read(relative).splitlines()
+            if line.strip().startswith("def test_")
+        }
+        case_ids = {
+            json.loads(line)["case_id"]
+            for line in read("lab/evals/day2_jd_first_cases.jsonl").splitlines()
+            if line.strip()
+        }
+        rows = [line for line in text.splitlines() if line.startswith("| D2-AC-")]
+        self.assertEqual(len(rows), 24)
+        for row in rows:
+            cited_cases = set(re.findall(r"D2-\d{3}", row))
+            self.assertTrue(cited_cases, f"Row cites no eval case: {row}")
+            self.assertTrue(
+                cited_cases <= case_ids,
+                f"Row cites unknown eval cases {sorted(cited_cases - case_ids)}: {row}",
+            )
+            self.assertTrue(
+                any(name in row for name in test_names),
+                f"Row references no existing test: {row}",
+            )
+
+    def test_day_2_dogfood_artifact_matches_the_runtime(self) -> None:
+        """The committed dogfood cannot drift from the intake that produced it."""
+        from scripts.build_day2_dogfood import ARTIFACT, build
+
+        committed = json.loads(ARTIFACT.read_text(encoding="utf-8"))
+        self.assertEqual(committed, build())
+        self.assertEqual(committed["cross_reference_errors"], [])
 
 
 class ManifestTests(unittest.TestCase):

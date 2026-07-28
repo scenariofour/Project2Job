@@ -50,6 +50,30 @@ for deep evidence analysis, before any project corpus is supplied.
 - no credential is ever requested, and no single platform is named in code,
   configuration, or prompts
 
+## Delivered
+
+Implemented in `src/career_desk/jd_intake.py`, `src/career_desk/research.py`,
+`lab/day2_intake_eval.py`, `scripts/run_day2_intake_evals.py`, and
+`tests/test_jd_first_intake.py`:
+
+- JD extraction from pasted text, with every unstated field in `unknowns`
+- Role Demand Map from the versioned role profile
+- one bounded research pass over a host-supplied `ResearchHost`, with
+  official-tier-first ordering, canonical-URL and page-body deduplication,
+  Playwright escalation reasons, blocked-page abandonment, budget accounting,
+  and a recorded stop reason on every path
+- merge of user-supplied reports when no web capability exists
+- routing-only resume candidates, all `self_reported`, over the five bands
+- one recommendation or `no_clear_choice`, a Required Evidence Checklist, and
+  exactly one next input
+- the cross-object output validator for the intake side
+- an executable runner for the 17 `intake`-stage cases in
+  `lab/evals/day2_jd_first_cases.jsonl`
+
+Not delivered: the `user_supplied_url`, `screenshot`, and `uploaded_file` input
+forms; a per-run cache; and any run against a live host. The three `pack`-stage
+eval cases stay unexecuted with pack generation.
+
 ## Out of scope
 
 Job discovery, bulk scraping, platform login, auto-apply, application tracking,

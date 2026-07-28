@@ -401,3 +401,71 @@ The first consented real-project run exposed false positives from a
 field-name-only persistence check and an undersized generic list limit. The same
 test showed that a useful Upgrade diagnosis should constrain the career evidence
 goal without pre-choosing repository-specific solution details.
+
+## D-023: Route on evidence availability, and let the intake decline
+
+Decision:
+
+- Gate project routing on likely evidence availability. A candidate whose
+  evidence availability is `weak` or `unknown` cannot be recommended, whatever
+  its role relevance, and the ranking orders evidence availability above role
+  relevance, ownership, outcome, and interview depth.
+- Return `no_clear_choice` with every candidate listed as an alternative when no
+  candidate passes the gate or when the top two rank identically.
+- Cap confidence by the winner's own evidence band: a `clear_choice` needs both a
+  margin over the field and `strong` evidence availability. Winning a weak field
+  is a `narrow_choice`.
+- Keep the five bands coarse and derived from the JD's own mapped capabilities,
+  so a short JD does not make every candidate look weak.
+
+Reason:
+
+The failure this product exists to prevent is putting forward the project whose
+wording matches the JD rather than the project that can be defended. Keyword
+overlap is the cheapest signal and the most misleading one, so it may inform the
+ranking but never decide it. The confidence cap came from the Day 2 dogfood,
+which reported a `clear_choice` over a field where the winner's own evidence was
+only adequate.
+
+## D-024: Bound research with a host capability, a fixture host, and a modeled cost
+
+Decision:
+
+- Keep the intake runtime socket-free. It drives a `ResearchHost` protocol —
+  search, read-only fetch, Playwright render — that the host implements, and
+  records queries, pages, tiers, escalations, duplicates, walls, usage, and one
+  stop reason.
+- Treat only search results as the fetch frontier. Page text is counted, never
+  interpreted, so text inside a page cannot cause a search, a fetch, a
+  navigation, or a claim.
+- Deduplicate on canonical URL before fetching and on page body after, so a
+  mirror is one report while two independent write-ups stay two.
+- Read one page for a gap an official source closes, and up to two for a
+  reported one, so corroboration is possible without spending the budget.
+- Model `runtime_seconds` and `total_tokens` from a fixed per-call cost rather
+  than measuring them, and say so wherever they appear.
+
+Reason:
+
+Every acceptance criterion about research is about restraint, and restraint is
+only testable if the run is reproducible. A fixture host makes each case
+executable; a measured clock would make every trace and eval non-deterministic.
+The cost of this choice is stated rather than hidden: no case has run against a
+live host, and the modeled numbers are not measurements.
+
+## D-025: Implement the intake half of WO-05 and leave the pack half unclaimed
+
+Decision:
+
+- Implement JD intake, the Role Demand Map, bounded research, routing, the
+  Required Evidence Checklist, and One Next Input; stop at the Intake Result.
+- Execute the 17 `intake`-stage Day 2 eval cases, and declare the three
+  `pack`-stage cases unexecuted rather than reporting them as covered.
+- Implement the WO-05 output validator for the intake-side cross-object
+  references only, and record which pack-side references remain.
+
+Reason:
+
+Pack generation belongs to WO-01 and WO-02. Marking Day 2 `IMPLEMENTED` requires
+executable acceptance evidence for what it claims, and claiming the pack-stage
+criteria would be exactly the overstatement the journal exists to prevent.

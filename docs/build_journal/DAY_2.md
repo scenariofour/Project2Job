@@ -1,9 +1,36 @@
 # Day 2 — JD-First Product Flow
 
-Status: PLANNED
+Status: IMPLEMENTED
 
-Day 2 revises product contracts only. No runtime, scraping, Web UI, RAG, or
-mock-interview code is implemented, so the status stays `PLANNED`.
+Not validated. Day 2 implements the intake half of the flow: one JD becomes one
+Intake Result. Pack generation, scraping, Web UI, RAG, and mock-interview code
+remain unimplemented, and no target user has run it.
+
+## Actual implementation scope
+
+`src/career_desk/jd_intake.py` and `src/career_desk/research.py` run the first
+six steps of the MVP flow deterministically:
+
+```text
+JD intake
+→ explicit requirements, everything unstated recorded as unknown
+→ Role Demand Map from the versioned role profile
+→ one bounded research pass through a host-provided capability
+→ optional resume candidates, routing-only and self_reported
+→ one recommended project or no_clear_choice
+→ Required Evidence Checklist and exactly one next input
+```
+
+The runtime opens no socket. It drives a `ResearchHost` the host provides —
+search, read-only fetch, Playwright render — and records what happened. Under
+deterministic tests that host is a fixture, so every trace and eval is
+reproducible. Two of its numbers are modeled rather than measured:
+`runtime_seconds` is a fixed per-call cost model, and `total_tokens` is derived
+from retained characters. Real latency and token cost are unmeasured.
+
+`cross_reference_errors()` is the WO-05 output validator: it checks what one
+JSON Schema document cannot, and `scripts/run_day2_intake_evals.py` executes the
+intake-stage eval cases.
 
 ## Question
 
@@ -85,34 +112,44 @@ There is no personality-based culture fit layer. The three layers are Company
 Interview Signals, track/team/level requirements, and Reported Interview
 Evidence.
 
-## Acceptance criteria
+## Acceptance traceability
 
-| AC | Criterion | Eval cases | Contract |
-| --- | --- | --- | --- |
-| D2-AC-01 | JD intake extracts company, team, role family, track, level, location, requirements, and risks; anything unstated is recorded as unknown | D2-005 | `schemas/jd_intake.schema.json` |
-| D2-AC-02 | The run produces a useful Intake Result with no resume and no project | D2-001 | `schemas/intake_result.schema.json` |
-| D2-AC-14 | No step logs in, bypasses a restriction, crawls a domain, or special-cases a named platform; the run degrades to user-supplied material when web access is unavailable | D2-001, D2-002, D2-015 | `jd_intake` `input_form`, `interview_context` `researchRun` `mode` |
-| D2-AC-03 | Resume projects are extracted for routing only and stay `self_reported` | D2-002 | `intake_result` `resumeProjectCandidate` |
-| D2-AC-04 | Exactly one project is recommended for deep analysis, with reasons, non-empty risks, and a confidence band | D2-002 | `intake_result` `projectRecommendation` |
-| D2-AC-05 | When nothing clearly fits, confidence is `no_clear_choice` and the user is asked to choose | D2-003 | `intake_result` `projectRecommendation` |
-| D2-AC-06 | Keyword overlap alone cannot win the recommendation over evidence availability | D2-004 | `intake_result` `routingScores` |
-| D2-AC-07 | An unknown company track is recorded as unknown, never inferred | D2-005 | `interview_context` `unknowns` |
-| D2-AC-08 | Conflicting interview reports are shown together, never merged or averaged | D2-006 | `interview_context` `reportConflict` |
-| D2-AC-09 | A stale report is never presented as likely | D2-007 | `interview_context` `interviewQuestion` |
-| D2-AC-10 | One reported experience is never presented more strongly than reported once | D2-008 | `interview_context` `interviewQuestion` |
-| D2-AC-11 | An answer draft may not exceed its verified evidence | D2-009 | `application_pack` `claimSafetyReview` |
-| D2-AC-12 | Company emphasis may change wording and order, never the fact set | D2-010 | `application_pack` `emphasisProfile` |
-| D2-AC-13 | The Intake Result names exactly one next input | D2-001 | `intake_result` `one_next_input` |
-| D2-AC-15 | An official source and independent reports are combined, official first, each keeping its own status | D2-011 | `interview_context` `sourceTier`, `researchRun` |
-| D2-AC-16 | A web-retrieved claim cites its exact page, fetch method, and retrieval date | D2-011 | `interview_context` `researchSource` |
-| D2-AC-17 | Duplicate results are deduplicated on canonical URL and retain no content | D2-014 | `interview_context` `researchPage` |
-| D2-AC-18 | A login-walled or blocked page is recorded, abandoned, and never retried with a credential | D2-015 | `interview_context` `researchPage` |
-| D2-AC-19 | Playwright is used only after a plain fetch is insufficient, and records why | D2-016 | `interview_context` `researchPage` |
-| D2-AC-20 | Text in a fetched page cannot cause a search, fetch, navigation, or claim | D2-017 | `docs/11_SAFETY_PRIVACY_AND_HITL.md` |
-| D2-AC-21 | Research stays inside every ceiling and stops with `budget_exhausted` | D2-018 | `interview_context` `researchBudget` |
-| D2-AC-22 | With no useful public evidence the brief is thin, gaps are named, and nothing is inferred as reported | D2-019 | `interview_context` `researchRun` |
-| D2-AC-23 | Research stops early on sufficient evidence rather than spending the budget | D2-020 | `interview_context` `researchStopReason` |
-| D2-AC-24 | One report is never generalized into a common or expected question | D2-013 | `interview_context` `interviewQuestion` |
+Every criterion, its labeled eval cases, the test that executes it, and the
+result. Unit tests live in `tests/test_jd_first_intake.py` unless the row says
+otherwise. Passing these validates intake behavior, not output quality, user
+value, or any advantage over a strong prompt.
+
+| AC | Criterion | Eval cases | Test | Result |
+| --- | --- | --- | --- | --- |
+| D2-AC-01 | JD intake extracts company, team, role family, track, level, location, requirements, and risks; anything unstated is recorded as unknown | D2-005 | `test_unstated_jd_fields_stay_unknown`, `test_a_stated_field_is_not_reported_as_unknown` | Pass |
+| D2-AC-02 | The run produces a useful Intake Result with no resume and no project | D2-001 | `test_a_pasted_jd_alone_produces_a_valid_intake_result`, `test_the_result_needs_no_resume_and_no_project` | Pass |
+| D2-AC-03 | Resume projects are extracted for routing only and stay `self_reported` | D2-002 | `test_every_candidate_stays_self_reported` | Pass |
+| D2-AC-04 | Exactly one project is recommended for deep analysis, with reasons, non-empty risks, and a confidence band | D2-002 | `test_exactly_one_project_is_routed_into_deep_analysis` | Pass |
+| D2-AC-05 | When nothing clearly fits, confidence is `no_clear_choice` and the user is asked to choose | D2-003 | `test_weak_candidates_produce_no_clear_choice`, `test_no_clear_choice_asks_the_user_to_choose_one_project` | Pass |
+| D2-AC-06 | Keyword overlap alone cannot win the recommendation over evidence availability | D2-004 | `test_keyword_overlap_alone_cannot_win_the_recommendation` | Pass |
+| D2-AC-07 | An unknown company track is recorded as unknown, never inferred | D2-005, D2-019 | `test_an_unknown_track_never_becomes_a_track_requirement` | Pass |
+| D2-AC-08 | Conflicting interview reports are shown together, never merged or averaged | D2-006, D2-012 | `test_conflicting_reports_are_shown_together` | Pass |
+| D2-AC-09 | A stale report is never presented as likely | D2-007, D2-012 | `test_a_stale_report_is_never_presented_as_likely` | Pass |
+| D2-AC-10 | One reported experience is never presented more strongly than reported once | D2-008, D2-013 | `test_one_report_stays_reported_once`; the D2-008 pack wording is not executed | Partial |
+| D2-AC-11 | An answer draft may not exceed its verified evidence | D2-009 | `test_a_draft_exceeding_its_evidence_cannot_validate` in `tests/test_jd_first_contracts.py` | Contract only |
+| D2-AC-12 | Company emphasis may change wording and order, never the fact set | D2-010 | `test_emphasis_carries_the_invariant_fact_set` in `tests/test_jd_first_contracts.py` | Contract only |
+| D2-AC-13 | The Intake Result names exactly one next input | D2-001 | `test_exactly_one_next_input_is_returned` | Pass |
+| D2-AC-14 | No step logs in, bypasses a restriction, crawls a domain, or special-cases a named platform; the run degrades to user-supplied material when web access is unavailable | D2-001, D2-002, D2-015 | `test_a_walled_or_blocked_page_is_recorded_and_abandoned`, `test_every_intake_stage_case_is_executed` | Pass |
+| D2-AC-15 | An official source and independent reports are combined, official first, each keeping its own status | D2-011 | `test_official_pages_are_fetched_before_independent_reports`, `test_official_and_reported_statuses_are_not_merged` | Pass |
+| D2-AC-16 | A web-retrieved claim cites its exact page, fetch method, and retrieval date | D2-011 | `test_every_web_source_cites_an_exact_dated_page` | Pass |
+| D2-AC-17 | Duplicate results are deduplicated on canonical URL and retain no content | D2-014 | `test_a_duplicate_is_recorded_once_and_never_refetched` | Pass |
+| D2-AC-18 | A login-walled or blocked page is recorded, abandoned, and never retried with a credential | D2-015 | `test_a_walled_or_blocked_page_is_recorded_and_abandoned` | Pass |
+| D2-AC-19 | Playwright is used only after a plain fetch is insufficient, and records why | D2-016 | `test_playwright_is_used_only_after_a_plain_fetch_is_insufficient` | Pass |
+| D2-AC-20 | Text in a fetched page cannot cause a search, fetch, navigation, or claim | D2-017 | `test_fetched_page_text_cannot_cause_a_fetch_or_a_claim` | Pass |
+| D2-AC-21 | Research stays inside every ceiling and stops with `budget_exhausted` | D2-018 | `test_research_stays_inside_a_declared_budget_and_says_why_it_stopped` | Pass |
+| D2-AC-22 | With no useful public evidence the brief is thin, gaps are named, and nothing is inferred as reported | D2-019 | `test_no_useful_public_evidence_yields_a_thin_honest_brief` | Pass |
+| D2-AC-23 | Research stops early on sufficient evidence rather than spending the budget | D2-020 | `test_research_stops_early_once_every_gap_closes` | Pass |
+| D2-AC-24 | One report is never generalized into a common or expected question | D2-013 | `test_one_report_stays_reported_once` | Pass |
+
+The two evidence systems have their own executable boundary:
+`test_research_never_reaches_a_candidate_or_a_verification_claim` and
+`test_research_cannot_change_a_routing_score` assert that interview research
+changes nothing about a candidate project.
 
 ### What the schemas actually enforce
 
@@ -138,12 +175,15 @@ runs compared against each other, which no single-document schema can express.
 D2-010 is what checks it.
 
 Cross-object ID references are likewise beyond JSON Schema and belong to the
-WO-05 output validator: `answer_draft.question_id`, `mock_round.question_ids`,
-`claim_safety_review.checked_fact_ids`, `emphasis.fact_ids`,
-non-null `recommendation.candidate_id`, `page.duplicate_of`, canonical-URL uniqueness
+WO-05 output validator, now implemented as
+`src/career_desk/jd_intake.py::cross_reference_errors`. It checks non-null
+`recommendation.candidate_id`, `page.duplicate_of`, canonical-URL uniqueness
 across extracted pages, a claim's `url` resolving to a page the run actually
-extracted, and `usage` staying within a smaller declared `budget`. The one case
-the schema can catch, recommending a project when no candidate exists, is
+extracted, conflict item IDs resolving, and `usage` staying within a smaller
+declared `budget`. The pack-side references — `answer_draft.question_id`,
+`mock_round.question_ids`, `claim_safety_review.checked_fact_ids`, and
+`emphasis.fact_ids` — remain unimplemented with pack generation itself. The one
+case the schema can catch, recommending a project when no candidate exists, is
 enforced.
 
 `tests/test_jd_first_contracts.py` runs real instances through a draft-2020-12
@@ -153,18 +193,60 @@ skips those tests when the library is absent.
 
 ## Evidence
 
-Planned. Twenty synthetic cases exist in `lab/evals/day2_jd_first_cases.jsonl`;
-nothing executes them yet. `tests/test_jd_first_contracts.py` checks the
-contracts and the case file, not product behavior.
+Seventeen of the twenty cases in `lab/evals/day2_jd_first_cases.jsonl` — every
+`intake`-stage case — are executed by `lab/day2_intake_eval.py` through
+`scripts/run_day2_intake_evals.py`. Each case builds its own world, runs the
+real intake, and checks the expectations the case states.
+
+```text
+executed: 17    checks: 85    failed_cases: []
+not executed: D2-008, D2-009, D2-010
+```
+
+Every produced Intake Result is also validated against
+`schemas/intake_result.schema.json` and passes `cross_reference_errors`.
+
+The three unexecuted cases are `pack`-stage. Pack generation belongs to WO-01 and
+WO-02, so D2-AC-11 and D2-AC-12 stay contract-and-eval definitions. Claiming them
+as behavior would be the exact overstatement this journal exists to prevent.
+
+`tests/test_jd_first_intake.py` holds 43 behavior tests;
+`tests/test_jd_first_contracts.py` still holds the contract tests.
+
+## Dogfood
+
+One JD-first run over the repository's own committed fixtures, recorded in
+`docs/dogfood/DAY2_JD_FIRST_DOGFOOD.md` with the full artifact in
+`docs/build_journal/traces/day2_jd_first_dogfood.json` and regenerated by
+`scripts/build_day2_dogfood.py`.
+
+What it produced: seven role demands, five self-reported candidates, one narrow
+recommendation, a five-item evidence checklist, and one next input, from a JD
+that states no company and no title.
+
+What it exposed: the parser reads labeled headers, so an unlabeled JD leaves
+`company` unstated and `role_family` unsupported rather than guessing — honest,
+and thin. It also caught a real bad case: a winner with only `adequate` evidence
+was reported as `clear_choice`. Confidence is now capped by the winner's own
+evidence band, with a regression test.
+
+Evidence maturity: deterministic and fixture-level. No live web research, no
+real resume, no target user, no model in the loop.
 
 ## Known gaps left open
 
-- `skill/career-desk/examples/sample_output.json` predates both pack versions: it
-  has no `schema_version` and does not carry the 2.0.0 sections. It is an
-  illustration, not a validated instance, and is regenerated under WO-01.
-- `skill/career-desk/SKILL.md` still describes the pre-Day-2 one-project run. Its
-  scope note now points at `ACTIVE_SCOPE.md`; the process steps are rewritten
-  when WO-05 is built rather than ahead of it.
+- The intake runtime and the host-native Skill suite reach the same contract by
+  different routes: the runtime is deterministic Python, the Skills are
+  instructions a host executes. Nothing yet checks that a Skill run and a runtime
+  run agree on the same JD.
+- Pack generation (WO-01, WO-02) does not consume the Intake Result yet. The
+  handoff is the schema, not a call.
+- The JD parser reads labeled headers and bulleted sections. A prose JD with no
+  labels yields `unstated` and `other_or_unsupported` rather than a guess, which
+  is honest but thin. Screenshot and URL input forms are declared in the schema
+  and not implemented.
+- The two earlier gaps in this section named `skill/career-desk/`, which no
+  longer exists; the suite is the seven `skill/p2j*` packages.
 
 ## Bad case or tradeoff
 
@@ -186,6 +268,13 @@ The third is that a bounded pass can be confidently wrong: two independent
 write-ups of the same stale process look like corroboration. Freshness and
 conflict disclosure are the guard, and neither is proven.
 
+The fourth arrived with the implementation. Telling a mirror from genuine
+corroboration decides whether one article becomes `single_report` or
+`repeatedly_reported`, and the runtime decides it on the page body: an identical
+body is a mirror, a different one is a second report. A syndicated article that
+is lightly reworded therefore still counts twice. Canonical-URL deduplication
+catches the easy half of this problem and nothing more.
+
 ## Candidate decision checkpoint
 
 - Decision to make: whether project routing needs the Agent at all, or whether a
@@ -202,7 +291,15 @@ conflict disclosure are the guard, and neither is proven.
 - that the recommendation beats the user's own instinct
 - that public evidence plus optional user-supplied material will support a useful
   company brief
-- any runtime behavior for intake, routing, or pack generation
+- any pack-generation behavior; WO-05 stops at the Intake Result
+- any behavior against a live host: every executed case uses a fixture host, so
+  real search results, real page structure, real latency, and real token cost
+  are untested
+- that the five routing bands, derived from keyword and phrase tables, agree with
+  a human reviewer on real resumes
+- that modeled `runtime_seconds` and `total_tokens` resemble measured ones
+
+Day 2 is `IMPLEMENTED`, not `VALIDATED`.
 
 ## Public content notes
 
