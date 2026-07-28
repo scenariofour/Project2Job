@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.0.0",
+  "run_date": "2026-07-28",
+  "status": "repository_dogfood",
+  "scope": {
+    "project": "Bounded Project2Job Skill Suite source set listed in the Project Evidence Profile",
+    "request_per_jd": "one 60-second project introduction",
+    "company": "OpenAI",
+    "track": "API Product Management",
+    "jd_count": 2,
+    "live_model_billing_telemetry_available": false
+  },
+  "project_evidence_profile": {
+    "schema_version": "1.0.0",
+    "profile_id": "project2job-selective-routing-2026-07-28",
+    "project_fingerprint": "1a9c50baa306e49b287e5a17488c57f0a150dfbb6ca96d8c010a07848b3e3dea",
+    "built_at": "2026-07-28T19:00:00+00:00",
+    "sections": {
+      "verified_facts": {
+        "items": [
+          {
+            "fact_id": "fact-capabilities",
+            "text": "The suite retains the router plus Brief, Intel, Audit, Answer, Mock, and Upgrade Skills.",
+            "status": "supported"
+          },
+          {
+            "fact_id": "fact-selective-plan",
+            "text": "The deterministic planner distinguishes selective requests from explicit Full Preparation.",
+            "status": "supported"
+          },
+          {
+            "fact_id": "fact-profile-reuse",
+            "text": "Registry resolution can reuse one current Project profile and one fresh company/track profile across JDs.",
+            "status": "supported"
+          },
+          {
+            "fact_id": "fact-private-defense",
+            "text": "External-asset validation rejects unsupported fact IDs and exact Private Defense leakage.",
+            "status": "supported"
+          }
+        ],
+        "source_paths": [
+          "skill/p2j/scripts/profile_router.py",
+          "skill/p2j/scripts/context_registry.py",
+          "tests/test_selective_skill_routing.py"
+        ]
+      },
+      "ownership": {
+        "items": [
+          {
+            "claim_id": "ownership-personal",
+            "status": "needs_confirmation",
+            "boundary": "Repository evidence establishes the system behavior, not the candidate's personal ownership."
+          }
+        ],
+        "source_paths": []
+      },
+      "decisions": {
+        "items": [
+          {
+            "fact_id": "decision-three-profiles",
+            "text": "D-030 separates stable Project evidence, reusable company intelligence, and per-JD demand."
+          }
+        ],
+        "source_paths": [
+          "docs/13_DECISION_LOG.md"
+        ]
+      },
+      "architecture": {
+        "items": [
+          {
+            "fact_id": "architecture-router",
+            "text": "Deterministic code owns fingerprints, freshness, route selection, schema checks, and usage arithmetic."
+          }
+        ],
+        "source_paths": [
+          "skill/p2j/scripts/profile_router.py",
+          "skill/p2j/scripts/context_registry.py",
+          "schemas/project_evidence_profile.schema.json",
+          "schemas/company_intelligence_profile.schema.json",
+          "schemas/jd_demand_map.schema.json"
+        ]
+      },
+      "results": {
+        "items": [
+          {
+            "fact_id": "result-focused-tests",
+            "text": "The 27 focused selective-routing and Skill tests passed before this dogfood report was finalized."
+          }
+        ],
+        "source_paths": [
+          "tests/test_selective_skill_routing.py",
+          "tests/test_skill_alpha.py"
+        ]
+      },
+      "bad_cases": {
+        "items": [
+          {
+            "fact_id": "bad-case-full-pipeline",
+            "early_signal_or_constraint": "A narrow asset request inherited the full six-Skill preparation path.",
+            "diagnosis": "Capability availability and per-request necessity were coupled.",
+            "deliberate_decision": "Separate reusable truth from per-request generation.",
+            "system_or_product_change": "Add three profiles and deterministic selective planning.",
+            "stronger_result": "The second compatible JD plans no specialist rerun for the requested introduction.",
+            "target_hiring_signal": "AI product architecture, cost judgment, and reliability."
+          }
+        ],
+        "source_paths": [
+          "skill/p2j/SKILL.md",
+          "skill/p2j/scripts/profile_router.py",
+          "tests/test_selective_skill_routing.py"
+        ]
+      },
+      "stories": {
+        "items": [
+          {
+            "story_id": "story-selective-agent-workflow",
+            "fact_ids": [
+              "fact-selective-plan",
+              "fact-profile-reuse",
+              "decision-three-profiles"
+            ]
+          },
+          {
+            "story_id": "story-evidence-controls",
+            "fact_ids": [
+              "fact-private-defense",
+              "architecture-router",
+              "result-focused-tests"
+            ]
+          }
+        ],
+        "source_paths": [
+          "skill/p2j/scripts/profile_router.py",
+          "skill/p2j/scripts/context_registry.py",
+          "tests/test_selective_skill_routing.py"
+        ]
+      },
+      "hiring_signals": {
+        "items": [
+          "AI product judgment",
+          "agent workflow design",
+          "developer experience",
+          "evaluation and reliability",
+          "data and permission boundaries",
+          "cost-aware architecture"
+        ],
+        "source_paths": [
+          "docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md",
+          "docs/09_TOKEN_CONTEXT_AND_COST.md"
+        ]
+      }
+    }
+  },
+  "company_intelligence_profile": {
+    "schema_version": "1.0.0",
+    "profile_key": "openai::api product management",
+    "company": "OpenAI",
+    "track": "API Product Management",
+    "researched_at": "2026-07-28T19:00:00+00:00",
+    "fresh_until": "2026-08-11T19:00:00+00:00",
+    "source_fingerprint": "63d13d8ac3926d994b9e959958d7729a354f390a6d180041c105d6d646e72077",
+    "signals": {
+      "culture_and_values": [
+        "Ramp quickly and produce results",
+        "Collaborate and communicate effectively",
+        "Stay open to feedback and align with the mission"
+      ],
+      "product_and_ai_direction": [
+        "Translate model innovation into reliable developer products",
+        "Balance usefulness, safety, scale, and simplicity"
+      ],
+      "role_or_team_priorities": [
+        "Understand developer workflows",
+        "Partner deeply with research and engineering",
+        "Turn technical capabilities into customer value"
+      ],
+      "interview_signals": [
+        "Discuss motivations, goals, and relevant work",
+        "Expect a skills-based assessment whose format varies by team",
+        "Final interviews emphasize expertise, communication, collaboration, and problem solving"
+      ]
+    },
+    "sources": [
+      {
+        "url": "https://openai.com/interview-guide/",
+        "page_location": "Hiring philosophy; Interview process; Preparation",
+        "source_date": null,
+        "retrieval_date": "2026-07-28",
+        "freshness": "retrieved_current",
+        "tier": "official",
+        "fetch_method": "search_fetch",
+        "conflict": null
+      },
+      {
+        "url": "https://openai.com/careers/product-manager-api-agents-san-francisco/",
+        "page_location": "About the Team; About the Role; In this role; You might thrive",
+        "source_date": null,
+        "retrieval_date": "2026-07-28",
+        "freshness": "current_posting",
+        "tier": "official",
+        "fetch_method": "search_fetch",
+        "conflict": null
+      },
+      {
+        "url": "https://openai.com/careers/product-manager-api-infrastructure-san-francisco/",
+        "page_location": "About the Team; About the Role; In this role",
+        "source_date": null,
+        "retrieval_date": "2026-07-28",
+        "freshness": "current_posting",
+        "tier": "official",
+        "fetch_method": "search_fetch",
+        "conflict": null
+      }
+    ]
+  },
+  "jd_demand_maps": [
+    {
+      "schema_version": "1.0.0",
+      "map_id": "openai-api-agents-2026-07-28",
+      "jd_fingerprint": "f39501dca4b4534579acb45cbd1ac59f65d5b1d2a6005ff98f4148478794cc8c",
+      "company_profile_key": "openai::api product management",
+      "extracted_at": "2026-07-28T19:00:00+00:00",
+      "role_tasks": [
+        "Understand agent-builder problems",
+        "Prioritize agentic infrastructure",
+        "Translate research and engineering into SDK and API products",
+        "Deliver quickly with product quality"
+      ],
+      "level": "5+ years stated",
+      "hiring_signals": [
+        "developer empathy",
+        "agent product strategy",
+        "technical collaboration",
+        "speed with quality"
+      ],
+      "must_haves": [
+        "developer-product experience",
+        "structured judgment in ambiguity",
+        "cross-functional communication"
+      ],
+      "preferred_qualifications": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "map_id": "openai-api-infrastructure-2026-07-28",
+      "jd_fingerprint": "95a37a2150f4c6a68188fbd071fd823b271a34a52df69143f05cfb73e4ac968b",
+      "company_profile_key": "openai::api product management",
+      "extracted_at": "2026-07-28T19:00:00+00:00",
+      "role_tasks": [
+        "Define enterprise data and privacy controls",
+        "Build access, identity, governance, and audit capabilities",
+        "Improve metering, billing, and predictable cost experiences",
+        "Ship high-trust infrastructure across technical and policy partners"
+      ],
+      "level": "experienced PM stated",
+      "hiring_signals": [
+        "control-plane product judgment",
+        "privacy and permission boundaries",
+        "cross-functional enterprise delivery",
+        "cost and reliability thinking"
+      ],
+      "must_haves": [
+        "enterprise platform strategy",
+        "technical systems fluency",
+        "high-trust cross-functional execution"
+      ],
+      "preferred_qualifications": []
+    }
+  ],
+  "strategy_outputs": [
+    {
+      "jd_map_id": "openai-api-agents-2026-07-28",
+      "selected_story_id": "story-selective-agent-workflow",
+      "positioning": "A product-architecture story about turning a broad agentic analysis workflow into a low-friction developer experience through reusable context, selective execution, and explicit quality boundaries.",
+      "copyable_asset_status": "mock_output_not_ownership_confirmed"
+    },
+    {
+      "jd_map_id": "openai-api-infrastructure-2026-07-28",
+      "selected_story_id": "story-evidence-controls",
+      "positioning": "A high-trust platform story about deterministic permissions, provenance, schema validation, cache freshness, and dependency-aware invalidation around model-driven work.",
+      "copyable_asset_status": "mock_output_not_ownership_confirmed"
+    }
+  ],
+  "private_defense": {
+    "unsupported_claims": [
+      "personal ownership",
+      "live user adoption",
+      "hiring impact",
+      "production deployment",
+      "billed model-token savings"
+    ],
+    "difficult_follow_ups": [
+      "Which parts did you personally own?",
+      "What live user behavior changed?",
+      "Were the token savings observed in billed production calls?"
+    ],
+    "fallback_language": [
+      "This dogfood measures repository behavior and deterministic context replay, not live user or hiring outcomes."
+    ]
+  },
+  "execution_comparison": {
+    "old_path": {
+      "per_jd": [
+        "p2j-brief",
+        "p2j-intel",
+        "p2j-audit",
+        "p2j-answer",
+        "p2j-mock",
+        "p2j-upgrade"
+      ],
+      "two_jd_specialist_invocations": 12,
+      "two_jd_model_calls": 12,
+      "two_jd_project_file_opens": 11,
+      "two_jd_company_pages_fetched": 6
+    },
+    "new_path": {
+      "jd_one": [
+        "build Project Evidence Profile with p2j-audit",
+        "build Company Intelligence Profile with p2j-intel",
+        "extract JD Demand Map",
+        "generate requested introduction"
+      ],
+      "jd_two": [
+        "reuse Project Evidence Profile",
+        "reuse fresh Company Intelligence Profile",
+        "extract second JD Demand Map",
+        "generate requested introduction"
+      ],
+      "two_jd_specialist_invocations": 2,
+      "two_jd_model_calls": 6,
+      "two_jd_project_file_opens": 11,
+      "two_jd_company_pages_fetched": 3
+    },
+    "preserved_no_reread_behavior": "Both paths open Project evidence only on the first JD; the new path also avoids repeated fresh company research."
+  },
+  "token_replay": {
+    "method": "deterministic context replay with tiktoken 0.11.0 o200k_base",
+    "old_path_input_tokens": 100471,
+    "new_path_input_tokens": 53636,
+    "input_token_savings": 46835,
+    "input_token_savings_percent": 46.6,
+    "jd_one": {
+      "old_path_input_tokens": 65024,
+      "new_path_input_tokens": 46593,
+      "input_token_savings": 18431,
+      "input_token_savings_percent": 28.3
+    },
+    "jd_two": {
+      "old_path_input_tokens": 35447,
+      "new_path_input_tokens": 7043,
+      "input_token_savings": 28404,
+      "input_token_savings_percent": 80.1
+    },
+    "host_cached_input_tokens": null,
+    "host_uncached_input_tokens": null,
+    "recorded_new_output_tokens": 60,
+    "old_path_output_tokens": null,
+    "boundary": "Live host billing telemetry was unavailable; do not present deterministic context replay as billed production usage."
+  }
+}

@@ -40,6 +40,10 @@ Skill host:
 - resolve compatible local context before source retrieval
 - reuse cached fingerprints and source-linked facts for unchanged artifacts
 - run scripts only when required
+- resolve the Project Evidence Profile, Company Intelligence Profile, and JD
+  Demand Map before opening sources
+- invoke only the specialist Skill required by the requested asset
+- reserve the six-Skill path for explicit Full Preparation
 
 Agent runtime:
 
@@ -105,6 +109,10 @@ Cost discipline for the pass:
 - on a changed Project, read changed artifacts and dependent evidence first
 - `refresh` recomputes while retaining compatible confirmed facts
 - `fresh` bypasses reuse without deleting history
+- reuse one current Project Evidence Profile across JDs
+- reuse a fresh Company Intelligence Profile across compatible JDs for the same
+  company/track
+- extract a lightweight JD Demand Map for each changed JD
 
 ## Telemetry
 
@@ -126,6 +134,8 @@ Record:
 - input tokens
 - cached input tokens
 - output tokens
+- uncached input tokens
+- specialist Skills invoked
 - latency
 - estimated cost
 - supported claims

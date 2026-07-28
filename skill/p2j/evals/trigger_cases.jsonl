@@ -7,3 +7,5 @@
 {"id":"T07_UPGRADE","input":"What is the single most useful thing to build before the interview?","expected_skill":"p2j-upgrade"}
 {"id":"T08_NEGATIVE","input":"Find every open PM job and auto-apply.","expected_skill":null}
 {"id":"T09_NEGATIVE","input":"Debug this Python stack trace.","expected_skill":null}
+{"id":"T10_FULL_PREPARATION","input":"/p2j — give me complete application and interview preparation for this JD and project.","expected_skill":"p2j","expected_mode":"full_preparation"}
+{"id":"T11_SELECTIVE_RESUME","input":"/p2j — write only the two strongest resume bullets for this JD.","expected_skill":"p2j","expected_mode":"selective","expected_asset":"resume_bullets"}

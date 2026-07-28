@@ -31,6 +31,10 @@ Treat `/p2j-audit` as an alias for `$p2j-audit`.
    - strongest evidence and safest interview claims
    - dangerous claims and likely follow-up attacks
    - exactly one Next Build using the required contract
+6. When the deep audit establishes a new Project version, save or update the
+   Project Evidence Profile sections defined in
+   `../p2j/references/profile-contract.md`. On later changes, update only
+   sections whose source paths changed.
 
 Ask no more than one pre-value question. Reuse resolved ownership and ask only
 about newly ambiguous attribution. Ownership uncertainty narrows the affected

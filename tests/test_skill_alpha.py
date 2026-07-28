@@ -188,8 +188,8 @@ class SkillSuiteTests(unittest.TestCase):
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-        self.assertEqual(len(cases), 27)
-        self.assertEqual(len({case["id"] for case in cases}), 27)
+        self.assertEqual(len(cases), 38)
+        self.assertEqual(len({case["id"] for case in cases}), 38)
         no_event = next(case for case in cases if case["id"] == "A11_NO_EVENT")
         self.assertIn("select strongest", no_event["must"])
         self.assertIn("dead end", no_event["must_not"])
@@ -197,9 +197,18 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("Mock Interview — simulated practice", mock["must"])
         router = next(case for case in cases if case["id"] == "A14_ROUTER_OUTPUTS")
         self.assertIn(
-            "APPLICATION_PACK leads with concise Brief then completes canonical pack",
+            "JD_INTAKE returns canonical Intake Result",
             router["must"],
         )
+        selective = next(
+            case for case in cases if case["id"] == "A29_SELECTIVE_INVOCATION"
+        )
+        self.assertIn("zero specialist invocations", selective["must"])
+        full = next(
+            case for case in cases if case["id"] == "A28_CAPABILITY_PRESERVATION"
+        )
+        for skill in SKILLS[1:]:
+            self.assertIn(skill, full["must"])
         upgrade = next(case for case in cases if case["id"] == "A12_NEXT_BUILD")
         for behavior in (
             "gap and JD mismatch diagnosis",
@@ -314,7 +323,7 @@ class SkillSuiteTests(unittest.TestCase):
             ROOT / "skill" / "p2j" / "references" / "interview-engine.md"
         ).read_text(encoding="utf-8")
         self.assertIn("strongest relevant subset of verified", engine)
-        self.assertIn("private review", engine)
+        self.assertIn("Private Defense", engine)
         self.assertIn("false or materially misleading", engine)
         self.assertIn("short, conversational sentences", engine)
         self.assertNotIn("Preserve limitations.", engine)
@@ -416,6 +425,26 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("8 fetched pages", engine)
         self.assertIn("45,000", engine)
         self.assertIn("including total tokens and runtime", engine)
+
+    def test_profile_contract_and_schemas_ship_with_the_suite(self) -> None:
+        contract = (
+            ROOT / "skill" / "p2j" / "references" / "profile-contract.md"
+        ).read_text(encoding="utf-8")
+        for term in (
+            "Project Evidence Profile",
+            "Company Intelligence Profile",
+            "JD Demand Map",
+            "Full Preparation",
+            "Private Defense",
+        ):
+            self.assertIn(term, contract)
+        for name in (
+            "project_evidence_profile.schema.json",
+            "company_intelligence_profile.schema.json",
+            "jd_demand_map.schema.json",
+        ):
+            self.assertTrue((ROOT / "schemas" / name).is_file())
+        self.assertTrue((SCRIPTS / "profile_router.py").is_file())
 
 
 if __name__ == "__main__":

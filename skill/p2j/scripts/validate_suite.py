@@ -17,6 +17,7 @@ SKILLS = (
 SHARED_REFERENCES = (
     "core-contract.md",
     "context-registry.md",
+    "profile-contract.md",
     "gates.md",
     "interview-engine.md",
     "frameworks.md",
@@ -49,6 +50,17 @@ REQUIRED_BEHAVIOR_CASES = {
     "A25_DAY5_FAILURE_ENDING",
     "A26_COMPANY_SUBSET",
     "A27_SPOKEN_USABILITY",
+    "A28_CAPABILITY_PRESERVATION",
+    "A29_SELECTIVE_INVOCATION",
+    "A30_PROJECT_PROFILE_REUSE",
+    "A31_COMPANY_PROFILE_FRESHNESS",
+    "A32_DIFFERENT_JD_FRAMING",
+    "A33_NO_UNCHANGED_REREAD",
+    "A34_NO_EXTERNAL_WEAKNESS",
+    "A35_BAD_CASE_IMPROVEMENT",
+    "A36_ONE_MATERIAL_QUESTION",
+    "A37_NO_FABRICATED_HISTORY",
+    "A38_USAGE_REPORTING",
 }
 
 
@@ -98,6 +110,7 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
         "context_registry.py",
         "inventory.py",
         "install_suite.py",
+        "profile_router.py",
         "stateful_agent.py",
         "validate_output.py",
     ):
@@ -167,7 +180,10 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
             "schemas/agent_state.schema.json",
             "schemas/agent_trace.schema.json",
             "schemas/context_registry.schema.json",
+            "schemas/company_intelligence_profile.schema.json",
             "schemas/interview_context.schema.json",
+            "schemas/jd_demand_map.schema.json",
+            "schemas/project_evidence_profile.schema.json",
         ):
             if not (canonical / relative).is_file():
                 errors.append(f"installed suite missing canonical/{relative}")

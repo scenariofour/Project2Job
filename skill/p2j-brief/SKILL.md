@@ -11,8 +11,9 @@ host-native `$p2j-brief`.
 1. Read `../p2j/references/core-contract.md` and
    `../p2j/references/gates.md`.
 2. Resolve shared context as required by the core contract. Reuse compatible
-   project facts, ownership boundaries, evidence, and JD analysis. Do not ask
-   for confirmed Intake/Application Pack information again.
+   Project Evidence Profile, ownership boundaries, evidence, Company
+   Intelligence Profile, and JD Demand Map. Do not ask for confirmed
+   Intake/Application Pack information again.
 3. For a new project, run the validated bundled inventory without opening its source:
    `python ../p2j/scripts/inventory.py <project> --summary --git-limit 10`.
    For a changed project, start with added/changed artifacts and preserved facts.

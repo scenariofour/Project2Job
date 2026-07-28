@@ -14,6 +14,13 @@ from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from inventory import inventory
+from profile_router import (
+    company_profile_key,
+    parse_time,
+    validate_company_profile,
+    validate_jd_demand_map,
+    validate_project_profile,
+)
 
 SCHEMA_VERSION = "1.0.0"
 REGISTRY_FILE = "context-registry.json"
@@ -33,8 +40,10 @@ SAFE_TELEMETRY_KEYS = {
     "cached_input_tokens",
     "input_tokens",
     "output_tokens",
+    "token_telemetry_status",
     "token_usage",
     "tokens",
+    "uncached_input_tokens",
 }
 RAW_CONTENT_KEYS = {
     "body",
@@ -76,9 +85,12 @@ SECRET_PATTERNS = (
 RUN_FIELDS = {
     "agent_state",
     "agent_trace",
+    "company_intelligence_profile",
     "evidence",
+    "jd_demand_map",
     "scores",
     "matches",
+    "project_evidence_profile",
     "reused_fact_ids",
     "unresolved_questions",
     "recommended_route",
@@ -572,6 +584,10 @@ def resolve_context(
     project: dict | None,
     jd: dict | None,
     mode: str = "normal",
+    company: str | None = None,
+    track: str | None = None,
+    company_source_fingerprint: str | None = None,
+    now: datetime | None = None,
 ) -> dict:
     project_record = (
         find_record(registry["projects"], "project_id", project["project_id"])
@@ -646,6 +662,13 @@ def resolve_context(
                     "agent_state": run.get("agent_state"),
                     "agent_trace": run.get("agent_trace"),
                     "observed_metrics": run.get("observed_metrics"),
+                    "project_evidence_profile": run.get(
+                        "project_evidence_profile"
+                    ),
+                    "company_intelligence_profile": run.get(
+                        "company_intelligence_profile"
+                    ),
+                    "jd_demand_map": run.get("jd_demand_map"),
                 }
             )
         elif project and run.get("project_id") == project["project_id"]:
@@ -668,6 +691,20 @@ def resolve_context(
         recompute.extend(["jd_match", "recommended_route"])
     if state in {"project_changed", "both_changed"}:
         recompute.extend(["dependent_scores", "dependent_claims", "interview_value"])
+
+    profiles = resolve_profiles(
+        registry,
+        project,
+        project_version,
+        jd,
+        jd_version,
+        company,
+        track,
+        company_source_fingerprint,
+        now or datetime.now(timezone.utc),
+        set(changes["added"]) | set(changes["changed"]) | set(changes["removed"]),
+        bypass=mode in {"fresh", "refresh"} or state == "identity_ambiguous",
+    )
     return {
         "context_state": state,
         "mode": mode,
@@ -682,15 +719,122 @@ def resolve_context(
         ),
         "invalidated_output_references": sorted(set(invalidated_outputs)),
         "recompute": list(dict.fromkeys(recompute)),
+        "profiles": profiles,
         "reuse_notice": bool(
             mode != "fresh"
             and (
                 compatible_runs
                 or reusable["confirmed_facts"]
                 or reusable["ownership_boundaries"]
+                or any(value["state"] == "hit" for value in profiles.values())
             )
         ),
     }
+
+
+def resolve_profiles(
+    registry: dict,
+    project: dict | None,
+    project_version: int | None,
+    jd: dict | None,
+    jd_version: int | None,
+    company: str | None,
+    track: str | None,
+    company_source_fingerprint: str | None,
+    now: datetime,
+    changed_source_paths: set[str],
+    *,
+    bypass: bool,
+) -> dict:
+    result = {
+        "project_evidence": {"state": "miss", "profile": None},
+        "company_intelligence": {"state": "miss", "profile": None},
+        "jd_demand": {"state": "miss", "profile": None},
+    }
+    if bypass:
+        return result
+
+    requested_company_key = (
+        company_profile_key(company, track)
+        if company and track
+        else None
+    )
+    previous_project_profile = None
+    for run in reversed(registry["analysis_runs"]):
+        project_profile = run.get("project_evidence_profile")
+        if (
+            result["project_evidence"]["profile"] is None
+            and project is not None
+            and run.get("project_id") == project["project_id"]
+            and run.get("project_version") == project_version
+            and project_profile is not None
+        ):
+            result["project_evidence"] = {
+                "state": "hit",
+                "profile": project_profile,
+                "affected_sections": [],
+                "changed_source_paths": [],
+            }
+        elif (
+            previous_project_profile is None
+            and project is not None
+            and run.get("project_id") == project["project_id"]
+            and project_profile is not None
+        ):
+            previous_project_profile = project_profile
+
+        company_profile = run.get("company_intelligence_profile")
+        if (
+            result["company_intelligence"]["profile"] is None
+            and requested_company_key is not None
+            and company_profile is not None
+            and company_profile.get("profile_key") == requested_company_key
+        ):
+            materially_changed = (
+                company_source_fingerprint is not None
+                and company_profile.get("source_fingerprint")
+                != company_source_fingerprint
+            )
+            fresh = parse_time(company_profile["fresh_until"]) >= now
+            state = "hit" if fresh and not materially_changed else "stale"
+            result["company_intelligence"] = {
+                "state": state,
+                "profile": company_profile,
+                "reason": (
+                    "material_change"
+                    if materially_changed
+                    else ("fresh" if fresh else "freshness_expired")
+                ),
+            }
+
+        jd_map = run.get("jd_demand_map")
+        if (
+            result["jd_demand"]["profile"] is None
+            and jd is not None
+            and run.get("jd_id") == jd["jd_id"]
+            and run.get("jd_version") == jd_version
+            and jd_map is not None
+        ):
+            result["jd_demand"] = {"state": "hit", "profile": jd_map}
+
+    if (
+        result["project_evidence"]["profile"] is None
+        and previous_project_profile is not None
+        and changed_source_paths
+    ):
+        affected_sections = sorted(
+            name
+            for name, section in previous_project_profile["sections"].items()
+            if set(section.get("source_paths", [])) & changed_source_paths
+        )
+        result["project_evidence"] = {
+            "state": "partial",
+            "profile": previous_project_profile,
+            "affected_sections": affected_sections,
+            "changed_source_paths": sorted(changed_source_paths),
+        }
+
+    return result
 
 
 def append_version(record: dict, snapshot: dict, kind: str) -> int:
@@ -763,6 +907,19 @@ def safe_analysis(analysis: dict) -> dict:
     for field in ("agent_state", "agent_trace", "observed_metrics"):
         if field in selected and not isinstance(selected[field], dict):
             raise RegistryError(f"Analysis field '{field}' must be an object.")
+    profile_validators = {
+        "project_evidence_profile": validate_project_profile,
+        "company_intelligence_profile": validate_company_profile,
+        "jd_demand_map": validate_jd_demand_map,
+    }
+    for field, validator in profile_validators.items():
+        if field in selected:
+            if not isinstance(selected[field], dict):
+                raise RegistryError(f"Analysis field '{field}' must be an object.")
+            try:
+                validator(selected[field])
+            except ValueError as error:
+                raise RegistryError(str(error)) from error
     for field in ("reused_fact_ids", "output_references"):
         if not all(isinstance(value, str) for value in selected.get(field, [])):
             raise RegistryError(f"Analysis field '{field}' must contain strings.")
@@ -914,6 +1071,9 @@ def add_context_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--jd-url")
     parser.add_argument("--jd-key")
     parser.add_argument("--jd-stdin", action="store_true")
+    parser.add_argument("--company")
+    parser.add_argument("--company-source-fingerprint")
+    parser.add_argument("--track")
 
 
 def snapshots(
@@ -968,7 +1128,20 @@ def main() -> None:
         registry = load_registry(home)
         project, jd = snapshots(args, registry)
         if args.command == "resolve":
-            print(json.dumps(resolve_context(registry, project, jd, args.mode), indent=2))
+            print(
+                json.dumps(
+                    resolve_context(
+                        registry,
+                        project,
+                        jd,
+                        args.mode,
+                        args.company,
+                        args.track,
+                        args.company_source_fingerprint,
+                    ),
+                    indent=2,
+                )
+            )
             return
         if args.command == "forget":
             updated, removed = remove_selected(registry, project, jd)

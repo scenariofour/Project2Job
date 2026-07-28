@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/company-intelligence-profile/1.0.0",
+  "title": "CompanyIntelligenceProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_key",
+    "company",
+    "track",
+    "researched_at",
+    "fresh_until",
+    "source_fingerprint",
+    "signals",
+    "sources"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "profile_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "company": {
+      "type": "string",
+      "minLength": 1
+    },
+    "track": {
+      "type": "string",
+      "minLength": 1
+    },
+    "researched_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fresh_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "culture_and_values",
+        "product_and_ai_direction",
+        "role_or_team_priorities",
+        "interview_signals"
+      ],
+      "properties": {
+        "culture_and_values": {
+          "type": "array"
+        },
+        "product_and_ai_direction": {
+          "type": "array"
+        },
+        "role_or_team_priorities": {
+          "type": "array"
+        },
+        "interview_signals": {
+          "type": "array"
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "url",
+          "page_location",
+          "source_date",
+          "retrieval_date",
+          "freshness",
+          "tier",
+          "fetch_method"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "page_location": {
+            "type": "string"
+          },
+          "source_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "retrieval_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "freshness": {
+            "type": "string"
+          },
+          "tier": {
+            "type": "string"
+          },
+          "fetch_method": {
+            "type": "string"
+          },
+          "conflict": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

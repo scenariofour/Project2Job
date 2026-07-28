@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project2job.dev/schemas/jd-demand-map/1.0.0",
+  "title": "JdDemandMap",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "map_id",
+    "jd_fingerprint",
+    "company_profile_key",
+    "extracted_at",
+    "role_tasks",
+    "level",
+    "hiring_signals",
+    "must_haves",
+    "preferred_qualifications"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "map_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jd_fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "company_profile_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extracted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "role_tasks": {
+      "$ref": "#/$defs/stringList"
+    },
+    "level": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hiring_signals": {
+      "$ref": "#/$defs/stringList"
+    },
+    "must_haves": {
+      "$ref": "#/$defs/stringList"
+    },
+    "preferred_qualifications": {
+      "$ref": "#/$defs/stringList"
+    }
+  },
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

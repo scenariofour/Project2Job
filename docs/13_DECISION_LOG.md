@@ -578,3 +578,36 @@ warnings leaked into the spoken script and made the candidate sound weaker than
 the evidence required. An ad hoc correction worked after it separated the
 external script from private risks. This is product-owner target-user dogfood,
 not independent validation, measured hiring impact, or a completed Day 5 gate.
+
+## D-030: Route selectively over three reusable context profiles
+
+Decision:
+
+- Keep all seven public Skills and every existing capability.
+- Replace the implicit JD-plus-Project full-suite path with deterministic
+  request planning that generates only the requested asset.
+- Build one source-linked Project Evidence Profile per Project version, reuse it
+  across JDs, and update only sections affected by changed source paths.
+- Build Company Intelligence Profiles through `$p2j-intel`, key them by company
+  and compatible track, and reuse them across JDs only while fresh and
+  materially unchanged.
+- Extract one lightweight JD Demand Map per JD version.
+- Make Full Preparation an explicit mode that assembles the complete pack and
+  uses all specialist capability contracts while satisfying fresh Audit/Intel
+  dependencies from cache.
+- Keep strategy, story selection, company adaptation, and career writing
+  model-driven; keep fingerprints, change detection, cache eligibility, routing,
+  schema checks, and usage arithmetic deterministic.
+- Keep weakness lists, unsupported claims, difficult follow-ups, and fallback
+  language in Private Defense for Mock preparation. Frame relevant bad cases as
+  signal → diagnosis → decision → change → stronger result → hiring signal.
+
+Reason:
+
+The full-suite path preserved capability breadth but spent context and model
+calls even when the user requested one asset. The three profiles separate stable
+Project truth, reusable company/track research, and per-JD demand so the router
+can reuse expensive work without allowing company research to alter Project
+facts. This amends the prior one-JD persistence boundary while retaining one JD
+per run, consent, freshness, source provenance, factual-safety regressions, and
+the bounded Agent update contract.

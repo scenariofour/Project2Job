@@ -1,7 +1,7 @@
 ---
 release: MVP-0
 status: locked
-updated: 2026-07-25
+updated: 2026-07-28
 ---
 
 # Active Scope
@@ -31,6 +31,9 @@ The run is progressive. The first four steps produce value before any project co
 9. Produce the role- and company-specific `Application and Interview Pack`.
 
 Several resume projects may be considered at step 6. Exactly one project may enter step 8.
+Normal Skill requests are selective: generate only the requested asset and run
+only its missing or stale prerequisites. Produce the complete pack in explicit
+Full Preparation mode.
 
 ## Bounded research
 
@@ -167,11 +170,23 @@ project changes or new evidence
 
 ## Skill Context Registry
 
-The Skill suite may retain minimal local Project, JD, and Analysis Run context
-after one-time user consent. This registry recognizes unchanged inputs, reuses
-confirmed facts and ownership boundaries, and invalidates saved results when
-their source artifacts change. It stores fingerprints and bounded derived state,
-not complete project or JD bodies.
+The Skill suite may retain minimal local Project, company/track, JD, and Analysis
+Run context after one-time user consent. This registry recognizes unchanged
+inputs, reuses confirmed facts and ownership boundaries, and invalidates saved
+results when their source artifacts change. It stores fingerprints and bounded
+derived state, not complete project or JD bodies.
+
+The reusable layers are:
+
+- one deep Project Evidence Profile per Project version, reusable across JDs
+- one source-fresh Company Intelligence Profile per company and compatible
+  track, reusable across JDs
+- one lightweight JD Demand Map per JD version
+
+Changed Project evidence invalidates only dependent Project profile sections.
+Changed JD content invalidates its demand map and matching. Company intelligence
+refreshes only when stale, materially changed, or incompatible with the stated
+track/team.
 
 The registry is not the Agent: it does not monitor files, run in the background,
 choose work autonomously, or regenerate outputs after a change. Users can
@@ -197,6 +212,9 @@ A specific JD may override or reweight the standard.
 - `OUT_OF_SCOPE_OR_UNCLEAR`
 
 Resume focus, interview focus, and build focus are modifiers, not separate primary intents.
+Project Highlight, introduction, resume-bullet, and single-answer requests are
+selective asset modifiers. `FULL_PREPARATION` is the explicit modifier that
+assembles the complete Application and Interview Pack.
 
 ## MVP boundaries
 
@@ -213,8 +231,9 @@ Still excluded:
 - email monitoring
 - referral automation
 - multiple deep project analyses
-- any cross-Project or cross-user company question database; persisted research
-  reuse is limited to the selected JD and its freshness rules
+- any cross-Project or cross-user company question database; persisted company
+  research reuse is limited to the same company and compatible track, and must
+  pass its recorded freshness rules
 - broad MCP integrations
 
 Bounded automatic public-web research is in scope and required. Job discovery,

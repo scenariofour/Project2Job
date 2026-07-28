@@ -30,6 +30,10 @@ Treat `/p2j-intel` as an alias for `$p2j-intel`.
      asked
    - likely follow-up style as an evidence-backed implication
    - research usage, stop reason, conflicts, and gaps
+7. Save the validated Company Intelligence Profile keyed by normalized company
+   plus track, with source fingerprint and `fresh_until`. Reuse it across
+   compatible JDs until stale or materially changed. Save the lightweight JD
+   Demand Map separately so a changed JD does not invalidate company research.
 
 Never turn research into project evidence, guarantee a reported question, log
 in, bypass access controls, scrape broadly, or infer a company stereotype.
