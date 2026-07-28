@@ -490,3 +490,35 @@ The targeted selector scored 2/3 because it missed the separate team-ownership
 boundary. Runtime, tokens, cost, model quality, and user value were not measured.
 The observed context saving does not justify accepting a known boundary failure
 or adding retrieval complexity.
+
+## D-027: Retain the bounded Agent only for explicit update cycles
+
+Decision:
+
+- Keep the Skill as the default one-off analysis product and fresh replay as the
+  comparison baseline.
+- Retain the bounded Agent for user-invoked updates that require saved-context
+  resolution, change detection, dependency invalidation, selective
+  regeneration, and a Before / After / Why explanation.
+- Keep deterministic policy responsible for permissions, approval gates,
+  budgets, allowed actions, export validation, preservation, and stop
+  conditions. The user remains responsible for persistence consent, factual and
+  ownership confirmation, correction approval, and actual external use.
+- Do not add background monitoring, external actions, another Agent, an Agent
+  framework, or a second state store.
+- Reconsider the Agent if target-user or live-model evidence does not show an
+  advantage over a fixed stateful workflow or fresh Skill replay.
+
+Reason:
+
+In the one controlled repository comparison, the stateful update opened 1 file
+and regenerated 2 outputs, while fresh replay opened 6 files and regenerated 23.
+Both matched the same 2 expected final values, and the stateful path changed 0
+unrelated outputs. Correction and removal tests also show that dependency
+descendants update while unrelated outputs survive.
+
+This evidence supports the mechanics of bounded continuity, not broad product
+value. No live model planner ran, token use was unavailable, the fresh path
+replayed source-grounded host analysis, and no target user evaluated the result.
+The comparison did not show a latency advantage or independent quality
+superiority.

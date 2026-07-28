@@ -2,15 +2,15 @@
 
 Updated: 2026-07-27
 
-Highest completed Day: 3
+Highest completed Day: 4
 
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
-implemented and tested. Day 2 JD-first intake and Day 3 context/evidence
-behavior are implemented and tested. Stateful Agent V0 mechanics are
-implemented and deterministically tested. A seven-Skill host-native Alpha is
-implemented and installable.**
+implemented and tested. Day 2 JD-first intake, Day 3 context/evidence behavior,
+and Day 4 Skill/Agent/human-control closeout are implemented and tested.
+Stateful Agent V0 mechanics are implemented and deterministically tested. A
+seven-Skill host-native Alpha is implemented and installable.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
 The Alpha has been dogfooded in Codex, but product quality and user value are
@@ -108,6 +108,18 @@ Day 3 context, provenance, and evidence:
   ancestor, and resolved attribution
 - the measured decision to retain manifest-scoped context and defer retrieval/RAG
 
+Day 4 Skill, Agent, and human control:
+
+- an explicit responsibility boundary for the one-off Skill, passive Context
+  Registry, bounded update Agent, and user approval points
+- approved correction propagation with Before / After / Why history
+- selective changed/removed-evidence updates with unrelated-output preservation
+- external-claim gating on Supported direct evidence and resolved attribution
+- a reproducible initial run and later separate-process update
+- a visible stale persistent-claim bad case
+- the bounded decision to retain the Agent only for explicit update cycles,
+  without claiming target-user or live-model advantage
+
 The intake runtime opens no socket of its own and does not generate an
 Application and Interview Pack. Its `runtime_seconds` and `total_tokens` are a
 deterministic cost model, not measurements.
@@ -140,6 +152,9 @@ deterministic cost model, not measurements.
 - one JD-first dogfood over committed fixtures, pinned to the runtime
 - ten focused Day 3 tests cover the deterministic comparison, citation-only
   grounding failure, direct evidence, unresolved attribution, and bounded repair
+- focused Day 4 closeout coverage reuses the Stateful Agent, integrated
+  cross-process, external-claim, and comparison tests; the stale-state eval is
+  explicitly labeled
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,
@@ -183,6 +198,6 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 
 ## Next required action
 
-Run the first target-user Alpha test and a live-model planner comparison. Day 4
+Run the first target-user Alpha test and a live-model planner comparison. Day 5
 and later implementation remain separate tasks; do not expand the local report
 or add retrieval without new evidence.

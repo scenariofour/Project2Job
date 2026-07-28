@@ -57,8 +57,8 @@ class JournalStatusTests(unittest.TestCase):
             build_repo(root, statuses, highest_completed)
             return validate_repo.validate_journal_statuses(root)
 
-    def test_current_repository_reports_day_3_completed(self) -> None:
-        self.assertEqual(validate_repo.validate_journal_statuses(), 3)
+    def test_current_repository_reports_day_4_completed(self) -> None:
+        self.assertEqual(validate_repo.validate_journal_statuses(), 4)
 
     def test_completed_prefix_passes(self) -> None:
         statuses = ["VALIDATED", "IMPLEMENTED", "PLANNED", "PLANNED"]

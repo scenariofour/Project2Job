@@ -524,6 +524,51 @@ class StatefulAgentTests(unittest.TestCase):
                 <= set(case["gold"])
             )
 
+    def test_removed_evidence_eval_is_the_visible_stale_state_bad_case(self) -> None:
+        cases = [
+            json.loads(line)
+            for line in (
+                self.ROOT / "lab/evals/agent_cases.jsonl"
+            ).read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        case = next(
+            item for item in cases if item["case_id"] == "A06_PROJECT_REMOVED"
+        )
+        self.assertIn("day4_bad_case", case["tags"])
+        self.assertIn(
+            "stale supported outputs fail",
+            case["gold"]["reviewer_notes"].lower(),
+        )
+
+    def test_fresh_replay_comparison_supports_only_a_bounded_agent_decision(self) -> None:
+        comparison = json.loads(
+            (
+                self.ROOT
+                / "docs"
+                / "dogfood"
+                / "STATEFUL_AGENT_V0_COMPARISON.json"
+            ).read_text(encoding="utf-8")
+        )
+        stateful = comparison["stateful_agent_update"]
+        fresh = comparison["fresh_skill_rerun"]
+        self.assertLess(stateful["files_opened"], fresh["files_opened"])
+        self.assertLess(
+            stateful["outputs_regenerated"], fresh["outputs_regenerated"]
+        )
+        self.assertEqual(
+            stateful["expected_final_values_matched"],
+            fresh["expected_final_values_matched"],
+        )
+        self.assertEqual(stateful["unrelated_outputs_changed"], 0)
+        limitations = " ".join(comparison["limitations"]).lower()
+        for boundary in (
+            "no live model planner",
+            "not an independent quality comparison",
+            "not target-user validation",
+        ):
+            self.assertIn(boundary, limitations)
+
 
 if __name__ == "__main__":
     unittest.main()
