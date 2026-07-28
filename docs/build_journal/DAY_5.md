@@ -2,57 +2,130 @@
 
 Status: PLANNED
 
+Review gate: PENDING HUMAN REVIEW
+
+The reproducible offline package is prepared and automated checks have run.
+Day 5 is not implemented or validated because blind reviewer scores,
+disagreement adjudication, target-user feedback, and a resulting model/product
+decision do not exist.
+
 ## Question
 
-Does Project2Job outperform a strong prompt, and what model approach is justified?
+Does Project2Job outperform a strong prompt, and what model approach is
+justified?
 
-## User value
+## Evaluation package
 
-Architecture choices are tied to reliable, usable outputs rather than novelty.
+`lab/day5/` contains:
 
-## Core concepts
+- the unchanged strong prompt baseline and three recorded baseline outputs;
+- three comparable Project2Job `APPLICATION_PACK` outputs;
+- gold expectations reusing `S01`, `S02`, `S05`, and `A17_COMPARISON`;
+- per-case severe checks that override any future aggregate score;
+- raw JSON outputs, machine-readable results, and a bad-case log;
+- a blind review packet, blank review form, and disagreement template;
+- a blank target-user pilot record;
+- observed host runtime and token usage, with unavailable values left `null`.
 
-Prompt baseline, Skill and Agent comparisons, annotation, grader disagreement,
-bad cases, regression, model benchmarking, and decision thresholds.
+The representative cases cover plan versus result, team versus personal
+ownership, and implementation versus user value. The Agent comparison remains
+the existing deterministic update-versus-fresh-replay dogfood; it is not
+relabeled as a live-model or user-value result.
 
-## Product and implementation scope
+## Automated result
 
-Run offline comparisons for prompting, Skill, Agent, and candidate models. Decide
-among prompting, RAG, and fine-tuning; do not claim production A/B testing.
+All six recorded outputs passed the canonical Application Pack schema at
+capture. The deterministic evaluator found one severe exact-source failure:
+the Project2Job `S01` output cites `S01_project.md:2` for the 20-case plan, but
+line 2 is blank and the claim appears on line 3. The claim exists in the
+permitted source, but its external-facing citation does not resolve. The
+automated gate therefore fails regardless of any future average score.
 
-## Required artifacts
+The ownership case also remains explicitly pending human adjudication because
+both systems use first-person team framing while individual contribution is
+unconfirmed.
 
-- Versioned cases, gold labels, and annotation guide
-- Blind review and grader disagreement log
-- Quality, latency, token, and cost comparison
+## Observable efficiency only
 
-## Acceptance criteria
+The host exposed token counts for all six runs:
 
-- Severe fabricated claims are reported regardless of averages
-- Targets and measurements are visibly separate
-- Behavior changes add regression cases
+| System | Input tokens | Cached input tokens | Output tokens | Reasoning output tokens |
+| --- | ---: | ---: | ---: | ---: |
+| Strong prompt | 493,062 | 383,232 | 19,772 | 1,929 |
+| Project2Job Skill | 1,396,120 | 1,203,968 | 41,802 | 3,237 |
 
-## Evidence
+Observed wall time totals are incomplete for the baseline: 269.59 seconds over
+2/3 runs. The Skill total is 844.88 seconds over 3/3 runs. These totals are
+reported as observed execution data, not as a complete latency comparison. The
+first baseline runtime, model identifier, and provider cost were unavailable
+and remain `null`.
 
-Planned: reproducible runs, human scores, disagreements, and bad-case taxonomy.
+The baseline host still loaded the global Skill catalog despite
+`--ignore-user-config`. No Project2Job Skill file was opened in the baseline
+traces, but perfect catalog isolation was not observable. This limitation is in
+the bad-case log and prevents a clean token-overhead attribution.
 
-## Bad case or tradeoff
+## Reproduce
 
-Aggregate scores can hide a career-damaging unsupported claim.
+```bash
+python3 scripts/run_day5_evaluation.py --check
+python3 -m unittest tests.test_day5_evaluation -v
+```
+
+The committed evaluator rebuilds the machine results, bad-case log, and blind
+packet from the recorded raw outputs and fails if they drift.
+
+Focused verification on 2026-07-27:
+
+- 7 Day 5 tests passed;
+- all 6 committed outputs passed full Application Pack schema validation with
+  `jsonschema>=4`;
+- `make validate` passed with 14 active documents, 42 JSON files, 112 JSONL
+  cases, 20 public fixture files, 84 schema references, and highest completed
+  Day 4;
+- `make test` ran 250 tests: 233 passed and 17 optional `jsonschema` tests
+  skipped in the default environment;
+- `make inventory` found 3 files and no duplicate groups;
+- `git diff --check` passed with no output;
+- `make skill-package` built `dist/project2job-skill-suite-alpha.zip`.
+
+## Human review still required
+
+Before Day 5 can change status:
+
+1. two independent reviewers must score A and B for all three cases using the
+   0–3 rubric;
+2. any category delta over one point and every severe-error disagreement must
+   be adjudicated;
+3. the exact-source failure must remain a failed case or be corrected through
+   a new recorded Skill run and regression;
+4. at least one eligible target user must complete a bounded pilot record,
+   including first useful output, corrections, selected asset, edit level, and
+   any action actually taken;
+5. only then may the project record reviewer preference, product usability, or
+   a continue/change/stop decision.
 
 ## Candidate decision checkpoint
 
-- Decision to make: prompt, RAG, fine-tuning, and model/runtime choice
-- Considered alternatives: strong prompt; Skill; bounded Agent; model variants
-- Expected evidence: quality, severe errors, latency, tokens, cost, usability
-- Final decision after evidence: pending
+- Decision to make: prompt, retrieval/RAG, fine-tuning, and model/runtime choice.
+- Current decision: pending.
+- Current constraint: no retrieval, fine-tuning, framework, or product feature
+  is justified by this package.
+- Evidence still needed: blind scores, adjudicated disagreements, target-user
+  actions, and a corrected or accepted severe case.
 
 ## What is not yet proven
 
-Any comparative advantage, model-performance target, or production impact.
+- that Project2Job beats the strong prompt;
+- that either output is usable with minor editing;
+- that a target user receives value or takes action;
+- complete latency or provider-cost differences;
+- model-specific quality;
+- Agent advantage beyond the existing deterministic mechanics comparison.
 
 ## Public content notes
 
-- Publish the baseline prompt.
-- Lead with bad cases and disagreement.
-- Never rename an offline comparison as an A/B test.
+- Publish the unchanged baseline prompt.
+- Lead with the exact-source failure and unresolved ownership wording.
+- Keep reviewer and pilot fields blank until observed.
+- Never rename this offline comparison as an A/B test.

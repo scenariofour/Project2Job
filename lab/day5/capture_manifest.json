@@ -1,0 +1,110 @@
+{
+  "package_version": "0.1.0",
+  "captured_at_utc": "2026-07-28",
+  "host": {
+    "name": "Codex CLI",
+    "version": "0.146.0-alpha.3.1",
+    "model": null,
+    "model_note": "The host did not expose a model identifier in the captured JSONL events."
+  },
+  "baseline": {
+    "prompt": "lab/baseline_prompt.md",
+    "isolation_instruction": "Do not use any installed Skill or Project2Job-specific instructions beyond the unchanged baseline prompt.",
+    "isolation_limitation": "The host still loaded the global Skill catalog into session context despite --ignore-user-config. No Project2Job Skill file was opened in the baseline event traces, but perfect Skill-catalog isolation was not observable."
+  },
+  "skill": {
+    "entrypoint": "$p2j",
+    "route": "APPLICATION_PACK",
+    "installed_suite": "Project2Job Alpha",
+    "save_context": false,
+    "web_research": false
+  },
+  "reused_artifacts": {
+    "existing_skill_output": "skill/p2j/examples/sample_brief.md",
+    "existing_skill_output_use": "Structural calibration only; it is a Brief rather than a canonical Application Pack and is not included in blind preference scoring.",
+    "rubric": "lab/scoring_rubric.md",
+    "skill_cases": "lab/evals/skill_cases.jsonl",
+    "agent_cases": "lab/evals/agent_cases.jsonl",
+    "agent_comparison": "docs/dogfood/STATEFUL_AGENT_V0_COMPARISON.json"
+  },
+  "runs": [
+    {
+      "run_id": "baseline_S01",
+      "case_id": "D5-001",
+      "system": "baseline",
+      "output": "lab/day5/outputs/baseline/S01.json",
+      "schema_validation": {"valid": true, "validator": "jsonschema>=4 via skill/p2j/scripts/validate_output.py"},
+      "runtime_seconds": null,
+      "runtime_note": "The first run was not wrapped with /usr/bin/time; no runtime is backfilled.",
+      "usage": {"input_tokens": 200640, "cached_input_tokens": 162304, "cache_write_input_tokens": 0, "output_tokens": 6286, "reasoning_output_tokens": 811},
+      "provider_cost": null
+    },
+    {
+      "run_id": "skill_S01",
+      "case_id": "D5-001",
+      "system": "skill",
+      "output": "lab/day5/outputs/skill/S01.json",
+      "schema_validation": {"valid": true, "validator": "jsonschema>=4 via skill/p2j/scripts/validate_output.py"},
+      "runtime_seconds": 321.77,
+      "runtime_note": "Observed wall time from /usr/bin/time.",
+      "usage": {"input_tokens": 572646, "cached_input_tokens": 506112, "cache_write_input_tokens": 0, "output_tokens": 15145, "reasoning_output_tokens": 1107},
+      "provider_cost": null
+    },
+    {
+      "run_id": "baseline_S02",
+      "case_id": "D5-002",
+      "system": "baseline",
+      "output": "lab/day5/outputs/baseline/S02.json",
+      "schema_validation": {"valid": true, "validator": "jsonschema>=4 via skill/p2j/scripts/validate_output.py"},
+      "runtime_seconds": 145.46,
+      "runtime_note": "Observed wall time from /usr/bin/time.",
+      "usage": {"input_tokens": 128145, "cached_input_tokens": 94208, "cache_write_input_tokens": 0, "output_tokens": 7373, "reasoning_output_tokens": 699},
+      "provider_cost": null
+    },
+    {
+      "run_id": "skill_S02",
+      "case_id": "D5-002",
+      "system": "skill",
+      "output": "lab/day5/outputs/skill/S02.json",
+      "schema_validation": {"valid": true, "validator": "jsonschema>=4 via skill/p2j/scripts/validate_output.py"},
+      "runtime_seconds": 269.77,
+      "runtime_note": "Observed wall time from /usr/bin/time.",
+      "usage": {"input_tokens": 467030, "cached_input_tokens": 404736, "cache_write_input_tokens": 0, "output_tokens": 13817, "reasoning_output_tokens": 955},
+      "provider_cost": null
+    },
+    {
+      "run_id": "baseline_S05",
+      "case_id": "D5-003",
+      "system": "baseline",
+      "output": "lab/day5/outputs/baseline/S05.json",
+      "schema_validation": {"valid": true, "validator": "jsonschema>=4 via skill/p2j/scripts/validate_output.py"},
+      "runtime_seconds": 124.13,
+      "runtime_note": "Observed wall time from /usr/bin/time.",
+      "usage": {"input_tokens": 164277, "cached_input_tokens": 126720, "cache_write_input_tokens": 0, "output_tokens": 6113, "reasoning_output_tokens": 419},
+      "provider_cost": null
+    },
+    {
+      "run_id": "skill_S05",
+      "case_id": "D5-003",
+      "system": "skill",
+      "output": "lab/day5/outputs/skill/S05.json",
+      "schema_validation": {"valid": true, "validator": "jsonschema>=4 via skill/p2j/scripts/validate_output.py"},
+      "runtime_seconds": 253.34,
+      "runtime_note": "Observed wall time from /usr/bin/time.",
+      "usage": {"input_tokens": 356444, "cached_input_tokens": 293120, "cache_write_input_tokens": 0, "output_tokens": 12840, "reasoning_output_tokens": 1175},
+      "provider_cost": null
+    }
+  ],
+  "blind_labels": {
+    "D5-001": {"A": "skill", "B": "baseline"},
+    "D5-002": {"A": "baseline", "B": "skill"},
+    "D5-003": {"A": "skill", "B": "baseline"}
+  },
+  "measurement_boundary": {
+    "human_scores": null,
+    "reviewer_disagreement": null,
+    "target_user_feedback": null,
+    "product_value": null,
+    "provider_cost": null
+  }
+}

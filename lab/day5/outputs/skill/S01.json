@@ -1,0 +1,592 @@
+{
+  "schema_version": "2.0.0",
+  "interview_context": {
+    "schema_version": "1.0.0",
+    "company": "Unknown (synthetic JD)",
+    "level": "Junior",
+    "research": {
+      "mode": "user_supplied_only",
+      "usage": {
+        "search_queries": 0,
+        "pages_fetched": 0,
+        "playwright_pages": 0,
+        "navigation_depth_used": 0,
+        "total_tokens": 0,
+        "max_retries_used_per_page": 0,
+        "runtime_seconds": 0
+      },
+      "queries": [],
+      "pages": [],
+      "stop_reason": "research_not_run",
+      "gaps": [
+        "Company, track, location, interview stages, and reported questions were not supplied."
+      ]
+    },
+    "signals": [
+      {
+        "signal_id": "SIG-JD-01",
+        "layer": "track_team_level_requirement",
+        "statement": "The role emphasizes generative-AI workflow discovery, MVP definition, and product requirements.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: Responsibilities bullets 1-2"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      },
+      {
+        "signal_id": "SIG-JD-02",
+        "layer": "track_team_level_requirement",
+        "statement": "The role emphasizes evaluation, failure analysis, Agent reliability, and safety.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: Responsibilities bullets 4-6"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      },
+      {
+        "signal_id": "SIG-JD-03",
+        "layer": "track_team_level_requirement",
+        "statement": "The role expects cross-functional collaboration and communication of product tradeoffs.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: Responsibilities bullets 3 and 7"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      }
+    ],
+    "questions": [
+      {
+        "question_id": "Q1",
+        "text": "How would you design and use an evaluation for an Agent product?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: design evaluation and quality measurement"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-EVAL",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q2",
+        "text": "What failure categories would you analyze, and how would they change priorities?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: analyze failures and prioritize improvements"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-FAILURE",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q3",
+        "text": "How would you bound Agent tools, context, reliability controls, and safety?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: Agent tools, context, reliability, and safety"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-AGENT",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How would you identify a valuable generative-AI workflow and define its MVP?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: identify workflows and define MVP scope"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-WORKFLOW-MVP",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q5",
+        "text": "Which project decisions were yours, which were shared, and how did engineering or design input change them?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: work with engineering and design; communicate decisions"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-XFN-OWNERSHIP",
+        "level": "Junior"
+      }
+    ],
+    "unknowns": [
+      "Company",
+      "Track or team",
+      "Location",
+      "Interview process",
+      "Reported interview questions",
+      "Candidate's personal ownership of the project"
+    ]
+  },
+  "role_profile_ref": {
+    "role_id": "ai_pm_early_career",
+    "version": "0.1.0"
+  },
+  "project_version": "S01_project.md supplied snapshot",
+  "run_type": "skill_initial",
+  "intent": "application_pack",
+  "role_fit_map": [
+    {
+      "role_requirement_id": "REQ-WORKFLOW",
+      "capability_id": "D1",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "The supplied project names no user, workflow, pain, alternative, or discovery evidence.",
+      "interview_risk": "Cannot substantiate identifying a valuable user workflow."
+    },
+    {
+      "role_requirement_id": "REQ-MVP",
+      "capability_id": "D2",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "No MVP scope, product requirements, rejected alternative, or release criterion is supplied.",
+      "interview_risk": "Cannot defend prioritization or product tradeoffs."
+    },
+    {
+      "role_requirement_id": "REQ-AGENT-SYSTEM",
+      "capability_id": "D4",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "The title calls this an Agent project, but no implemented state, actions, tools, context, stop conditions, or controls are described.",
+      "interview_risk": "Calling it an Agent would invite technical follow-ups the evidence cannot answer."
+    },
+    {
+      "role_requirement_id": "REQ-EVAL",
+      "capability_id": "D6",
+      "relevance": "required",
+      "status": "partially_supported",
+      "source_refs": [
+        {
+          "source_id": "SRC-PROJECT",
+          "location": "S01_project.md:2"
+        }
+      ],
+      "boundary": "A team-designed 20-case evaluation plan is documented, but it was not run; no rubric, results, disagreements, or failure-driven decision is supplied.",
+      "interview_risk": "Must describe evaluation as planned, not executed or outcome-producing."
+    },
+    {
+      "role_requirement_id": "REQ-RELIABILITY-SAFETY",
+      "capability_id": "D7",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "No named reliability or safety risk, enforced control, or failure test is supplied.",
+      "interview_risk": "Cannot answer how the system contains failures or requires human control."
+    },
+    {
+      "role_requirement_id": "REQ-XFN-DELIVERY",
+      "capability_id": "D9",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [],
+      "boundary": "Team language does not establish collaboration with engineering or design, implementation, release, or learning-loop evidence.",
+      "interview_risk": "Do not convert a team-authored plan into personal cross-functional delivery."
+    },
+    {
+      "role_requirement_id": "REQ-COMMUNICATION-OWNERSHIP",
+      "capability_id": "D10",
+      "relevance": "important",
+      "status": "needs_confirmation",
+      "source_refs": [
+        {
+          "source_id": "SRC-PROJECT",
+          "location": "S01_project.md:2"
+        }
+      ],
+      "boundary": "The artifact attributes the evaluation plan to the team; the candidate's decisions and contribution are unconfirmed.",
+      "interview_risk": "First-person ownership would exceed the supplied evidence."
+    }
+  ],
+  "project_highlights": [
+    {
+      "text": "The project contains a team-designed evaluation plan covering 20 cases.",
+      "source_refs": [
+        {
+          "source_id": "SRC-PROJECT",
+          "location": "S01_project.md:2"
+        }
+      ],
+      "boundary": "Supported only as a documented, unexecuted team plan; personal ownership, case quality, and results are not established."
+    }
+  ],
+  "resume_bullets": [],
+  "interview_pack": {
+    "intro_30_seconds": "This project is currently best presented as an early evaluation-design effort: the team documented a 20-case plan for an Agent project, but the plan has not been run. It can support a bounded discussion of evaluation design; it does not demonstrate user discovery, Agent architecture, measured accuracy improvement, delivery, or personal ownership.",
+    "intro_source_refs": [
+      {
+        "source_id": "SRC-PROJECT",
+        "location": "S01_project.md:1-3"
+      }
+    ],
+    "company_track_brief": "The synthetic Junior AI Product Manager JD emphasizes valuable generative-AI workflows, MVP definition, cross-functional work, evaluation, Agent tools and context, reliability and safety, failure analysis, and tradeoff communication. No company or track evidence was supplied.",
+    "interview_loop_hypothesis": [
+      {
+        "stage": "unknown",
+        "expected_focus": "Possible evaluation and failure-analysis discussion; the actual interview process is unknown.",
+        "source_status": "inferred_from_jd",
+        "basis": "SIG-JD-02"
+      },
+      {
+        "stage": "unknown",
+        "expected_focus": "Possible product-scope, Agent-system, and cross-functional tradeoff discussion; the actual interview process is unknown.",
+        "source_status": "inferred_from_jd",
+        "basis": "SIG-JD-01 and SIG-JD-03"
+      }
+    ],
+    "priority_questions": [
+      {
+        "question_id": "Q1",
+        "text": "How would you design and use an evaluation for an Agent product?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: design evaluation and quality measurement"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-EVAL",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q2",
+        "text": "What failure categories would you analyze, and how would they change priorities?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: analyze failures and prioritize improvements"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-FAILURE",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q3",
+        "text": "How would you bound Agent tools, context, reliability controls, and safety?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: Agent tools, context, reliability, and safety"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-AGENT",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How would you identify a valuable generative-AI workflow and define its MVP?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: identify workflows and define MVP scope"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-WORKFLOW-MVP",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q5",
+        "text": "Which project decisions were yours, which were shared, and how did engineering or design input change them?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md: work with engineering and design; communicate decisions"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "REQ-XFN-OWNERSHIP",
+        "level": "Junior"
+      }
+    ],
+    "answer_drafts": [
+      {
+        "question_id": "Q1",
+        "question": "How would you design and use an evaluation for an Agent product?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "The team designed an evaluation plan for 20 cases, and the plan has not been run.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "State that this is development-stage evaluation design, not an executed evaluation.",
+          "Describe the 20 planned cases without claiming their composition, rubric, or results.",
+          "Require results to drive a product decision before claiming a learning loop."
+        ],
+        "grounded_draft": "Observed: the team designed a 20-case evaluation plan, but it has not been run. I would therefore present this as evaluation design in progress, not evidence of quality improvement. The next defensible step is to define reviewer rules and failure categories, execute the cases, preserve disagreements and bad cases, and use the findings to make a specific product decision.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I built and ran a 20-case evaluation that improved accuracy."
+        },
+        "likely_followups": [
+          "What do the 20 cases cover?",
+          "What is the rubric and decision rule?",
+          "Which result changed the product?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-02"
+          ]
+        }
+      },
+      {
+        "question_id": "Q2",
+        "question": "What failure categories would you analyze, and how would they change priorities?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "The team designed an evaluation plan for 20 cases, and the plan has not been run.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Acknowledge that no observed failures are supplied.",
+          "Frame any taxonomy and prioritization rule as proposed during development.",
+          "Tie future changes to executed results rather than the README claim."
+        ],
+        "grounded_draft": "Observed: the evaluation plan exists but has not been run, so I cannot claim an observed failure taxonomy or failure-driven improvement. Proposed During Development: before execution, I would classify failures by workflow stage and severity, define which require stopping or human review, and prioritize only after reviewing actual bad cases and their effect on the target user task.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ]
+        },
+        "likely_followups": [
+          "Which failure classes would be highest severity?",
+          "How would you avoid a model grading itself?",
+          "What result would cause you to stop release?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-02"
+          ]
+        }
+      },
+      {
+        "question_id": "Q3",
+        "question": "How would you bound Agent tools, context, reliability controls, and safety?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "The team designed an evaluation plan for 20 cases, and the plan has not been run.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2"
+              }
+            ]
+          },
+          {
+            "fact_id": "F2",
+            "text": "The README claims the system will improve evidence accuracy.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:3"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Separate the README's future claim from measured performance.",
+          "State that tool, context, permission, and stop-condition evidence is not supplied.",
+          "Offer a counterfactual decision method without presenting it as implemented."
+        ],
+        "grounded_draft": "Observed: the README states an intended improvement in evidence accuracy, while the supplied material does not describe tools, context selection, permissions, stop conditions, or executed reliability evidence. Counterfactual: I would start from the user decision that cannot be fixed in advance, minimize tool permissions and context to what that decision needs, define ask-or-stop conditions for uncertainty and unsafe actions, and test those boundaries before calling the workflow a reliable Agent.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1",
+            "F2"
+          ],
+          "narrowed_from": "The Agent uses bounded tools and context to improve evidence accuracy."
+        },
+        "likely_followups": [
+          "What decision actually requires autonomy?",
+          "Which tool calls need approval?",
+          "How would you test context failures or prompt injection?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1",
+            "F2"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-02"
+          ]
+        }
+      }
+    ],
+    "questions_to_ask_interviewer": [
+      "Which user workflow and failure modes are highest priority for this junior AI PM role?",
+      "What evidence is expected before an Agent feature can move from evaluation to release?"
+    ],
+    "mock_interview_round": {
+      "round_format": "technical_or_case",
+      "question_ids": [
+        "Q1",
+        "Q2",
+        "Q3"
+      ],
+      "time_box_minutes": 20,
+      "scoring_dimensions": [
+        "evidence_grounding",
+        "claim_boundary_discipline",
+        "role_relevance",
+        "specificity",
+        "followup_recovery"
+      ],
+      "stop_condition": "Stop after three contextual follow-up levels per question or when the evidence boundary is explicit."
+    },
+    "unsupported_areas": [
+      "Personal ownership of the evaluation plan",
+      "Executed evaluation results",
+      "Improved evidence accuracy",
+      "User workflow discovery",
+      "MVP scope and product requirements",
+      "Agent tools, context, permissions, state, or stop behavior",
+      "Reliability and safety controls",
+      "Failure analysis and resulting prioritization",
+      "Engineering and design collaboration",
+      "Release, adoption, or business impact"
+    ]
+  },
+  "next_build": {
+    "gap": "The only concrete artifact is an unexecuted 20-case evaluation plan, so the project cannot demonstrate measured quality, failure analysis, reliability decisions, or a learning loop.",
+    "why_now": "Completing one bounded, human-reviewed evaluation and using its bad cases to make one product decision would create the most direct evidence for the JD's evaluation, failure-prioritization, reliability, safety, and tradeoff requirements. A broader Agent architecture write-up is the rejected runner-up because it would add design detail without measured behavior.",
+    "steps": [
+      "Have a downstream working agent inspect the project's goals, current workflow, architecture, known failures, tests, and safety boundaries before proposing evaluation mechanics.",
+      "Define the smallest product-relevant evaluation direction tied to one current user task; compare reasonable review and baseline options, then return an exploration brief for product-owner approval and stop before implementation.",
+      "After explicit approval, execute the approved 20-case evaluation with versioned cases, reviewer rules, a failure taxonomy, an appropriate baseline, and named safety or stop conditions.",
+      "Record exact commands, changed files, results, reviewer disagreements, bad cases, one resulting keep-revise-stop decision, remaining limitations, and produced artifacts without inventing users, metrics, outcomes, ownership, or test results."
+    ],
+    "acceptance_criteria": [
+      "All 20 cases are versioned and tied to the same bounded user task and system version.",
+      "A review rubric, reviewer provenance, disagreement handling, failure categories, and release or stop decision rule are inspectable.",
+      "Executed results include per-case outcomes and bad cases; synthetic cases are labeled synthetic and not represented as user validation.",
+      "At least one observed failure leads to a documented keep, revise, or stop product decision.",
+      "Relevant safety boundaries and human-review or stop behavior are tested, with limitations preserved."
+    ],
+    "expected_evidence": "Versioned cases, rubric, human-review records, executed results, failure taxonomy, bad-case examples, safety-boundary results, and a decision log linking observed evidence to one product change or stop decision.",
+    "output_dependency": "Only after completion and reassessment may D6 and relevant D7/D8 evidence, evaluation and failure-analysis stories, answer drafts, project highlights, or resume bullets change; the current match remains unchanged while this is proposed work.",
+    "estimated_effort_band": "medium",
+    "interview_question_unlocked": "Which evaluation failure changed your Agent product decision, and what reliability or safety boundary did you add?"
+  },
+  "correction_prompt": "If any supplied fact or ownership boundary is wrong, provide the exact correction and source location; dependent role-fit items, drafts, highlights, and bullets should then be regenerated.",
+  "warnings": [
+    "No context was saved.",
+    "No web research was run because the JD is synthetic and web search was prohibited.",
+    "The project was not executed; the evaluation plan remains unrun.",
+    "The README's accuracy statement is a future claim, not measured evidence.",
+    "Team authorship does not establish the candidate's personal ownership."
+  ]
+}

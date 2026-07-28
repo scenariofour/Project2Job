@@ -1,0 +1,710 @@
+{
+  "schema_version": "2.0.0",
+  "interview_context": {
+    "schema_version": "1.0.0",
+    "company": "Unknown synthetic company",
+    "level": "Junior",
+    "research": {
+      "mode": "unavailable",
+      "usage": {
+        "search_queries": 0,
+        "pages_fetched": 0,
+        "playwright_pages": 0,
+        "navigation_depth_used": 0,
+        "total_tokens": 0,
+        "max_retries_used_per_page": 0,
+        "runtime_seconds": 0
+      },
+      "queries": [],
+      "pages": [],
+      "stop_reason": "research_not_run",
+      "gaps": [
+        "Company identity is not provided.",
+        "Product track or team is not provided.",
+        "No official interview-process evidence is available.",
+        "No reported interview experiences or questions are available."
+      ]
+    },
+    "signals": [
+      {
+        "signal_id": "SIG-JD-01",
+        "layer": "track_team_level_requirement",
+        "statement": "The role emphasizes identifying valuable generative-AI workflows and defining MVP scope and requirements.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullets 1–2"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      },
+      {
+        "signal_id": "SIG-JD-02",
+        "layer": "track_team_level_requirement",
+        "statement": "The role emphasizes evaluation, quality measurement, failure analysis, reliability, safety, and improvement prioritization.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullets 4–6"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      },
+      {
+        "signal_id": "SIG-JD-03",
+        "layer": "track_team_level_requirement",
+        "statement": "The role emphasizes cross-functional work and communication of product decisions and tradeoffs.",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullets 3 and 7"
+          }
+        ],
+        "freshness": "unknown",
+        "level": "Junior"
+      }
+    ],
+    "questions": [
+      {
+        "question_id": "Q1",
+        "text": "How did you identify the user workflow or problem addressed by the project analysis Agent?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 1"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires identifying valuable user workflows for generative AI.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q2",
+        "text": "What was the MVP scope, and how were the product requirements defined?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 2"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires defining MVP scope and product requirements.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q3",
+        "text": "How did you work with engineering and design, and what did you personally own?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 3"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD requires cross-functional work, while the project source does not identify individual ownership.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How did you evaluate output quality, and which measurements or test cases did you use?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 4"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires evaluation and quality measurement.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q5",
+        "text": "What Agent tools and context strategy did the product use, and how did you address reliability and safety?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 5"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD names Agent tools, context, reliability, and safety.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q6",
+        "text": "Describe an important failure mode and how you prioritized an improvement.",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires failure analysis and improvement prioritization.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q7",
+        "text": "What product tradeoff did you make, and how did you communicate the decision?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 7"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires communicating product decisions and tradeoffs.",
+        "level": "Junior"
+      }
+    ],
+    "unknowns": [
+      "Company identity",
+      "Product track or team",
+      "Role location",
+      "Actual interview stages",
+      "Official interview questions",
+      "Reported interview experiences",
+      "Interview-process recency"
+    ]
+  },
+  "role_profile_ref": {
+    "role_id": "target_jd.md#junior-ai-product-manager",
+    "version": "unversioned"
+  },
+  "project_version": "unversioned",
+  "run_type": "agent_initial",
+  "intent": "application_pack",
+  "role_fit_map": [
+    {
+      "role_requirement_id": "JD-R1",
+      "capability_id": "generative_ai_workflow_discovery",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 1"
+        },
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, sentence 1"
+        }
+      ],
+      "boundary": "The source establishes that the team built a project analysis Agent. It does not establish a user, user problem, discovery method, workflow-selection decision, or demonstrated workflow value.",
+      "interview_risk": "High: the candidate cannot safely claim user discovery or workflow prioritization from the supplied evidence."
+    },
+    {
+      "role_requirement_id": "JD-R2",
+      "capability_id": "mvp_scope_and_product_requirements",
+      "relevance": "required",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 2"
+        },
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, sentences 1–2"
+        }
+      ],
+      "boundary": "The source does not describe an MVP boundary, product requirements, prioritization rationale, or the candidate's role in defining them.",
+      "interview_risk": "High: no grounded scope or requirements story is available."
+    },
+    {
+      "role_requirement_id": "JD-R3",
+      "capability_id": "cross_functional_collaboration",
+      "relevance": "important",
+      "status": "needs_confirmation",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 3"
+        },
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, sentences 1–2"
+        }
+      ],
+      "boundary": "The plural wording establishes a team project, but it does not identify engineering or design partners, collaboration practices, or the candidate's individual contribution.",
+      "interview_risk": "High: team language must not be converted into individual ownership."
+    },
+    {
+      "role_requirement_id": "JD-R4",
+      "capability_id": "evaluation_and_quality_measurement",
+      "relevance": "required",
+      "status": "needs_confirmation",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 4"
+        },
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, sentence 2"
+        }
+      ],
+      "boundary": "The source mentions an evaluation only to say that its author is unidentified. It does not describe the evaluation design, test set, metrics, execution, findings, or candidate ownership.",
+      "interview_risk": "High: mentioning an evaluation does not support claiming that the candidate designed or ran it."
+    },
+    {
+      "role_requirement_id": "JD-R5",
+      "capability_id": "agent_tools_context_reliability_and_safety",
+      "relevance": "required",
+      "status": "partially_supported",
+      "source_refs": [
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, sentence 1"
+        },
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 5"
+        }
+      ],
+      "boundary": "The source supports exposure to a team project that built an Agent. It does not establish which tools were implemented, how context was managed, whether reliability or safety was addressed, or what the candidate personally owned.",
+      "interview_risk": "Medium-high: Agent-project exposure is supportable, but technical choices and product judgment are not."
+    },
+    {
+      "role_requirement_id": "JD-R6",
+      "capability_id": "failure_analysis_and_improvement_prioritization",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 6"
+        },
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, entire document"
+        }
+      ],
+      "boundary": "No failures, diagnosis, prioritization method, improvement decision, or measured post-change result is documented.",
+      "interview_risk": "High: there is no evidence-grounded failure-analysis example."
+    },
+    {
+      "role_requirement_id": "JD-R7",
+      "capability_id": "product_decision_and_tradeoff_communication",
+      "relevance": "important",
+      "status": "not_found",
+      "source_refs": [
+        {
+          "source_id": "target_jd.md",
+          "location": "Responsibilities, bullet 7"
+        },
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, entire document"
+        }
+      ],
+      "boundary": "No product decision, alternative, tradeoff, stakeholder communication, or candidate ownership is documented.",
+      "interview_risk": "High: no supported decision narrative is available."
+    }
+  ],
+  "project_highlights": [
+    {
+      "text": "A team built a project analysis Agent.",
+      "source_refs": [
+        {
+          "source_id": "S02_project.md",
+          "location": "Team Project, sentence 1"
+        }
+      ],
+      "boundary": "This establishes the team-level project output only. It does not establish the candidate's ownership, implementation details, users, quality, adoption, or results."
+    }
+  ],
+  "resume_bullets": [],
+  "interview_pack": {
+    "intro_30_seconds": "I participated in a team project that built a project analysis Agent. The supplied record does not identify my individual ownership or document the workflow design, implementation, evaluation method, users, or results, so I would confirm those details before making stronger claims.",
+    "intro_source_refs": [
+      {
+        "source_id": "S02_project.md",
+        "location": "Team Project, sentences 1–2"
+      }
+    ],
+    "company_track_brief": "The target is a synthetic Junior AI Product Manager role. The company and product track are unknown. The JD emphasizes generative-AI workflow discovery, MVP definition, cross-functional work, evaluation, Agent reliability and safety, failure analysis, and product tradeoff communication. No public company or interview evidence is available.",
+    "interview_loop_hypothesis": [
+      {
+        "stage": "unknown",
+        "expected_focus": "The actual interview stages and their focus cannot be established from the supplied sources.",
+        "source_status": "unknown",
+        "basis": "No official or reported interview-process evidence was supplied."
+      }
+    ],
+    "priority_questions": [
+      {
+        "question_id": "Q1",
+        "text": "How did you identify the user workflow or problem addressed by the project analysis Agent?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 1"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires identifying valuable user workflows for generative AI.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q2",
+        "text": "What was the MVP scope, and how were the product requirements defined?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 2"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires defining MVP scope and product requirements.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q3",
+        "text": "How did you work with engineering and design, and what did you personally own?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 3"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD requires cross-functional work, while the project source does not identify individual ownership.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q4",
+        "text": "How did you evaluate output quality, and which measurements or test cases did you use?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 4"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires evaluation and quality measurement.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q5",
+        "text": "What Agent tools and context strategy did the product use, and how did you address reliability and safety?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P0",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 5"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD names Agent tools, context, reliability, and safety.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q6",
+        "text": "Describe an important failure mode and how you prioritized an improvement.",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 6"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires failure analysis and improvement prioritization.",
+        "level": "Junior"
+      },
+      {
+        "question_id": "Q7",
+        "text": "What product tradeoff did you make, and how did you communicate the decision?",
+        "layer": "track_team_level_requirement",
+        "source_status": "inferred_from_jd",
+        "presented_as": "possible",
+        "priority": "P1",
+        "tier": "unknown",
+        "sources": [
+          {
+            "origin": "job_description",
+            "reference": "target_jd.md, Responsibilities, bullet 7"
+          }
+        ],
+        "freshness": "unknown",
+        "why_it_is_likely": "The JD explicitly requires communicating product decisions and tradeoffs.",
+        "level": "Junior"
+      }
+    ],
+    "answer_drafts": [
+      {
+        "question_id": "Q1",
+        "question": "How did you identify the user workflow or problem addressed by the project analysis Agent?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "A team built a project analysis Agent.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "State the verified team-level project output.",
+          "Do not name users or a discovery process.",
+          "Confirm the workflow-selection rationale before adding it."
+        ],
+        "grounded_draft": "I participated in a team project that built a project analysis Agent. The current project record does not document the target user, the workflow-selection process, or my individual role in that decision, so I cannot yet make a grounded claim about how the workflow was identified.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I identified and validated a valuable project-analysis workflow for users."
+        },
+        "likely_followups": [
+          "Who was the intended user?",
+          "What evidence showed the workflow was valuable?",
+          "What part of workflow discovery did you personally own?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-01"
+          ]
+        }
+      },
+      {
+        "question_id": "Q4",
+        "question": "How did you evaluate output quality, and which measurements or test cases did you use?",
+        "verified_evidence": [
+          {
+            "fact_id": "F2",
+            "text": "The project document states that it does not identify which member wrote the evaluation.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 2"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "Acknowledge that an evaluation is referenced.",
+          "Do not claim authorship, execution, metrics, or results.",
+          "Obtain the evaluation artifact and confirm personal ownership before expanding the answer."
+        ],
+        "grounded_draft": "The project record references an evaluation, but it does not identify who wrote it or provide its method, test cases, metrics, execution, or results. I would need to verify my contribution and recover the evaluation artifact before presenting this as evidence of evaluation ownership.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F2"
+          ],
+          "narrowed_from": "I designed and executed the Agent evaluation framework."
+        },
+        "likely_followups": [
+          "What dimensions did the evaluation measure?",
+          "Did you personally design or run it?",
+          "What failures did the evaluation reveal?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F2"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-02"
+          ]
+        }
+      },
+      {
+        "question_id": "Q5",
+        "question": "What Agent tools and context strategy did the product use, and how did you address reliability and safety?",
+        "verified_evidence": [
+          {
+            "fact_id": "F1",
+            "text": "A team built a project analysis Agent.",
+            "status": "supported",
+            "source_refs": [
+              {
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1"
+              }
+            ]
+          }
+        ],
+        "answer_ingredients": [
+          "State only that the team built an Agent.",
+          "Do not infer tools, context architecture, reliability controls, or safety controls.",
+          "Confirm implementation details and personal ownership before adding technical claims."
+        ],
+        "grounded_draft": "I participated in a team project that built a project analysis Agent. The supplied evidence does not identify its tools, context strategy, reliability controls, safety approach, or my individual implementation role, so those details require confirmation before I can discuss them as project facts.",
+        "claim_safety_review": {
+          "exceeds_evidence": false,
+          "checked_fact_ids": [
+            "F1"
+          ],
+          "narrowed_from": "I designed the Agent's tools, context architecture, and reliability safeguards."
+        },
+        "likely_followups": [
+          "Which tools could the Agent invoke?",
+          "How was context selected and bounded?",
+          "What reliability or safety failure did you address?"
+        ],
+        "emphasis": {
+          "fact_ids": [
+            "F1"
+          ],
+          "emphasis_signal_ids": [
+            "SIG-JD-02"
+          ]
+        }
+      }
+    ],
+    "questions_to_ask_interviewer": [
+      "Which user workflows are the highest priority for this Junior AI Product Manager?",
+      "How does the team define and measure quality for generative-AI features?",
+      "How are product, engineering, and design responsibilities divided during Agent development?",
+      "Which reliability or safety problems would this role be expected to address first?",
+      "What evidence would demonstrate strong performance in the role's first 90 days?"
+    ],
+    "mock_interview_round": {
+      "round_format": "hiring_manager_project_deep_dive",
+      "question_ids": [
+        "Q1",
+        "Q4",
+        "Q5"
+      ],
+      "time_box_minutes": 25,
+      "scoring_dimensions": [
+        "evidence_grounding",
+        "claim_boundary_discipline",
+        "role_relevance",
+        "specificity",
+        "followup_recovery"
+      ],
+      "stop_condition": "Stop after all three questions and one follow-up per question, or at 25 minutes, whichever occurs first."
+    },
+    "unsupported_areas": [
+      "Individual ownership of workflow design, evaluation, or implementation",
+      "Target users and validated user needs",
+      "MVP scope and product requirements",
+      "Engineering and design collaboration details",
+      "Agent tools and context architecture",
+      "Reliability and safety controls",
+      "Evaluation methodology, metrics, execution, and results",
+      "Failure analysis and improvement prioritization",
+      "Product decisions and tradeoffs",
+      "Adoption, business impact, user outcomes, or measured quality improvements"
+    ]
+  },
+  "next_build": {
+    "gap": "No traceable evidence connects the candidate to an individually owned product decision or evaluation result.",
+    "why_now": "This gap blocks safe resume bullets and strong answers for most of the JD's central capabilities.",
+    "steps": [
+      "Select one project-analysis workflow and document the target user, problem, and evidence for its value.",
+      "Write a concise MVP scope and requirements artifact that records alternatives and one explicit tradeoff.",
+      "Create a small evaluation set with defined quality, reliability, and safety criteria.",
+      "Run the evaluation, categorize failures, prioritize one improvement, and rerun the same evaluation.",
+      "Record the candidate's exact contribution separately from team contributions and link each claim to an artifact."
+    ],
+    "acceptance_criteria": [
+      "The target user and workflow are explicitly documented with supporting discovery evidence.",
+      "The MVP artifact identifies included and excluded scope plus one reasoned tradeoff.",
+      "The evaluation includes reproducible test cases and predefined pass or scoring criteria.",
+      "Baseline and post-change results are recorded without substituting targets or estimates for measurements.",
+      "Individual ownership is confirmed for each proposed resume or interview claim."
+    ],
+    "expected_evidence": "A dated workflow brief, MVP requirements document, decision record, evaluation dataset and rubric, baseline and post-change results, failure analysis, and an explicit ownership statement.",
+    "output_dependency": "Would enable stronger role-fit statuses, supported project highlights, evidence-grounded resume bullets, and substantive answers to Q1, Q2, Q4, Q5, Q6, and Q7.",
+    "estimated_effort_band": "medium",
+    "interview_question_unlocked": "How did you define, evaluate, and improve an Agent workflow, and what did you personally own?"
+  },
+  "correction_prompt": "Please correct or confirm: your individual role; the target user and workflow; the MVP scope and requirements; engineering or design collaborators; Agent tools and context strategy; evaluation design and results; failure analysis; reliability or safety work; product tradeoffs; and any measured outcomes. For each correction, provide the exact artifact or source location that supports it.",
+  "warnings": [
+    "The project evidence is extremely sparse and does not establish individual ownership.",
+    "No resume bullets are returned because resume bullets require directly supported facts and confirmed ownership.",
+    "Only one project highlight is returned because additional highlights would require unsupported claims.",
+    "The evaluation is referenced but its author, design, execution, metrics, and results are not established.",
+    "No company or track brief beyond the synthetic JD can be supported.",
+    "The interview loop is unknown because no official or reported interview-process evidence exists.",
+    "All priority interview questions are JD-derived possibilities, not official or reported questions.",
+    "The answer drafts are intentionally narrow and identify where confirmation is required."
+  ]
+}
