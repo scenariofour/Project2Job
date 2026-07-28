@@ -110,8 +110,11 @@ Cost discipline for the pass:
 - `refresh` recomputes while retaining compatible confirmed facts
 - `fresh` bypasses reuse without deleting history
 - reuse one current Project Evidence Profile across JDs
-- reuse a fresh Company Intelligence Profile across compatible JDs for the same
-  company/track
+- reuse a fresh Company Intelligence Profile only for an exact normalized
+  company/track-key match
+- reuse a JD Demand Map only when its Company profile key matches
+- open every added Project source and inspect its evidence surfaces before
+  narrowing which Project profile sections need updates
 - extract a lightweight JD Demand Map for each changed JD
 
 ## Telemetry

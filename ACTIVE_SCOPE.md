@@ -179,14 +179,17 @@ derived state, not complete project or JD bodies.
 The reusable layers are:
 
 - one deep Project Evidence Profile per Project version, reusable across JDs
-- one source-fresh Company Intelligence Profile per company and compatible
-  track, reusable across JDs
+- one source-fresh Company Intelligence Profile per exact normalized company
+  and track string, reusable across JDs
 - one lightweight JD Demand Map per JD version
 
-Changed Project evidence invalidates only dependent Project profile sections.
+Changed or removed Project evidence invalidates dependent Project profile
+sections. Newly added evidence is opened and its evidence surfaces inspected
+before the affected-section set is narrowed.
 Changed JD content invalidates its demand map and matching. Company intelligence
-refreshes only when stale, materially changed, or incompatible with the stated
-track/team.
+refreshes only when stale, materially changed, or when normalized company/track
+does not match exactly. A JD Demand Map is reusable only while its
+`company_profile_key` matches the resolved Company profile.
 
 The registry is not the Agent: it does not monitor files, run in the background,
 choose work autonomously, or regenerate outputs after a change. Users can
@@ -232,8 +235,8 @@ Still excluded:
 - referral automation
 - multiple deep project analyses
 - any cross-Project or cross-user company question database; persisted company
-  research reuse is limited to the same company and compatible track, and must
-  pass its recorded freshness rules
+  research reuse is limited to the exact normalized company and track string,
+  and must pass its recorded freshness rules
 - broad MCP integrations
 
 Bounded automatic public-web research is in scope and required. Job discovery,

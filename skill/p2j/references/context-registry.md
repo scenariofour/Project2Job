@@ -36,7 +36,15 @@ company profile stale.
 - Read `profiles.project_evidence`, `profiles.company_intelligence`, and
   `profiles.jd_demand` before planning. `hit` is reusable, `stale` must be
   refreshed if required by the requested asset, and `miss` must be built only
-  when required.
+  when required. `mismatch` means the JD Demand Map belongs to a different
+  Company profile key and must be re-extracted.
+- Company profile reuse requires an exact normalized company and exact
+  normalized track-string match. There is no implicit "compatible track"
+  expansion.
+- An added Project source returns `surface_inspection_required`. Open that new
+  source, identify its evidence surfaces, and update every potentially affected
+  Project profile section; old `source_paths` cannot name a file that did not
+  exist.
 
 `--mode refresh` forces source analysis and result recomputation while retaining
 compatible confirmed facts. `--mode fresh` bypasses all reuse without deleting
@@ -60,6 +68,11 @@ One-time Skill use remains a first-class path. `$p2j`, `$p2j-brief`,
 `$p2j-intel`, and `$p2j-upgrade` may produce their normal useful host-native
 result without loading or invoking the stateful update runtime. Do not create a
 registry directory or consent file merely because a Skill was invoked.
+
+Selective Skill planning is host-native. The host resolves this registry and
+runs `profile_router.py` before invoking a specialist or asset generator.
+`stateful_agent.py` updates persisted evidence dependencies and outputs for the
+explicit Agent update path; it does not choose a normal selective Skill route.
 
 Save only supported or user-confirmed facts, claim-level ownership boundaries,
 source references, the canonical Agent evidence/claim/output/dependency state,

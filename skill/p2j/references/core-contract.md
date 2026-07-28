@@ -31,13 +31,18 @@ rules in specialist references.
 - On a Project change, preserve unaffected facts and recompute only outputs
   dependent on added, changed, or removed artifacts. On a JD change, reuse
   Project evidence and recompute role matching and route.
+- For an added Project artifact, inspect the new source's evidence surfaces
+  before narrowing invalidation; the old profile cannot identify its
+  dependencies from `source_paths`.
 - Show one short reuse sentence only when prior context materially affects the
   result. Keep internal states, IDs, versions, hashes, and storage details out
   of normal user output.
 - Honor refresh, analyze-from-scratch, do-not-save, and selective forget
   requests as defined in `context-registry.md`.
 - Reuse a current Project Evidence Profile across JDs and a fresh Company
-  Intelligence Profile across compatible JDs for the same company/track.
+  Intelligence Profile only when normalized company and normalized track match
+  exactly. Reuse a JD Demand Map only when its `company_profile_key` matches
+  that resolved Company profile.
 
 ## Canonical inputs
 

@@ -1,0 +1,12 @@
+Source: https://openai.com/careers/product-manager-api-infrastructure-san-francisco/
+Retrieved: 2026-07-28
+
+Role: Product Manager, API Infrastructure
+Track: API Product Management
+
+Officially stated demand, paraphrased for bounded dogfood:
+- define enterprise data, privacy, and access-control products;
+- build governance, identity, audit, and lifecycle capabilities;
+- improve metering, budgeting, and predictable API cost experiences;
+- deliver high-trust systems across technical and policy partners;
+- apply systems thinking in high-risk product areas.

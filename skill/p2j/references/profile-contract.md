@@ -13,27 +13,33 @@ directions, and hiring signals. Keep source paths on every section.
 
 - Reuse the same profile across JDs.
 - Compare the artifact manifest before retrieval.
-- On a Project change, reopen only added or changed sources and invalidate only
-  sections depending on changed or removed paths.
+- On a Project change, reopen only added or changed sources. Changed or removed
+  paths invalidate their dependent sections. Because an added source cannot
+  appear in old `source_paths`, inspect its evidence surfaces first and keep
+  every potentially affected section stale until that inspection is complete.
 - Never treat the profile as evidence independent of its current sources.
 
 ### Company Intelligence Profile
 
-Build through `$p2j-intel` and key by normalized company plus track. Store
+Build through `$p2j-intel` and key by normalized company plus the exact
+normalized track string. Store
 culture and values, product/AI direction, role or team priorities, interview
 signals, exact sources, source fingerprint, research date, and `fresh_until`.
 
-- Reuse across compatible JDs for the same company and track.
-- Refresh only when stale, when official source fingerprints materially change,
-  or when the new JD names an incompatible team/track.
+- Reuse only when both normalized company and normalized track match exactly.
+- Refresh only when stale or when official source fingerprints materially
+  change. A different normalized track is a different profile key, not a
+  "compatible track" judgment.
 - Reparse a changed JD without reopening unchanged Project evidence or repeating
   fresh company research.
 
 ### JD Demand Map
 
 Extract per JD. Keep it lightweight: role tasks, stated level, hiring signals,
-must-haves, and preferred qualifications. A changed JD invalidates this map and
-role matching, not the other two profiles.
+must-haves, and preferred qualifications. Bind `company_profile_key` to the
+resolved Company Intelligence Profile and reuse the map only while those keys
+match. A changed JD invalidates this map and role matching, not the other two
+profiles.
 
 ## Plan one request
 
@@ -42,7 +48,7 @@ opening sources. Generate only the requested asset.
 
 | Request | Normal specialist invocation |
 | --- | --- |
-| fast verdict | `$p2j-brief` |
+| fast verdict | reuse fresh Company Intelligence or run bounded `$p2j-intel`, then `$p2j-brief` |
 | company/interview intelligence | `$p2j-intel` |
 | deep evidence audit | `$p2j-audit` |
 | one interview answer | `$p2j-answer` |
@@ -65,6 +71,9 @@ positioning; do not ask the user to choose. Translate technical evidence into
 product, user, business, and AI PM value. Adapt selection, ordering, terminology,
 and emphasis to the Company Intelligence Profile and JD Demand Map without
 changing the verified fact pool.
+
+Never claim company or culture adaptation when the Company Intelligence Profile
+is missing, stale, materially changed, or for a different normalized track.
 
 Ask at most one question, and only when one missing historical fact materially
 changes the claim. Never invent dates, launch status, experiments, ownership,

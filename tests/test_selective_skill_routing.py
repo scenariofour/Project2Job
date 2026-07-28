@@ -127,14 +127,41 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
         self.assertIn("select_one_strongest_story", plan["model_tasks"])
         self.assertEqual(plan["questions"], [])
 
-    def test_default_brief_does_not_force_a_deep_audit(self) -> None:
+    def test_default_brief_builds_company_context_without_forcing_audit(self) -> None:
         plan = profile_router.plan_request(
             "brief",
             project_profile=None,
             company_profile=None,
             jd_demand_map=None,
         )
+        self.assertEqual(plan["skill_invocations"], ["p2j-intel", "p2j-brief"])
+        self.assertNotIn("p2j-audit", plan["skill_invocations"])
+        self.assertIn(
+            "build_or_refresh_company_intelligence_profile", plan["model_tasks"]
+        )
+
+        reused = profile_router.plan_request(
+            "brief",
+            project_profile=None,
+            company_profile=self.company_profile,
+            jd_demand_map=self.jd_map_one,
+            now=datetime(2026, 7, 28, tzinfo=timezone.utc),
+        )
+        self.assertEqual(reused["skill_invocations"], ["p2j-brief"])
+        self.assertIn("adapt_to_company_culture_and_jd", reused["model_tasks"])
+
+    def test_project_only_brief_uses_default_role_without_company_research(self) -> None:
+        plan = profile_router.plan_request(
+            "brief",
+            project_profile=None,
+            company_profile=None,
+            jd_demand_map=None,
+            company_context_required=False,
+        )
         self.assertEqual(plan["skill_invocations"], ["p2j-brief"])
+        self.assertNotIn("p2j-intel", plan["skill_invocations"])
+        self.assertNotIn("fingerprint_jd", plan["deterministic_tasks"])
+        self.assertNotIn("adapt_to_company_culture_and_jd", plan["model_tasks"])
 
     def test_project_profile_reuses_across_jds_without_reopening_files(self) -> None:
         registry = context_registry.empty_registry()
@@ -190,6 +217,54 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
             project["affected_sections"], sorted(profile_router.PROJECT_SECTIONS)
         )
 
+    def test_added_project_file_requires_surface_inspection_for_all_sections(self) -> None:
+        registry = context_registry.empty_registry()
+        saved, _ = context_registry.save_run(
+            registry,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_one),
+            "p2j-audit",
+            {"project_evidence_profile": self.project_profile},
+        )
+        evals = self.project / "evals"
+        evals.mkdir()
+        (evals / "new-results.json").write_text(
+            '{"severe_bad_cases": 0}\n', encoding="utf-8"
+        )
+        changed_snapshot = context_registry.project_snapshot(
+            context_registry.project_identity(self.project),
+            saved["projects"][0],
+        )
+        resolved = context_registry.resolve_context(
+            saved,
+            changed_snapshot,
+            context_registry.jd_snapshot(self.jd_one),
+        )
+        project = resolved["profiles"]["project_evidence"]
+        self.assertEqual(project["state"], "partial")
+        self.assertEqual(project["added_source_paths"], ["evals/new-results.json"])
+        self.assertTrue(project["surface_inspection_required"])
+        self.assertEqual(
+            project["affected_sections"], sorted(profile_router.PROJECT_SECTIONS)
+        )
+
+        plan = profile_router.plan_request(
+            "project_introduction",
+            project_profile=project["profile"],
+            company_profile=self.company_profile,
+            jd_demand_map=self.jd_map_one,
+            affected_project_sections=project["affected_sections"],
+            added_project_sources=project["added_source_paths"],
+        )
+        self.assertIn(
+            "inspect_added_project_evidence_surfaces",
+            plan["deterministic_tasks"],
+        )
+        self.assertIn(
+            "update_potentially_affected_project_profile_sections",
+            plan["model_tasks"],
+        )
+
     def test_company_profile_reuses_across_jds_until_stale(self) -> None:
         registry = context_registry.empty_registry()
         saved, _ = context_registry.save_run(
@@ -239,6 +314,108 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
             changed["profiles"]["company_intelligence"]["reason"],
             "material_change",
         )
+
+    def test_company_profile_reuse_requires_exact_normalized_track(self) -> None:
+        registry = context_registry.empty_registry()
+        saved, _ = context_registry.save_run(
+            registry,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_one),
+            "p2j-intel",
+            {"company_intelligence_profile": self.company_profile},
+        )
+        exact = context_registry.resolve_context(
+            saved,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_two),
+            company="  openai ",
+            track=" AI   PRODUCT ",
+            now=datetime(2026, 7, 29, tzinfo=timezone.utc),
+        )
+        self.assertEqual(exact["profiles"]["company_intelligence"]["state"], "hit")
+
+        different = context_registry.resolve_context(
+            saved,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_two),
+            company="OpenAI",
+            track="API infrastructure",
+            now=datetime(2026, 7, 29, tzinfo=timezone.utc),
+        )
+        self.assertEqual(
+            different["profiles"]["company_intelligence"]["state"], "miss"
+        )
+
+    def test_jd_map_reuse_requires_resolved_company_profile_key(self) -> None:
+        registry = context_registry.empty_registry()
+        saved, _ = context_registry.save_run(
+            registry,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_one),
+            "p2j-intel",
+            {"company_intelligence_profile": self.company_profile},
+        )
+        mismatched_map = dict(self.jd_map_one)
+        mismatched_map["company_profile_key"] = profile_router.company_profile_key(
+            "OpenAI", "API infrastructure"
+        )
+        saved, _ = context_registry.save_run(
+            saved,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_one),
+            "p2j",
+            {"jd_demand_map": mismatched_map},
+        )
+        resolved = context_registry.resolve_context(
+            saved,
+            self.project_snapshot,
+            context_registry.jd_snapshot(self.jd_one),
+            company="OpenAI",
+            track="AI product",
+            now=datetime(2026, 7, 29, tzinfo=timezone.utc),
+        )
+        self.assertEqual(resolved["profiles"]["company_intelligence"]["state"], "hit")
+        self.assertEqual(resolved["profiles"]["jd_demand"]["state"], "mismatch")
+        self.assertEqual(
+            resolved["profiles"]["jd_demand"]["reason"],
+            "company_profile_key_mismatch",
+        )
+
+        plan = profile_router.plan_request(
+            "project_introduction",
+            project_profile=self.project_profile,
+            company_profile=self.company_profile,
+            jd_demand_map=mismatched_map,
+        )
+        self.assertEqual(plan["profile_states"]["jd_demand"], "mismatch")
+        self.assertIn("extract_lightweight_jd_demand_map", plan["model_tasks"])
+        orphaned = profile_router.plan_request(
+            "project_introduction",
+            project_profile=self.project_profile,
+            company_profile=None,
+            jd_demand_map=self.jd_map_one,
+        )
+        self.assertEqual(orphaned["profile_states"]["jd_demand"], "miss")
+
+    def test_registry_rejects_saving_mixed_company_and_jd_profile_keys(self) -> None:
+        mismatched_map = dict(self.jd_map_one)
+        mismatched_map["company_profile_key"] = profile_router.company_profile_key(
+            "OpenAI", "API infrastructure"
+        )
+        with self.assertRaisesRegex(
+            context_registry.RegistryError,
+            "must match the saved Company Intelligence Profile",
+        ):
+            context_registry.save_run(
+                context_registry.empty_registry(),
+                self.project_snapshot,
+                context_registry.jd_snapshot(self.jd_one),
+                "p2j-intel",
+                {
+                    "company_intelligence_profile": self.company_profile,
+                    "jd_demand_map": mismatched_map,
+                },
+            )
 
     def test_same_evidence_uses_distinct_jd_strategy_inputs(self) -> None:
         first = profile_router.plan_request(
@@ -300,6 +477,25 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
                 weakness_list, {"fact-gate", "fact-regression"}
             ),
         )
+        broad_missing = dict(asset)
+        broad_missing["copyable"] = (
+            "| JD requirement | Match | Evidence | Missing |\n"
+            "| Reliability | GAP | None | Production validation |"
+        )
+        self.assertIn(
+            "weakness or caveat list leaked into copyable asset",
+            profile_router.validate_external_asset(
+                broad_missing, {"fact-gate", "fact-regression"}
+            ),
+        )
+        limitation = dict(asset)
+        limitation["copyable"] = "The most important limitation is adoption."
+        self.assertIn(
+            "weakness or caveat list leaked into copyable asset",
+            profile_router.validate_external_asset(
+                limitation, {"fact-gate", "fact-regression"}
+            ),
+        )
 
     def test_bad_case_contract_ends_on_improvement_and_hiring_signal(self) -> None:
         story = {
@@ -359,6 +555,20 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
                 skill_invocations=[],
             )
 
+    def test_stateful_agent_declares_host_native_planner_boundary(self) -> None:
+        script = (SCRIPTS / "stateful_agent.py").read_text(encoding="utf-8")
+        router = (ROOT / "skill" / "p2j" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "Persisted output-update runtime, not the selective Skill planner",
+            script,
+        )
+        self.assertIn(
+            "does not choose a normal selective Skill",
+            router,
+        )
+
     def test_two_jd_dogfood_records_reuse_and_measured_replay_boundary(self) -> None:
         report = json.loads(
             (
@@ -377,6 +587,64 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
         self.assertEqual(
             len({item["map_id"] for item in report["jd_demand_maps"]}), 2
         )
+        runs = report["actual_selective_runs"]
+        self.assertEqual(len(runs), 2)
+        self.assertEqual(
+            runs[0]["profiles"]["saved"],
+            ["project_evidence_profile", "company_intelligence_profile"],
+        )
+        self.assertEqual(
+            runs[1]["profiles"]["reused"],
+            ["project_evidence_profile", "company_intelligence_profile"],
+        )
+        observed_at = datetime(2026, 7, 28, 20, 0, tzinfo=timezone.utc)
+        expected_prerequisites = [
+            profile_router.plan_request(
+                "project_introduction",
+                project_profile=None,
+                company_profile=None,
+                jd_demand_map=None,
+                now=observed_at,
+            ),
+            profile_router.plan_request(
+                "project_introduction",
+                project_profile=report["project_evidence_profile"],
+                company_profile=report["company_intelligence_profile"],
+                jd_demand_map=None,
+                now=observed_at,
+            ),
+        ]
+        for run, demand_map, expected_prerequisite in zip(
+            runs, report["jd_demand_maps"], expected_prerequisites
+        ):
+            self.assertEqual(
+                run["prerequisite_route_plan"], expected_prerequisite
+            )
+            self.assertEqual(
+                run["route_plan"],
+                profile_router.plan_request(
+                    "project_introduction",
+                    project_profile=report["project_evidence_profile"],
+                    company_profile=report["company_intelligence_profile"],
+                    jd_demand_map=demand_map,
+                    now=observed_at,
+                ),
+            )
+            self.assertEqual(run["route_plan"]["request"], "project_introduction")
+            self.assertEqual(
+                run["route_plan"]["asset_generation"], ["project_introduction"]
+            )
+            artifact_path = ROOT / run["output_artifact"]
+            artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                profile_router.validate_external_asset(
+                    artifact, set(artifact["fact_ids"])
+                ),
+                [],
+            )
+            self.assertGreaterEqual(len(artifact["copyable"].split()), 100)
+            self.assertLessEqual(len(artifact["copyable"].split()), 180)
+            self.assertIn("files_opened", run["usage"])
         old = report["execution_comparison"]["old_path"]
         new = report["execution_comparison"]["new_path"]
         self.assertLess(
@@ -387,12 +655,12 @@ class SelectiveSkillRoutingTests(unittest.TestCase):
             new["two_jd_project_file_opens"],
             old["two_jd_project_file_opens"],
         )
-        tokens = report["token_replay"]
+        tokens = report["deterministic_token_replay"]
         self.assertEqual(
             tokens["old_path_input_tokens"] - tokens["new_path_input_tokens"],
             tokens["input_token_savings"],
         )
-        self.assertIsNone(tokens["host_cached_input_tokens"])
+        self.assertIsNone(report["live_telemetry"]["cached_input_tokens"])
         self.assertIn("billed production usage", tokens["boundary"])
 
 

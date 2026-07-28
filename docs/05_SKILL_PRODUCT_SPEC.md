@@ -94,20 +94,22 @@ The Skill cannot guarantee:
 Step 9 is a real stopping point, not a pause. The Intake Result must stand on its
 own if the user never supplies a project.
 
-JD plus Project without a narrower request returns a concise strategic Brief and
-one recommended next Skill. It does not automatically run Brief, Intel, Audit,
-Answer, Mock, and Upgrade.
+JD plus Project without a narrower request reuses fresh Company Intelligence or
+runs one bounded Intel prerequisite, then returns a concise strategic Brief with
+one strongest positioning and one recommended next Skill. It does not
+automatically run Brief, Audit, Answer, Mock, and Upgrade.
 
 ## Reusable profiles
 
 - **Project Evidence Profile:** deep, source-linked facts, ownership, decisions,
   architecture, results, bad cases, stories, and hiring signals. Build once per
   Project version and update only affected sections.
-- **Company Intelligence Profile:** `$p2j-intel` output keyed by company and
-  compatible track, including culture, values, product/AI direction, role/team
-  priorities, interview signals, sources, and freshness.
+- **Company Intelligence Profile:** `$p2j-intel` output keyed by exact normalized
+  company and track string, including culture, values, product/AI direction,
+  role/team priorities, interview signals, sources, and freshness.
 - **JD Demand Map:** lightweight per-JD role tasks, stated level, hiring signals,
-  must-haves, and preferred qualifications.
+  must-haves, and preferred qualifications, bound to the resolved Company
+  profile key.
 
 ## Progressive loading
 

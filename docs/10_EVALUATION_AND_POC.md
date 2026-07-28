@@ -156,7 +156,8 @@ Measure:
 - blind reviewer preference over generic prompt is positive
 - output is usable with minor editing
 - normal asset requests do not run the full specialist suite
-- the same Project and fresh company profile are reused across compatible JDs
+- the same Project and fresh company profile are reused across JDs only when
+  normalized company/track keys match exactly
 - external career assets contain no weakness or Private Defense leakage
 - every run reports file opens, model calls, Skill invocations, and
   cached/uncached/output token counts when the host exposes them

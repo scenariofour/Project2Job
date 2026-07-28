@@ -1,3 +1,11 @@
+"""Persisted output-update runtime, not the selective Skill planner.
+
+The host resolves context and runs profile_router.py before invoking this
+runtime for an explicit stateful update. This module maintains evidence/output
+dependencies; it does not select a normal Brief, Intel, Audit, Answer, Mock, or
+Upgrade route.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -297,7 +305,10 @@ def run(args: argparse.Namespace) -> dict:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the bounded stateful Project2Job vertical slice."
+        description=(
+            "Run the bounded persisted-output update slice after host-native "
+            "selective planning."
+        )
     )
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--jd-file", type=Path, required=True)

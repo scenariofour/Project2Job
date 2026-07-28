@@ -589,9 +589,10 @@ Decision:
 - Build one source-linked Project Evidence Profile per Project version, reuse it
   across JDs, and update only sections affected by changed source paths.
 - Build Company Intelligence Profiles through `$p2j-intel`, key them by company
-  and compatible track, and reuse them across JDs only while fresh and
-  materially unchanged.
-- Extract one lightweight JD Demand Map per JD version.
+  and exact normalized track string, and reuse them across JDs only while fresh
+  and materially unchanged.
+- Extract one lightweight JD Demand Map per JD version and bind it to the
+  resolved Company profile key.
 - Make Full Preparation an explicit mode that assembles the complete pack and
   uses all specialist capability contracts while satisfying fresh Audit/Intel
   dependencies from cache.
@@ -611,3 +612,27 @@ can reuse expensive work without allowing company research to alter Project
 facts. This amends the prior one-JD persistence boundary while retaining one JD
 per run, consent, freshness, source provenance, factual-safety regressions, and
 the bounded Agent update contract.
+
+## D-031: Close selective-routing prerequisite and invalidation gaps
+
+Decision:
+
+- A Project + JD Brief must reuse fresh Company Intelligence for the exact
+  normalized company/track or invoke bounded `$p2j-intel` before writing.
+- The visible Brief returns one strongest positioning and one route; limitation,
+  weakness, and broad missing-evidence inventories stay in Private Defense or
+  `$p2j-upgrade`.
+- Added Project files conservatively stale every profile section until the new
+  source is opened and its evidence surfaces are inspected.
+- A JD Demand Map is reusable only when its `company_profile_key` matches the
+  resolved Company Intelligence Profile.
+- Selective planning remains host-native. `stateful_agent.py` owns explicit
+  persisted update mechanics and does not select normal Skill routes.
+
+Reason:
+
+PR #16's first implementation planned profile reuse but allowed a Brief without
+company context, could reuse a JD map across Company-profile keys, and derived
+added-file dependencies only from old `source_paths`. Those behaviors made the
+claimed adaptation and incremental invalidation contracts stronger than the
+implementation.

@@ -43,6 +43,7 @@ PROJECT_PROFILE_REQUESTS = {
 }
 COMPANY_ADAPTED_REQUESTS = {
     *ASSET_REQUESTS,
+    "brief",
     "company_intelligence",
     "full_preparation",
     "interview_answer",
@@ -87,9 +88,15 @@ def parse_time(value: str) -> datetime:
     return parsed
 
 
+def normalize_profile_component(value: str) -> str:
+    return " ".join(value.lower().split())
+
+
 def company_profile_key(company: str, track: str) -> str:
-    normalized = " ".join(f"{company}::{track}".lower().split())
-    return normalized
+    return (
+        f"{normalize_profile_component(company)}::"
+        f"{normalize_profile_component(track)}"
+    )
 
 
 def require_fields(value: dict, fields: set[str], label: str) -> None:
@@ -216,7 +223,15 @@ def profile_states(
         )
     if jd_demand_map is not None:
         validate_jd_demand_map(jd_demand_map)
-        states["jd_demand"] = "hit"
+        if company_profile is None:
+            states["jd_demand"] = "miss"
+        elif (
+            jd_demand_map["company_profile_key"]
+            != company_profile["profile_key"]
+        ):
+            states["jd_demand"] = "mismatch"
+        else:
+            states["jd_demand"] = "hit"
     return states
 
 
@@ -235,6 +250,8 @@ def plan_request(
     material_questions: list[str] | None = None,
     company_materially_changed: bool = False,
     affected_project_sections: list[str] | None = None,
+    added_project_sources: list[str] | None = None,
+    company_context_required: bool = True,
 ) -> dict:
     supported = (
         set(CAPABILITY_ROUTES)
@@ -255,6 +272,14 @@ def plan_request(
     model_tasks: list[str] = []
     deterministic_tasks: list[str] = []
     assets: list[str] = []
+    requires_company_context = (
+        request in COMPANY_ADAPTED_REQUESTS
+        and (request != "brief" or company_context_required)
+    )
+    requires_jd_context = (
+        request in JD_REQUESTS
+        and (request != "brief" or company_context_required)
+    )
 
     if request == "full_preparation":
         skills = list(FULL_PREPARATION_SKILLS)
@@ -280,29 +305,45 @@ def plan_request(
     ):
         add_once(skills, "p2j-audit")
         if states["project_evidence"] == "partial":
-            deterministic_tasks.append("open_changed_project_artifacts_only")
-            model_tasks.append("update_affected_project_profile_sections")
+            if added_project_sources:
+                deterministic_tasks.append(
+                    "inspect_added_project_evidence_surfaces"
+                )
+                deterministic_tasks.append(
+                    "open_added_and_changed_project_artifacts_only"
+                )
+                model_tasks.append(
+                    "update_potentially_affected_project_profile_sections"
+                )
+            else:
+                deterministic_tasks.append("open_changed_project_artifacts_only")
+                model_tasks.append("update_affected_project_profile_sections")
         else:
             deterministic_tasks.append("inventory_changed_project_artifacts")
             model_tasks.append("build_project_evidence_profile")
     if (
-        request in COMPANY_ADAPTED_REQUESTS
+        requires_company_context
         and states["company_intelligence"] != "hit"
     ):
         add_once(skills, "p2j-intel")
         deterministic_tasks.append("check_company_profile_freshness")
         model_tasks.append("build_or_refresh_company_intelligence_profile")
-    if request in JD_REQUESTS and states["jd_demand"] != "hit":
+        if request == "brief":
+            skills.remove("p2j-intel")
+            skills.insert(0, "p2j-intel")
+    if requires_jd_context and states["jd_demand"] != "hit":
         deterministic_tasks.append("fingerprint_jd")
         model_tasks.append("extract_lightweight_jd_demand_map")
-    if assets or request in {"interview_answer", "mock_interview", "full_preparation"}:
-        model_tasks.extend(
-            [
-                "select_one_strongest_story",
-                "adapt_to_company_culture_and_jd",
-                "translate_to_product_user_business_and_ai_pm_value",
-            ]
-        )
+    if assets or request in {
+        "brief",
+        "interview_answer",
+        "mock_interview",
+        "full_preparation",
+    }:
+        model_tasks.append("select_one_strongest_story")
+        if requires_company_context:
+            model_tasks.append("adapt_to_company_culture_and_jd")
+        model_tasks.append("translate_to_product_user_business_and_ai_pm_value")
 
     questions = [
         question
@@ -330,6 +371,8 @@ def plan_request(
         },
         "questions": questions,
         "affected_project_sections": affected_project_sections or [],
+        "added_project_sources": added_project_sources or [],
+        "company_context_required": requires_company_context,
     }
 
 
@@ -361,9 +404,13 @@ def validate_external_asset(asset: dict, allowed_fact_ids: set[str]) -> list[str
     lowered = copyable.lower() if isinstance(copyable, str) else ""
     for heading in (
         "weaknesses:",
+        "limitations:",
+        "gaps:",
         "caveats:",
         "missing validation:",
         "risk warnings:",
+        "most important limitation",
+        "| missing |",
     ):
         if heading in lowered:
             errors.append("weakness or caveat list leaked into copyable asset")
@@ -435,6 +482,8 @@ def main() -> None:
             "company_materially_changed", False
         ),
         affected_project_sections=payload.get("affected_project_sections"),
+        added_project_sources=payload.get("added_project_sources"),
+        company_context_required=payload.get("company_context_required", True),
     )
     print(json.dumps(plan, indent=2))
 

@@ -188,8 +188,8 @@ class SkillSuiteTests(unittest.TestCase):
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-        self.assertEqual(len(cases), 38)
-        self.assertEqual(len({case["id"] for case in cases}), 38)
+        self.assertEqual(len(cases), 45)
+        self.assertEqual(len({case["id"] for case in cases}), 45)
         no_event = next(case for case in cases if case["id"] == "A11_NO_EVENT")
         self.assertIn("select strongest", no_event["must"])
         self.assertIn("dead end", no_event["must_not"])
@@ -204,6 +204,13 @@ class SkillSuiteTests(unittest.TestCase):
             case for case in cases if case["id"] == "A29_SELECTIVE_INVOCATION"
         )
         self.assertIn("zero specialist invocations", selective["must"])
+        brief = next(
+            case for case in cases if case["id"] == "A40_BRIEF_COMPANY_PREREQUISITE"
+        )
+        self.assertIn("bounded p2j-intel before p2j-brief", brief["must"])
+        self.assertIn(
+            "company adaptation without company context", brief["must_not"]
+        )
         full = next(
             case for case in cases if case["id"] == "A28_CAPABILITY_PRESERVATION"
         )
@@ -368,7 +375,9 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("`**EXACT MATCH**`", text)
         self.assertIn("`TRANSFERABLE`", text)
         self.assertIn("`` `GAP` ``", text)
-        self.assertIn("return as many as the evidence", text)
+        self.assertIn("Return exactly one strongest", text)
+        self.assertIn("bounded `$p2j-intel` pass before", text)
+        self.assertIn("Private Defense", text)
         self.assertIn("select exactly one of", text)
         self.assertIn("absent ownership metadata", text)
         self.assertNotIn("Preliminary Gate Scores", text)
@@ -398,6 +407,9 @@ class SkillSuiteTests(unittest.TestCase):
         ):
             self.assertIn(section, text)
         self.assertNotIn("Preliminary Gate Scores", text)
+        self.assertNotIn("most important limitation", text.lower())
+        self.assertNotIn("| Missing |", text)
+        self.assertNotIn("| Story direction |", text)
         self.assertNotRegex(text, r"\bG[1-6]\b")
         self.assertNotRegex(text, r"\bD(?:10|[1-9])\b")
 

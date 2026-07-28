@@ -136,7 +136,7 @@ deterministic cost model, not measurements.
 - documentation consistency checks in `tests/test_document_consistency.py`
 - sample project inventory is deterministic
 - seven Skill packages pass structural validation and install validation
-- thirty-eight Skill behavior cases cover routing, Brief UX, shared context, Gates,
+- forty-five Skill behavior cases cover routing, Brief UX, shared context, Gates,
   Answer Lab, research,
   N/A, source caps, ownership, conflict, injection, no-event recovery, and One
   Next Build, plus career-asset packaging and visibly labeled mock practice
@@ -169,12 +169,14 @@ deterministic cost model, not measurements.
 - the career-asset packaging fix passes 90 focused Skill/Application Pack tests
   with `jsonschema>=4`; the full default suite runs 256 tests with 239 passing
   and 17 optional schema tests skipped
-- twelve focused selective-routing tests cover capability preservation,
-  per-request invocation, all three profile reuse/freshness paths, changed-section
-  updates, no unchanged-file reread, distinct JD framing, Private Defense,
-  improvement stories, question economy, factual grounding, usage reporting,
-  and the two-JD dogfood record
-- the selective-routing change passes all 269 repository tests in an isolated
+- eighteen focused selective-routing tests cover capability preservation,
+  per-request invocation, Brief company prerequisites, all three profile
+  reuse/freshness paths, added/changed-section updates, JD/company-key mismatch,
+  exact-track reuse, no unchanged-file reread, distinct JD framing, Private
+  Defense, improvement stories, question economy, factual grounding, usage
+  reporting, the stateful-planner boundary, and the executed two-JD dogfood
+  record
+- the selective-routing change passes all 275 repository tests in an isolated
   `jsonschema>=4` environment and builds the standalone Skill archive
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,

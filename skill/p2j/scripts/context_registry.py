@@ -15,6 +15,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from inventory import inventory
 from profile_router import (
+    PROJECT_SECTIONS,
     company_profile_key,
     parse_time,
     validate_company_profile,
@@ -702,7 +703,7 @@ def resolve_context(
         track,
         company_source_fingerprint,
         now or datetime.now(timezone.utc),
-        set(changes["added"]) | set(changes["changed"]) | set(changes["removed"]),
+        changes,
         bypass=mode in {"fresh", "refresh"} or state == "identity_ambiguous",
     )
     return {
@@ -742,7 +743,7 @@ def resolve_profiles(
     track: str | None,
     company_source_fingerprint: str | None,
     now: datetime,
-    changed_source_paths: set[str],
+    project_changes: dict[str, list[str]],
     *,
     bypass: bool,
 ) -> dict:
@@ -760,6 +761,7 @@ def resolve_profiles(
         else None
     )
     previous_project_profile = None
+    jd_map_candidates = []
     for run in reversed(registry["analysis_runs"]):
         project_profile = run.get("project_evidence_profile")
         if (
@@ -809,30 +811,66 @@ def resolve_profiles(
 
         jd_map = run.get("jd_demand_map")
         if (
-            result["jd_demand"]["profile"] is None
-            and jd is not None
+            jd is not None
             and run.get("jd_id") == jd["jd_id"]
             and run.get("jd_version") == jd_version
             and jd_map is not None
         ):
-            result["jd_demand"] = {"state": "hit", "profile": jd_map}
+            jd_map_candidates.append(jd_map)
 
+    added_source_paths = set(project_changes["added"])
+    changed_or_removed_paths = set(project_changes["changed"]) | set(
+        project_changes["removed"]
+    )
+    changed_source_paths = added_source_paths | changed_or_removed_paths
     if (
         result["project_evidence"]["profile"] is None
         and previous_project_profile is not None
         and changed_source_paths
     ):
-        affected_sections = sorted(
+        affected_sections = {
             name
             for name, section in previous_project_profile["sections"].items()
-            if set(section.get("source_paths", [])) & changed_source_paths
-        )
+            if set(section.get("source_paths", [])) & changed_or_removed_paths
+        }
+        if added_source_paths:
+            # A new source cannot appear in an old section's source_paths.
+            # Keep every section stale until the host opens the added source,
+            # identifies its evidence surfaces, and rebuilds the applicable ones.
+            affected_sections.update(PROJECT_SECTIONS)
         result["project_evidence"] = {
             "state": "partial",
             "profile": previous_project_profile,
-            "affected_sections": affected_sections,
+            "affected_sections": sorted(affected_sections),
             "changed_source_paths": sorted(changed_source_paths),
+            "added_source_paths": sorted(added_source_paths),
+            "surface_inspection_required": bool(added_source_paths),
         }
+
+    if jd_map_candidates:
+        resolved_company_profile = result["company_intelligence"]["profile"]
+        matching_map = (
+            next(
+                (
+                    item
+                    for item in jd_map_candidates
+                    if resolved_company_profile is not None
+                    and item.get("company_profile_key")
+                    == resolved_company_profile.get("profile_key")
+                ),
+                None,
+            )
+        )
+        if matching_map is not None:
+            result["jd_demand"] = {"state": "hit", "profile": matching_map}
+        elif resolved_company_profile is not None:
+            result["jd_demand"] = {
+                "state": "mismatch",
+                "profile": jd_map_candidates[0],
+                "reason": "company_profile_key_mismatch",
+            }
+        else:
+            result["jd_demand"]["reason"] = "company_profile_missing"
 
     return result
 
@@ -920,6 +958,16 @@ def safe_analysis(analysis: dict) -> dict:
                 validator(selected[field])
             except ValueError as error:
                 raise RegistryError(str(error)) from error
+    if (
+        "company_intelligence_profile" in selected
+        and "jd_demand_map" in selected
+        and selected["company_intelligence_profile"]["profile_key"]
+        != selected["jd_demand_map"]["company_profile_key"]
+    ):
+        raise RegistryError(
+            "JD Demand Map company_profile_key must match the saved "
+            "Company Intelligence Profile."
+        )
     for field in ("reused_fact_ids", "output_references"):
         if not all(isinstance(value, str) for value in selected.get(field, [])):
             raise RegistryError(f"Analysis field '{field}' must contain strings.")

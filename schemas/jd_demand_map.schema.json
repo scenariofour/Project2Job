@@ -30,7 +30,8 @@
     },
     "company_profile_key": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Must exactly match the resolved Company Intelligence Profile key before this map can be reused."
     },
     "extracted_at": {
       "type": "string",

@@ -21,7 +21,8 @@
     },
     "profile_key": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Normalized company plus exact normalized track string. Reuse requires an exact key match."
     },
     "company": {
       "type": "string",
@@ -29,7 +30,8 @@
     },
     "track": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "The stated track used for exact normalized-track reuse; no implicit compatible-track family is inferred."
     },
     "researched_at": {
       "type": "string",
