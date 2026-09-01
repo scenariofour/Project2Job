@@ -19,6 +19,12 @@
     "save_context": false,
     "web_research": false
   },
+  "capture_source_files": {
+    "note": "The working file names the capture presented to both systems, mapped to their committed repository fixtures. Every recorded citation uses these names.",
+    "D5-001": {"S01_project.md": "lab/fixtures/fixture_project_plan_only.md", "target_jd.md": "lab/fixtures/fixture_ai_pm_jd.md"},
+    "D5-002": {"S02_project.md": "lab/fixtures/fixture_team_project.md", "target_jd.md": "lab/fixtures/fixture_ai_pm_jd.md"},
+    "D5-003": {"S05_project.md": "lab/fixtures/fixture_project_with_code_no_users.md", "target_jd.md": "lab/fixtures/fixture_ai_pm_jd.md"}
+  },
   "reused_artifacts": {
     "existing_skill_output": "skill/p2j/examples/sample_brief.md",
     "existing_skill_output_use": "Structural calibration only; it is a Brief rather than a canonical Application Pack and is not included in blind preference scoring.",

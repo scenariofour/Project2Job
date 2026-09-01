@@ -35,8 +35,8 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(result["added"], ["c.md"])
         self.assertEqual(result["unchanged"], ["a.md"])
 
-    def test_journal_statuses_allow_completed_day4(self) -> None:
-        self.assertEqual(validate_repo.validate_journal_statuses(), 4)
+    def test_journal_statuses_allow_completed_day5(self) -> None:
+        self.assertEqual(validate_repo.validate_journal_statuses(), 5)
 
 
 if __name__ == "__main__":

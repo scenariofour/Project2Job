@@ -146,7 +146,8 @@
           "type": "string"
         },
         "location": {
-          "type": "string"
+          "type": "string",
+          "description": "Absolute 1-based line reference counting blank lines ('path:line', 'path:start-end', 'line N', 'lines N-M') or a heading anchor ('path#Heading'). The cited span must exist and carry text; an ordinal prose anchor such as 'sentence 1' does not resolve. Resolution is a separate gate from schema validity; see skill/p2j/scripts/source_resolution.py."
         }
       }
     },

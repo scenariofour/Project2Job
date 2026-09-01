@@ -118,6 +118,7 @@ def validate(root: Path, require_canonical: bool = False) -> list[str]:
         "inventory.py",
         "install_suite.py",
         "profile_router.py",
+        "source_resolution.py",
         "stateful_agent.py",
         "validate_output.py",
     ):

@@ -110,7 +110,11 @@
       "AI_PM_PRODUCT_AND_INTERVIEW_GATE.md",
       "lab/scoring_rubric.md",
       "lab/evals/skill_cases.jsonl",
-      "lab/evals/agent_cases.jsonl"
+      "lab/evals/agent_cases.jsonl",
+      "lab/day5/REVIEW_PROTOCOL.md",
+      "lab/day5/bad_case_taxonomy.json",
+      "lab/day5/evaluation_layers.json",
+      "lab/day5/product_decisions.json"
     ]
   },
   "work_order_to_context": {

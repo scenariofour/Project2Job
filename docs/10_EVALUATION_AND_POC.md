@@ -150,6 +150,8 @@ Measure:
 - valid installable package exists
 - trigger and non-trigger tests pass
 - output schema passes
+- every exported citation resolves to real text in a permitted source; schema
+  validity alone is not enough
 - no severe unsupported career claim in gold cases
 - no answer draft exceeds its verified evidence
 - company emphasis changes wording without changing fact sets

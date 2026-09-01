@@ -1,0 +1,50 @@
+{
+  "note": "Deterministic correctness and subjective product quality are separate layers. An automated grader never stands in for layer 4.",
+  "layers": [
+    {
+      "layer": 1,
+      "name": "Deterministic contract checks",
+      "what_exists": "Application Pack schema validation, citation resolution, forbidden export phrases, resume-bullet count, answer claim-safety gate, and expected evidence statuses.",
+      "executable": "python3 scripts/run_day5_evaluation.py --check",
+      "metric": "severe check pass/fail per case per system; citation counts",
+      "unmeasured": "nothing at this layer",
+      "maturity": "TESTED"
+    },
+    {
+      "layer": 2,
+      "name": "Component quality",
+      "what_exists": "Day 2 intake extraction and routing cases, Day 3 context selection comparison, Context Registry reuse and invalidation, selective routing, and Skill behavior cases.",
+      "executable": "python3 -m unittest discover -s tests -t .",
+      "metric": "per-component assertions and eval-case checks",
+      "unmeasured": "component behavior against a live host, live model, or real project corpus",
+      "maturity": "TESTED"
+    },
+    {
+      "layer": 3,
+      "name": "End-to-end task success",
+      "what_exists": "Three recorded strong-prompt versus Project2Job Application Pack pairs on the S01/S02/S05 boundary cases, plus the Agent update-versus-fresh-replay mechanics comparison.",
+      "executable": "python3 scripts/run_day5_evaluation.py --print results",
+      "metric": "severe-gate pass rate and citation resolution rate over 3 cases per system",
+      "unmeasured": "task success on unseen projects; n=3 supports direction, not a rate",
+      "maturity": "TESTED"
+    },
+    {
+      "layer": 4,
+      "name": "Human product judgement",
+      "what_exists": "A blind packet, a 0-3 rubric, blank two-reviewer forms, a disagreement form, and a written protocol. One product-owner target-user dogfood session is recorded separately.",
+      "executable": "python3 -m unittest tests.test_day5_evaluation -v",
+      "metric": "none recorded; every score field is null",
+      "unmeasured": "reviewer scores, preference, disagreement, and every subjective rubric dimension",
+      "maturity": "PROTOCOL ONLY"
+    },
+    {
+      "layer": 5,
+      "name": "Real user and outcome evidence",
+      "what_exists": "A blank bounded target-user pilot record.",
+      "executable": null,
+      "metric": "none",
+      "unmeasured": "adoption, external use, application results, and hiring outcomes",
+      "maturity": "NOT STARTED"
+    }
+  ]
+}

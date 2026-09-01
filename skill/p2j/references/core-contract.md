@@ -108,6 +108,14 @@ role_requirement_id
 → user confirmation
 ```
 
+`source_location` is an absolute 1-based line reference that counts blank lines
+(`path:line`, `path:start-end`, `line N`, `lines N-M`) or a heading anchor
+(`path#Heading`). Never number only the non-empty lines and never anchor to a
+sentence, bullet, or whole document.
+Before exporting a claim, confirm its cited span exists and carries text; run
+`scripts/source_resolution.py` when the sources are files on disk. A citation
+that resolves to a blank line supports nothing.
+
 Search does not establish a claim. Reread the original source before resolving
 it. Missing material does not prove missing capability.
 

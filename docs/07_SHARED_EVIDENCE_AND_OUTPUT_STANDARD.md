@@ -101,6 +101,31 @@ role_requirement_id
 → user_confirmation
 ```
 
+### Source location grammar
+
+`source_location` is an absolute, 1-based line reference into the cited file.
+Blank lines count. Use one of:
+
+```text
+<source-file>:<line>
+<source-file>:<start>-<end>
+line <line>
+lines <start>-<end>
+<source-file>#<Heading>
+```
+
+A heading anchor names a real heading and resolves to that section. Do not
+number only the non-empty lines, and do not anchor a claim to a sentence,
+bullet, paragraph, or "entire document". An ordinal prose anchor reads as
+precise and cannot be resolved: nothing in the file marks where the count
+starts.
+
+Before a claim reaches a resume bullet, an answer draft, or any other external
+asset, its citation must resolve: the cited span must exist inside the file and
+must carry text. A citation that resolves to a blank or out-of-range span
+supports nothing, even when the claim itself is true and the source is
+permitted. `skill/p2j/scripts/source_resolution.py` is the deterministic check.
+
 ## Career output policy
 
 ### Career-asset packaging

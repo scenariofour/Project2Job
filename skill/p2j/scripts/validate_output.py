@@ -2,7 +2,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from source_resolution import (  # noqa: E402
+    parse_source_arguments,
+    resolve_refs,
+    summarize,
+)
 
 SCHEMAS = {
     "application_pack": "application_pack.schema.json",
@@ -57,15 +66,36 @@ def main() -> None:
     )
     parser.add_argument("output", type=Path)
     parser.add_argument("--schema", choices=sorted(SCHEMAS), required=True)
+    parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        metavar="[SOURCE_ID=]PATH",
+        help=(
+            "A permitted source file. Repeat once per source to also resolve "
+            "every citation against real text before export."
+        ),
+    )
     args = parser.parse_args()
     try:
         instance = json.loads(args.output.read_text(encoding="utf-8"))
         errors = validate(instance, args.schema)
-    except (OSError, json.JSONDecodeError, RuntimeError) as exc:
+        resolution = (
+            summarize(resolve_refs(instance, parse_source_arguments(args.source)))
+            if args.source
+            else None
+        )
+    except (OSError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
         print(json.dumps({"valid": False, "errors": [str(exc)]}, indent=2))
         raise SystemExit(2) from exc
-    print(json.dumps({"valid": not errors, "errors": errors}, indent=2))
-    if errors:
+
+    report = {"valid": not errors, "errors": errors}
+    if resolution is not None:
+        # Schema validity and citation resolution are separate gates: an output
+        # can be perfectly shaped and still cite a blank line.
+        report["source_resolution"] = resolution
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    if errors or (resolution is not None and not resolution["all_resolve"]):
         raise SystemExit(1)
 
 

@@ -2,20 +2,26 @@
 
 Updated: 2026-08-31
 
-Highest completed Day: 4
+Highest completed Day: 5
 
 ## Current stage
 
 **WO-00 Shared Foundation is complete. The Day 1 bounded Agent Loop is
 implemented and tested. Day 2 JD-first intake, Day 3 context/evidence behavior,
-and Day 4 Skill/Agent/human-control closeout are implemented and tested.
-Stateful Agent V0 mechanics are implemented and deterministically tested. A
-seven-Skill host-native Alpha is implemented and installable.**
+Day 4 Skill/Agent/human-control closeout, and the Day 5 evaluation system are
+implemented and tested. Stateful Agent V0 mechanics are implemented and
+deterministically tested. A seven-Skill host-native Alpha is implemented and
+installable.**
 
 Loop mechanics and Skill contracts are covered by unit tests and eval cases.
-The Alpha has been dogfooded in Codex. One product-owner target-user dogfood
-session rated a Day 5 interview asset 8/10 and exposed a packaging failure; this
-is not independent target-user validation or proof of hiring impact.
+The Alpha has been dogfooded in Codex. Day 5 root-caused its open exact-source
+failure to an undefined citation contract, added a deterministic
+citation-resolution gate, and found the mirror failure in the strong-prompt
+baseline. Six of eight deterministic checks came out identical for both systems
+on the three recorded cases, so no Skill-preference claim is made. One
+product-owner target-user dogfood session rated a Day 5 interview asset 8/10 and
+exposed a packaging failure; this is not independent target-user validation or
+proof of hiring impact. No blind reviewer has scored anything.
 
 ## Implemented
 
@@ -123,6 +129,25 @@ Day 4 Skill, Agent, and human control:
 - the bounded decision to retain the Agent only for explicit update cycles,
   without claiming target-user or live-model advantage
 
+Day 5 evaluation system (WO-04):
+
+- an unchanged strong-prompt baseline that receives the same fixtures, evidence
+  rules, and canonical schema as the Skill
+- three recorded comparison pairs over the plan/ownership/implementation
+  boundary cases, plus the existing bounded Agent mechanics comparison
+- eight deterministic per-case checks, six severe, that override any aggregate
+- one canonical source-location grammar covering absolute line spans and heading
+  anchors, defined in the shared standard, the Skill contract, and the schema
+- a deterministic citation-resolution gate wired into the Skill's own export
+  validation, so a schema-valid output with an unresolvable citation now fails
+- observed citation counts for both systems, with the failing JSON pointers
+- a nine-category bad-case taxonomy in which every row cites a real artifact
+- a five-layer evaluation map that keeps human judgment out of machine claims
+- a written human-review protocol with unfilled blind review, disagreement, and
+  pilot records
+- recorded KEEP / REVISE / STOP / UNPROVEN product decisions with evidence
+  pointers
+
 The intake runtime opens no socket of its own and does not generate an
 Application and Interview Pack. Its `runtime_seconds` and `total_tokens` are a
 deterministic cost model, not measurements.
@@ -182,7 +207,12 @@ deterministic cost model, not measurements.
   `DAY_5.md`, and `lab/day5/README.md` now resolve to this repository, and two
   regression tests in `tests/test_document_consistency.py` fail if a
   documented `unittest` module stops importing or the `tests` package is
-  shadowed by an installed distribution; the full suite is 277 tests
+  shadowed by an installed distribution
+- fifteen Day 5 evaluation tests and twenty-four source-resolution tests cover
+  the recorded blank-line and unresolvable-format failures, the heading-anchor
+  dogfood, grader symmetry between the two systems, stable bad-case IDs,
+  taxonomy backing, null human results, and evidence-cited product decisions
+- the full suite is 309 tests
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,
@@ -191,11 +221,9 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 
 ## Planned
 
-- Day 5 evaluation review: a reproducible three-case generic-prompt versus
-  Project2Job package now exists with raw outputs, severe gates, a blind packet,
-  observed host token/runtime fields, and an open exact-source failure. Day 5
-  remains planned pending two independent blind reviews, disagreement
-  adjudication, and a bounded target-user pilot.
+- Day 5 human review: two independent blind reviews, disagreement
+  adjudication, and a bounded target-user pilot. The evaluation system is
+  implemented and tested; every human score remains null.
 - WO-05 pack handoff: the Intake Result is produced but no pack generator
   consumes it, so the three `pack`-stage Day 2 cases stay unexecuted
 - a live-host research pass; every executed case uses a fixture host
@@ -217,7 +245,8 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 - model token use, latency, and cost for the Day 3 context strategies; only file
   opens and characters were observed
 - production model behavior
-- Skill advantage over a strong generic prompt
+- Skill advantage over a strong generic prompt; six of eight Day 5 checks tied,
+  and each system failed source resolution on one different case
 - Agent advantage beyond the single observed execution-cost and
   replay-consistency comparison
 - latency, token, and cost targets
@@ -232,6 +261,8 @@ See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 
 ## Next required action
 
-Complete the Day 5 blind review and bounded target-user pilot, starting with the
-open exact-source failure in `lab/day5/bad_cases.jsonl`. Do not add retrieval,
-fine-tuning, or product scope without evidence from that review.
+Complete the Day 5 blind review and bounded target-user pilot using
+`lab/day5/REVIEW_PROTOCOL.md`. The exact-source failure is root-caused, gated,
+and regression-covered; the ownership case in `lab/day5/bad_cases.jsonl` still
+needs human adjudication. Do not add retrieval, fine-tuning, or product scope
+without evidence from that review.
