@@ -92,6 +92,20 @@ def _resolve_key_source(
     return False
 
 
+def _portable(resolution: dict[str, Any]) -> dict[str, Any]:
+    """Rewrite resolved paths relative to the repository.
+
+    An absolute path makes the committed record machine-specific and leaks a
+    local home directory into a public artifact.
+    """
+    for record in resolution["unresolved"]:
+        if "resolved_path" in record:
+            record["resolved_path"] = str(
+                Path(record["resolved_path"]).relative_to(ROOT)
+            )
+    return resolution
+
+
 def _case_checks(
     case: dict[str, Any], output: dict[str, Any], resolution: dict[str, Any]
 ) -> list[dict[str, Any]]:
@@ -220,7 +234,7 @@ def build_results() -> dict[str, Any]:
         for run in sorted(runs_by_case[case["case_id"]], key=lambda item: item["system"]):
             output_path = ROOT / run["output"]
             output = load_json(output_path)
-            resolution = summarize(resolve_refs(output, sources))
+            resolution = _portable(summarize(resolve_refs(output, sources)))
             checks = _case_checks(case, output, resolution)
             systems.append(
                 {

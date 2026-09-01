@@ -127,6 +127,21 @@ class Day5EvaluationTests(unittest.TestCase):
             },
         )
 
+    def test_committed_records_carry_no_machine_specific_path(self) -> None:
+        """CI caught this: an absolute path made the record unreproducible.
+
+        It also leaked a local home directory into a public artifact.
+        """
+        for name in ("results.json", "bad_cases.jsonl", "blind_review_packet.md"):
+            text = (PACKAGE / name).read_text(encoding="utf-8")
+            self.assertNotIn("/Users/", text, name)
+            self.assertNotIn("/home/", text, name)
+        for entry in build_results()["case_results"][0]["systems"]:
+            for record in entry["source_resolution"]["unresolved"]:
+                self.assertFalse(
+                    record["resolved_path"].startswith("/"), record["resolved_path"]
+                )
+
     def test_bad_case_ids_are_stable_under_new_findings(self) -> None:
         """An enumerated ID renumbers the whole log when one case is added."""
         ids = [item["bad_case_id"] for item in build_bad_cases()]

@@ -70,6 +70,7 @@ REQUIRED = [
 PUBLIC_FIXTURE_ROOTS = [
     "examples",
     "lab/fixtures",
+    "lab/day5",
     "skill/p2j/examples",
 ]
 

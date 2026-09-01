@@ -95,7 +95,7 @@
                 "pointer": "/role_fit_map/3/source_refs/0",
                 "source_id": "SRC-PROJECT",
                 "location": "S01_project.md:2",
-                "resolved_path": "/Users/irisli0926/Developer/Project2Job/lab/fixtures/fixture_project_plan_only.md",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
                 "cited_lines": [
                   2,
                   2
@@ -107,7 +107,7 @@
                 "pointer": "/role_fit_map/6/source_refs/0",
                 "source_id": "SRC-PROJECT",
                 "location": "S01_project.md:2",
-                "resolved_path": "/Users/irisli0926/Developer/Project2Job/lab/fixtures/fixture_project_plan_only.md",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
                 "cited_lines": [
                   2,
                   2
@@ -119,7 +119,7 @@
                 "pointer": "/project_highlights/0/source_refs/0",
                 "source_id": "SRC-PROJECT",
                 "location": "S01_project.md:2",
-                "resolved_path": "/Users/irisli0926/Developer/Project2Job/lab/fixtures/fixture_project_plan_only.md",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
                 "cited_lines": [
                   2,
                   2
@@ -131,7 +131,7 @@
                 "pointer": "/interview_pack/answer_drafts/0/verified_evidence/0/source_refs/0",
                 "source_id": "SRC-PROJECT",
                 "location": "S01_project.md:2",
-                "resolved_path": "/Users/irisli0926/Developer/Project2Job/lab/fixtures/fixture_project_plan_only.md",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
                 "cited_lines": [
                   2,
                   2
@@ -143,7 +143,7 @@
                 "pointer": "/interview_pack/answer_drafts/1/verified_evidence/0/source_refs/0",
                 "source_id": "SRC-PROJECT",
                 "location": "S01_project.md:2",
-                "resolved_path": "/Users/irisli0926/Developer/Project2Job/lab/fixtures/fixture_project_plan_only.md",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
                 "cited_lines": [
                   2,
                   2
@@ -155,7 +155,7 @@
                 "pointer": "/interview_pack/answer_drafts/2/verified_evidence/0/source_refs/0",
                 "source_id": "SRC-PROJECT",
                 "location": "S01_project.md:2",
-                "resolved_path": "/Users/irisli0926/Developer/Project2Job/lab/fixtures/fixture_project_plan_only.md",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
                 "cited_lines": [
                   2,
                   2

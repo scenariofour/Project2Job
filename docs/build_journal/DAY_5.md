@@ -224,7 +224,7 @@ validate every output with the command above.
 | Label | Day 5 state |
 | --- | --- |
 | IMPLEMENTED | Cases, baseline, recorded runs, layered evaluation, citation gate, taxonomy, layer map, review protocol, and product decisions exist and run. |
-| TESTED | 15 Day 5 tests and 24 source-resolution tests pass; the full suite is 309 tests. |
+| TESTED | 16 Day 5 tests and 24 source-resolution tests pass; the full suite is 312 tests. |
 | DOGFOODED | Two sessions: the source gate against real Project2Job surfaces, and the earlier product-owner career-asset session. |
 | HUMAN-REVIEWED | No. Every blind reviewer score is null. |
 | USER-VALIDATED | No. No target user has completed the bounded pilot. |

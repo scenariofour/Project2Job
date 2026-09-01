@@ -208,11 +208,12 @@ deterministic cost model, not measurements.
   regression tests in `tests/test_document_consistency.py` fail if a
   documented `unittest` module stops importing or the `tests` package is
   shadowed by an installed distribution
-- fifteen Day 5 evaluation tests and twenty-four source-resolution tests cover
+- sixteen Day 5 evaluation tests and twenty-four source-resolution tests cover
   the recorded blank-line and unresolvable-format failures, the heading-anchor
   dogfood, grader symmetry between the two systems, stable bad-case IDs,
-  taxonomy backing, null human results, and evidence-cited product decisions
-- the full suite is 309 tests
+  taxonomy backing, null human results, evidence-cited product decisions, and
+  the absence of machine-specific paths in a committed public record
+- the full suite is 312 tests
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,
