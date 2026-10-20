@@ -214,3 +214,8 @@ validate product quality or user value.
 
 `docs/DOCUMENT_GOVERNANCE.md` records which file owns which question and what a
 contract change must update.
+
+## Author
+
+Made by [Iris](https://iris-li-homepage.vercel.app/). The project record, including what has and has not been
+verified, is at [iris-li-homepage.vercel.app/work/project2job](https://iris-li-homepage.vercel.app/work/project2job/).
