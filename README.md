@@ -217,5 +217,5 @@ contract change must update.
 
 ## Author
 
-Made by [Iris](https://iris-li-homepage.vercel.app/). The project record, including what has and has not been
-verified, is at [iris-li-homepage.vercel.app/work/project2job](https://iris-li-homepage.vercel.app/work/project2job/).
+Made by [Iris](https://irisli.dev/). The project record, including what has and has not been
+verified, is at [irisli.dev/work/project2job](https://irisli.dev/work/project2job/).
