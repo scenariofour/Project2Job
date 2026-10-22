@@ -1,0 +1,27 @@
+{
+  "artifact_type": "60_second_project_introduction",
+  "artifact_status": "host_generated_dogfood_output",
+  "target_jd": "Product Manager, API Infrastructure",
+  "copyable": "Project2Job is a high-trust AI workflow built around a core platform question: how do you let model reasoning create persuasive career assets without letting it invent or reuse stale evidence? The architecture separates model work from deterministic controls. Project files are fingerprinted, company research carries freshness and an exact company-and-track key, each JD map is bound to that profile, and changed evidence invalidates only the surfaces that may depend on it. External assets also pass source-linked fact and Private Defense checks before they are considered usable. For an API Infrastructure role, that is the strongest positioning because it connects AI product generation to governance, permissions, auditability, cost discipline, and predictable state transitions. The full capability suite remains available, while selective routing reduces unnecessary work. The result is a product-system story about making flexible AI behavior dependable through explicit controls rather than treating trust as a prompt-writing problem.",
+  "fact_ids": [
+    "fact-capabilities",
+    "fact-selective-plan",
+    "fact-profile-reuse",
+    "fact-private-defense",
+    "architecture-router",
+    "decision-three-profiles"
+  ],
+  "private_defense": {
+    "ownership": "Repository evidence establishes the system behavior, not the candidate's personal ownership.",
+    "unsupported_claims": [
+      "live user adoption",
+      "hiring impact",
+      "production deployment",
+      "billed model-token savings"
+    ],
+    "difficult_follow_ups": [
+      "Which parts did you personally own?",
+      "Were token savings observed in billed production calls?"
+    ]
+  }
+}

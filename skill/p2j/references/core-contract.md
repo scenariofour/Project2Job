@@ -10,6 +10,9 @@ rules in specialist references.
 - Before routing, read `context-registry.md` and resolve the supplied Project/JD.
   Reuse only compatible saved context; current source evidence remains
   authoritative.
+- Read `profile-contract.md`, resolve all three profile states, and invoke only
+  the specialist Skills required by the requested asset. Use Full Preparation
+  only when explicitly requested.
 - With a JD and no project, produce a useful Intake/Intel result and one next
   input. With a project and no JD, use the default role standard and name the JD
   as an optional unlock.
@@ -28,11 +31,18 @@ rules in specialist references.
 - On a Project change, preserve unaffected facts and recompute only outputs
   dependent on added, changed, or removed artifacts. On a JD change, reuse
   Project evidence and recompute role matching and route.
+- For an added Project artifact, inspect the new source's evidence surfaces
+  before narrowing invalidation; the old profile cannot identify its
+  dependencies from `source_paths`.
 - Show one short reuse sentence only when prior context materially affects the
   result. Keep internal states, IDs, versions, hashes, and storage details out
   of normal user output.
 - Honor refresh, analyze-from-scratch, do-not-save, and selective forget
   requests as defined in `context-registry.md`.
+- Reuse a current Project Evidence Profile across JDs and a fresh Company
+  Intelligence Profile only when normalized company and normalized track match
+  exactly. Reuse a JD Demand Map only when its `company_profile_key` matches
+  that resolved Company profile.
 
 ## Canonical inputs
 
@@ -140,10 +150,18 @@ canonical copy beneath this Skill.
 
 Build defensible capability and role-relevance interpretations from linked
 facts, then select the strongest relevant subset. Keep nonmaterial limitations
-and unsupported risks in private review structures. Put a limitation in the
-copyable asset only when the question asks for it or omission would make the
-answer false or materially misleading. Keep frameworks internal and spoken
-answers concise.
+and unsupported risks in Private Defense for Mock preparation. Never emit
+weakness lists, caveat lists, missing-validation summaries, or risk warnings in
+a copyable asset. Put a limitation in the copyable asset only when the question
+asks for it or omission would make the answer false or materially misleading.
+Frame relevant bad cases as signal → diagnosis → decision → change → stronger
+result → hiring signal. Keep frameworks internal and spoken answers concise.
+
+## Usage contract
+
+Record exact file paths opened, model calls, specialist Skill invocations, input
+tokens, cached input tokens, uncached input tokens, output tokens, and stop
+reason. Never silently estimate unavailable host token telemetry.
 
 ## Safety and host dependencies
 

@@ -90,9 +90,15 @@ action, decision, and result. Include a rejected alternative and causal
 mechanism. End the main answer on achievement, decision, containment, control,
 learning, or role relevance. Select the strongest relevant subset of verified
 facts for the question and company. Put unsupported claims, missing validation,
-and follow-up risks in private review; disclose a limitation in the main answer
+difficult follow-ups, and fallback language in `Private Defense` for Mock
+preparation; disclose a limitation in the main answer
 only when asked or when omission would be false or materially misleading.
 Company style may not add or strengthen a historical fact.
+
+For a failure or limitation question, structure the selected story as early
+signal or constraint → diagnosis → deliberate decision → system or product
+change → stronger result → target hiring signal. End on judgment, improvement,
+control, or achievement.
 
 Use short, conversational sentences. Keep framework names and report-style
 factual labels out of the spoken script unless a label is necessary to

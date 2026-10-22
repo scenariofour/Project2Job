@@ -353,6 +353,15 @@
         "observed_metrics": {
           "type": "object"
         },
+        "project_evidence_profile": {
+          "$ref": "https://project2job.dev/schemas/project-evidence-profile/1.0.0"
+        },
+        "company_intelligence_profile": {
+          "$ref": "https://project2job.dev/schemas/company-intelligence-profile/1.0.0"
+        },
+        "jd_demand_map": {
+          "$ref": "https://project2job.dev/schemas/jd-demand-map/1.0.0"
+        },
         "evidence": {
           "type": "array"
         },

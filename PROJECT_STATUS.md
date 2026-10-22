@@ -1,6 +1,6 @@
 # Project Status
 
-Updated: 2026-07-28
+Updated: 2026-08-31
 
 Highest completed Day: 4
 
@@ -129,14 +129,14 @@ deterministic cost model, not measurements.
 
 ## Tested
 
-- 13 Day 1 Agent-loop unit tests and 10 `D1-001`–`D1-010` eval cases
+- 14 Day 1 Agent-loop unit tests and 10 `D1-001`–`D1-010` eval cases
 - required repository paths exist and the active document count is bounded
 - JSON and JSONL files parse
 - Day journal statuses form a valid completed prefix that agrees with this file
 - documentation consistency checks in `tests/test_document_consistency.py`
 - sample project inventory is deterministic
 - seven Skill packages pass structural validation and install validation
-- twenty-seven Skill behavior cases cover routing, Brief UX, shared context, Gates,
+- forty-five Skill behavior cases cover routing, Brief UX, shared context, Gates,
   Answer Lab, research,
   N/A, source caps, ownership, conflict, injection, no-event recovery, and One
   Next Build, plus career-asset packaging and visibly labeled mock practice
@@ -169,6 +169,20 @@ deterministic cost model, not measurements.
 - the career-asset packaging fix passes 90 focused Skill/Application Pack tests
   with `jsonschema>=4`; the full default suite runs 256 tests with 239 passing
   and 17 optional schema tests skipped
+- eighteen focused selective-routing tests cover capability preservation,
+  per-request invocation, Brief company prerequisites, all three profile
+  reuse/freshness paths, added/changed-section updates, JD/company-key mismatch,
+  exact-track reuse, no unchanged-file reread, distinct JD framing, Private
+  Defense, improvement stories, question economy, factual grounding, usage
+  reporting, the stateful-planner boundary, and the executed two-JD dogfood
+  record
+- the selective-routing change passes all 275 repository tests in an isolated
+  `jsonschema>=4` environment and builds the standalone Skill archive
+- the documented per-module reproduce commands in `DAY_1.md`, `DAY_3.md`,
+  `DAY_5.md`, and `lab/day5/README.md` now resolve to this repository, and two
+  regression tests in `tests/test_document_consistency.py` fail if a
+  documented `unittest` module stops importing or the `tests` package is
+  shadowed by an installed distribution; the full suite is 277 tests
 
 See `docs/build_journal/DAY_1.md` for Agent-loop traceability,
 `docs/build_journal/DAY_2.md` for intake traceability,

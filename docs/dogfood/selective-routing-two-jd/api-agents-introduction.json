@@ -1,0 +1,26 @@
+{
+  "artifact_type": "60_second_project_introduction",
+  "artifact_status": "host_generated_dogfood_output",
+  "target_jd": "Product Manager, API Agents",
+  "copyable": "Project2Job is a career-evidence workflow designed around a simple product problem: a candidate should not need to rerun an entire agent pipeline just to create one tailored asset. The strongest product decision was to separate stable project truth, reusable company intelligence, and lightweight per-JD demand. A deterministic planner then selects only the missing prerequisites and requested output, while source-linked facts and schema checks keep generated claims bounded. For an API Agents role, the relevant story is developer experience: the same architecture pattern turns a broad agentic workflow into something faster, more intuitive, and easier to trust. It preserves the full Brief, Intel, Audit, Answer, Mock, and Upgrade capabilities, but invokes them selectively and reserves the complete path for explicit Full Preparation. The system demonstrates agent workflow design, technical product judgment, and a deliberate balance between flexibility, quality, and context cost.",
+  "fact_ids": [
+    "fact-capabilities",
+    "fact-selective-plan",
+    "fact-profile-reuse",
+    "decision-three-profiles",
+    "architecture-router"
+  ],
+  "private_defense": {
+    "ownership": "Repository evidence establishes the system behavior, not the candidate's personal ownership.",
+    "unsupported_claims": [
+      "live user adoption",
+      "hiring impact",
+      "production deployment",
+      "billed model-token savings"
+    ],
+    "difficult_follow_ups": [
+      "Which parts did you personally own?",
+      "What live user behavior changed?"
+    ]
+  }
+}

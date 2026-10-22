@@ -128,18 +128,20 @@ interview answer:
    role-relevant subset of verified facts. A career asset does not need to
    repeat every known limitation or every fact in the evidence record.
 4. **Private risk separation.** Keep unsupported claims, missing validation,
-   follow-up risks, and material limitations in `warnings`,
-   `unsupported_areas`, `claim_safety_review`, or follow-up defense by default.
-   These fields are private preparation material, not sentences to append
-   automatically to the copyable asset.
+   difficult follow-ups, fallback language, and material limitations in a
+   `Private Defense` preparation structure for Mock use. Existing schema fields
+   such as `warnings`, `unsupported_areas`, and `claim_safety_review` feed that
+   private structure; they are never sentences to append automatically to a
+   copyable asset.
 5. **Material disclosure.** Include a limitation in the external asset only
    when the question explicitly asks for it or omission would make the answer
    false or materially misleading. Never hide a boundary that changes what an
    asserted fact means.
 6. **Failure stories.** Describe the relevant failure, lead with the
-   product/user problem, and end on containment, product change, result,
-   judgment, repeat-prevention, or role-relevant capability. Do not end on an
-   unrelated disclaimer or unfinished-work list.
+   product/user problem, then follow signal or constraint → diagnosis →
+   deliberate decision → system or product change → stronger result → target
+   hiring signal. Do not end on an unrelated disclaimer or unfinished-work
+   list.
 7. **Company relevance.** Use the JD to select the strongest story,
    capability, terminology, and emphasis. Do not append a company name or copy
    JD keywords into the conclusion. Company context cannot create or

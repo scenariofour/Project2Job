@@ -6,6 +6,7 @@ editing does not break them.
 
 from __future__ import annotations
 
+import importlib
 import json
 import re
 import tempfile
@@ -316,6 +317,53 @@ class ManifestTests(unittest.TestCase):
             self.assertIn("GLOSSARY.md", files, f"{name} lacks the glossary")
         self.assertIn(
             "docs/DOCUMENT_GOVERNANCE.md", context_sets["shared_foundation"]
+        )
+
+
+class DocumentedCommandTests(unittest.TestCase):
+    """Reproduce commands printed in canonical docs must actually resolve.
+
+    `tests` is only importable as `tests.<module>` while this directory is a
+    regular package. When it was a namespace portion, an unrelated installed
+    distribution shipping a top-level `tests` package shadowed it, so every
+    documented per-module command failed with ModuleNotFoundError on that
+    machine while CI stayed green.
+    """
+
+    COMMAND = re.compile(r"python3? -m unittest ([A-Za-z_][\w.]*)")
+
+    def documented_modules(self) -> set[str]:
+        found: set[str] = set()
+        for path in sorted(ROOT.rglob("*.md")):
+            if ".git" in path.parts:
+                continue
+            for match in self.COMMAND.finditer(
+                path.read_text(encoding="utf-8")
+            ):
+                target = match.group(1)
+                if target != "discover":
+                    found.add(target)
+        return found
+
+    def test_documented_unittest_modules_are_importable(self) -> None:
+        modules = self.documented_modules()
+        self.assertTrue(modules, "no documented unittest module commands found")
+        for name in sorted(modules):
+            with self.subTest(module=name):
+                module = importlib.import_module(name)
+                self.assertTrue(
+                    Path(module.__file__).resolve().is_relative_to(ROOT),
+                    f"{name} resolved outside the repository to "
+                    f"{module.__file__}",
+                )
+
+    def test_tests_package_is_not_shadowed(self) -> None:
+        import tests as tests_package
+
+        self.assertTrue(
+            Path(tests_package.__file__).resolve().is_relative_to(ROOT),
+            "the repository tests package is shadowed by "
+            f"{tests_package.__file__}",
         )
 
 

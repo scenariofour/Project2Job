@@ -1,3 +1,11 @@
+"""Persisted output-update runtime, not the selective Skill planner.
+
+The host resolves context and runs profile_router.py before invoking this
+runtime for an explicit stateful update. This module maintains evidence/output
+dependencies; it does not select a normal Brief, Intel, Audit, Answer, Mock, or
+Upgrade route.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -53,10 +61,14 @@ def observed_metrics(
         if event.get("kind") == "file_opened"
     }
     usage = trace["usage"]
+    token_usage = usage.get("token_usage")
     return {
         "files_opened": len(file_paths),
+        "file_paths_opened": sorted(path for path in file_paths if path),
         "questions_asked": usage.get("questions_asked", 0),
         "capability_calls": usage["capability_calls"],
+        "model_calls": usage.get("model_calls"),
+        "skill_invocations": ["p2j"],
         "outputs_regenerated": len(affected),
         "outputs_preserved": len(trace["preserved_outputs"]),
         "expected_output_ids_changed": len(affected & expected),
@@ -70,7 +82,23 @@ def observed_metrics(
         ),
         "unrelated_outputs_changed": len(affected - expected),
         "latency_ms": usage["latency_ms"],
-        "token_usage": usage.get("token_usage"),
+        "token_usage": token_usage,
+        "input_tokens": usage.get("input_tokens"),
+        "cached_input_tokens": usage.get("cached_input_tokens"),
+        "uncached_input_tokens": usage.get("uncached_input_tokens"),
+        "output_tokens": usage.get("output_tokens"),
+        "token_telemetry_status": (
+            "available"
+            if all(
+                usage.get(field) is not None
+                for field in (
+                    "input_tokens",
+                    "cached_input_tokens",
+                    "output_tokens",
+                )
+            )
+            else "unavailable"
+        ),
     }
 
 
@@ -277,7 +305,10 @@ def run(args: argparse.Namespace) -> dict:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the bounded stateful Project2Job vertical slice."
+        description=(
+            "Run the bounded persisted-output update slice after host-native "
+            "selective planning."
+        )
     )
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--jd-file", type=Path, required=True)
