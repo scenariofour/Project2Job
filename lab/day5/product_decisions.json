@@ -1,0 +1,104 @@
+{
+  "note": "Day 5 product decisions. Each verdict names the evidence that supports it. A mechanism with no evidence is UNPROVEN, not KEEP.",
+  "sample_size": {
+    "cases": 3,
+    "outputs": 6,
+    "systems": 2,
+    "caveat": "Three boundary cases support direction, not a rate. No percentage here should be read as a population estimate."
+  },
+  "decisions": [
+    {
+      "mechanism": "Source location contract and citation resolution gate",
+      "verdict": "REVISE",
+      "reason": "The one dimension that separated the two systems is the one neither passed. The Skill run anchored 6 of 8 citations to a blank line by numbering body lines; the baseline run made all 19 of its citations unresolvable prose anchors. The shared contract required an 'exact source_location' and never defined one, and schema validation cannot see the difference. Day 5 defines the absolute-line grammar and resolves every citation against real text before export.",
+      "evidence": [
+        "lab/day5/results.json",
+        "lab/day5/bad_case_taxonomy.json",
+        "skill/p2j/scripts/source_resolution.py",
+        "tests/test_source_resolution.py"
+      ]
+    },
+    {
+      "mechanism": "Evidence gate on external export",
+      "verdict": "KEEP",
+      "reason": "Both systems returned 0 resume bullets, closed the answer claim-safety gate, and emitted no forbidden phrase on all three boundary cases. The gate holds. It is not a Skill advantage: a strong prompt carrying the same rules held it too.",
+      "evidence": [
+        "lab/day5/results.json",
+        "lab/baseline_prompt.md"
+      ]
+    },
+    {
+      "mechanism": "Six-status evidence scale",
+      "verdict": "KEEP",
+      "reason": "Every output produced the expected statuses for its case, including partially_supported and needs_confirmation where the sources demanded them. No case needed a status the scale lacks.",
+      "evidence": [
+        "lab/day5/results.json",
+        "lab/day5/cases.jsonl"
+      ]
+    },
+    {
+      "mechanism": "Useful abstention over quota filling",
+      "verdict": "KEEP",
+      "reason": "All three cases expect zero resume bullets and all six outputs returned zero. Abstention survived a schema that permits up to three.",
+      "evidence": [
+        "lab/day5/results.json",
+        "schemas/application_pack.schema.json"
+      ]
+    },
+    {
+      "mechanism": "One Next Build recommendation",
+      "verdict": "KEEP",
+      "reason": "Every output targeted the gold evidence gap for its case. Whether the recommendation is the highest-value one is a rubric judgement no reviewer has made yet.",
+      "evidence": [
+        "lab/day5/results.json",
+        "lab/scoring_rubric.md"
+      ]
+    },
+    {
+      "mechanism": "Manifest-scoped context without retrieval",
+      "verdict": "KEEP",
+      "reason": "No Day 5 failure was caused by missing context. Both source failures were citation formatting, not evidence availability. Nothing here reopens D-026.",
+      "evidence": [
+        "docs/13_DECISION_LOG.md",
+        "docs/build_journal/traces/day3_context_comparison.json"
+      ]
+    },
+    {
+      "mechanism": "Ownership handling on team artifacts",
+      "verdict": "UNPROVEN",
+      "reason": "Both systems keep the correct team-level status while using first-person wording. Whether that stays inside the evidence boundary is a human judgement, and no reviewer has adjudicated it.",
+      "evidence": [
+        "lab/day5/bad_cases.jsonl",
+        "lab/day5/human_review.template.jsonl"
+      ]
+    },
+    {
+      "mechanism": "Structured Project2Job flow versus the strong prompt",
+      "verdict": "UNPROVEN",
+      "reason": "Six of eight deterministic checks came out identical for both systems on all three cases. The Skill used about 2.8x the input tokens and more wall time, and the baseline capture could not prove Skill-catalog isolation, so even that overhead is not cleanly attributable. No human has scored either output. The structured flow can carry an enforcing gate that a one-shot prompt cannot, which is an argument for the architecture, not yet a measured advantage.",
+      "evidence": [
+        "lab/day5/results.json",
+        "lab/day5/capture_manifest.json",
+        "lab/day5/bad_cases.jsonl"
+      ]
+    },
+    {
+      "mechanism": "Retrieval, fine-tuning, or an agent framework",
+      "verdict": "STOP",
+      "reason": "No observed Day 5 failure needs any of them. Both severe failures were fixed by defining a contract and checking it. Adding infrastructure here would be spending on a problem the evidence does not show.",
+      "evidence": [
+        "lab/day5/bad_case_taxonomy.json",
+        "docs/10_EVALUATION_AND_POC.md"
+      ]
+    },
+    {
+      "mechanism": "Blind two-reviewer human evaluation",
+      "verdict": "KEEP",
+      "reason": "The deterministic layer cannot answer whether an output is worth using, and Day 5 showed a grader that quietly applied a laxer standard to one system. The protocol stays a required gate for any preference or usability claim.",
+      "evidence": [
+        "lab/day5/REVIEW_PROTOCOL.md",
+        "lab/day5/blind_review_packet.md"
+      ]
+    }
+  ]
+}

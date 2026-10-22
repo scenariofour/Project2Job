@@ -70,6 +70,13 @@ python3 scripts/run_day3_context_comparison.py --check
 python3 -m unittest tests.test_day3_context -v
 ```
 
+Both commands are executable. The second one silently failed on any machine
+where an unrelated installed distribution shipped a top-level `tests` package,
+because this directory was a namespace portion rather than a regular package.
+`tests/__init__.py` fixes the resolution and
+`DocumentedCommandTests` in `tests/test_document_consistency.py` now fails if a
+documented `unittest` module stops importing from this repository.
+
 The machine-readable result is
 `docs/build_journal/traces/day3_context_comparison.json`.
 

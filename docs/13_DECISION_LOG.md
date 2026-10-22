@@ -578,3 +578,114 @@ warnings leaked into the spoken script and made the candidate sound weaker than
 the evidence required. An ad hoc correction worked after it separated the
 external script from private risks. This is product-owner target-user dogfood,
 not independent validation, measured hiring impact, or a completed Day 5 gate.
+
+## D-030: Route selectively over three reusable context profiles
+
+Decision:
+
+- Keep all seven public Skills and every existing capability.
+- Replace the implicit JD-plus-Project full-suite path with deterministic
+  request planning that generates only the requested asset.
+- Build one source-linked Project Evidence Profile per Project version, reuse it
+  across JDs, and update only sections affected by changed source paths.
+- Build Company Intelligence Profiles through `$p2j-intel`, key them by company
+  and exact normalized track string, and reuse them across JDs only while fresh
+  and materially unchanged.
+- Extract one lightweight JD Demand Map per JD version and bind it to the
+  resolved Company profile key.
+- Make Full Preparation an explicit mode that assembles the complete pack and
+  uses all specialist capability contracts while satisfying fresh Audit/Intel
+  dependencies from cache.
+- Keep strategy, story selection, company adaptation, and career writing
+  model-driven; keep fingerprints, change detection, cache eligibility, routing,
+  schema checks, and usage arithmetic deterministic.
+- Keep weakness lists, unsupported claims, difficult follow-ups, and fallback
+  language in Private Defense for Mock preparation. Frame relevant bad cases as
+  signal → diagnosis → decision → change → stronger result → hiring signal.
+
+Reason:
+
+The full-suite path preserved capability breadth but spent context and model
+calls even when the user requested one asset. The three profiles separate stable
+Project truth, reusable company/track research, and per-JD demand so the router
+can reuse expensive work without allowing company research to alter Project
+facts. This amends the prior one-JD persistence boundary while retaining one JD
+per run, consent, freshness, source provenance, factual-safety regressions, and
+the bounded Agent update contract.
+
+## D-031: Close selective-routing prerequisite and invalidation gaps
+
+Decision:
+
+- A Project + JD Brief must reuse fresh Company Intelligence for the exact
+  normalized company/track or invoke bounded `$p2j-intel` before writing.
+- The visible Brief returns one strongest positioning and one route; limitation,
+  weakness, and broad missing-evidence inventories stay in Private Defense or
+  `$p2j-upgrade`.
+- Added Project files conservatively stale every profile section until the new
+  source is opened and its evidence surfaces are inspected.
+- A JD Demand Map is reusable only when its `company_profile_key` matches the
+  resolved Company Intelligence Profile.
+- Selective planning remains host-native. `stateful_agent.py` owns explicit
+  persisted update mechanics and does not select normal Skill routes.
+
+Reason:
+
+PR #16's first implementation planned profile reuse but allowed a Brief without
+company context, could reuse a JD map across Company-profile keys, and derived
+added-file dependencies only from old `source_paths`. Those behaviors made the
+claimed adaptation and incremental invalidation contracts stronger than the
+implementation.
+
+## D-032: Close Day 5 on evidence and gate every exported citation
+
+Decision:
+
+- Supersede the D-028 clause that made blind review the gate for Day 5's
+  status. Day 5's IMPLEMENTED and TESTED status now rests on the executable
+  evaluation system and the product changes it produced. Blind review and the
+  target-user pilot become the gate for HUMAN-REVIEWED and USER-VALIDATED, which
+  both remain No.
+- Define one canonical `source_location` grammar in
+  `docs/07_SHARED_EVIDENCE_AND_OUTPUT_STANDARD.md`, the Skill core contract, and
+  the `sourceRef` schema description: absolute 1-based line spans counting blank
+  lines, or a heading anchor. Reject ordinal prose anchors.
+- Resolve every citation against real text before an external claim ships.
+  `skill/p2j/scripts/source_resolution.py` is the deterministic gate and is
+  wired into `validate_output.py --source`.
+- Keep schema validity and citation resolution as separate gates. An output may
+  be perfectly shaped and cite a blank line.
+- Hold both compared systems to the same grader. Remove the accommodation that
+  accepted a prose anchor from the baseline.
+- Give bad cases content-derived IDs so finding one failure does not renumber
+  the log.
+- Record every bad-case category with the product layer that must change, and
+  admit a category only when a recorded artifact produced it.
+- Make no reviewer-preference, usability, cost, or user-value claim. Add no
+  retrieval, fine-tuning, or agent framework.
+
+Reason:
+
+The open exact-source failure was not a hallucination. The Skill run numbered
+non-empty body lines, so all six citations for the 20-case plan pointed at blank
+absolute line 2 while the claim sat on line 3. Every citation was internally
+consistent and schema-valid. The contract had required an "exact
+source_location" without ever defining one, so two conventions were equally
+compliant and nothing downstream could tell them apart. The failure layer was
+the output contract, and the fix belonged there.
+
+Running the same gate across the baseline found the mirror failure: all 19
+citations in the baseline `S02` output are prose anchors that no reader can
+resolve. The grader had been accepting exactly that form from the baseline while
+requiring a line number from the Skill, which tilted the comparison.
+
+Six of the eight deterministic checks then came out identical for both systems
+on all three cases. On these boundary cases a strong prompt carrying the same
+evidence rules refused to overclaim as reliably as the structured system did.
+The defensible argument for the structured product is not better judgment here;
+it is that it can carry an enforcing gate a one-shot prompt cannot. That is an
+architecture argument and stays UNPROVEN as a product claim.
+
+Dogfooding the gate against the Skill's own shipped Brief rejected all seven of
+its heading-anchor citations, which are verifiable. That bad case changed the
+rule rather than the Brief: heading anchors resolve, ordinal anchors do not.

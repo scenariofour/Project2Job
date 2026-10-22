@@ -101,6 +101,31 @@ role_requirement_id
 → user_confirmation
 ```
 
+### Source location grammar
+
+`source_location` is an absolute, 1-based line reference into the cited file.
+Blank lines count. Use one of:
+
+```text
+<source-file>:<line>
+<source-file>:<start>-<end>
+line <line>
+lines <start>-<end>
+<source-file>#<Heading>
+```
+
+A heading anchor names a real heading and resolves to that section. Do not
+number only the non-empty lines, and do not anchor a claim to a sentence,
+bullet, paragraph, or "entire document". An ordinal prose anchor reads as
+precise and cannot be resolved: nothing in the file marks where the count
+starts.
+
+Before a claim reaches a resume bullet, an answer draft, or any other external
+asset, its citation must resolve: the cited span must exist inside the file and
+must carry text. A citation that resolves to a blank or out-of-range span
+supports nothing, even when the claim itself is true and the source is
+permitted. `skill/p2j/scripts/source_resolution.py` is the deterministic check.
+
 ## Career output policy
 
 ### Career-asset packaging
@@ -128,18 +153,20 @@ interview answer:
    role-relevant subset of verified facts. A career asset does not need to
    repeat every known limitation or every fact in the evidence record.
 4. **Private risk separation.** Keep unsupported claims, missing validation,
-   follow-up risks, and material limitations in `warnings`,
-   `unsupported_areas`, `claim_safety_review`, or follow-up defense by default.
-   These fields are private preparation material, not sentences to append
-   automatically to the copyable asset.
+   difficult follow-ups, fallback language, and material limitations in a
+   `Private Defense` preparation structure for Mock use. Existing schema fields
+   such as `warnings`, `unsupported_areas`, and `claim_safety_review` feed that
+   private structure; they are never sentences to append automatically to a
+   copyable asset.
 5. **Material disclosure.** Include a limitation in the external asset only
    when the question explicitly asks for it or omission would make the answer
    false or materially misleading. Never hide a boundary that changes what an
    asserted fact means.
 6. **Failure stories.** Describe the relevant failure, lead with the
-   product/user problem, and end on containment, product change, result,
-   judgment, repeat-prevention, or role-relevant capability. Do not end on an
-   unrelated disclaimer or unfinished-work list.
+   product/user problem, then follow signal or constraint → diagnosis →
+   deliberate decision → system or product change → stronger result → target
+   hiring signal. Do not end on an unrelated disclaimer or unfinished-work
+   list.
 7. **Company relevance.** Use the JD to select the strongest story,
    capability, terminology, and emphasis. Do not append a company name or copy
    JD keywords into the conclusion. Company context cannot create or

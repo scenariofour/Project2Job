@@ -1,0 +1,105 @@
+{
+  "note": "Every category is backed by a recorded case in this repository. No category exists because it sounded complete.",
+  "categories": [
+    {
+      "taxonomy_id": "T-SOURCE-GRAMMAR",
+      "name": "Cited line span resolves to no text",
+      "product_layer": "output_contract_and_provenance",
+      "observed_in": [
+        "lab/day5/outputs/skill/S01.json"
+      ],
+      "observation": "The Skill run numbered non-empty body lines, so six citations for the 20-case plan point at blank absolute line 2 instead of line 3. The claim is inside the permitted source; its citation is not.",
+      "product_action": "Define one absolute line grammar in the shared standard and the core contract, and resolve every citation before export.",
+      "status": "fixed_at_gate"
+    },
+    {
+      "taxonomy_id": "T-UNVERIFIABLE-LOCATION",
+      "name": "Citation format no reader or checker can resolve",
+      "product_layer": "output_contract_and_provenance",
+      "observed_in": [
+        "lab/day5/outputs/baseline/S02.json"
+      ],
+      "observation": "All 19 baseline citations use prose anchors such as 'Team Project, sentence 1' and 'Responsibilities, bullet 2'. They are schema-valid and unverifiable.",
+      "product_action": "Reject a location that names no absolute line span; the gate applies to both systems.",
+      "status": "fixed_at_gate"
+    },
+    {
+      "taxonomy_id": "T-GRADER-ACCOMMODATION",
+      "name": "Grader applied a laxer standard to one system",
+      "product_layer": "rubric_and_grader",
+      "observed_in": [
+        "lab/day5_evaluation.py"
+      ],
+      "observation": "The first key-source check carried a 'sentence 1' branch that let an unverifiable baseline citation pass a gate the Skill had to clear with a line number, tilting the comparison toward the baseline.",
+      "product_action": "Hold both systems to the one canonical grammar and re-record the affected results.",
+      "status": "fixed"
+    },
+    {
+      "taxonomy_id": "T-OWNERSHIP-AMBIGUITY",
+      "name": "First-person team framing with unconfirmed contribution",
+      "product_layer": "ownership_and_claim_classification",
+      "observed_in": [
+        "lab/day5/outputs/skill/S02.json",
+        "lab/day5/outputs/baseline/S02.json"
+      ],
+      "observation": "Both systems keep the correct team-level status while using first-person wording. Whether that stays inside the boundary is a human judgement no deterministic check can make.",
+      "product_action": "Keep the case open for reviewer adjudication; do not resolve it with an automated rule.",
+      "status": "needs_adjudication"
+    },
+    {
+      "taxonomy_id": "T-ASSET-RISK-LEAKAGE",
+      "name": "Private evidence risk leaked into a copyable asset",
+      "product_layer": "career_asset_packaging",
+      "observed_in": [
+        "docs/dogfood/PROJECT2JOB_DAY5_CAREER_ASSET_DOGFOOD.md"
+      ],
+      "observation": "Accurate warnings entered a spoken interview answer and made pending validation more memorable than the supported achievement.",
+      "product_action": "Separate the external script from Private Defense; recorded as D-029 with behavioral regressions.",
+      "status": "fixed"
+    },
+    {
+      "taxonomy_id": "T-CONTEXT-SELECTION-MISS",
+      "name": "Targeted selection drops the artifact that bounds a claim",
+      "product_layer": "context_selection",
+      "observed_in": [
+        "lab/evals/day3_context_cases.jsonl"
+      ],
+      "observation": "D3-003: narrow selection lowered context volume while omitting the separate ownership boundary.",
+      "product_action": "Retain manifest-scoped context and defer retrieval; recorded as D-026.",
+      "status": "accepted_tradeoff"
+    },
+    {
+      "taxonomy_id": "T-STALE-PERSISTENT-CLAIM",
+      "name": "Removed evidence survives in persisted state",
+      "product_layer": "orchestration_and_state",
+      "observed_in": [
+        "lab/evals/agent_cases.jsonl"
+      ],
+      "observation": "A06_PROJECT_REMOVED is the visible stale-state case: a claim whose source is gone must not survive a restore.",
+      "product_action": "Dependency-aware invalidation on removal, covered by regression.",
+      "status": "fixed"
+    },
+    {
+      "taxonomy_id": "T-HARNESS-ISOLATION",
+      "name": "Baseline isolation not observable",
+      "product_layer": "eval_harness",
+      "observed_in": [
+        "lab/day5/capture_manifest.json"
+      ],
+      "observation": "The host loaded the global Skill catalog despite --ignore-user-config, so token overhead cannot be attributed cleanly to Project2Job instructions.",
+      "product_action": "Do not claim a token-overhead comparison until a capture proves isolation.",
+      "status": "open"
+    },
+    {
+      "taxonomy_id": "T-HARNESS-INSTRUMENTATION",
+      "name": "A measurement was never instrumented",
+      "product_layer": "eval_harness",
+      "observed_in": [
+        "lab/day5/capture_manifest.json"
+      ],
+      "observation": "The first baseline run was not wrapped with /usr/bin/time, so one of six wall times does not exist.",
+      "product_action": "Leave the value null and report runtime as an incomplete set; never backfill.",
+      "status": "open"
+    }
+  ]
+}

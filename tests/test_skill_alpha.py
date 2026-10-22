@@ -188,8 +188,8 @@ class SkillSuiteTests(unittest.TestCase):
             for line in path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-        self.assertEqual(len(cases), 27)
-        self.assertEqual(len({case["id"] for case in cases}), 27)
+        self.assertEqual(len(cases), 45)
+        self.assertEqual(len({case["id"] for case in cases}), 45)
         no_event = next(case for case in cases if case["id"] == "A11_NO_EVENT")
         self.assertIn("select strongest", no_event["must"])
         self.assertIn("dead end", no_event["must_not"])
@@ -197,9 +197,25 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("Mock Interview — simulated practice", mock["must"])
         router = next(case for case in cases if case["id"] == "A14_ROUTER_OUTPUTS")
         self.assertIn(
-            "APPLICATION_PACK leads with concise Brief then completes canonical pack",
+            "JD_INTAKE returns canonical Intake Result",
             router["must"],
         )
+        selective = next(
+            case for case in cases if case["id"] == "A29_SELECTIVE_INVOCATION"
+        )
+        self.assertIn("zero specialist invocations", selective["must"])
+        brief = next(
+            case for case in cases if case["id"] == "A40_BRIEF_COMPANY_PREREQUISITE"
+        )
+        self.assertIn("bounded p2j-intel before p2j-brief", brief["must"])
+        self.assertIn(
+            "company adaptation without company context", brief["must_not"]
+        )
+        full = next(
+            case for case in cases if case["id"] == "A28_CAPABILITY_PRESERVATION"
+        )
+        for skill in SKILLS[1:]:
+            self.assertIn(skill, full["must"])
         upgrade = next(case for case in cases if case["id"] == "A12_NEXT_BUILD")
         for behavior in (
             "gap and JD mismatch diagnosis",
@@ -314,7 +330,7 @@ class SkillSuiteTests(unittest.TestCase):
             ROOT / "skill" / "p2j" / "references" / "interview-engine.md"
         ).read_text(encoding="utf-8")
         self.assertIn("strongest relevant subset of verified", engine)
-        self.assertIn("private review", engine)
+        self.assertIn("Private Defense", engine)
         self.assertIn("false or materially misleading", engine)
         self.assertIn("short, conversational sentences", engine)
         self.assertNotIn("Preserve limitations.", engine)
@@ -341,7 +357,7 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("Do not run project tests, builds, or", text)
         for section in (
             "Project Verdict",
-            "Preliminary Project Scores",
+            "Strongest Demonstrated Signals",
             "JD Match",
             "Interview Value",
             "Recommended Route",
@@ -358,8 +374,11 @@ class SkillSuiteTests(unittest.TestCase):
             self.assertIn(dimension, text)
         self.assertIn("`**EXACT MATCH**`", text)
         self.assertIn("`TRANSFERABLE`", text)
-        self.assertIn("`` `GAP` ``", text)
-        self.assertIn("return as many as the evidence", text)
+        self.assertIn("assessment internal", text)
+        self.assertIn("Do not display `GAP` rows", text)
+        self.assertIn("Return exactly one strongest", text)
+        self.assertIn("bounded `$p2j-intel` pass before", text)
+        self.assertIn("Private Defense", text)
         self.assertIn("select exactly one of", text)
         self.assertIn("absent ownership metadata", text)
         self.assertNotIn("Preliminary Gate Scores", text)
@@ -382,13 +401,18 @@ class SkillSuiteTests(unittest.TestCase):
         )
         for section in (
             "## Project Verdict",
-            "## Preliminary Project Scores",
+            "## Strongest Demonstrated Signals",
             "## JD Match",
             "## Interview Value",
             "## Recommended Route",
         ):
             self.assertIn(section, text)
         self.assertNotIn("Preliminary Gate Scores", text)
+        self.assertNotIn("most important limitation", text.lower())
+        self.assertNotIn("| Missing |", text)
+        self.assertNotIn("| Story direction |", text)
+        self.assertNotIn("`GAP`", text)
+        self.assertNotRegex(text, r"\b[1-5]/5\b")
         self.assertNotRegex(text, r"\bG[1-6]\b")
         self.assertNotRegex(text, r"\bD(?:10|[1-9])\b")
 
@@ -416,6 +440,26 @@ class SkillSuiteTests(unittest.TestCase):
         self.assertIn("8 fetched pages", engine)
         self.assertIn("45,000", engine)
         self.assertIn("including total tokens and runtime", engine)
+
+    def test_profile_contract_and_schemas_ship_with_the_suite(self) -> None:
+        contract = (
+            ROOT / "skill" / "p2j" / "references" / "profile-contract.md"
+        ).read_text(encoding="utf-8")
+        for term in (
+            "Project Evidence Profile",
+            "Company Intelligence Profile",
+            "JD Demand Map",
+            "Full Preparation",
+            "Private Defense",
+        ):
+            self.assertIn(term, contract)
+        for name in (
+            "project_evidence_profile.schema.json",
+            "company_intelligence_profile.schema.json",
+            "jd_demand_map.schema.json",
+        ):
+            self.assertTrue((ROOT / "schemas" / name).is_file())
+        self.assertTrue((SCRIPTS / "profile_router.py").is_file())
 
 
 if __name__ == "__main__":

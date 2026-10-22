@@ -34,7 +34,13 @@ Treat `/p2j-answer` as an alias for `$p2j-answer`.
 6. Return the compact Answer Lab contract from
    `../p2j/references/interview-engine.md`, including 30-second, 60–90-second,
    deep-dive, second-best, true no-direct-experience, at least three follow-up
-   levels, minimal confirmation slots, private risks, and one project upgrade.
+   levels, minimal confirmation slots, Private Defense, and one project
+   upgrade.
+
+Use one strongest story. Keep weakness lists, caveats, unsupported claims,
+difficult follow-ups, and fallback language out of copyable answers and only in
+Private Defense. Frame a relevant bad case as signal → diagnosis → decision →
+change → stronger result → hiring signal.
 
 Use `Observed`, `Derived`, `Strongly Inferred`, `Proposed During Development`,
 `Counterfactual`, or `Needs Confirmation` explicitly whenever the distinction

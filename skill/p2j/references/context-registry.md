@@ -9,12 +9,15 @@ Run:
 
 ```text
 python ../p2j/scripts/context_registry.py resolve \
-  --project <project> --jd-file <jd>
+  --project <project> --jd-file <jd> --company <company> --track <track>
 ```
 
 For a URL-backed JD, also pass `--jd-url <url>` so changed page content becomes
 a new version of the same JD. For pasted text, use a temporary `--jd-file` plus
 `--jd-key <stable role label>` or pipe it with `--jd-stdin`.
+When a bounded freshness check produced a current company-source fingerprint,
+pass `--company-source-fingerprint <sha256>` so material source change marks the
+company profile stale.
 
 - Reuse returned confirmed facts, ownership boundaries, compatible evidence,
   unresolved questions, and output references.
@@ -30,6 +33,18 @@ a new version of the same JD. For pasted text, use a temporary `--jd-file` plus
   changed or disappeared.
 - Do not reopen unchanged source content unless a named evidence gap requires it.
   The resolver reuses cached fingerprints for unchanged files.
+- Read `profiles.project_evidence`, `profiles.company_intelligence`, and
+  `profiles.jd_demand` before planning. `hit` is reusable, `stale` must be
+  refreshed if required by the requested asset, and `miss` must be built only
+  when required. `mismatch` means the JD Demand Map belongs to a different
+  Company profile key and must be re-extracted.
+- Company profile reuse requires an exact normalized company and exact
+  normalized track-string match. There is no implicit "compatible track"
+  expansion.
+- An added Project source returns `surface_inspection_required`. Open that new
+  source, identify its evidence surfaces, and update every potentially affected
+  Project profile section; old `source_paths` cannot name a file that did not
+  exist.
 
 `--mode refresh` forces source analysis and result recomputation while retaining
 compatible confirmed facts. `--mode fresh` bypasses all reuse without deleting
@@ -54,11 +69,19 @@ One-time Skill use remains a first-class path. `$p2j`, `$p2j-brief`,
 result without loading or invoking the stateful update runtime. Do not create a
 registry directory or consent file merely because a Skill was invoked.
 
+Selective Skill planning is host-native. The host resolves this registry and
+runs `profile_router.py` before invoking a specialist or asset generator.
+`stateful_agent.py` updates persisted evidence dependencies and outputs for the
+explicit Agent update path; it does not choose a normal selective Skill route.
+
 Save only supported or user-confirmed facts, claim-level ownership boundaries,
 source references, the canonical Agent evidence/claim/output/dependency state,
 privacy-safe traces, observed usage, unresolved questions, known gaps, output
 references, and the recommended route. Never save source bodies, credentials,
 secrets, full generated answers, or unrelated personal data.
+An Audit run may save `project_evidence_profile`; an Intel run may save
+`company_intelligence_profile`; any JD run may save `jd_demand_map`. Validate
+each with its canonical schema before saving.
 Use `fact_id`, `claim_id`, `question_id`, or `gap_id` plus `source_paths` on
 saved items, and use the canonical lowercase evidence statuses in JSON.
 

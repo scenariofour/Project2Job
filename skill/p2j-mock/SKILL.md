@@ -11,7 +11,7 @@ Treat `/p2j-mock` as an alias for `$p2j-mock`.
    `../p2j/references/interview-engine.md`, and
    `../p2j/references/frameworks.md`.
 2. Resolve shared context. Reuse the latest compatible answer, corrections, and
-   known weak points; discard any answer dependency invalidated by changed
+   Private Defense; discard any answer dependency invalidated by changed
    evidence.
 3. Start with `Mock Interview — simulated practice`, visibly labeling the
    generated exercise. Select one P0 question from current JD, research, project
@@ -29,7 +29,7 @@ Treat `/p2j-mock` as an alias for `$p2j-mock`.
    evidence boundary is already clear.
 6. End the round with an updated answer-bank entry that visibly separates the
    best copyable answer from confirmed facts, corrections, private remaining
-   risks, and one next practice focus.
+   risks under `Private Defense`, and one next practice focus.
 
 Do not give generic encouragement, ask several questions at once, invent a fact
 to improve fluency, or score personality/culture fit.

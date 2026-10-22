@@ -20,6 +20,18 @@
           "output": "lab/day5/outputs/baseline/S01.json",
           "output_sha256": "f8d60065c169863b72d687ea51ed6b4e849ebb35f91466cf0d168b199e8c19cf",
           "schema_valid_at_capture": true,
+          "source_resolution": {
+            "total_refs": 19,
+            "counts": {
+              "resolved": 19,
+              "blank_span": 0,
+              "out_of_range": 0,
+              "unparsed_location": 0,
+              "unmapped_source": 0
+            },
+            "all_resolve": true,
+            "unresolved": []
+          },
           "checks": [
             {
               "check": "canonical_output_shape",
@@ -52,6 +64,11 @@
               "severe": true
             },
             {
+              "check": "all_source_locations_resolve",
+              "passed": true,
+              "severe": true
+            },
+            {
               "check": "one_next_build_targets_gold_gap",
               "passed": true,
               "severe": false
@@ -63,6 +80,91 @@
           "output": "lab/day5/outputs/skill/S01.json",
           "output_sha256": "5059738fb23f864830ea045f0087237855a532de56a7a9f26e64f4ba50ea440d",
           "schema_valid_at_capture": true,
+          "source_resolution": {
+            "total_refs": 8,
+            "counts": {
+              "resolved": 2,
+              "blank_span": 6,
+              "out_of_range": 0,
+              "unparsed_location": 0,
+              "unmapped_source": 0
+            },
+            "all_resolve": false,
+            "unresolved": [
+              {
+                "pointer": "/role_fit_map/3/source_refs/0",
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
+                "cited_lines": [
+                  2,
+                  2
+                ],
+                "status": "blank_span",
+                "detail": "fixture_project_plan_only.md lines 2-2 are blank, so the citation supports nothing."
+              },
+              {
+                "pointer": "/role_fit_map/6/source_refs/0",
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
+                "cited_lines": [
+                  2,
+                  2
+                ],
+                "status": "blank_span",
+                "detail": "fixture_project_plan_only.md lines 2-2 are blank, so the citation supports nothing."
+              },
+              {
+                "pointer": "/project_highlights/0/source_refs/0",
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
+                "cited_lines": [
+                  2,
+                  2
+                ],
+                "status": "blank_span",
+                "detail": "fixture_project_plan_only.md lines 2-2 are blank, so the citation supports nothing."
+              },
+              {
+                "pointer": "/interview_pack/answer_drafts/0/verified_evidence/0/source_refs/0",
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
+                "cited_lines": [
+                  2,
+                  2
+                ],
+                "status": "blank_span",
+                "detail": "fixture_project_plan_only.md lines 2-2 are blank, so the citation supports nothing."
+              },
+              {
+                "pointer": "/interview_pack/answer_drafts/1/verified_evidence/0/source_refs/0",
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
+                "cited_lines": [
+                  2,
+                  2
+                ],
+                "status": "blank_span",
+                "detail": "fixture_project_plan_only.md lines 2-2 are blank, so the citation supports nothing."
+              },
+              {
+                "pointer": "/interview_pack/answer_drafts/2/verified_evidence/0/source_refs/0",
+                "source_id": "SRC-PROJECT",
+                "location": "S01_project.md:2",
+                "resolved_path": "lab/fixtures/fixture_project_plan_only.md",
+                "cited_lines": [
+                  2,
+                  2
+                ],
+                "status": "blank_span",
+                "detail": "fixture_project_plan_only.md lines 2-2 are blank, so the citation supports nothing."
+              }
+            ]
+          },
           "checks": [
             {
               "check": "canonical_output_shape",
@@ -95,6 +197,11 @@
               "severe": true
             },
             {
+              "check": "all_source_locations_resolve",
+              "passed": false,
+              "severe": true
+            },
+            {
               "check": "one_next_build_targets_gold_gap",
               "passed": true,
               "severe": false
@@ -112,6 +219,152 @@
           "output": "lab/day5/outputs/baseline/S02.json",
           "output_sha256": "b39f9f096f41add13bbb98e6753ea9606af7ec899cce16fdfa16c8bb59603494",
           "schema_valid_at_capture": true,
+          "source_resolution": {
+            "total_refs": 19,
+            "counts": {
+              "resolved": 0,
+              "blank_span": 0,
+              "out_of_range": 0,
+              "unparsed_location": 19,
+              "unmapped_source": 0
+            },
+            "all_resolve": false,
+            "unresolved": [
+              {
+                "pointer": "/role_fit_map/0/source_refs/0",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 1",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/0/source_refs/1",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/1/source_refs/0",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 2",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/1/source_refs/1",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentences 1–2",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/2/source_refs/0",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 3",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/2/source_refs/1",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentences 1–2",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/3/source_refs/0",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 4",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/3/source_refs/1",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 2",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/4/source_refs/0",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/4/source_refs/1",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 5",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/5/source_refs/0",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 6",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/5/source_refs/1",
+                "source_id": "S02_project.md",
+                "location": "Team Project, entire document",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/6/source_refs/0",
+                "source_id": "target_jd.md",
+                "location": "Responsibilities, bullet 7",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/role_fit_map/6/source_refs/1",
+                "source_id": "S02_project.md",
+                "location": "Team Project, entire document",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/project_highlights/0/source_refs/0",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/interview_pack/intro_source_refs/0",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentences 1–2",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/interview_pack/answer_drafts/0/verified_evidence/0/source_refs/0",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/interview_pack/answer_drafts/1/verified_evidence/0/source_refs/0",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 2",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              },
+              {
+                "pointer": "/interview_pack/answer_drafts/2/verified_evidence/0/source_refs/0",
+                "source_id": "S02_project.md",
+                "location": "Team Project, sentence 1",
+                "status": "unparsed_location",
+                "detail": "The location names no absolute line or line range, so no reader or checker can confirm the cited text."
+              }
+            ]
+          },
           "checks": [
             {
               "check": "canonical_output_shape",
@@ -140,7 +393,12 @@
             },
             {
               "check": "key_source_location_resolves",
-              "passed": true,
+              "passed": false,
+              "severe": true
+            },
+            {
+              "check": "all_source_locations_resolve",
+              "passed": false,
               "severe": true
             },
             {
@@ -155,6 +413,18 @@
           "output": "lab/day5/outputs/skill/S02.json",
           "output_sha256": "cc5138e3eb6f2a11e89850cc925b2f0136f5b47a4a64762ba2498b2186de6fa5",
           "schema_valid_at_capture": true,
+          "source_resolution": {
+            "total_refs": 8,
+            "counts": {
+              "resolved": 8,
+              "blank_span": 0,
+              "out_of_range": 0,
+              "unparsed_location": 0,
+              "unmapped_source": 0
+            },
+            "all_resolve": true,
+            "unresolved": []
+          },
           "checks": [
             {
               "check": "canonical_output_shape",
@@ -183,6 +453,11 @@
             },
             {
               "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "all_source_locations_resolve",
               "passed": true,
               "severe": true
             },
@@ -204,6 +479,18 @@
           "output": "lab/day5/outputs/baseline/S05.json",
           "output_sha256": "9e439136f29aade83f70c6e3a90f9a8624fd7d19d353c237cb00a037d0b133ce",
           "schema_valid_at_capture": true,
+          "source_resolution": {
+            "total_refs": 22,
+            "counts": {
+              "resolved": 22,
+              "blank_span": 0,
+              "out_of_range": 0,
+              "unparsed_location": 0,
+              "unmapped_source": 0
+            },
+            "all_resolve": true,
+            "unresolved": []
+          },
           "checks": [
             {
               "check": "canonical_output_shape",
@@ -232,6 +519,11 @@
             },
             {
               "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "all_source_locations_resolve",
               "passed": true,
               "severe": true
             },
@@ -247,6 +539,18 @@
           "output": "lab/day5/outputs/skill/S05.json",
           "output_sha256": "2b0010150526e595f03fc6e3e44bffa39c17803eb02a5710da267646baf4c6dc",
           "schema_valid_at_capture": true,
+          "source_resolution": {
+            "total_refs": 8,
+            "counts": {
+              "resolved": 8,
+              "blank_span": 0,
+              "out_of_range": 0,
+              "unparsed_location": 0,
+              "unmapped_source": 0
+            },
+            "all_resolve": true,
+            "unresolved": []
+          },
           "checks": [
             {
               "check": "canonical_output_shape",
@@ -275,6 +579,11 @@
             },
             {
               "check": "key_source_location_resolves",
+              "passed": true,
+              "severe": true
+            },
+            {
+              "check": "all_source_locations_resolve",
               "passed": true,
               "severe": true
             },
@@ -317,11 +626,57 @@
     {
       "case_id": "D5-001",
       "system": "skill",
-      "check": "key_source_location_resolves"
+      "check": "key_source_location_resolves",
+      "unresolved_statuses": [
+        "blank_span"
+      ]
+    },
+    {
+      "case_id": "D5-001",
+      "system": "skill",
+      "check": "all_source_locations_resolve",
+      "unresolved_statuses": [
+        "blank_span"
+      ]
+    },
+    {
+      "case_id": "D5-002",
+      "system": "baseline",
+      "check": "key_source_location_resolves",
+      "unresolved_statuses": [
+        "unparsed_location"
+      ]
+    },
+    {
+      "case_id": "D5-002",
+      "system": "baseline",
+      "check": "all_source_locations_resolve",
+      "unresolved_statuses": [
+        "unparsed_location"
+      ]
     }
   ],
   "automated_gate_passed": false,
   "measurements": {
+    "source_precision": {
+      "baseline": {
+        "total_refs": 60,
+        "resolved": 41,
+        "blank_span": 0,
+        "out_of_range": 0,
+        "unparsed_location": 19,
+        "unmapped_source": 0
+      },
+      "skill": {
+        "total_refs": 24,
+        "resolved": 18,
+        "blank_span": 6,
+        "out_of_range": 0,
+        "unparsed_location": 0,
+        "unmapped_source": 0
+      }
+    },
+    "source_precision_note": "Observed citation resolution over 3 cases per system. It measures whether an exported citation points at real text, not whether the claim is a good one.",
     "tokens": {
       "baseline": {
         "input_tokens": 493062,
